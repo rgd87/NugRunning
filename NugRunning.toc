@@ -1,0 +1,9 @@
+## Interface: 30300
+## Title: NugRunning
+## Notes: Buff/Debuff tracking
+## Author: d87
+## SavedVariables: NugRunningDB
+config.lua
+NugRunning.lua
+deathknight.lua
+totems.lua
