@@ -208,7 +208,8 @@ AddSpell({ 13750 },{ name = "Adrenaline Rush",duration = 15, color = colors.LRED
 AddSpell({ 63848 },{ name = "Hunger For Blood", short="Hunger", duration = 60, color = colors.ORANGE })
 AddSpell({ 13877 },{ name = "Blade Flurry",duration = 15, color = colors.LRED })
 AddSpell({ 51713 },{ name = "Shadow Dance",duration = 10, color = colors.LRED })
-                    
+AddSpell({ 58427 },{ name = "Overkill", duration = 20, color =  colors.RED })                    
+                
 AddSpell({ 5171,6774 },{ name = "Slice and Dice", short = "SnD", color = colors.PURPLE,  duration = function() 
     if Talent(51664)>3 then NugRunning.cpWas = 5 end
     return (((6 + NugRunning.cpWas *3) + Glyph(56810)*4) * (1+Talent(14165)*0.25))
