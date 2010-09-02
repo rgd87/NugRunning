@@ -49,6 +49,9 @@ end
 local function AddCooldown( id, opts)
     if type(id) == "table" then id = id[1] end
     opts.localname = GetSpellInfo(id)
+--~     print (id)
+--~     print (opts.localname)
+    if not opts.localname then return end -- cata quickfix
     NugRunningConfig.cooldowns[id] = opts
 end
 
@@ -83,6 +86,7 @@ local colors = {
     PURPLE = { 187/255, 75/255, 128/255 },
     FROZEN = { 65/255, 110/255, 1 },
     CHILL = { 0.6, 0.6, 1},
+    BLACK = {0.4,0.4,0.4}
 }
 
 
@@ -118,8 +122,11 @@ end
 if class == "WARLOCK" then
 AddSpell({ 70840 },{ name = "Devious Minds",duration = 10, target = "player", color = colors.LRED }) -- t10 4pc proc
 -- BUFFS
+AddSpell({ 74434 },{ name = "Soulburn",duration = 20, color = {1,0.7,0.1} })
+AddSpell({ 86211 },{ name = "Soul Swap",duration = 20, color = colors.BLACK })
 AddSpell({ 63321 },{ name = "Life Tap",duration = 20, color = colors.PURPLE })
 AddSpell({ 34936 },{ name = "Backlash",duration = 8 })
+AddSpell({ 47283 },{ name = "Soulfire!",duration = 8, color = colors.LRED })
 --~ AddSpell({ 54274,54276,54277 },{ name = "Backdraft",duration = 15 })
 AddSpell({ 17941 },{ name = "Nightfall",duration = 10, color = colors.CURSE })
 AddSpell({ 47383,71162,71165 },{ name = "Molten Core",duration = 18, color = colors.PURPLE })
@@ -128,21 +135,22 @@ AddSpell({ 63167,63165 },{ name = "Decimation",duration = 8, color = colors.LBLU
 
 AddSpell({ 64371 },{ name = "Eradication",duration = 10, color = colors.CURSE })
 
-AddSpell({ 27243,47835,47836 },{ name = "Seed of Corruption",duration = 15, color = colors.LRED, short = "SoC" })
+AddSpell({ 27243 },{ name = "Seed of Corruption",duration = 15, color = colors.LRED, short = "SoC" })
 -- DEBUFFS
-AddSpell({348, 707, 1094, 2941, 11665, 11667, 11668, 25309, 27215, 47810, 47811 },{ name = "Immolate", recast_mark = "gcd", duration = 15, color = colors.RED })
-AddSpell({ 30108, 30404, 30405, 47841, 47843 },{ name = "Unstable Affliction",duration = 15, recast_mark = "gcd", color = colors.RED, short = "UA" })
-AddSpell({ 172,6222,6223,7648,11671,11672,25311,27216,47812,47813 },{ name = "Corruption", color = colors.PINK, duration = 18, init = function(self)
-                                                                                                                                self.hasted = (Glyph(70947) ~= 0) end })
-AddSpell({ 980,1014,6217,11711,11712,11713,27218,47863,47864 },{ name = "Curse of Agony",duration = 24, color = colors.CURSE, short = "Agony", init = function(self)self.duration = 24 + Glyph(56241)*4 end })
-AddSpell({ 603, 30910, 47867 },{ name = "Curse of Doom",duration = 60, color = colors.CURSE, short = "Doom" })
-AddSpell({ 1714,11719 },{ name = "Curse of Tongues",duration = 30, color = colors.CURSE, pvpduration = 12, short = "CoT" })
-AddSpell({ 702,1108,6205,7646,11707,11708,27224,30909,50511 },{ name = "Curse of Weakness",duration = 120, color = colors.CURSE, short = "Weakness" })
-AddSpell({ 18223 },{ name = "Curse of Exhaustion",duration = 12, color = colors.CURSE, short = "CoEx" })
+AddSpell({348 },{ name = "Immolate", recast_mark = "gcd", duration = 15, color = colors.RED })
+AddSpell({ 30108 },{ name = "Unstable Affliction",duration = 15, recast_mark = "gcd", color = colors.RED, short = "UA" })
+AddSpell({ 172 },{ name = "Corruption", color = colors.PINK, duration = 18, init = function(self)
+                                                        self.hasted = (Glyph(70947) ~= 0) end })
+AddSpell({ 980 },{ name = "Bane of Agony",duration = 24, color = colors.CURSE, short = "Agony", init = function(self)self.duration = 24 + Glyph(56241)*4 end })
+AddSpell({ 603 },{ name = "Bane of Doom",duration = 60, color = colors.CURSE, short = "Doom" })
+AddSpell({ 80240 },{ name = "Bane of Havoc",duration = 300, color = colors.CURSE, short = "Havoc" })
+AddSpell({ 1714 },{ name = "Curse of Tongues",duration = 30, color = colors.PURPLE, pvpduration = 12, short = "CoT" })
+AddSpell({ 702 },{ name = "Curse of Weakness",duration = 120, color = colors.PURPLE, short = "Weakness" })
+AddSpell({ 18223 },{ name = "Curse of Exhaustion",duration = 12, color = colors.PURPLE, short = "CoEx" })
+AddSpell({ 1490,85547 },{ name = "Curse of Elements",duration = 300, color = colors.PURPLE, pvpduration = 120, short = "CoE" })
 
-AddSpell({ 48181,59161,59163,59164 },{ name = "",duration = 12, recast_mark = 3, color = colors.TEAL }) --Haunt
-AddSpell({ 1490,11721,11722,27228,47865 },{ name = "Curse of Elements",duration = 300, color = colors.CURSE, pvpduration = 120, short = "CoE" })
-AddSpell({ 30283,30413,30414,47846,47847 },{ name = "Shadowfury",duration = 3, multiTarget = true })
+AddSpell({ 48181 },{ name = "",duration = 12, recast_mark = 3, color = colors.TEAL }) --Haunt
+AddSpell({ 30283 },{ name = "Shadowfury",duration = 3, multiTarget = true })
 AddSpell({ 47960,61291 },{ name = "Shadowflame",duration = 8, multiTarget = true })
 --PET SPELLS
 AddSpell({ 24259 },{ name = "Spell Lock",duration = 3, color = colors.PINK })
@@ -151,18 +159,19 @@ AddSpell({ 17767,17850,17851,17852,17853,17854,27272,47987,47988 },{ name = "Con
 AddSpell({ 30153,30195,30197,47995 },{ name = "Intercept",duration = 3 })
 AddSpell({ 7812,19438,19440,19441,19442,19443,27273,47985,47986 },{ name = "Sacrifice",duration = 30, color = colors.PURPLE })
 --
-AddSpell({ 5782 },{ name = "Fear", duration = 10, pvpduration = 10 })
-AddSpell({ 6213 },{ name = "Fear", duration = 15, pvpduration = 10 })
-AddSpell({ 6215 },{ name = "Fear", duration = 20, pvpduration = 10 })
+AddSpell({ 5782 },{ name = "Fear", duration = 20, pvpduration = 10 })
+--~ AddSpell({ 6213 },{ name = "Fear", duration = 15, pvpduration = 10 })
+--~ AddSpell({ 6215 },{ name = "Fear", duration = 20, pvpduration = 10 })
 --
-AddSpell({ 5484 },{ name = "Howl of Terror", duration = 6, multiTarget = true })                    
-AddSpell({ 17928 },{ name = "Howl of Terror", duration = 8, multiTarget = true })
+AddSpell({ 5484 },{ name = "Howl of Terror", duration = 8, multiTarget = true })                    
+--~ AddSpell({ 17928 },{ name = "Howl of Terror", duration = 8, multiTarget = true })
 
-AddSpell({ 710 },{ name = "Banish", duration = 20 })
-AddSpell({ 18647 },{ name = "Banish", duration = 30 })
+AddSpell({ 710 },{ name = "Banish", duration = 30 })
+--~ AddSpell({ 18647 },{ name = "Banish", duration = 30 })
 
-AddCooldown( 59172, { name = "Chaos Bolt",  color = colors.LBLUE })
+AddCooldown( 50796, { name = "Chaos Bolt",  color = colors.LBLUE })
 AddCooldown( 17962, { name = "Conflagrate",  color = colors.LRED })
+AddCooldown( 71521, { name = "Hand of Gul'dan",  color = colors.LRED })
 --AddCooldown( 59164, { name = "HAUNT",  color = colors.LRED })
 end
    
@@ -208,13 +217,13 @@ AddSpell({ 13750 },{ name = "Adrenaline Rush",duration = 15, color = colors.LRED
 AddSpell({ 63848 },{ name = "Hunger For Blood", short="Hunger", duration = 60, color = colors.ORANGE })
 AddSpell({ 13877 },{ name = "Blade Flurry",duration = 15, color = colors.LRED })
 AddSpell({ 51713 },{ name = "Shadow Dance",duration = 10, color = colors.LRED })
-AddSpell({ 58427 },{ name = "Overkill", duration = 20, color =  colors.RED })                    
+--AddSpell({ 58427 },{ name = "Overkill", duration = 20, color =  colors.RED })                    
                 
 AddSpell({ 5171,6774 },{ name = "Slice and Dice", short = "SnD", color = colors.PURPLE,  duration = function() 
     if Talent(51664)>3 then NugRunning.cpWas = 5 end
     return (((6 + NugRunning.cpWas *3) + Glyph(56810)*4) * (1+Talent(14165)*0.25))
     end })
---~ 
+    
 -- DEBUFFS
 AddSpell({ 1833 },{ name = "Cheap Shot",duration = 4, color = colors.LRED })
 AddSpell({ 408 },{ name = "Kidney Shot",duration = 5,color = colors.LRED })
