@@ -67,6 +67,9 @@ function NugRunning.ADDON_LOADED(self,event,arg1)
             NugRunning:RegisterEvent("SPELL_UPDATE_COOLDOWN")
         end
         
+        NugRunning:RegisterEvent("SPELL_ACTIVATION_OVERLAY_GLOW_SHOW")
+        NugRunning:RegisterEvent("SPELL_ACTIVATION_OVERLAY_GLOW_HIDE")
+        
         if select(2,UnitClass("player")) == "SHAMAN" then
             NugRunning:InitTotems()
         end
@@ -117,6 +120,19 @@ function NugRunning.COMBAT_LOG_EVENT_UNFILTERED( self, event, timestamp, eventTy
     
     if eventType == "UNIT_DIED" or eventType == "UNIT_DESTROYED" then
         self:DeactivateTimersOnDeath(dstGUID)
+    end
+end
+
+function NugRunning.SPELL_ACTIVATION_OVERLAY_GLOW_SHOW(self,event, spellID)
+    if TrackSpells.activations[spellID] then
+        local opts = TrackSpells.activations[spellID]
+        self:ActivateTimer(UnitGUID("player"),UnitGUID("player"), UnitName("player"), nil, spellID, opts.localname, opts, "ACTIVATION", opts.duration)
+    end
+end
+function NugRunning.SPELL_ACTIVATION_OVERLAY_GLOW_HIDE(self,event, spellID)
+    if TrackSpells.activations[spellID] then
+        local opts = TrackSpells.activations[spellID]
+        self:DeactivateTimer(UnitGUID("player"),UnitGUID("player"), spellID, nil, opts, "ACTIVATION")
     end
 end
 
@@ -255,6 +271,8 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
     timer.bar.bg:SetVertexColor(opts.color[1] * 0.5, opts.color[2] * 0.5, opts.color[3] * 0.5)
     
     timer:Show()
+    if not timer.animIn:IsPlaying() then timer.animIn:Play() end
+    if opts.shine and not timer.shine:IsPlaying() then timer.shine:Play() end
     self:ArrangeTimers()
     
     return timer
@@ -353,6 +371,7 @@ function NugRunning.DeactivateTimer(self,srcGUID,dstGUID, spellID, spellName, op
             timer.active = false
             timer:Hide()
             self:ArrangeTimers()
+--~             if not timer.animOut:IsPlaying() then timer.animOut:Play() end
             return
         end
     end
@@ -499,6 +518,7 @@ local TimerOnUpdate = function(self,time)
                 self:Hide()
                 self.active = false
                 NugRunning:ArrangeTimers()
+--~                 if not self.animOut:IsPlaying() then self.animOut:Play() end
                 while next(self.targets) do
                     self.targets[next(self.targets)] = nil
                 end
@@ -527,13 +547,15 @@ function NugRunning.CreateTimer(width, height)
     f:SetBackdrop(backdrop)
 	f:SetBackdropColor(0, 0, 0, 0.7)
 --~ 	f:SetBackdropBorderColor(.3, .3, .3, 1)
-
-    f.icon = f:CreateTexture(nil,"ARTWORK")
-    f.icon:SetTexCoord(.07, .93, .07, .93)
-    f.icon:SetWidth(height)
-    f.icon:SetHeight(height)
-    f.icon:SetPoint("TOP", 0, 0)
-    f.icon:SetPoint("LEFT", 0, 0)
+    
+    local ic = CreateFrame("Frame",nil,f)
+    ic:SetPoint("TOPLEFT",f,"TOPLEFT", 0, 0)
+    ic:SetPoint("BOTTOMRIGHT",f,"BOTTOMLEFT", height, 0)
+    ic:SetFrameStrata("HIGH")
+    local ict = ic:CreateTexture(nil,"ARTWORK",0)
+    ict:SetTexCoord(.07, .93, .07, .93)
+    ict:SetAllPoints(ic)
+    f.icon = ict
     
     f.stacktext = f:CreateFontString(nil, "OVERLAY");
     f.stacktext:SetFont("Fonts\\FRIZQT__.TTF",10,"OUTLINE")
@@ -544,34 +566,103 @@ function NugRunning.CreateTimer(width, height)
     f.stacktext:SetPoint("RIGHT", f.icon, "RIGHT",1,-5)
     
 --~     local color = { 1, 0.5 , 0.2}
-    f.bar = CreateFrame("StatusBar")
-    f.bar:SetParent(f)
-    f.bar:SetWidth(width-height-1)
-    f.bar:SetHeight(height)
+    f.bar = CreateFrame("StatusBar",nil,f)
+    f.bar:SetFrameStrata("MEDIUM")
+--~     f.bar:SetWidth(width-height-1)
+--~     f.bar:SetHeight(height)
     f.bar:SetStatusBarTexture("Interface\\AddOns\\NugRunning\\statusbar")
+    f.bar:GetStatusBarTexture():SetDrawLayer("ARTWORK")
 --~     f.bar:SetStatusBarColor(color[1],color[2],color[3])
-    f.bar:SetPoint("LEFT",f.icon,"RIGHT",1,0)
+    f.bar:SetPoint("BOTTOMLEFT",f.icon,"BOTTOMRIGHT",1,0)
+    f.bar:SetPoint("TOPRIGHT",f,"TOPRIGHT",0,0)
     
     f.bar.bg = f.bar:CreateTexture(nil, "BORDER")
 	f.bar.bg:SetAllPoints(f.bar)
 	f.bar.bg:SetTexture("Interface\\AddOns\\NugRunning\\statusbar")
 --~     f.bar.bg:SetVertexColor(color[1] * .5, color[2] * .5, color[3] * .5)
     
-    f.timeText = f.bar:CreateFontString(nil, "OVERLAY");
+    f.timeText = f.bar:CreateFontString();
     f.timeText:SetFont("Fonts\\FRIZQT__.TTF",8)
-    f.timeText:SetWidth(f.bar:GetWidth()/4)
-    f.timeText:SetHeight(height)
+--~     f.timeText:SetWidth(width/4)
+--~     f.timeText:SetHeight(width)
     f.timeText:SetJustifyH("RIGHT")
     f.timeText:SetVertexColor(1,1,1)
-    f.timeText:SetPoint("RIGHT", f.bar, "RIGHT",-6,0)
+    f.timeText:SetPoint("TOPRIGHT", f.bar, "TOPRIGHT",-6,0)
+    f.timeText:SetPoint("BOTTOMLEFT", f.bar, "BOTTOMLEFT",0,0)
     
-    f.spellText = f.bar:CreateFontString(nil, "OVERLAY");
-    f.spellText:SetFont("Fonts\\FRIZQT__.TTF",f.bar:GetHeight()/2)
-    f.spellText:SetWidth(f.bar:GetWidth()/4*3 -12)
+    f.spellText = f.bar:CreateFontString();
+    f.spellText:SetFont("Fonts\\FRIZQT__.TTF",height/2)
+    f.spellText:SetWidth(width/4*3 -12)
     f.spellText:SetHeight(height/2+1)
     f.spellText:SetJustifyH("CENTER")
     f.spellText:SetVertexColor(1,1,1)
     f.spellText:SetPoint("LEFT", f.bar, "LEFT",6,0)
+    
+    
+    local at = ic:CreateTexture(nil,"OVERLAY")
+    at:SetTexture([[Interface\SpellActivationOverlay\IconAlert]])
+    at:SetTexCoord(0.00781250,0.50781250,0.27734375,0.52734375)
+--~     at:SetTexture([[Interface\AchievementFrame\UI-Achievement-IconFrame]])
+--~     at:SetTexCoord(0,0.5625,0,0.5625)
+    at:SetWidth(height*1.8)
+    at:SetHeight(height*1.8)
+    at:SetPoint("CENTER",f.icon,"CENTER",0,0)
+    at:SetAlpha(0)
+    
+    local sag = at:CreateAnimationGroup()
+    local sa1 = sag:CreateAnimation("Alpha")
+    sa1:SetChange(1)
+    sa1:SetDuration(0.3)
+    sa1:SetOrder(1)
+    local sa2 = sag:CreateAnimation("Alpha")
+    sa2:SetChange(-1)
+    sa2:SetDuration(0.5)
+    sa2:SetSmoothing("OUT")
+    sa2:SetOrder(2)
+    
+    f.shine = sag
+    
+    
+    local aag = f:CreateAnimationGroup()
+    local aa1 = aag:CreateAnimation("Scale")
+    aa1:SetOrigin("BOTTOM",0,0)
+    aa1:SetScale(1,0.1)
+    aa1:SetDuration(0)
+    aa1:SetOrder(1)
+    local aa2 = aag:CreateAnimation("Scale")
+    aa2:SetOrigin("BOTTOM",0,0)
+    aa2:SetScale(1,10)
+    aa2:SetDuration(0.15)
+    aa2:SetOrder(2)
+--~     local aa1 = aag:CreateAnimation("Translation")
+--~     aa1:SetOffset(40,0)
+--~     aa1:SetDuration(0)
+--~     aa1:SetOrder(1)
+--~     local aa2 = aag:CreateAnimation("Translation")
+--~     aa2:SetOffset(-40,0)
+--~     aa2:SetDuration(1)
+--~     aa2:SetOrder(2)    
+    f.animIn = aag
+    
+--~     local dag = f:CreateAnimationGroup()
+--~     local da1 = dag:CreateAnimation("Alpha")
+--~     da1:SetChange(-1)
+--~     da1:SetDuration(1)
+--~     da1:SetOrder(1)
+--~     local da2 = dag:CreateAnimation("Translation")
+--~     da2:SetOffset(-50,0)
+--~     da2:SetDuration(1)
+--~     da2:SetOrder(1)
+--~     
+--~     dag:SetScript("OnFinished",function(self)
+--~         self:GetParent().active = false
+--~         self:GetParent():Hide()
+--~         NugRunning:ArrangeTimers()
+--~     end)
+--~     
+--~     f.animOut = dag
+
+    
     
     f.mark = NugRunning.CreateMark(f)
     f.targets = {}
