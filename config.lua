@@ -248,20 +248,20 @@ if class == "WARRIOR" then
 AddSpell({ 6673 },{ name = "Battle Shout", multiTarget = true, shout = true, color = colors.PURPLE, duration = 120,init = function(self)self.duration = (120 + Glyph(58385)*120) * (1+Talent(12321) * 0.25)  end })
 AddSpell({ 469 },{ name = "Commanding Shout", multiTarget = true, short = "CommShout", shout = true, color = colors.PURPLE, duration = 120, init = function(self)self.duration = (120 + Glyph(68164)*120) * (1+Talent(12321) * 0.25)  end })
 AddSpell({ 2565 },{ name = "Shield Block", duration = 10 })
-AddSpell({ 50227 },{ name = "Slam!", color = colors.LRED, duration = 5 })
+AddSpell({ 50227 },{ name = "Slam!", color = colors.LRED, shine = true, duration = 5 })
 
 --~ AddSpell({ 86346 },{ name = "Colossus Smash", color = colors.BLACK, duration = 6 })
 AddSpell({ 1715 },{ name = "Hamstring", color = { 192/255, 77/255, 48/255}, duration = 15, pvpduration = 10 })
 AddSpell({ 772 },{ name = "Rend", color = colors.RED, duration = 15,
     init = function(self)self.duration = 15 + Glyph(58385)*6 end })
-AddSpell({ 46968 },{ name = "Shockwave", color = { 0.6, 0, 1 }, duration = 4, multiTarget = true })
+AddSpell({ 46968 },{ name = "Shockwave", color = { 0.6, 0, 1 }, shine = true, duration = 4, multiTarget = true })
 AddSpell({ 12809 },{ name = "Concussion Blow", color = { 1, 0.3, 0.6 }, duration = 5 })
 AddSpell({ 355 },{ name = "Taunt", duration = 3 })
 AddSpell({ 58567 },{ name = "Sunder Armor", short = "Sunder", anySource = true, color = { 1, 0.2, 0.2}, duration = 30 })
 AddSpell({ 1160 },{ name = "Demoralizing Shout", anySource = true, short = "DemoShout", color = {0.3, 0.9, 0.3}, duration = 30, multiTarget = true })
 AddSpell({ 6343 },{ name = "Thunder Clap", anySource = true, color = {149/255, 121/255, 214/255}, duration = 30, multiTarget = true })
 --~ AddSpell({ 56112 },{ name = "Furious Attacks", duration = 10 })
-AddSpell({ 52437 },{ name = "Sudden Death", color = colors.LRED, duration = 10 })
+AddSpell({ 52437 },{ name = "Sudden Death", color = colors.LRED, shine = true, duration = 10 })
 AddSpell({ 60503 },{ name = "", recast_mark = 3, color = colors.RED, duration = 9 }) -- Overpower proc
 
 AddCooldown( 12294, { name = "Mortal Strike",  color = colors.LBLUE })
