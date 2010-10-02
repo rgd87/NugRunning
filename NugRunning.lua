@@ -89,9 +89,9 @@ end
 
 function NugRunning.COMBAT_LOG_EVENT_UNFILTERED( self, event, timestamp, eventType, srcGUID, srcName, srcFlags, dstGUID, dstName, dstFlags, spellID, spellName, spellSchool, auraType, amount, a1,a2,a3)
     local isSrcPlayer = (bit.band(srcFlags, COMBATLOG_OBJECT_AFFILIATION_MINE) == COMBATLOG_OBJECT_AFFILIATION_MINE)
-    if isSrcPlayer then
-        print (spellID, spellName, eventType)
-    end
+--~     if isSrcPlayer then
+--~         print (spellID, spellName, eventType)
+--~     end
     
     if TrackSpells[spellID] then
         local isSrcPlayer = (bit_band(srcFlags, COMBATLOG_OBJECT_AFFILIATION_MINE) == COMBATLOG_OBJECT_AFFILIATION_MINE)
