@@ -87,9 +87,11 @@ function NugRunning.ADDON_LOADED(self,event,arg1)
     end
 end
 
-function NugRunning.COMBAT_LOG_EVENT_UNFILTERED( self, event, timestamp, eventType, srcGUID, srcName, srcFlags, dstGUID, dstName, dstFlags, spellID, spellName, spellSchool, auraType, amount)
+function NugRunning.COMBAT_LOG_EVENT_UNFILTERED( self, event, timestamp, eventType, srcGUID, srcName, srcFlags, dstGUID, dstName, dstFlags, spellID, spellName, spellSchool, auraType, amount, a1,a2,a3)
     local isSrcPlayer = (bit.band(srcFlags, COMBATLOG_OBJECT_AFFILIATION_MINE) == COMBATLOG_OBJECT_AFFILIATION_MINE)
---~     print (spellID, spellName)
+    if isSrcPlayer then
+        print (spellID, spellName, eventType)
+    end
     
     if TrackSpells[spellID] then
         local isSrcPlayer = (bit_band(srcFlags, COMBATLOG_OBJECT_AFFILIATION_MINE) == COMBATLOG_OBJECT_AFFILIATION_MINE)
@@ -126,12 +128,14 @@ end
 function NugRunning.SPELL_ACTIVATION_OVERLAY_GLOW_SHOW(self,event, spellID)
     if TrackSpells.activations[spellID] then
         local opts = TrackSpells.activations[spellID]
+        if opts.showid then spellID = opts.showid end
         self:ActivateTimer(UnitGUID("player"),UnitGUID("player"), UnitName("player"), nil, spellID, opts.localname, opts, "ACTIVATION", opts.duration)
     end
 end
 function NugRunning.SPELL_ACTIVATION_OVERLAY_GLOW_HIDE(self,event, spellID)
     if TrackSpells.activations[spellID] then
         local opts = TrackSpells.activations[spellID]
+        if opts.showid then spellID = opts.showid end
         self:DeactivateTimer(UnitGUID("player"),UnitGUID("player"), spellID, nil, opts, "ACTIVATION")
     end
 end
@@ -218,6 +222,7 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
     timer.spellID = spellID
     --timer.spellName = spellName
     timer.timerType = timerType
+    timer.timeless = opts.timeless
     timer.icon:SetTexture(select(3,GetSpellInfo(spellID)))
     timer.startTime = GetTime()
     timer.endTime = timer.startTime + time
@@ -331,14 +336,14 @@ function NugRunning.RefreshTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID,
             timer.stacktext:Hide()
         end
     end
-
+    if opts.shinerefresh and not timer.shine:IsPlaying() then timer.shine:Play() end
     self:ArrangeTimers()
 end
 
 function NugRunning.RemoveDose(self,srcGUID,dstGUID, spellID, spellName, amount)
     local timer
     for i=1,MAX_TIMERS do
-        if timers[i].active and timers[i].dstGUID == dstGUID and timers[i].spellID == spellID then
+        if timers[i].active and timers[i].dstGUID == dstGUID and timers[i].spellID == spellID and timers[i].timerType == timerType then
             timer = timers[i]
             break
         end
@@ -362,7 +367,7 @@ function NugRunning.DeactivateTimer(self,srcGUID,dstGUID, spellID, spellName, op
         dstGUID = nil
     end
     for i=1,MAX_TIMERS do
-        if timers[i].active and timers[i].srcGUID == srcGUID and timers[i].dstGUID == dstGUID and timers[i].spellID == spellID then
+        if timers[i].active and timers[i].srcGUID == srcGUID and timers[i].dstGUID == dstGUID and timers[i].spellID == spellID and timers[i].timerType == timerType then
             timer = timers[i]
             if multiTargetGUID then
                 timer.targets[multiTargetGUID] = nil
@@ -512,6 +517,12 @@ local TimerOnUpdate = function(self,time)
             if self.OnUpdateCounter < 0.05 then return end
             self.OnUpdateCounter = 0
 
+            if self.timeless then
+                self.bar:SetValue(0)
+                self.timeText:SetText("")
+                return 
+            end
+            
             local beforeEnd = self.endTime - GetTime()
 
             if beforeEnd <= 0 then
@@ -557,13 +568,13 @@ function NugRunning.CreateTimer(width, height)
     ict:SetAllPoints(ic)
     f.icon = ict
     
-    f.stacktext = f:CreateFontString(nil, "OVERLAY");
+    f.stacktext = ic:CreateFontString(nil, "OVERLAY");
     f.stacktext:SetFont("Fonts\\FRIZQT__.TTF",10,"OUTLINE")
-    f.stacktext:SetWidth(f.icon:GetWidth())
-    f.stacktext:SetHeight(f.icon:GetHeight())
+    f.stacktext:SetHeight(ic:GetHeight())
     f.stacktext:SetJustifyH("RIGHT")
     f.stacktext:SetVertexColor(1,1,1)
-    f.stacktext:SetPoint("RIGHT", f.icon, "RIGHT",1,-5)
+    f.stacktext:SetPoint("RIGHT", ic, "RIGHT",1,-5)
+    
     
 --~     local color = { 1, 0.5 , 0.2}
     f.bar = CreateFrame("StatusBar",nil,f)

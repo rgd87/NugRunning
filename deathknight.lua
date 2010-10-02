@@ -1,22 +1,37 @@
 -- Special DK sauce
-if select(2,UnitClass("player")) == "DEATHKNIGHT" then
+local class = select(2,UnitClass("player"))
+if class  == "DEATHKNIGHT" or class == "WARRIOR"then
 
 local TrackSpells = NugRunningConfig
-local FF = { id = 55095 }
-local BP = { id = 55078 }
-FF.name = GetSpellInfo(FF.id)
-BP.name = GetSpellInfo(BP.id)
---~ FF.opts = setmetatable({ multiTarget = false, group = false, onrefresh = false, name = "FF"}, { __index = function(t,k) return TrackSpells[FF.id][k] end })
---~ BP.opts = setmetatable({ multiTarget = false, group = false, onrefresh = false, name = "BP"}, { __index = function(t,k) return TrackSpells[BP.id][k] end })
-local FFBP = { FF, BP }
-FF.opts = TrackSpells[FF.id]
-BP.opts = TrackSpells[BP.id]
-TrackSpells[BP.id] = nil
-TrackSpells[FF.id] = nil
+local infect
+if class  == "DEATHKNIGHT" then
+    local FF = { id = 55095 }
+    local BP = { id = 55078 }
+    FF.name = GetSpellInfo(FF.id)
+    BP.name = GetSpellInfo(BP.id)
+    --FF.opts = setmetatable({ multiTarget = false, group = false, onrefresh = false, name = "FF"}, { __index = function(t,k) return TrackSpells[FF.id][k] end })
+    --BP.opts = setmetatable({ multiTarget = false, group = false, onrefresh = false, name = "BP"}, { __index = function(t,k) return TrackSpells[BP.id][k] end })
+    FF.opts = TrackSpells[FF.id]
+    BP.opts = TrackSpells[BP.id]
+    TrackSpells[BP.id] = nil
+    TrackSpells[FF.id] = nil
+    
+    infect = { FF, BP }
+end
+if class  == "WARRIOR" then
+    local rend = { id = 94009 }
+    rend.name = GetSpellInfo(rend.id)
+    rend.opts = TrackSpells[rend.id]
+    TrackSpells[rend.id] = nil
+    
+    infect = { rend }
+end
+
+
 
 local dismon_onevent = function(self, event, unit)
     if unit and unit ~= "target" then return end
-    for _, spell in ipairs(FFBP) do
+    for _, spell in ipairs(infect) do
         local _, _, _, _, _, duration, expirationTime = UnitAura("target",spell.name, nil,"HARMFUL|PLAYER")
         if duration then
             if not spell.timer then
