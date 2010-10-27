@@ -47,6 +47,7 @@ function NugRunning.ADDON_LOADED(self,event,arg1)
         NugRunningDB.opts[user].spellTextEnabled = (NugRunningDB.opts[user].spellTextEnabled == nil and true) or NugRunningDB.opts[user].spellTextEnabled
         NugRunningDB.opts[user].shortTextEnabled = (NugRunningDB.opts[user].shortTextEnabled == nil and true) or NugRunningDB.opts[user].shortTextEnabled
         NugRunningDB.opts[user].localNames   = (NugRunningDB.opts[user].localNames == nil and false) or NugRunningDB.opts[user].localNames
+        NugRunningDB.opts[user].debug   = (NugRunningDB.opts[user].debug == nil and false) or NugRunningDB.opts[user].debug
         NugRunning:SetupArrange()
         
         NugRunning:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
@@ -90,6 +91,7 @@ end
 function NugRunning.COMBAT_LOG_EVENT_UNFILTERED( self, event, timestamp, eventType, srcGUID, srcName, srcFlags, dstGUID, dstName, dstFlags, spellID, spellName, spellSchool, auraType, amount, a1,a2,a3)
     local isSrcPlayer = (bit.band(srcFlags, COMBATLOG_OBJECT_AFFILIATION_MINE) == COMBATLOG_OBJECT_AFFILIATION_MINE)
 --~     if isSrcPlayer then
+--~         print (GetTime(), spellID, spellName, eventType, srcName, " => ", dstName)
 --~         print (spellID, spellName, eventType)
 --~     end
     
@@ -862,6 +864,9 @@ function NugRunning.SlashCmd(msg)
         NugRunningDB.opts[user].pos.y = p["y"] or NugRunningDB.opts[user].pos.y
         local pos = NugRunningDB.opts[user].pos
         NugRunning.anchor:SetPoint(pos.point, pos.parent, pos.to, pos.x, pos.y)
+    end
+    if k == "debug" then
+        NugRunningDB.opts[user].debug = not NugRunningDB.opts[user].debug
     end
 end
 

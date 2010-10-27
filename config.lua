@@ -99,6 +99,7 @@ local colors = {
     FROZEN = { 65/255, 110/255, 1 },
     CHILL = { 0.6, 0.6, 1},
     BLACK = {0.4,0.4,0.4},
+    WOO = {151/255, 86/255, 168/255},
 }
 
 
@@ -116,7 +117,6 @@ end
 if stackingTrinkets then
     --AddSpell({ 65006 },{ name = "EotBM",duration = 10 }) --Eye of the Broodmother
 end
-
 
 
 if class == "WARLOCK" then
@@ -315,58 +315,79 @@ AddSpell({ 55095 },{ name = "Frost Fever", color = colors.CHILL, duration = 15, 
 AddSpell({ 55078 },{ name = "Blood Plague", color = colors.PURPLE, duration = 15, init = function(self)self.duration = 15 + Talent(49036)*3 end })
 
 --AddSpell({ 49194 },{ name = "Unholy Blight", color = colors.TEAL, duration = 20, init = function(self)self.duration = 20 + Glyph(63332)*10 end })
-AddSpell({ 47805 },{ name = "Chains of Ice", color = colors.FROZEN, duration = 10 })
-AddSpell({ 47476 },{ name = "Strangulate", duration = 5 })
-AddSpell({ 48792 },{ name = "Icebound Fortitude", duration = 12, init = function(self)self.duration = 12 + Talent(50187)*2 end })
-AddSpell({ 49016 },{ name = "Hysteria", duration = 30 })
-AddSpell({ 51209 },{ name = "Hungering Cold", duration = 10, color = colors.FROZEN, multiTarget = true })
-AddSpell({ 57330 },{ name = "Horn of Winter", duration = 120, shout = true, color = colors.CURSE, multiTarget = true, short = "Horn", init = function(self)self.duration = 120 + Glyph(58680)*60 end })
+--BLOOD
+AddSpell({ 81130 },{ name = "Scarlet Fever", duration = 30, color = colors.LRED })
+AddSpell({ 73975 },{ name = "Necrotic Strike", duration = 30, color = colors.WOO })
+AddSpell({ 55233 },{ name = "Vampiric Blood", duration = 10, color = colors.RED })
+AddSpell({ 81256 },{ name = "Dancing Rune Weapon", duration = 12, color = colors.RED })
 
+--FROST
+AddSpell({ 57330 },{ name = "Horn of Winter", duration = 120, shout = true, color = colors.CURSE, multiTarget = true, short = "Horn", init = function(self)self.duration = 120 + Glyph(58680)*60 end })
+AddSpell({ 45524 },{ name = "Chains of Ice", duration = 8, color = colors.CHILL })
+AddSpell({ 51209 },{ name = "Hungering Cold", duration = 10, color = colors.FROZEN, multiTarget = true })
+AddSpell({ 48792 },{ name = "Icebound Fortitude", duration = 12 })
 AddSpell({ 51124 },{ name = "Killing Machine", duration = 30 })
 AddSpell({ 59052 },{ name = "Freezing Fog", duration = 15 })
+AddSpell({ 49039 },{ name = "Lichborne", duration = 10, color = colors.BLACK })
+
+--UNHOLY
+AddSpell({ 91342 },{ name = "Shadow Infusion", shinerefresh = true, duration = 30, color = colors.LGREEN, short = "Infusion" })
+AddSpell({ 63560 },{ name = "Dark Transformation", shine = true, duration = 30, color = colors.LGREEN, short = "Monstrosity" })
+AddSpell({ 81340 },{ name = "Sudden Doom", shine = true, duration = 10, color = colors.CURSE })
+AddSpell({ 47476 },{ name = "Strangulate", duration = 5 })
+AddSpell({ 91800 },{ name = "Gnaw", duration = 3, color = colors.RED })
+AddSpell({ 91797 },{ name = "Monstrous Blow", duration = 4, color = colors.RED, short = "Gnaw" })
+AddSpell({ 49016 },{ name = "Unholy Frenzy", duration = 30, color = colors.LRED })
+AddSpell({ 48707 },{ name = "Anti-Magic Shell", duration = 5, short = "Shell", color = colors.LGREEN })
+
 end
 
 if class == "MAGE" then
--- BUFFS
-AddSpell({ 12472 },{ name = "Icy Veins",duration = 20 })
-AddSpell({ 12042 },{ name = "Arcane Power",duration = 15, short = "APwr" })
-AddSpell({ 44401 },{ name = "Missile Barrage",duration = 15, color = colors.LRED, short = "Missiles!" })
-AddSpell({ 48108 },{ name = "Hot Streak",duration = 10, color = colors.LRED, short = "Pyro!" })
-AddSpell({ 57761 },{ name = "Brain Freeze",duration = 15, color = colors.LRED, short = "Fireball!" })
-AddSpell({ 11426 },{ name = "Ice Barrier",duration = 60, color = colors.LGREEN })
+--ARCANE
+AddSpell({ 80353 },{ name = "Time Warp", shine = true, target = "player", duration = 40, color = colors.RED })
+AddSpell({ 118,61305,28271,28272,61721,61780 },{ name = "Polymorph", duration = 50, color = colors.LGREEN, pvpduration = 10, short = "Poly" })
+AddSpell({ 12042 },{ name = "Arcane Power",duration = 15, short = "APwr", color = colors.PINK })
 --~ AddSpell({ 66 },{ name = "Fading",duration = 3 - NugRunning.TalentInfo(31574) })
 AddSpell({ 32612 },{ name = "Invisibility",duration = 20 })
-AddSpell({ 36032 },{ name = "Arcane Blast",duration = 10, color = colors.RED })
+AddSpell({ 12043 },{ name = "Presence of Mind", shine = true, timeless = true, duration = 0.1, color = colors.CURSE, short = "PoM" })
+AddSpell({ 36032 },{ name = "Arcane Blast",duration = 10, color = colors.CURSE })
+AddCooldown( 44425 ,{ name = "Arcane Barrage", color = colors.RED })
+AddSpell({ 79683 },{ name = "Arcane Missiles!", shine = true, duration = 20, color = colors.WOO })
 --~ AddSpell({ 55342 },{ name = "Mirror Image",duration = 30 })
-AddSpell({ 45438 },{ name = "Ice Block",duration = 10 })
-AddSpell({ 12536 },{ name = "Clearcast",duration = 15, color = colors.PURPLE })
---~ AddSpell({ 54741 },{ name = "Firestarter",duration = 10 })
--- DEBUFFS
-AddSpell({ 22959 },{ name = "Improved Scorch",duration = 30, recast_mark = 2.5, color = colors.RED, short = "Scorch" })
-AddSpell({ 44457 },{ name = "Living Bomb",duration = 12, color = colors.ORANGE, short = "Bomb" })
+--~ AddSpell({ 44413 },{ name = "Incanter's Absorption",duration = 10, color = colors.LRED, short = "Absorb" })
+
+AddSpell({ 12536 },{ name = "Clearcast",duration = 15, color = colors.BLACK })
 AddSpell({ 31589 },{ name = "Slow", duration = 15, pvpduration = 10 })
-AddSpell({ 122 },{ name = "Frost Nova",duration = 8, short = "FrNova", color = colors.FROZEN, multiTarget = true })
-AddSpell({ 12494 },{ name = "Frostbite",duration = 5, color = colors.FROZEN })
-AddSpell({ 33395 },{ name = "Freeze",duration = 8, color = colors.FROZEN })
---~ AddSpell({ 12579 },{ name = "Winter's Chill",duration = 15, short = "WChill", maxtimers = 0 }) -- ignored if applied on nontargeted units
-AddSpell({ 44544 },{ name = "Fingers of Frost",duration = 15, color = colors.FROZEN, short = "FoF" })
-AddSpell({ 55080 },{ name = "Shattered Barrier",duration = 8, color = colors.FROZEN, short = "Shattered" })
-AddSpell({ 44572 },{ name = "Deep Freeze",duration = 5 })
 AddSpell({ 18469 },{ name = "Silenced",duration = 2, color = colors.PINK }) -- imp CS
 AddSpell({ 55021 },{ name = "Silenced",duration = 4, color = colors.PINK }) -- imp CS
----
-
-AddSpell({ 118,61305,28271,28272,61721,61780 },{ name = "Polymorph", duration = 50, color = colors.LGREEN, pvpduration = 10, short = "Poly" })
---AOE
-AddSpell({ 120 },{ name = "Cone of Cold", duration = 8, color = colors.CHILL, short = "CoC", multiTarget = true })
-AddSpell({ 2120 },{ name = "Flamestrike", duration = 8, multiTarget = true })
-AddSpell({ 11113 },{ name = "Blast Wave", color = colors.CHILL, duration = 6, multiTarget = true })
+--FIRE
+AddSpell({ 22959 },{ name = "Critical Mass", shinerefresh = true, duration = 30, recast_mark = 2.5, color = colors.CURSE, short = "Scorch" })
+AddSpell({ 64343 },{ name = "Impact", shine = true, duration = 10, color = LRED })
+AddSpell({ 44457 },{ name = "Living Bomb",duration = 12, target = "target", color = colors.PURPLE, short = "Bomb" })
+AddSpell({ 48108 },{ name = "Hot Streak",duration = 10, color = colors.LRED, short = "Pyro!" })
+AddSpell({ 11113 },{ name = "Blast Wave", color = colors.CHILL, duration = 3, multiTarget = true })
 AddSpell({ 31661 },{ name = "Dragon's Breath", duration = 5, color = colors.ORANGE, short = "Breath", multiTarget = true })
+AddSpell({ 2120 },{ name = "Flamestrike", duration = 8, multiTarget = true })
+--AddCooldown( 2136, { name = "Fire Blast", resetable = true, color = colors.LRED})
 
---~ AddCooldown( 2136, { name = "Fire Blast", color = colors.LRED})
+--FROST
+AddSpell({ 12472 },{ name = "Icy Veins",duration = 20 })
+AddSpell({ 82691 },{ name = "Ring of Frost", shine = true, color = colors.FROZEN, maxtimers = 3, duration = 12 })
+AddSpell({ 122 },{ name = "Frost Nova",duration = 8, short = "FrNova", color = colors.FROZEN, multiTarget = true })
+AddSpell({ 33395 },{ name = "Freeze",duration = 8, color = colors.FROZEN })
+AddSpell({ 44544 },{ name = "Fingers of Frost", shine = true, duration = 15, color = colors.FROZEN, short = "FoF" })
+AddSpell({ 57761 },{ name = "Brain Freeze", shine = true, duration = 15, color = colors.LRED, short = "Fireball!" })
+AddSpell({ 55080 },{ name = "Shattered Barrier",duration = 6, color = colors.FROZEN, short = "Shattered" })
+AddSpell({ 11426 },{ name = "Ice Barrier",duration = 60, color = colors.LGREEN })
+AddSpell({ 45438 },{ name = "Ice Block",duration = 10 })
+AddSpell({ 44572 },{ name = "Deep Freeze",duration = 5 })
+AddSpell({ 120 },{ name = "Cone of Cold", duration = 8, color = colors.CHILL, short = "CoC", multiTarget = true })
+AddSpell({ 83302 },{ name = "Improved Cone of Cold", duration = 4, color = colors.FROZEN, short = "ICoC", multiTarget = true })
 end
 
 if class == "PALADIN" then
+
+--AddSpell({ 53657 },{ name = "Judgements of the Pure", short = "JotP", duration = 100500, color = colors.LBLUE })
 AddSpell({ 84963 },{ name = "Inquisition",duration = 10, color = colors.PURPLE })  -- 10 * CP
 AddSpell({ 31884 },{ name = "Avenging Wrath",duration = 20, short = "AW" })
 AddSpell({ 498 },{ name = "Divine Protection",duration = 12, short = "DProt" })
@@ -392,12 +413,12 @@ AddCooldown( 26573 ,{ name = "Consecration", color = colors.CURSE })
 AddCooldown( 20473 ,{ name = "Holy Shock", color = colors.PINK })
 
 AddActivation( 879 ,{ name = "Exorcism", shine = true, color = colors.ORANGE, duration = 15 })
-AddActivation( 84963 ,{ name = "Hand of Light", shine = true, showid = 85256, short = "Light", color = colors.PINK, duration = 8 })
+--AddActivation( 84963 ,{ name = "Hand of Light", shine = true, showid = 85256, short = "Light", color = colors.PINK, duration = 8 })
+AddSpell({ 90174 },{ name = "Hand of Light", shine = true, showid = 85256, short = "Light", color = colors.PINK, duration = 8 })
 
 AddSpell({ 62124 },{ name = "Taunt", duration = 3 })
 AddActivation( 31935 ,{ name = "Reset", shine = true, timeless = true, duration = 0.1, color = colors.BLACK })
 AddCooldown( 31935 ,{ name = "Avenger's Shield", resetable = true, duration = 15, short = "AShield", color = colors.BLACK })
-
 end
 
 if class == "DRUID" then
@@ -450,10 +471,16 @@ AddSpell({ 16870 },{ name = "Clearcasting",  duration = 15 })
 end
 
 if class == "HUNTER" then
+AddSpell({ 51755 },{ name = "Camouflage", duration = 60, target = "player", color = colors.CURSE })
+AddSpell({ 19263 },{ name = "Deterrence", duration = 5, color = colors.LBLUE })
+
+AddSpell({ 19615 },{ name = "Frenzy", duration = 10, color = colors.CURSE })
+AddSpell({ 82654 },{ name = "Widow Venom", duration = 30, color = { 0.1, 0.75, 0.1} })
+
 AddSpell({ 56453 },{ name = "Lock and Load", duration = 12, color = colors.LRED })
 AddSpell({ 19574 },{ name = "Bestial Wrath", duration = 18, color = colors.LRED })
 
-AddSpell({ 136 },{ name = "Mend Pet", duration = 15, color = colors.LGREEN })
+AddSpell({ 136 },{ name = "Mend Pet", duration = 10, color = colors.LGREEN })
 
 AddSpell({ 2974 },{ name = "Wing Clip", duration = 10, color = { 192/255, 77/255, 48/255} })
 AddSpell({ 19306 },{ name = "Counterattack", duration = 5, color = { 192/255, 77/255, 48/255} })
@@ -464,13 +491,16 @@ AddSpell({ 5116 },{ name = "Concussive Shot", duration = 4, color = colors.CHILL
 AddSpell({ 34490 },{ name = "Silencing Shot", duration = 3, color = colors.PINK, short = "Silence" })
 
 AddSpell({ 24394 },{ name = "Intimidation", duration = 3, color = colors.RED })
-AddSpell({ 19386 },{ name = "Wyvern Sting", duration = 8, short = "Wyvern",color = colors.RED })
+AddSpell({ 19386 },{ name = "Wyvern Sting", duration = 30, pvpduration = 10, short = "Wyvern",color = colors.RED })
 
 
 AddSpell({ 3355 },{ name = "Freezing Trap", duration = 10, pvpduration = 10, color = colors.FROZEN, init = function(self)self.duration = 20 * (1+Talent(19376)*0.1) end })
 
 AddSpell({ 1513 },{ name = "Scare Beast", duration = 20, pvpduration = 10, color = colors.CURSE })
 
+AddSpell({ 3045 },{ name = "Rapid Fire", duration = 15, color = colors.CURSE })
+
+AddCooldown( 83381 ,{ name = "Kill Command", color = colors.LRED })
 AddCooldown( 53209 ,{ name = "Chimera Shot", color = colors.RED })
 AddCooldown( 53301 ,{ name = "Explosive Shot", color = colors.RED })
 AddCooldown( 3674 ,{ name = "Black Arrow", color = colors.CURSE })
@@ -478,6 +508,7 @@ end
 
 if class == "SHAMAN" then
 --~ AddSpell({ 8042,8044,8045,8046,10412,10413,10414,25454,49230,49231 },{ name = "Earth Shock", duration = 8, color = colors.ORANGE, short = "ErS" })
+-- NOT UPDATED SINCE WOTLK
 AddSpell({ 8056 },{ name = "Frost Shock", duration = 8, color = colors.CHILL, short = "FrS" })
 AddSpell({ 8050 },{ name = "Flame Shock", duration = 18, color = colors.RED, short = "FlS" })
 
