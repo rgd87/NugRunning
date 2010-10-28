@@ -34,8 +34,9 @@ local dismon_onevent = function(self, event, unit)
     for _, spell in ipairs(infect) do
         local _, _, _, _, _, duration, expirationTime = UnitAura("target",spell.name, nil,"HARMFUL|PLAYER")
         if duration then
+            if spell.timer and ( spell.timer.spellID ~= spell.id or not spell.timer:IsVisible() ) then spell.timer = nil end
             if not spell.timer then
-                spell.timer = spell.timer or NugRunning:ActivateTimer(UnitGUID("player"), UnitGUID("target"), UnitName("target"), nil, spell.id, spell.name, spell.opts, "DEBUFF")
+                spell.timer = NugRunning:ActivateTimer(UnitGUID("player"), UnitGUID("target"), UnitName("target"), nil, spell.id, spell.name, spell.opts, "DEBUFF")
             end
             if not spell.timer then return end
             spell.timer.dstGUID = UnitGUID("target")
@@ -45,7 +46,7 @@ local dismon_onevent = function(self, event, unit)
             spell.timer:SetAlpha(1)
 --~             NugRunning:ArrangeTimers()
         else
-            if spell.timer then
+            if spell.timer and spell.timer.id == spell.id then
             spell.timer.active = false
             spell.timer:Hide()
             spell.timer = nil

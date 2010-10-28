@@ -311,10 +311,9 @@ AddActivation( 34428, { name = "Victory Rush", color = colors.PURPLE, duration =
 end
 
 if class == "DEATHKNIGHT" then
-AddSpell({ 55095 },{ name = "Frost Fever", color = colors.CHILL, duration = 15, init = function(self)self.duration = 15 + Talent(49036)*3 end })
-AddSpell({ 55078 },{ name = "Blood Plague", color = colors.PURPLE, duration = 15, init = function(self)self.duration = 15 + Talent(49036)*3 end })
+AddSpell({ 55095 },{ name = "Frost Fever", color = colors.CHILL, duration = 21, init = function(self)self.duration = 21 + Talent(49036)*4 end })
+AddSpell({ 55078 },{ name = "Blood Plague", color = colors.PURPLE, duration = 21, init = function(self)self.duration = 21 + Talent(49036)*4 end })
 
---AddSpell({ 49194 },{ name = "Unholy Blight", color = colors.TEAL, duration = 20, init = function(self)self.duration = 20 + Glyph(63332)*10 end })
 --BLOOD
 AddSpell({ 81130 },{ name = "Scarlet Fever", duration = 30, color = colors.LRED })
 AddSpell({ 73975 },{ name = "Necrotic Strike", duration = 30, color = colors.WOO })
