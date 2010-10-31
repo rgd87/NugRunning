@@ -113,6 +113,8 @@ local TimerOnSettingsChanged = function (self)
     self:SetHeight(height)
     self.icon:GetParent():SetWidth(height)
     self.icon:GetParent():SetHeight(height)
+    self.shine:GetParent():SetWidth(height*1.8)
+    self.shine:GetParent():SetHeight(height*1.8)
     self.bar:SetWidth(width-height-1)
     self.bar:SetHeight(height)
 end

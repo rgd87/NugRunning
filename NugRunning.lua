@@ -34,6 +34,7 @@ local UnitAura = UnitAura
 
 NugRunning.active = active
 NugRunning.free = free
+NugRunning.timers = alltimers
 
 NugRunning:RegisterEvent("PLAYER_LOGIN")
 function NugRunning.PLAYER_LOGIN(self,event,arg1)
@@ -213,6 +214,7 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
     timer.timerType = timerType
     timer.icon:SetTexture(select(3,GetSpellInfo(spellID)))
     timer.opts = opts
+    timer.priority = opts.priority
     local now = GetTime()
     if timer.SetTime then timer:SetTime(now, now + time) end
     if timer.SetName then timer:SetName() end
@@ -378,6 +380,12 @@ function NugRunning.SetupArrange(self)
 end
 local playerTimers = {}
 local targetTimers = {}
+local sortfunc = function(a,b)
+--~     if a.priority and not b.priority then return false end
+--~     if not a.priority and b.priority then return true end
+--~     if a.priority and b.priority then return (a.priority < b.priority) end
+    return (a.endTime > b.endTime)
+end
 function NugRunning.ArrangeTimers(self)
     while next(playerTimers) do table.remove(playerTimers) end
     while next(targetTimers) do table.remove(targetTimers) end
@@ -404,10 +412,10 @@ function NugRunning.ArrangeTimers(self)
     end
     
     --omg this all is so lame
-    table.sort(playerTimers,function(a,b) return (a.endTime > b.endTime) end)
-    table.sort(targetTimers,function(a,b) return (a.endTime > b.endTime) end)
+    table.sort(playerTimers,sortfunc)
+    table.sort(targetTimers,sortfunc)
     for group,tbl in pairs(sorted) do
-    table.sort(tbl,function(a,b) return (a.endTime > b.endTime) end)
+    table.sort(tbl,sortfunc)
     end
 
     local prev

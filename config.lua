@@ -4,7 +4,6 @@ local AddCooldown = helpers.AddCooldown
 local AddActivation = helpers.AddActivation
 local Talent = helpers.Talent
 local Glyph = helpers.Glyph
-
 local _,class = UnitClass("player")
 
 --[[
@@ -14,13 +13,12 @@ GUIDE:
                        only if spell is applied to something out of these unit ids then this value is used.
         
             [optional]
-            name     - text on the progress bar, if omitted localized spell name will display.
+            name     - text on the progress bar
             color    - RGB of bar color for spell
             short    - short name for spell. works if short text is enabled
             pvpduration - same as duration, but for enemy players 
             recast_mark - creates a mark that will shine when spell should be recasted. For example 3.5 for haunt is roughly travel time at 30yds + cast 
-            multiTarget - true for aoe spells
-            textfunc - called on creation, setting text on progress bar. Example: function(spellName, dstName) return dstName end
+            multiTarget - for aoe spells
             timeless - progress bar is empty and won't disappear until game event occured and duration serves for bar sorting
             shine    - shine animation when applied
             shinerefresh - when refreshed
@@ -34,6 +32,7 @@ local colors = {
     PINK = { 1, 0.3, 0.6 },
     TEAL = { 0.32, 0.52, 0.82 },
     ORANGE = { 1, 124/255, 33/255 },
+    FIRE = {1,80/255,0},
     LBLUE = {149/255, 121/255, 214/255},
     LGREEN = { 0.63, 0.8, 0.35 },
     PURPLE = { 187/255, 75/255, 128/255 },
@@ -42,7 +41,7 @@ local colors = {
     BLACK = {0.4,0.4,0.4},
     WOO = {151/255, 86/255, 168/255},
 }
-
+NugRunningConfig.colors = colors
 
 
 local useTrinkets = true
@@ -137,7 +136,7 @@ AddSpell( 9484 ,{ name = "Shackle Undead",duration = 50, pvpduration = 10, short
 AddSpell( 15487 ,{ name = "Silence",duration = 5, color = colors.PINK })
 --AddSpell( 15286 ,{ name = "Vampiric Embrace",duration = 300, color = colors.CURSE, short = "VampEmbrace" })
 AddSpell( 8122 ,{ name = "Psychic Scream",duration = 8, multiTarget = true })
-AddSpell( 15407, { name = "Mind Flay",  color = colors.CURSE, duration = 3 })
+--AddSpell( 15407, { name = "Mind Flay",  color = colors.CURSE, duration = 3 })
 
 AddCooldown( 8092, { name = "Mind Blast",  color = colors.CURSE })
 AddCooldown( 32379, { name = "Shadow Word: Death", short = "SWD",  color = colors.RED })
@@ -291,7 +290,7 @@ AddSpell( 12042 ,{ name = "Arcane Power",duration = 15, short = "APwr", color = 
 --~ AddSpell( 66 ,{ name = "Fading",duration = 3 - NugRunning.TalentInfo(31574) })
 AddSpell( 32612 ,{ name = "Invisibility",duration = 20 })
 AddSpell( 12043 ,{ name = "Presence of Mind", shine = true, timeless = true, duration = 0.1, color = colors.CURSE, short = "PoM" })
-AddSpell( 36032 ,{ name = "Arcane Blast",duration = 10, color = colors.CURSE })
+AddSpell( 36032 ,{ name = "Arcane Blast",duration = 6, color = colors.CURSE })
 AddCooldown( 44425 ,{ name = "Arcane Barrage", color = colors.RED })
 AddSpell( 79683 ,{ name = "Arcane Missiles!", shine = true, duration = 20, color = colors.WOO })
 --~ AddSpell( 55342 ,{ name = "Mirror Image",duration = 30 })
