@@ -140,7 +140,7 @@ AddSpell( 8122 ,{ name = "Psychic Scream",duration = 8, multiTarget = true })
 AddSpell( 15407, { name = "Mind Flay",  color = colors.CURSE, duration = 3 })
 
 AddCooldown( 8092, { name = "Mind Blast",  color = colors.CURSE })
-AddCooldown( 32379, { name = "Shadow Word: Death", short = "SWD",  color = colors.LRED })
+AddCooldown( 32379, { name = "Shadow Word: Death", short = "SWD",  color = colors.RED })
 
 AddSpell( 81781 ,{ name = "Power Word: Barrier", short = "PW: Barrier", duration = 25, color = {1,0.7,0.5} }) -- duration actually used here, invisible aura applied
 
