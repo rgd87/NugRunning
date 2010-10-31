@@ -2,8 +2,12 @@
 ## Title: NugRunning
 ## Notes: Spelltimers
 ## Author: d87
-## SavedVariables: NugRunningDB
+## SavedVariablesPerCharacter: NRunDB_Char
+## SavedVariables: NRunDB_Global
+helpers.lua
 config.lua
 NugRunning.lua
+frame.lua
 deathknight.lua
+drainsoul.lua
 totems.lua
