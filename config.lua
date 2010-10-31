@@ -155,7 +155,13 @@ AddSpell( 81209 ,{ name = "Chakra: Smite", short = "Smite", color = colors.CURSE
 AddSpell( 88682 ,{ name = "Holy Word: Aspire", color = {1,0.7,0.5}, short = "HW: Aspire", duration = 18 })
 AddSpell( 88625 ,{ name = "Holy Word: Chastise", color = colors.LRED, short = "HW: Chastise", duration = 18 })
 
-AddSpell( 81661 ,{ name = "Evangelism",duration = 15, color = colors.ORANGE })
+AddSpell( 81661 ,{ name = "Evangelism",duration = 15, color = colors.ORANGE, stackcolor = {
+                                [1] = {0.7,0,0},
+                                [2] = {1,0.6,0.2},
+                                [3] = {1,1,0.4},
+                                [4] = {0.8,1,0.5},
+                                [5] = {0.7,1,0.2},
+                            } })
 --AddSpell( 81700 ,{ name = "Archangel",duration = 18, color = colors.CURSE })
 
 --AddSpell( 63731 ,{ name = "Serendipity",duration = 20, color = {0.4,0.4,0.9} })
@@ -407,7 +413,11 @@ AddSpell( 22812 ,{ name = "Barkskin",duration = 12 })
 AddSpell( 17116 ,{ name = "Nature's Swiftness", timeless = true, duration = 0.1, color = colors.TEAL, short = "NS" })
 AddSpell( 774 ,{ name = "Rejuvenation",duration = 12, color = { 1, 0.2, 1} })
 AddSpell( 8936 ,{ name = "Regrowth",duration = 6, color = { 198/255, 233/255, 80/255} })
-AddSpell( 33763 ,{ name = "Lifebloom", shinerefresh = true, duration = 10, init = function(self)self.duration = 7 + Talent(57865)*2 end })
+AddSpell( 33763 ,{ name = "Lifebloom", shinerefresh = true, duration = 10, init = function(self)self.duration = 7 + Talent(57865)*2 end, stackcolor = {
+                                                                            [1] = { 0, 0.8, 0},
+                                                                            [2] = { 0.2, 1, 0.2},
+                                                                            [3] = { 0.5, 1, 0.5},
+                                                                        }})
 AddSpell( 48438 ,{ name = "Wild Growth", duration = 7, multiTarget = true, color = colors.LGREEN })
 AddSpell( 29166 ,{ name = "Innervate",duration = 10 })
 AddSpell( 16870 ,{ name = "Clearcasting",  duration = 15 })

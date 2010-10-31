@@ -218,7 +218,7 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
     local now = GetTime()
     if timer.SetTime then timer:SetTime(now, now + time) end
     if timer.SetName then timer:SetName() end
-    if timer.SetCount then timer:SetCount(0) end
+    if timer.SetCount then timer:SetCount(1) end
     
     if not opts.color then
     if timerType == "DEBUFF" then opts.color = { 0.8, 0.1, 0.7}

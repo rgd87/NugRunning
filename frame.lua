@@ -84,6 +84,9 @@ local TimerSetTime = function(self,s,e)
 end
 local StackTextUpdate = function(self,amount)
     if not amount then return end
+    if self.opts.stackcolor then
+        self:SetColor(unpack(self.opts.stackcolor[amount]))
+    end
     self.stacktext:SetText(amount)
     if amount > 1 then self.stacktext:Show()
     else self.stacktext:Hide() end
