@@ -589,6 +589,7 @@ function NugRunning.SlashCmd(msg)
         NRunDB.width = p["width"] or NRunDB.width
         NRunDB.height = p["height"] or NRunDB.height
         NRunDB.growth = p["growth"] or NRunDB.growth
+        --NRunDB.fontsize = p["fontsize"] or NRunDB.fonsize
         NRunDB.nonTargetOpacity = p["nontargetopacity"] or NRunDB.nonTargetOpacity
         for i,timer in ipairs(alltimers) do
             timer:ClearAllPoints()

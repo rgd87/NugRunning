@@ -120,6 +120,10 @@ local TimerOnSettingsChanged = function (self)
     self.shine:GetParent():SetHeight(height*1.8)
     self.bar:SetWidth(width-height-1)
     self.bar:SetHeight(height)
+    self.timeText:SetFont("Fonts\\FRIZQT__.TTF",height*.4)
+    self.spellText:SetFont("Fonts\\FRIZQT__.TTF",height*.5)
+    self.spellText:SetWidth(f.bar:GetWidth()*0.8)
+    self.stacktext:SetFont("Fonts\\FRIZQT__.TTF",height*.5,"OUTLINE")
 end
 NugRunning.BarFrame = function(f)
     local width = NRunDB.width
@@ -147,16 +151,13 @@ NugRunning.BarFrame = function(f)
     ic:SetPoint("TOPLEFT",f,"TOPLEFT", 0, 0)
     ic:SetWidth(height)
     ic:SetHeight(height)
---~     ic:SetPoint("BOTTOMRIGHT",f,"BOTTOMLEFT", height, 0)
-    ic:SetFrameStrata("HIGH")
     local ict = ic:CreateTexture(nil,"ARTWORK",0)
     ict:SetTexCoord(.07, .93, .07, .93)
     ict:SetAllPoints(ic)
     f.icon = ict
     
     f.stacktext = ic:CreateFontString(nil, "OVERLAY");
-    f.stacktext:SetFont("Fonts\\FRIZQT__.TTF",10,"OUTLINE")
-    f.stacktext:SetHeight(ic:GetHeight())
+    f.stacktext:SetFont("Fonts\\FRIZQT__.TTF",height*.5,"OUTLINE")
     f.stacktext:SetJustifyH("RIGHT")
     f.stacktext:SetVertexColor(1,1,1)
     f.stacktext:SetPoint("RIGHT", ic, "RIGHT",1,-5)
@@ -174,18 +175,16 @@ NugRunning.BarFrame = function(f)
 	f.bar.bg:SetTexture("Interface\\AddOns\\NugRunning\\statusbar")
     
     f.timeText = f.bar:CreateFontString();
-    f.timeText:SetFont("Fonts\\FRIZQT__.TTF",8)
+    f.timeText:SetFont("Fonts\\FRIZQT__.TTF",height*.4)
     f.timeText:SetJustifyH("RIGHT")
     f.timeText:SetVertexColor(1,1,1)
-    f.timeText:SetPoint("TOPRIGHT", f.bar, "TOPRIGHT",-6,0)
-    f.timeText:SetPoint("BOTTOMLEFT", f.bar, "BOTTOMLEFT",0,0)
+    f.timeText:SetPoint("RIGHT", f.bar, "RIGHT",-6,0)
     
     f.spellText = f.bar:CreateFontString();
-    f.spellText:SetFont("Fonts\\FRIZQT__.TTF",height/2)
-    f.spellText:SetWidth(width/4*3 -12)
+    f.spellText:SetFont("Fonts\\FRIZQT__.TTF",height*.5)
+    f.spellText:SetWidth(f.bar:GetWidth()*0.8)
     f.spellText:SetHeight(height/2+1)
     f.spellText:SetJustifyH("CENTER")
-    f.spellText:SetVertexColor(1,1,1)
     f.spellText:SetPoint("LEFT", f.bar, "LEFT",6,0)
     f.spellText.SetName = SpellTextUpdate
     
