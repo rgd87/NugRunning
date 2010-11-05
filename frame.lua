@@ -230,14 +230,12 @@ NugRunning.BarFrame = function(f)
     f:SetScript("OnUpdate",TimerOnUpdate)
     
     f.mark = CreateMark(f)
---~     if true then
+--~     if nobars then
 --~         f.bar:SetWidth(0)
 --~         f.bar:SetAlpha(0)
 --~         f:SetWidth(height)
 --~         f.timeText = f:CreateFontString(nil, "OVERLAY");
---~         f.timeText:SetFont("Fonts\\FRIZQT__.TTF",19) --font size here
---~         f.timeText:SetWidth(height*2)
---~         f.timeText:SetHeight(height)
+--~         f.timeText:SetFont("Fonts\\FRIZQT__.TTF",height*.7) --font size here
 --~         f.timeText:SetJustifyH("LEFT")
 --~         f.timeText:SetVertexColor(1,1,1)
 --~         f.timeText:SetPoint("LEFT", f.icon, "RIGHT",6,0)

@@ -460,19 +460,23 @@ AddCooldown( 3674 ,{ name = "Black Arrow", color = colors.CURSE })
 end
 
 if class == "SHAMAN" then
---~ AddSpell({ 8042,8044,8045,8046,10412,10413,10414,25454,49230,49231 },{ name = "Earth Shock", duration = 8, color = colors.ORANGE, short = "ErS" })
--- NOT UPDATED SINCE WOTLK
 AddSpell( 8056 ,{ name = "Frost Shock", duration = 8, color = colors.CHILL, short = "FrS" })
-AddSpell( 8050 ,{ name = "Flame Shock", duration = 18, color = colors.RED, short = "FlS" })
 
+AddSpell( 16188 ,{ name = "Nature's Swiftness", timeless = true, duration = 0.1, color = colors.TEAL, short = "NS" })
+AddSpell( 61295 ,{ name = "Riptide", duration = 15, color = colors.FROZEN })
+AddSpell( 76780 ,{ name = "Bind Elemental", duration = 50, pvpduration = 10, color = colors.PINK })
+AddSpell( 51514 ,{ name = "Hex", duration = 50, pvpduration = 10, color = colors.CURSE })
+AddSpell( 79206 ,{ name = "Spiritwalker's Grace", duration = 10, color = colors.LGREEN })
 
-AddSpell( 53817 ,{ name = "Maelstrom Weapon", duration = 12, color = colors.PURPLE, short = "Maelstrom" })
-
-AddCooldown( 17364 ,{ name = "Stormstrike", color = colors.CURSE, short = "SS" })
-AddCooldown( 8042 ,{ name = "Shock", color = colors.LRED })
+AddSpell( 8050 ,{ name = "Flame Shock", duration = 18, color = colors.PURPLE, short = "FlS" })
+AddSpell( 16166 ,{ name = "Elemental Mastery", duration = 30, color = colors.CURSE })
 AddCooldown( 8056 ,{ name = "Shock", color = colors.LRED })
-AddCooldown( 8050 ,{ name = "Shock", color = colors.LRED })
+AddCooldown( 51505 ,{ name = "Lava Burst", color = colors.RED, resetable = true })
+
+AddSpell( 30823 ,{ name = "Shamanistic Rage", duration = 15, color = colors.BLACK })
 AddCooldown( 60103 ,{ name = "Lava Lash", color = colors.RED })
-AddCooldown( 51505 ,{ name = "Lava Burst", color = colors.RED })
+AddSpell( 53817 ,{ name = "Maelstrom Weapon", duration = 12, color = colors.PURPLE, short = "Maelstrom" })
+AddCooldown( 17364 ,{ name = "Stormstrike", color = colors.CURSE })
+AddCooldown( 73680 ,{ name = "Unleash Elements", color = colors.WOO, short = "Unleash" })
 
 end

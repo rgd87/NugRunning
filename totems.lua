@@ -1,114 +1,45 @@
-local MAX_TIMERS = NugRunning.MAX_TIMERS
-local timers = NugRunning.timers
+if select(2,UnitClass("player")) ~= "SHAMAN" then return end
+
+local active = NugRunning.active
+local free = NugRunning.free
 
 local totems = {}
-totems[1] = { name = "Fire", color = {0.8, 0, 0} }
-totems[2] = { name = "Earth", color = { 0.63, 0.8, 0.35 } }
-totems[3] = { name = "Water", color = {149/255, 121/255, 214/255}}
-totems[4] = { name = "Air", color = {1,1,1}}
+totems[1] = { name = "Fire", color = {1,80/255,0} }
+totems[2] = { name = "Earth", color = {74/255, 142/255, 42/255} }
+totems[3] = { name = "Water", color = { 65/255, 110/255, 1 } }
+totems[4] = { name = "Air", color = { 0.6, 0, 1 }}
 
-function NugRunning.InitTotems( self )
-
-function NugRunning.UpdateTotem( self, totemid, name, startTime, duration, icon )
-
-    local time
-    local opts = totems[totemid]
-    local dstGUID = UnitGUID("player")
-    local spellID = "totem"..totemid
-    local srcGUID = dstGUID
---~     if override then time = override end
---~     if not time then return end
-    
-    local timer
-    for i=1,MAX_TIMERS do
-        if timers[i].active and  timers[i].spellID == spellID then
-            timer = timers[i]
-        end
+hooksecurefunc(NugRunning,"PLAYER_LOGIN",function(self)
+    NugRunning:RegisterEvent("PLAYER_TOTEM_UPDATE")
+    for id, opts in ipairs(totems) do
+        opts.timer = next(free)
+        free[opts.timer] = nil
+        opts.timer.dontfree = true
+        opts.timer.opts = opts
     end
-    if not timer then
-        for i=1,MAX_TIMERS do
-            if not timers[i].active then
-                timer = timers[i]
-                break
-            end
-        end
-        if not timer then return end
-    end
-    
-    timer.active = true
-    timer.srcGUID = srcGUID
-    timer.dstGUID = dstGUID
-    timer.spellID = spellID
-    timer.spellName = spellName
-    timer.timerType = "TOTEM"
-    local tex = icon
-    timer.icon:SetTexture(tex)
-    timer.startTime = startTime
-    timer.endTime = timer.startTime + duration
-    
-    timer.refresh_time = opts.refresh_time
-    timer.mark:Update()
-    
-    timer.bar:SetMinMaxValues(timer.startTime,timer.endTime)
---~     timer.spellText:SetText(name)
-    timer.spellText:SetText("")
-    if opts.textfunc and type(opts.textfunc) == "function" then timer.spellText:SetText(opts.textfunc(spellName,dstName)) end
-    
-    timer.stacks = 0
-    timer.stacktext:Hide()
-    
-    local color = opts.color
-    timer.bar:SetStatusBarColor(color[1],color[2],color[3])
-    timer.bar.bg:SetVertexColor(color[1] * 0.5, color[2] * 0.5, color[3] * 0.5)
-    
---~     print("==activate==")
---~     print(timer.spellID)
---~     print(timer.spellName)
---~     print(timer.srcGUID)
---~     print(timer.dstGUID)
-    
+end)
+
+local UpdateTotem = function( id, opts, name, startTime, duration, icon )
+    local timer = opts.timer
+    timer:SetTime(startTime,startTime+duration)
+    opts.name = name
+    timer:SetName(name)
+    timer:SetColor(unpack(opts.color))
+    timer.icon:SetTexture(icon)
+    active[timer] = true
     timer:Show()
-    self:ArrangeTimers()
-    
 end
-
-
-
-function NugRunning.DeactivateTotem( self, totemid)
---~     local time
-    local opts = totems[totemid]
---~     local dstGUID = UnitGUID("player")
-    local spellID = "totem"..totemid
---~     local srcGUID = dstGUID
---~     if override then time = override end
---~     if not time then return end
-    
-    local timer
-    for i=1,MAX_TIMERS do
-        if timers[i].active and  timers[i].spellID == spellID then
-            timer = timers[i]
-        end
-    end
-    if not timer then return end
-    timer.active = false
-    timer:Hide()
-end
-
 
 function NugRunning.PLAYER_TOTEM_UPDATE (self, event) 
---~     for totemId=1,4 do
-    for totemId, opts in ipairs(totems) do
-        local haveTotem, name, startTime, duration, icon = GetTotemInfo(totemId)
+    for id, opts in ipairs(totems) do
+        local broken_haveTotem, name, startTime, duration, icon = GetTotemInfo(id)
+        local haveTotem = (GetTotemTimeLeft(id) > 0)
         if haveTotem then
-            self:UpdateTotem(totemId, name, startTime, duration, icon)
+            UpdateTotem(id, opts, name, startTime, duration, icon)
         else
-            self:DeactivateTotem(totemId )
+            active[opts.timer] = nil
+            opts.timer:Hide()
         end
     end
-end
-
-
-NugRunning:RegisterEvent("PLAYER_TOTEM_UPDATE")
-
-
+    NugRunning:ArrangeTimers()
 end

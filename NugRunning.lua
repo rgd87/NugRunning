@@ -89,9 +89,6 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
     NugRunning:RegisterEvent("SPELL_ACTIVATION_OVERLAY_GLOW_SHOW")
     NugRunning:RegisterEvent("SPELL_ACTIVATION_OVERLAY_GLOW_HIDE")
         
---~     if select(2,UnitClass("player")) == "SHAMAN" then
---~         NugRunning:InitTotems()
---~     end
         
     NugRunning.anchor = NugRunning.CreateAnchor()
     local pos = NRunDB.anchor
