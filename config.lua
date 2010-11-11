@@ -147,11 +147,11 @@ AddSpell( 81781 ,{ name = "Power Word: Barrier", short = "PW: Barrier", duration
 --AddSpell( 87718 ,{ name = "Dark Evangelism",duration = 15, color = colors.CURSE })
 --AddSpell( 87153 ,{ name = "Dark Archangel",duration = 18, color = colors.CURSE })
 
+AddSpell( 88688 ,{ name = "Surge of Light", color = colors.LRED, duration = 10 })
 AddSpell( 14751 ,{ name = "Chakra", color = colors.CURSE, timeless = true, duration = 0.1 })
-AddSpell( 81208 ,{ name = "Chakra: Heal", short = "Heal", color = colors.CURSE, shine = true, shinerefresh = true, duration = 30 })
-AddSpell( 81207 ,{ name = "Chakra: Renew", short = "Renew", color = colors.CURSE, shine = true, duration = 30 })
-AddSpell( 81206 ,{ name = "Chakra: Prayer of Healing", color = colors.CURSE, short = "PoH", shine = true, duration = 30 })
-AddSpell( 81209 ,{ name = "Chakra: Smite", short = "Smite", color = colors.CURSE, shine = true, duration = 30 })
+AddSpell( 81208 ,{ name = "Chakra: Serenity", short = "Serenity", color = colors.WOO, shine = true, shinerefresh = true, duration = 30 })
+AddSpell( 81206 ,{ name = "Chakra: Sanctuary", color = colors.CURSE, short = "Sanctuary", shine = true, duration = 30 })
+AddSpell( 81209 ,{ name = "Chakra: Chastise", short = "Chastise", color = colors.RED, shine = true, duration = 30 })
 AddSpell( 88682 ,{ name = "Holy Word: Aspire", color = {1,0.7,0.5}, short = "HW: Aspire", duration = 18 })
 AddSpell( 88625 ,{ name = "Holy Word: Chastise", color = colors.LRED, short = "HW: Chastise", duration = 18 })
 
@@ -235,6 +235,7 @@ AddSpell( 58567 ,{ name = "Sunder Armor", short = "Sunder", anySource = true, co
 AddSpell( 1160 ,{ name = "Demoralizing Shout", anySource = true, short = "DemoShout", color = {0.3, 0.9, 0.3}, duration = 30, multiTarget = true })
 AddSpell( 6343 ,{ name = "Thunder Clap", anySource = true, color = {149/255, 121/255, 214/255}, duration = 30, multiTarget = true })
 --~ AddSpell( 56112 ,{ name = "Furious Attacks", duration = 10 })
+AddActivation( 5308, { name = "Execute", shine = true, timeless = true, color = colors.CURSE, duration = 0.1 })
 
 AddCooldown( 12294, { name = "Mortal Strike",  color = colors.CURSE })
 AddSpell( 52437 ,{ name = "Reset", shine = true, color = colors.BLACK, timeless = true, duration = 0.1 })
