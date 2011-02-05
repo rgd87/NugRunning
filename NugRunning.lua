@@ -307,13 +307,17 @@ function NugRunning.DeactivateTimer(self,srcGUID,dstGUID, spellID, spellName, op
     end
 end
 
+local function free_noghost(timer)
+    timer.OnUpdateCounter = 2.5
+    free[timer] = true
+end
 function NugRunning.DeactivateTimersOnDeath(self,dstGUID)
     for timer in pairs(active) do
         if NugRunningConfig[timer.spellID] then
         if not timer.dstGUID then -- clearing guid from multi target list just in case
             timer.targets[dstGUID] = nil
-            if not next(timer.targets) then free[timer] = true end
-        elseif timer.dstGUID == dstGUID then free[timer] = true end
+            if not next(timer.targets) then free_noghost(timer) end
+        elseif timer.dstGUID == dstGUID then free_noghost(timer) end
         end
     end
 end
@@ -375,7 +379,6 @@ function NugRunning.CreateTimer(self)
     NugRunning.BarFrame(f)
     
     f.BecomeGhost = function(self)
-        --self:SetScript("OnUpdate",nil)
         self.expiredGhost = nil
         self.isGhost = true
         self:SetColor(0.5,0,0)
