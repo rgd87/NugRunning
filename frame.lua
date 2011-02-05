@@ -76,6 +76,7 @@ local TimerOnUpdate = function(self,time)
         self.mark.shine:Play()
     end
 end
+NugRunning.TimerFunc = TimerOnUpdate
 local TimerSetTime = function(self,s,e)
     self.startTime = s
     self.endTime = e
@@ -227,7 +228,7 @@ NugRunning.BarFrame = function(f)
     
     f.animIn = aag
 
-    f:SetScript("OnUpdate",TimerOnUpdate)
+    f:SetScript("OnUpdate",TimerOnUpdate)    
     
     f.mark = CreateMark(f)
 --~     if nobars then

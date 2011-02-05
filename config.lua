@@ -63,15 +63,15 @@ if class == "WARLOCK" then
 --AddSpell( 70840 ,{ name = "Devious Minds",duration = 10, target = "player", color = colors.LRED }) -- t10 4pc proc
 AddSpell( 74434 ,{ name = "Soulburn",duration = 20, color = colors.CURSE })
 
-AddSpell( 348 ,{ name = "Immolate", recast_mark = 1.5, duration = 15, color = colors.RED })
+AddSpell( 348 ,{ name = "Immolate", recast_mark = 1.5, duration = 15, ghost = true, color = colors.RED })
 AddSpell( 34936 ,{ name = "Backlash",duration = 8, shine = true, color = colors.CURSE })
 AddSpell( 47283 ,{ name = "Soulfire!",duration = 8, shine = true, color = colors.LRED })
-AddSpell( 85383 ,{ name = "Imp Soul Fire",duration = 8, recast_mark = 3,short = "Haste", color = colors.BLACK })
+AddSpell( 85383 ,{ name = "Imp Soul Fire",duration = 8, ghost = true, priority = 4, recast_mark = 3,short = "SoulFire", color = colors.BLACK })
 AddSpell( 80240 ,{ name = "Bane of Havoc",duration = 300, color = colors.WOO, short = "Havoc" })
 AddSpell( 30283 ,{ name = "Shadowfury",duration = 3, multiTarget = true })
 AddSpell( 47960 ,{ name = "Shadowflame",duration = 6, multiTarget = true })
-AddCooldown( 50796, { name = "Chaos Bolt",  color = colors.LBLUE })
-AddCooldown( 17962, { name = "Conflagrate",  color = colors.LRED })
+AddCooldown( 50796, { name = "Chaos Bolt", ghost = true, priority = 3, color = colors.LBLUE })
+AddCooldown( 17962, { name = "Conflagrate", ghost = true, priority = 5, color = colors.LRED })
 
 AddSpell({ 47383,71162,71165 },{ name = "Molten Core",duration = 18, shine = true, color = colors.PURPLE })
 -- REMOVED_DOSE event is not fired for molten core, so it's stuck at 3
@@ -86,11 +86,11 @@ AddSpell( 79462 ,{ name = "Demon Soul: Voidwalker",duration = 15, short = "Misdi
 AddSpell( 86211 ,{ name = "Soul Swap",duration = 20, shine = true, color = colors.BLACK })
 AddSpell( 17941 ,{ name = "Nightfall",duration = 10, shine = true, color = colors.CURSE })
 AddSpell( 64371 ,{ name = "Eradication",duration = 10, color = colors.CURSE })
-AddSpell( 30108 ,{ name = "Unstable Affliction",duration = 15, recast_mark = 1.5, color = colors.RED, short = "UA" })
-AddSpell( 48181 ,{ name = "",duration = 12, recast_mark = 3, color = colors.TEAL }) --Haunt
-AddSpell( 172 ,{ name = "Corruption", color = colors.PINK, duration = 18 })
-AddSpell( 980 ,{ name = "Bane of Agony",duration = 24, color = colors.WOO, short = "Agony", init = function(self)self.duration = 24 + Glyph(56241)*4 end })
-AddSpell( 603 ,{ name = "Bane of Doom",duration = 60, color = colors.WOO, short = "Doom" })
+AddSpell( 30108 ,{ name = "Unstable Affliction", priority = 10, duration = 15, ghost = true, recast_mark = 1.5, color = colors.RED, short = "UA" })
+AddSpell( 48181 ,{ name = "",duration = 12, priority = 8, ghost = true, recast_mark = 3, color = colors.TEAL }) --Haunt
+AddSpell( 172 ,{ name = "Corruption", priority = 9, ghost = true, color = colors.PINK, duration = 18 })
+AddSpell( 980 ,{ name = "Bane of Agony",duration = 24, ghost = true, priority = 6, color = colors.WOO, short = "Agony", init = function(self)self.duration = 24 + Glyph(56241)*4 end })
+AddSpell( 603 ,{ name = "Bane of Doom", ghost = true, duration = 60, color = colors.WOO, short = "Doom" })
 AddSpell( 1120 ,{ name = "Drain Soul",duration = 15, color = colors.LRED })
 AddSpell( 27243 ,{ name = "Seed of Corruption",duration = 15, color = colors.LRED, short = "SoC" })
 
@@ -134,6 +134,7 @@ AddSpell( 34914 ,{ name = "Vampiric Touch", recast_mark = 1.5, duration = 15, co
 AddSpell( 2944 ,{ name = "Devouring Plague",duration = 24, color = colors.WOO, short = "Plague", hasted = true })
 AddSpell( 9484 ,{ name = "Shackle Undead",duration = 50, pvpduration = 10, short = "Shackle" })
 AddSpell( 15487 ,{ name = "Silence",duration = 5, color = colors.PINK })
+AddSpell( 95799 ,{ name = "Empowered Shadow",recast_mark = 1.5,short = "Empowered", duration = 10, color = colors.BLACK })
 --AddSpell( 15286 ,{ name = "Vampiric Embrace",duration = 300, color = colors.CURSE, short = "VampEmbrace" })
 AddSpell( 8122 ,{ name = "Psychic Scream",duration = 8, multiTarget = true })
 --AddSpell( 15407, { name = "Mind Flay",  color = colors.CURSE, duration = 3 })
@@ -178,7 +179,7 @@ AddSpell( 31224 ,{ name = "Cloak of Shadows", color = colors.CURSE, duration = 5
 AddSpell( 14183 ,{ name = "Premeditation",duration = 20, color = colors.CURSE })                    
 AddSpell( 74002 ,{ name = "Combat Insight", shine = true, shinerefresh = true, duration = 6, color = colors.CURSE })
 AddSpell( 73651 ,{ name = "Recuperate", shinerefresh = true, color = colors.LGREEN ,duration = function() return (6 * NugRunning.cpWas) end })
-AddSpell( 5171 ,{ name = "Slice and Dice", shinerefresh = true,  short = "SnD", color = colors.PURPLE,  duration = 100500 })
+AddSpell( 5171 ,{ name = "Slice and Dice", shinerefresh = true,  short = "SnD", color = colors.PURPLE,  duration = function() return (6 + NugRunning.cpWas*3)*(1+Talent(14165)*0.25) end  })
     
 -- DEBUFFS
 AddSpell( 1833 ,{ name = "Cheap Shot", duration = 4, color = colors.LRED })

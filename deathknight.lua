@@ -15,7 +15,12 @@ if class  == "DEATHKNIGHT" then
     NugRunningConfig[BP.id] = nil
     NugRunningConfig[FF.id] = nil
     
-    infect = { FF, BP }
+    local SF = { id = 81130 }
+    SF.name = GetSpellInfo(SF.id)
+    SF.opts = NugRunningConfig[SF.id]
+    NugRunningConfig[SF.id] = nil
+    
+    infect = { FF, BP, SF }
 end
 if class  == "WARRIOR" then
     local rend = { id = 94009 }

@@ -15,6 +15,8 @@ setmetatable(active,{ __newindex = function(t,k,v)
     rawset(t,k,v)
 end})
 setmetatable(free,{ __newindex = function(t,k,v)
+    if k.opts and k.opts.ghost and not k.isGhost then return k:BecomeGhost() end
+    if k.isGhost and not k.expiredGhost then return end
     k:Hide()
     rawset(active,k,nil)
     rawset(t,k,v)
@@ -183,6 +185,7 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
     timer = next(free)
     if not timer then return end
     active[timer] = true
+    if timer.isGhost then timer:SetScript("OnUpdate",NugRunning.TimerFunc) end
 
     if opts.init and not opts.init_done then
         opts:init()
@@ -237,6 +240,15 @@ function NugRunning.RefreshTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID,
     local timer = gettimer(active,spellID,dstGUID,timerType)
     if not timer then
         return self:ActivateTimer(srcGUID, dstGUID or multiTargetGUID, dstName, dstFlags, spellID, spellName, opts, timerType)
+    end
+    if timer.isGhost then
+        timer:SetScript("OnUpdate",NugRunning.TimerFunc)
+        timer.isGhost = nil
+        if not opts.color then
+        if timerType == "DEBUFF" then opts.color = { 0.8, 0.1, 0.7}
+        else opts.color = { 1, 0.4, 0.2} end
+        end
+        timer:SetColor(unpack(opts.color))
     end
 
     if timerType == "COOLDOWN" then return end
@@ -348,10 +360,30 @@ end
 function NugRunning.PLAYER_TARGET_CHANGED(self)
     self:ArrangeTimers()
 end
+local GhostFunc = function(self,time)
+    self.OnUpdateCounter = (self.OnUpdateCounter or 0) + time
+    if self.OnUpdateCounter < 3 then return end
+    self:SetScript("OnUpdate",NugRunning.TimerFunc)
+    self.expiredGhost = true
+    free[self] = true
+    self.isGhost = nil
+    NugRunning:ArrangeTimers()
+end
 function NugRunning.CreateTimer(self)
     local f = CreateFrame("Frame",nil,UIParent)
     
     NugRunning.BarFrame(f)
+    
+    f.BecomeGhost = function(self)
+        --self:SetScript("OnUpdate",nil)
+        self.expiredGhost = nil
+        self.isGhost = true
+        self:SetColor(0.5,0,0)
+        self.timeText:SetText("")
+        --self:SetAlpha(0.8)
+        self.OnUpdateCounter = 0
+        self:SetScript("OnUpdate",GhostFunc)
+    end
     
     f.targets = {}
     f:Hide()
@@ -359,8 +391,6 @@ function NugRunning.CreateTimer(self)
     
     return f
 end
-
-
 
 local prevGUID
 local xOffset = 0
@@ -378,9 +408,9 @@ end
 local playerTimers = {}
 local targetTimers = {}
 local sortfunc = function(a,b)
---~     if a.priority and not b.priority then return false end
---~     if not a.priority and b.priority then return true end
---~     if a.priority and b.priority then return (a.priority < b.priority) end
+    if a.priority and not b.priority then return false end
+    if not a.priority and b.priority then return true end
+    if a.priority and b.priority then return (a.priority < b.priority) end
     return (a.endTime > b.endTime)
 end
 function NugRunning.ArrangeTimers(self)
@@ -408,7 +438,7 @@ function NugRunning.ArrangeTimers(self)
         end
     end
     
-    --omg this all is so lame
+    --everything here is stupdid
     table.sort(playerTimers,sortfunc)
     table.sort(targetTimers,sortfunc)
     for group,tbl in pairs(sorted) do
@@ -457,7 +487,6 @@ end
 
 
 
--- XYNTA
 function NugRunning.UNIT_COMBO_POINTS(self,event,unit)
     if unit ~= "player" then return end
     self.cpWas = self.cpNow or 0
