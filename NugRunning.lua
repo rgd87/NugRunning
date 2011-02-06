@@ -164,8 +164,10 @@ function NugRunning.SPELL_UPDATE_COOLDOWN(self,event)
                 opts.timer = self:ActivateTimer(UnitGUID("player"),UnitGUID("player"), UnitName("player"), nil, spellID, opts.localname, opts, "COOLDOWN", duration + startTime - GetTime())
             end
         elseif timer and (active[timer] and opts.resetable) then
-            free[timer] = true
-            opts.timer = nil
+            if not timer.isGhost then
+                free[timer] = true
+                opts.timer = nil
+            end
         end
     end
 end
@@ -242,7 +244,7 @@ function NugRunning.RefreshTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID,
         return self:ActivateTimer(srcGUID, dstGUID or multiTargetGUID, dstName, dstFlags, spellID, spellName, opts, timerType)
     end
 
-    if timerType == "COOLDOWN" and not timer.isGhost then return end
+    if timerType == "COOLDOWN" and not timer.isGhost then return timer end
     if timer.isGhost then
         timer:SetScript("OnUpdate",NugRunning.TimerFunc)
         timer.isGhost = nil
@@ -275,6 +277,7 @@ function NugRunning.RefreshTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID,
 
     if opts.shinerefresh and not timer.shine:IsPlaying() then timer.shine:Play() end
     self:ArrangeTimers()
+    return timer
 end
 
 function NugRunning.RemoveDose(self,srcGUID,dstGUID, spellID, spellName, timerType, amount)
@@ -385,6 +388,7 @@ function NugRunning.CreateTimer(self)
         self.isGhost = true
         self:SetColor(0.5,0,0)
         self.timeText:SetText("")
+        self.bar:SetValue(0)
         --self:SetAlpha(0.8)
         self.OnUpdateCounter = 0
         self:SetScript("OnUpdate",GhostFunc)

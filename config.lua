@@ -225,7 +225,7 @@ AddSpell( 85730 ,{ name = "Deadly Calm", duration = 10 })
 AddSpell( 12328 ,{ name = "Sweeping Strikes", color = colors.LRED, short = "Sweeping", duration = 10 })
 
 --~ AddSpell( 86346 ,{ name = "Colossus Smash", color = colors.BLACK, duration = 6 })
-AddSpell( 1715 ,{ name = "Hamstring", color = { 192/255, 77/255, 48/255}, duration = 15, pvpduration = 10 })
+AddSpell( 1715 ,{ name = "Hamstring", ghost = true, color = { 192/255, 77/255, 48/255}, duration = 15, pvpduration = 10 })
 AddSpell( 23694 ,{ name = "Imp Hamstring", shine = true, color = colors.LRED, duration = 5 })
 AddSpell( 85388 ,{ name = "Throwdown", color = colors.LRED, duration = 5 })
 AddSpell( 94009 ,{ name = "Rend", color = colors.RED, duration = 15 })   -- like DKs frost fever & plague
@@ -238,21 +238,21 @@ AddSpell( 6343 ,{ name = "Thunder Clap", anySource = true, color = {149/255, 121
 --~ AddSpell( 56112 ,{ name = "Furious Attacks", duration = 10 })
 AddActivation( 5308, { name = "Execute", shine = true, timeless = true, color = colors.CURSE, duration = 0.1 })
 
-AddCooldown( 12294, { name = "Mortal Strike",  color = colors.CURSE })
+AddCooldown( 12294, { name = "Mortal Strike", ghost = true,  color = colors.CURSE })
 AddSpell( 52437 ,{ name = "Reset", shine = true, color = colors.BLACK, timeless = true, duration = 0.1 })
 --AddActivation( 86346, { name = "Reset", shine = true,  color = colors.BLACK, duration = 0.1 })
-AddCooldown( 86346 ,{ name = "Colossus Smash", color = colors.BLACK, resetable = true, duration = 20 })
+AddCooldown( 86346 ,{ name = "Colossus Smash", ghost = true, color = colors.BLACK, resetable = true, duration = 20 })
 --AddActivation( 7384, { name = "Overpower", shine = true, color = colors.LBLUE, duration = 6})
 AddSpell( 60503 ,{ name = "", recast_mark = 4, color = colors.RED, duration = 9 }) -- Taste for blood
 --AddSpell( 90806 ,{ name = "Executioneer", color = colors.WOO, duration = 30 })
 
-AddCooldown( 23881, { name = "Bloodthirst",  color = colors.CURSE })
+AddCooldown( 23881, { name = "Bloodthirst", ghost = true,  color = colors.CURSE })
 AddSpell( 46916 ,{ name = "Bloodsurge", shine = true, color = colors.LRED, duration = 10 })
 AddActivation( 85288, { name = "Enraged", shine = true, timeless = true, showid = 14202,color = colors.RED, duration = 0.1 })
-AddCooldown( 85288, { name = "Raging Blow",  color = colors.WOO })
+AddCooldown( 85288, { name = "Raging Blow", ghost = true,  color = colors.WOO })
 AddCooldown( 1680, { name = "Whirlwind", color = colors.LBLUE })
 
-AddCooldown( 23922, { name = "Shield Slam",  color = colors.CURSE, resetable = true })
+AddCooldown( 23922, { name = "Shield Slam", ghost = true,  color = colors.CURSE, resetable = true })
 --AddActivation( 23922, { name = "Slam!", shine = true, timeless = true, color = colors.CURSE, duration = 0.1 })
 AddSpell( 50227 ,{ name = "Slam!", shine = true, timeless = true, color = colors.CURSE, duration = 0.1 })
 --AddCooldown( 6572, { name = "Revenge" })
