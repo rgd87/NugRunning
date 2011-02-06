@@ -160,7 +160,7 @@ function NugRunning.SPELL_UPDATE_COOLDOWN(self,event)
         local timer
         if opts.timer and (opts.timer.spellID == spellID) then timer = opts.timer end
         if duration and duration > 1.5 then
-            if not active[timer] then
+            if not active[timer] or timer.isGhost then
                 opts.timer = self:ActivateTimer(UnitGUID("player"),UnitGUID("player"), UnitName("player"), nil, spellID, opts.localname, opts, "COOLDOWN", duration + startTime - GetTime())
             end
         elseif timer and (active[timer] and opts.resetable) then
@@ -179,7 +179,7 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
     local timer = gettimer(active,spellID,dstGUID,timerType)
     if timer then
         if multiTargetGUID then timer.targets[multiTargetGUID] = true end
-        return self:RefreshTimer(srcGUID, dstGUID or multiTargetGUID, dstName, dstFlags, spellID, spellName, opts, timerType)
+        return self:RefreshTimer(srcGUID, dstGUID or multiTargetGUID, dstName, dstFlags, spellID, spellName, opts, timerType, override)
     end
     
     timer = next(free)
@@ -241,6 +241,8 @@ function NugRunning.RefreshTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID,
     if not timer then
         return self:ActivateTimer(srcGUID, dstGUID or multiTargetGUID, dstName, dstFlags, spellID, spellName, opts, timerType)
     end
+
+    if timerType == "COOLDOWN" and not timer.isGhost then return end
     if timer.isGhost then
         timer:SetScript("OnUpdate",NugRunning.TimerFunc)
         timer.isGhost = nil
@@ -250,8 +252,8 @@ function NugRunning.RefreshTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID,
         end
         timer:SetColor(unpack(opts.color))
     end
-
-    if timerType == "COOLDOWN" then return end
+    
+    
     local time
     if override then time = override
     else
