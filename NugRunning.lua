@@ -54,11 +54,11 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
     NRunDB.anchor.point = NRunDB.anchor.point or "CENTER"
     NRunDB.anchor.parent = NRunDB.anchor.parent or "UIParent"
     NRunDB.anchor.to = NRunDB.anchor.to or "CENTER"
-    NRunDB.anchor.x = NRunDB.anchor.x or 0
-    NRunDB.anchor.y = NRunDB.anchor.y or 0
+    NRunDB.anchor.x = NRunDB.anchor.x or -112.5
+    NRunDB.anchor.y = NRunDB.anchor.y or 268
     NRunDB.growth = NRunDB.growth or "up"
-    NRunDB.width = NRunDB.width or 150
-    NRunDB.height = NRunDB.height or 20
+    NRunDB.width = NRunDB.width or 207
+    NRunDB.height = 12
     NRunDB.nonTargetOpacity = NRunDB.nonTargetOpacity or 0.7
     NRunDB.cooldownsEnabled = (NRunDB.cooldownsEnabled  == nil and true) or NRunDB.cooldownsEnabled
     NRunDB.spellTextEnabled = (NRunDB.spellTextEnabled == nil and true) or NRunDB.spellTextEnabled
@@ -224,7 +224,7 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
     
     if not opts.color then
     if timerType == "DEBUFF" then opts.color = { 0.8, 0.1, 0.7}
-    else opts.color = { 1, 0.4, 0.2} end
+    else opts.color = { 0.8, 0.8, 0.8} end
     end
     timer:SetColor(unpack(opts.color))
     timer:Show()
@@ -250,7 +250,7 @@ function NugRunning.RefreshTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID,
         timer.isGhost = nil
         if not opts.color then
         if timerType == "DEBUFF" then opts.color = { 0.8, 0.1, 0.7}
-        else opts.color = { 1, 0.4, 0.2} end
+        else opts.color = { 0.8, 0.8, 0.8} end
         end
         timer:SetColor(unpack(opts.color))
     end

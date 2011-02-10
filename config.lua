@@ -50,6 +50,8 @@ local stackingTrinkets = false
 if useTrinkets then
     AddSpell({ 33702,33697,20572 },{ name = "Blood Fury", duration = 15 }) --Orc Racial
     AddSpell( 26297 ,{ name = "Berserking", duration = 10 }) --Troll Racial
+	AddSpell({ 54861 },{ name = "Nitro", duration = 5 })
+	AddSpell({ 91376 },{ name = "Mark", duration = 15 })
 end
 if procTrinkets then
     --AddSpell( 60437 ,{ name = "Grim Toll", duration = 10 })
@@ -335,16 +337,17 @@ end
 
 if class == "PALADIN" then
 
---AddSpell( 53657 ,{ name = "Judgements of the Pure", short = "JotP", duration = 100500, color = colors.LBLUE })
+AddSpell( 53657 ,{ name = "Judgements of the Pure", short = "JotP", duration = 100500, color = colors.LBLUE })
 AddSpell( 84963 ,{ name = "Inquisition",duration = 10, color = colors.PURPLE })  -- 10 * CP
 AddSpell( 31884 ,{ name = "Avenging Wrath",duration = 20, short = "AW" })
+AddSpell( 85696 ,{ name = "Zealotry",duration = 20 })
 AddSpell( 498 ,{ name = "Divine Protection",duration = 12, short = "DProt" })
 AddSpell( 642 ,{ name = "Divine Shield",duration = 12, short = "DShield" })
 AddSpell( 1022 ,{ name = "Hand of Protection",duration = 10, short = "HoProt" })
 AddSpell( 1044 ,{ name = "Hand of Freedom",duration = 6, short = "Freedom" })
 AddSpell( 10326 ,{ name = "Turn Evil",duration = 20, pvpduration = 10, color = colors.LGREEN })
 
-AddSpell( 53563 ,{ name = "Beacon of Light",duration = 60, short = "Beacon",color = colors.RED })
+AddSpell( 53563 ,{ name = "Beacon of Light",duration = 300, short = "Beacon",color = colors.RED })
 AddSpell( 54428 ,{ name = "Divine Plea",duration = 15, short = "Plea" })
 AddSpell( 31842 ,{ name = "Divine Favor",duration = 20, short = "Favor" })
 AddSpell( 20066 ,{ name = "Repentance",duration = 60, pvpduration = 10 })

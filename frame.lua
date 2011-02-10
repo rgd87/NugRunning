@@ -121,7 +121,7 @@ local TimerOnSettingsChanged = function (self)
     self.shine:GetParent():SetHeight(height*1.8)
     self.bar:SetWidth(width-height-1)
     self.bar:SetHeight(height)
-    self.timeText:SetFont("Fonts\\FRIZQT__.TTF",height*.4)
+    self.timeText:SetFont("Fonts\\FRIZQT__.TTF",height*.8)
     self.spellText:SetFont("Fonts\\FRIZQT__.TTF",height*.5)
     self.spellText:SetWidth(f.bar:GetWidth()*0.8)
     self.stacktext:SetFont("Fonts\\FRIZQT__.TTF",height*.5,"OUTLINE")
@@ -129,10 +129,13 @@ end
 NugRunning.BarFrame = function(f)
     local width = NRunDB.width
     local height = NRunDB.height
-    
+    local mult = 768/string.match(GetCVar("gxResolution"), "%d+x(%d+)")/GetCVar("uiScale")
+	local function scale(x) return mult*math.floor(x+.5) end
     local backdrop = {
-        bgFile = "Interface\\Tooltips\\UI-Tooltip-Background", tile = true, tileSize = 0,
-        insets = {left = -2, right = -2, top = -2, bottom = -2},
+        bgFile = "Interface\\Buttons\\WHITE8x8",
+		edgeFile = "Interface\\Buttons\\WHITE8x8",
+		tile = false, tileSize = 0, edgeSize = scale(1), 
+		insets = { left = -scale(1), right = -scale(1), top = -scale(1), bottom = -scale(1)}
     }
     
     f.SetColor = TimerSetColor
@@ -145,13 +148,14 @@ NugRunning.BarFrame = function(f)
     f:SetWidth(width)
     f:SetHeight(height)
     
-    f:SetBackdrop(backdrop)
-	f:SetBackdropColor(0, 0, 0, 0.7)
+	f:SetBackdrop(backdrop)
+	f:SetBackdropColor(.1,.1,.1,1)
+	f:SetBackdropBorderColor(.3,.3,.3,1)
     
     local ic = CreateFrame("Frame",nil,f)
-    ic:SetPoint("TOPLEFT",f,"TOPLEFT", 0, 0)
-    ic:SetWidth(height)
-    ic:SetHeight(height)
+    ic:SetPoint("TOPLEFT",f,"TOPLEFT", scale(1), -scale(1))
+    ic:SetWidth(scale(height))
+    ic:SetHeight(scale(height))
     local ict = ic:CreateTexture(nil,"ARTWORK",0)
     ict:SetTexCoord(.07, .93, .07, .93)
     ict:SetAllPoints(ic)
@@ -168,21 +172,22 @@ NugRunning.BarFrame = function(f)
     f.bar:SetStatusBarTexture("Interface\\AddOns\\NugRunning\\statusbar")
     f.bar:GetStatusBarTexture():SetDrawLayer("ARTWORK")
     f.bar:SetHeight(height)
-    f.bar:SetWidth(width - height - 1)
-    f.bar:SetPoint("TOPRIGHT",f,"TOPRIGHT",0,0)
+    f.bar:SetWidth(width - height -1)
+	f.bar:SetPoint("TOPLEFT",f,"TOPLEFT",height+1,0)
+	f.bar:SetPoint("BOTTOMRIGHT",f,"BOTTOMRIGHT",0,0)
     
     f.bar.bg = f.bar:CreateTexture(nil, "BORDER")
 	f.bar.bg:SetAllPoints(f.bar)
 	f.bar.bg:SetTexture("Interface\\AddOns\\NugRunning\\statusbar")
     
     f.timeText = f.bar:CreateFontString();
-    f.timeText:SetFont("Fonts\\FRIZQT__.TTF",height*.4)
+    f.timeText:SetFont("Fonts\\FRIZQT__.TTF",height*.8)
     f.timeText:SetJustifyH("RIGHT")
     f.timeText:SetVertexColor(1,1,1)
     f.timeText:SetPoint("RIGHT", f.bar, "RIGHT",-6,0)
     
     f.spellText = f.bar:CreateFontString();
-    f.spellText:SetFont("Fonts\\FRIZQT__.TTF",height*.5)
+    f.spellText:SetFont("Fonts\\FRIZQT__.TTF",11)
     f.spellText:SetWidth(f.bar:GetWidth()*0.8)
     f.spellText:SetHeight(height/2+1)
     f.spellText:SetJustifyH("CENTER")
