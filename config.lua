@@ -368,9 +368,13 @@ AddCooldown( 20473 ,{ name = "Holy Shock", color = colors.PINK })
 
 
 AddSpell( 59578 ,{ name = "Exorcism", shine = true, color = colors.ORANGE, duration = 15 })
+AddSpell( 54149 ,{ name = "Infusion of Light", shine = true, color = colors.LGREEN, duration = 15, short = "Infusion" })
+AddSpell( 85509 ,{ name = "Exorcism", shine = true, color = colors.ORANGE, duration = 20 })
 --AddActivation( 879 ,{ name = "Exorcism", shine = true, color = colors.ORANGE, duration = 15 })
 --AddActivation( 84963 ,{ name = "Hand of Light", shine = true, showid = 85256, short = "Light", color = colors.PINK, duration = 8 })
+--AddActivation ( 20473 ,{ name = "Daybreak", shine = true, showid = 20473, color = colors.PINK, duration = 12 })
 AddSpell( 90174 ,{ name = "Hand of Light", shine = true, showid = 85256, short = "Light", color = colors.PINK, duration = 8 })
+AddSpell ( 88819 ,{ name = "Daybreak", shine = true, showid = 20473, color = colors.PINK, duration = 12 })
 
 AddSpell( 62124 ,{ name = "Taunt", duration = 3 })
 AddSpell( 85416 ,{ name = "Reset", shine = true, timeless = true, duration = 0.1, color = colors.BLACK })
