@@ -422,7 +422,12 @@ local sortfunc = function(a,b)
     if a.priority and b.priority then return (a.priority < b.priority) end
     return (a.endTime > b.endTime)
 end
+local arrangePending
+local arrangeInProgress
 function NugRunning.ArrangeTimers(self)
+    if arrangeInProgress then arrangePending = true; return end
+    arrangePending = false
+    arrangeInProgress = true -- a little synchronization
     while next(playerTimers) do table.remove(playerTimers) end
     while next(targetTimers) do table.remove(targetTimers) end
 
@@ -487,6 +492,9 @@ function NugRunning.ArrangeTimers(self)
             end
             gap = 6
     end
+    
+    arrangeInProgress = false
+    if arrangePending then NugRunning:ArrangeTimers() end
 end
 
 
