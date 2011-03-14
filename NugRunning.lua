@@ -254,7 +254,7 @@ function NugRunning.RefreshTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID,
         end
         timer:SetColor(unpack(opts.color))
     end
-    
+
     
     local time
     if override then time = override
