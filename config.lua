@@ -238,10 +238,10 @@ AddSpell( 58567 ,{ name = "Sunder Armor", short = "Sunder", anySource = true, co
 AddSpell( 1160 ,{ name = "Demoralizing Shout", anySource = true, short = "DemoShout", color = {0.3, 0.9, 0.3}, duration = 30, multiTarget = true })
 AddSpell( 6343 ,{ name = "Thunder Clap", anySource = true, color = {149/255, 121/255, 214/255}, duration = 30, multiTarget = true })
 --~ AddSpell( 56112 ,{ name = "Furious Attacks", duration = 10 })
-AddActivation( 5308, { name = "Execute", shine = true, timeless = true, color = colors.CURSE, duration = 0.1 })
+--AddActivation( 5308, { name = "Execute", shine = true, timeless = true, color = colors.CURSE, duration = 0.1 })
 
 AddCooldown( 12294, { name = "Mortal Strike", ghost = true,  color = colors.CURSE })
-AddSpell( 52437 ,{ name = "Reset", shine = true, color = colors.BLACK, timeless = true, duration = 0.1 })
+--AddSpell( 52437 ,{ name = "Reset", shine = true, color = colors.BLACK, timeless = true, duration = 0.1 })
 --AddActivation( 86346, { name = "Reset", shine = true,  color = colors.BLACK, duration = 0.1 })
 AddCooldown( 86346 ,{ name = "Colossus Smash", ghost = true, color = colors.BLACK, resetable = true, duration = 20 })
 --AddActivation( 7384, { name = "Overpower", shine = true, color = colors.LBLUE, duration = 6})
@@ -256,9 +256,9 @@ AddCooldown( 1680, { name = "Whirlwind", color = colors.LBLUE })
 
 AddCooldown( 23922, { name = "Shield Slam", ghost = true,  color = colors.CURSE, resetable = true })
 --AddActivation( 23922, { name = "Slam!", shine = true, timeless = true, color = colors.CURSE, duration = 0.1 })
-AddSpell( 50227 ,{ name = "Slam!", shine = true, timeless = true, color = colors.CURSE, duration = 0.1 })
+--AddSpell( 50227 ,{ name = "Slam!", shine = true, timeless = true, color = colors.CURSE, duration = 0.1 })
 --AddCooldown( 6572, { name = "Revenge" })
-AddSpell( 32216, { name = "Victory Rush", color = colors.PURPLE, duration = 20})
+AddSpell( 32216, { name = "Victory Rush", color = colors.PINK, duration = 20})
 
 AddSpell( 20253, { name = "Intercept", duration = 3 })
 AddSpell( 7922, { name = "Charge", duration = 1, init = function(self)self.duration = 1 + Talent(64976)*2 end })
@@ -363,10 +363,10 @@ AddCooldown( 20925 ,{ name = "Holy Shield", color = colors.RED })
 AddCooldown( 24275 ,{ name = "HoW", color = colors.TEAL })
 AddCooldown( 20271 ,{ name = "Judgement", color = colors.LRED })
 AddCooldown( 26573 ,{ name = "Consecration", color = colors.CURSE })
-
 AddCooldown( 20473 ,{ name = "Holy Shock", color = colors.PINK })
 
 
+AddSpell( 94686 ,{ name = "Crusader", duration = 15 }
 AddSpell( 59578 ,{ name = "Exorcism", shine = true, color = colors.ORANGE, duration = 15 })
 AddSpell( 54149 ,{ name = "Infusion of Light", shine = true, color = colors.LGREEN, duration = 15, short = "Infusion" })
 AddSpell( 85509 ,{ name = "Exorcism", shine = true, color = colors.ORANGE, duration = 20 })

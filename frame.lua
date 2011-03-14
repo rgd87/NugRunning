@@ -123,7 +123,7 @@ local TimerOnSettingsChanged = function (self)
     self.bar:SetHeight(height)
     self.timeText:SetFont("Fonts\\FRIZQT__.TTF",height*.8)
     self.spellText:SetFont("Fonts\\FRIZQT__.TTF",height*.5)
-    self.spellText:SetWidth(f.bar:GetWidth()*0.8)
+    self.spellText:SetWidth(self.bar:GetWidth()*0.8)
     self.stacktext:SetFont("Fonts\\FRIZQT__.TTF",height*.5,"OUTLINE")
 end
 NugRunning.BarFrame = function(f)
