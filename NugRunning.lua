@@ -59,6 +59,7 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
     NRunDB.growth = NRunDB.growth or "up"
     NRunDB.width = NRunDB.width or 150
     NRunDB.height = NRunDB.height or 20
+    NRunDB.fontscale = NRunDB.fontscale or 1
     NRunDB.nonTargetOpacity = NRunDB.nonTargetOpacity or 0.7
     NRunDB.cooldownsEnabled = (NRunDB.cooldownsEnabled  == nil and true) or NRunDB.cooldownsEnabled
     NRunDB.spellTextEnabled = (NRunDB.spellTextEnabled == nil and true) or NRunDB.spellTextEnabled
@@ -632,6 +633,7 @@ function NugRunning.SlashCmd(msg)
         NRunDB.width = p["width"] or NRunDB.width
         NRunDB.height = p["height"] or NRunDB.height
         NRunDB.growth = p["growth"] or NRunDB.growth
+        NRunDB.fontscale = p["fontscale"] or NRunDB.fontscale
         --NRunDB.fontsize = p["fontsize"] or NRunDB.fonsize
         NRunDB.nonTargetOpacity = p["nontargetopacity"] or NRunDB.nonTargetOpacity
         for i,timer in ipairs(alltimers) do

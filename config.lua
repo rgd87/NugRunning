@@ -40,6 +40,7 @@ local colors = {
     CHILL = { 0.6, 0.6, 1},
     BLACK = {0.4,0.4,0.4},
     WOO = {151/255, 86/255, 168/255},
+    WOO2 = {80/255, 83/255, 150/255},
 }
 NugRunningConfig.colors = colors
 
@@ -220,7 +221,7 @@ end
 if class == "WARRIOR" then
 AddSpell( 6673 ,{ name = "Battle Shout", multiTarget = true, shout = true, color = colors.PURPLE, duration = 120,init = function(self)self.duration = (120 + Glyph(58385)*120) * (1+Talent(12321) * 0.25)  end })
 AddSpell( 469 ,{ name = "Commanding Shout", multiTarget = true, short = "CommShout", shout = true, color = colors.PURPLE, duration = 120, init = function(self)self.duration = (120 + Glyph(68164)*120) * (1+Talent(12321) * 0.25)  end })
-AddSpell( 2565 ,{ name = "Shield Block", duration = 10 })
+AddSpell( 2565 ,{ name = "Shield Block", color = colors.WOO2, duration = 10 })
 AddSpell( 85730 ,{ name = "Deadly Calm", duration = 10 })
 AddSpell( 12328 ,{ name = "Sweeping Strikes", color = colors.LRED, short = "Sweeping", duration = 10 })
 
@@ -252,6 +253,8 @@ AddActivation( 85288, { name = "Enraged", shine = true, timeless = true, showid 
 AddCooldown( 85288, { name = "Raging Blow", ghost = true,  color = colors.WOO })
 AddCooldown( 1680, { name = "Whirlwind", color = colors.LBLUE })
 
+AddSpell( 12976, { name = "Last Stand", color = colors.BLACK, duration = 20 })
+AddSpell( 871, { name = "Shield Wall", color = colors.WOO2, duration = 12 })
 AddCooldown( 23922, { name = "Shield Slam", ghost = true,  color = colors.CURSE, resetable = true })
 --AddActivation( 23922, { name = "Slam!", shine = true, timeless = true, color = colors.CURSE, duration = 0.1 })
 --AddSpell( 50227 ,{ name = "Slam!", shine = true, timeless = true, color = colors.CURSE, duration = 0.1 })
@@ -363,7 +366,7 @@ AddCooldown( 26573 ,{ name = "Consecration", color = colors.CURSE })
 AddCooldown( 20473 ,{ name = "Holy Shock", color = colors.PINK })
 
 
-AddSpell( 94686 ,{ name = "Crusader", duration = 15 }
+AddSpell( 94686 ,{ name = "Crusader", duration = 15 })
 AddSpell( 59578 ,{ name = "Exorcism", shine = true, color = colors.ORANGE, duration = 15 })
 --AddActivation( 879 ,{ name = "Exorcism", shine = true, color = colors.ORANGE, duration = 15 })
 --AddActivation( 84963 ,{ name = "Hand of Light", shine = true, showid = 85256, short = "Light", color = colors.PINK, duration = 8 })
