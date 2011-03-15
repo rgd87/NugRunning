@@ -113,6 +113,7 @@ end
 local TimerOnSettingsChanged = function (self)
     local width = NRunDB.width
     local height = NRunDB.height
+	local fontscale = NRunDB.fontscale
     self:SetWidth(width)
     self:SetHeight(height)
     self.icon:GetParent():SetWidth(height)
@@ -121,14 +122,15 @@ local TimerOnSettingsChanged = function (self)
     self.shine:GetParent():SetHeight(height*1.8)
     self.bar:SetWidth(width-height-1)
     self.bar:SetHeight(height)
-    self.timeText:SetFont("Fonts\\FRIZQT__.TTF",height*.8)
-    self.spellText:SetFont("Fonts\\FRIZQT__.TTF",height*.5)
+    self.timeText:SetFont("Fonts\\FRIZQT__.TTF",height*.8*fontscale)
+    self.spellText:SetFont("Fonts\\FRIZQT__.TTF",height*.5*fontscale)
     self.spellText:SetWidth(self.bar:GetWidth()*0.8)
-    self.stacktext:SetFont("Fonts\\FRIZQT__.TTF",height*.5,"OUTLINE")
+    self.stacktext:SetFont("Fonts\\FRIZQT__.TTF",height*.5*fontscale,"OUTLINE")
 end
 NugRunning.BarFrame = function(f)
     local width = NRunDB.width
     local height = NRunDB.height
+	local fontscale = NRunDB.fontscale
     local mult = 768/string.match(GetCVar("gxResolution"), "%d+x(%d+)")/GetCVar("uiScale")
 	local function scale(x) return mult*math.floor(x+.5) end
     local backdrop = {
@@ -181,7 +183,7 @@ NugRunning.BarFrame = function(f)
 	f.bar.bg:SetTexture("Interface\\AddOns\\NugRunning\\statusbar")
     
     f.timeText = f.bar:CreateFontString();
-    f.timeText:SetFont("Fonts\\FRIZQT__.TTF",height*.8)
+    f.timeText:SetFont("Fonts\\FRIZQT__.TTF",height*.8*fontscale)
     f.timeText:SetJustifyH("RIGHT")
     f.timeText:SetVertexColor(1,1,1)
     f.timeText:SetPoint("RIGHT", f.bar, "RIGHT",-6,0)
