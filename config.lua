@@ -369,7 +369,7 @@ AddCooldown( 26573 ,{ name = "Consecration", color = colors.CURSE })
 AddCooldown( 20473 ,{ name = "Holy Shock", color = colors.PINK })
 
 
-AddSpell( 94686 ,{ name = "Crusader", duration = 15 })
+--AddSpell( 94686 ,{ name = "Crusader", duration = 15 })
 AddSpell( 59578 ,{ name = "Exorcism", shine = true, color = colors.ORANGE, duration = 15 })
 AddSpell( 54149 ,{ name = "Infusion of Light", shine = true, color = colors.LGREEN, duration = 15, short = "Infusion" })
 AddSpell( 85509 ,{ name = "Exorcism", shine = true, color = colors.ORANGE, duration = 20 })
