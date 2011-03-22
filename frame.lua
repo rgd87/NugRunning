@@ -54,8 +54,6 @@ local TimerOnUpdate = function(self,time)
     self.OnUpdateCounter = 0
 
     if self.opts.timeless then
-        self.bar:SetValue(0)
-        self.timeText:SetText("")
         return 
     end
 
@@ -68,6 +66,10 @@ local TimerOnUpdate = function(self,time)
         NugRunning:ArrangeTimers()
         return
         end
+    end
+    
+    if self.opts.glowtime and beforeEnd < self.opts.glowtime then
+        if not self.glow:IsPlaying() then self.glow:Play() end
     end
 
     self.bar:SetValue(beforeEnd + self.startTime)
@@ -82,6 +84,16 @@ local TimerSetTime = function(self,s,e)
     self.endTime = e
     self.bar:SetMinMaxValues(s,e)
     self:MarkUpdate()
+end
+local TimerMakeTimeless = function(self, flag)
+    local prio = flag and 1 or 300000
+    self.bar:SetValue(0)
+    self.startTime = GetTime(); self.endTime = self.startTime + prio;
+    self.timeText:SetText("")
+end
+local TimerSetCharge = function(self,val, min, max)
+    if min and max then self.bar:SetMinMaxValues(min,max) end
+    self.bar:SetValue(val)
 end
 local StackTextUpdate = function(self,amount)
     if not amount then return end
@@ -144,6 +156,8 @@ NugRunning.BarFrame = function(f)
     f.SetName = SpellTextUpdate
     f.SetCount = StackTextUpdate
     f.SetTime = TimerSetTime
+    f.MakeTimeless = TimerMakeTimeless
+    f.SetCharge = TimerSetCharge
     f.MarkUpdate = TimerMarkUpdate
     f.OnSettingsChanged = TimerOnSettingsChanged
     
@@ -232,6 +246,14 @@ NugRunning.BarFrame = function(f)
     aa2:SetScale(1,10)
     aa2:SetDuration(0.15)
     aa2:SetOrder(2)
+    
+    local glow = f:CreateAnimationGroup()
+    local ga1 = glow:CreateAnimation("Alpha")
+    ga1:SetChange(-0.5)
+    ga1:SetDuration(0.25)
+    ga1:SetOrder(1)
+    glow:SetLooping("BOUNCE")
+    f.glow = glow
     
     f.animIn = aag
 

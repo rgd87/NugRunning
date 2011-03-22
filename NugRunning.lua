@@ -219,15 +219,25 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
     timer.opts = opts
     timer.priority = opts.priority
     local now = GetTime()
-    if timer.SetTime then timer:SetTime(now, now + time) end
+    timer.fixedoffset = opts.fixedlen and time - opts.fixedlen or 0
     if timer.SetName then timer:SetName() end
-    if timer.SetCount then timer:SetCount(1) end
+    if not opts.timeless then
+        if timer.SetTime then timer:SetTime(now + timer.fixedoffset, now + time) end
+        if timer.SetCount then timer:SetCount(1) end
+    else
+        timer:MakeTimeless( (not opts.charged) )
+        if timer.SetCount then timer:SetCount(1) end
+    end
+    if opts.charged then
+        timer:SetCharge(1,0,opts.maxcharge)
+    end
     
     if not opts.color then
     if timerType == "DEBUFF" then opts.color = { 0.8, 0.1, 0.7}
     else opts.color = { 0.8, 0.8, 0.8} end
     end
     timer:SetColor(unpack(opts.color))
+    if timer.glow:IsPlaying() then timer.glow:Stop() end
     timer:Show()
     if not timer.animIn:IsPlaying() then timer.animIn:Play() end
     if opts.shine and not timer.shine:IsPlaying() then timer.shine:Play() end
@@ -272,9 +282,14 @@ function NugRunning.RefreshTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID,
         end
     end
     
-    local now = GetTime()
-    if timer.SetTime and time then timer:SetTime(now, now + time) end
-    if timer.SetCount then timer:SetCount(amount) end
+    if not opts.timeless then 
+        local now = GetTime()
+        if timer.SetTime and time then timer:SetTime(now + timer.fixedoffset, now + time) end
+        if timer.SetCount then timer:SetCount(amount) end
+    end
+    if amount and opts.charged then
+        timer:SetCharge(amount)
+    end
 
     if opts.shinerefresh and not timer.shine:IsPlaying() then timer.shine:Play() end
     self:ArrangeTimers()
@@ -358,8 +373,13 @@ function NugRunning.UNIT_AURA (self,event,unit)
     for spellID, timer in pairs(queue[unit]) do
         local name, _,_, count, _, duration, expirationTime, caster, _,_, aura_spellID = UnitAura(unit, GetSpellInfo(spellID), nil, timer.filter)
         if name then
-            if timer.SetTime and time then timer:SetTime(expirationTime - duration,expirationTime) end
-            if timer.SetCount then timer:SetCount(count) end
+            if not timer.opts.timeless then
+                if timer.SetTime then timer:SetTime(expirationTime - duration + timer.fixedoffset,expirationTime) end
+                if timer.SetCount then timer:SetCount(count) end
+            end
+            if timer.opts.charged then
+                timer:SetCharge(count)
+            end
             queue[unit][spellID] = nil
         elseif timer.queued and timer.queued + 0.4 < GetTime() then
             queue[unit][spellID] = nil
@@ -556,7 +576,7 @@ function NugRunning.SlashCmd(msg)
       |cff00ff00/nrun spelltext|r : toggle spell text on bars
       |cff00ff00/nrun shorttext|r : toggle using short names
       |cff00ff00/nrun localnames|r: toggle localized spell names
-      |cff00ff00/nrun set|r width=120 height=20 growth=up/down nontargetopacity=0.7: W & H of timers
+      |cff00ff00/nrun set|r width=120 height=20 fontscale=1.1 growth=up/down nontargetopacity=0.7: W & H of timers
       |cff00ff00/nrun setpos|r point=CENTER parent=UIParent to=CENTER x=0 y=0]]
     )end
     if k == "unlock" then
