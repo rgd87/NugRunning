@@ -22,6 +22,9 @@ GUIDE:
             timeless - progress bar is empty and won't disappear until game event occured and duration serves for bar sorting
             shine    - shine animation when applied
             shinerefresh - when refreshed
+            glowtime
+            fixedlen
+            charged & maxcharge
             
 ]]
 
@@ -46,7 +49,7 @@ NugRunningConfig.colors = colors
 
 
 local useTrinkets = true
-local procTrinkets = false
+local procTrinkets = true
 local stackingTrinkets = false
 if useTrinkets then
     AddSpell({ 33702,33697,20572 },{ name = "Blood Fury", duration = 15 }) --Orc Racial
@@ -61,7 +64,6 @@ end
 
 
 if class == "WARLOCK" then
---AddSpell( 70840 ,{ name = "Devious Minds",duration = 10, target = "player", color = colors.LRED }) -- t10 4pc proc
 AddSpell( 74434 ,{ name = "Soulburn",duration = 20, color = colors.CURSE })
 
 AddSpell( 348 ,{ name = "Immolate", recast_mark = 1.5, duration = 15, ghost = true, color = colors.RED, init = function(self)self.duration = 15 + Talent(85105)*3 end })
@@ -98,7 +100,7 @@ AddSpell( 27243 ,{ name = "Seed of Corruption",duration = 15, color = colors.LRE
 AddSpell( 1714 ,{ name = "Curse of Tongues",duration = 30, color = colors.CURSE, pvpduration = 12, short = "CoT" })
 AddSpell( 702 ,{ name = "Curse of Weakness",duration = 120, color = colors.CURSE, short = "Weakness" })
 AddSpell( 18223 ,{ name = "Curse of Exhaustion",duration = 12, color = colors.CURSE, short = "CoEx" })
-AddSpell( 1490 ,{ name = "Curse of Elements",duration = 300, color = colors.CURSE, pvpduration = 120, short = "CoE" })
+AddSpell( 1490 ,{ name = "Curse of Elements",duration = 300, glowtime = 15, color = colors.CURSE, pvpduration = 120, short = "CoE" })
 -- JINX ID 85547
 
 AddSpell( 24259 ,{ name = "Spell Lock",duration = 3, color = colors.PINK })
@@ -139,9 +141,9 @@ AddSpell( 95799 ,{ name = "Empowered Shadow",recast_mark = 1.5, ghost = true, pr
 --AddSpell( 15286 ,{ name = "Vampiric Embrace",duration = 300, color = colors.CURSE, short = "VampEmbrace" })
 AddSpell( 8122 ,{ name = "Psychic Scream",duration = 8, multiTarget = true })
 --AddSpell( 15407, { name = "Mind Flay",  color = colors.CURSE, duration = 3 })
-
+AddSpell( 77487 ,{ name = "Shadow Orbs",duration = 60, charged = true, maxcharge = 3, timeless = true, color = colors.WOO })
 AddCooldown( 8092, { name = "Mind Blast",  color = colors.CURSE })
-AddCooldown( 32379, { name = "Shadow Word: Death", short = "SWD",  color = colors.RED })
+AddCooldown( 32379, { name = "Shadow Word: Death", ghost = true, short = "SWD",  color = colors.RED })
 
 AddSpell( 81781 ,{ name = "Power Word: Barrier", short = "PW: Barrier", duration = 25, color = {1,0.7,0.5} }) -- duration actually used here, invisible aura applied
 
@@ -219,8 +221,8 @@ AddSpell( 16511 ,{ name = "Hemo",duration = 60, color = colors.CURSE })
 end
 
 if class == "WARRIOR" then
-AddSpell( 6673 ,{ name = "Battle Shout", multiTarget = true, shout = true, color = colors.PURPLE, duration = 120,init = function(self)self.duration = (120 + Glyph(58385)*120) * (1+Talent(12321) * 0.25)  end })
-AddSpell( 469 ,{ name = "Commanding Shout", multiTarget = true, short = "CommShout", shout = true, color = colors.PURPLE, duration = 120, init = function(self)self.duration = (120 + Glyph(68164)*120) * (1+Talent(12321) * 0.25)  end })
+AddSpell( 6673 ,{ name = "Battle Shout", multiTarget = true, glowtime = 10, shout = true, color = colors.PURPLE, duration = 120,init = function(self)self.duration = (120 + Glyph(58385)*120) * (1+Talent(12321) * 0.25)  end })
+AddSpell( 469 ,{ name = "Commanding Shout", multiTarget = true, glowtime = 10, short = "CommShout", shout = true, color = colors.PURPLE, duration = 120, init = function(self)self.duration = (120 + Glyph(68164)*120) * (1+Talent(12321) * 0.25)  end })
 AddSpell( 2565 ,{ name = "Shield Block", color = colors.WOO2, duration = 10 })
 AddSpell( 85730 ,{ name = "Deadly Calm", duration = 10 })
 AddSpell( 12328 ,{ name = "Sweeping Strikes", color = colors.LRED, short = "Sweeping", duration = 10 })
@@ -276,7 +278,7 @@ AddSpell( 55233 ,{ name = "Vampiric Blood", duration = 10, color = colors.RED })
 AddSpell( 81256 ,{ name = "Dancing Rune Weapon", duration = 12, color = colors.RED })
 
 --FROST
-AddSpell( 57330 ,{ name = "Horn of Winter", duration = 120, shout = true, color = colors.CURSE, multiTarget = true, short = "Horn", init = function(self)self.duration = 120 + Glyph(58680)*60 end })
+AddSpell( 57330 ,{ name = "Horn of Winter", duration = 120, shout = true, glowtime = 8, color = colors.CURSE, multiTarget = true, short = "Horn", init = function(self)self.duration = 120 + Glyph(58680)*60 end })
 AddSpell( 45524 ,{ name = "Chains of Ice", duration = 8, color = colors.CHILL })
 AddSpell( 51209 ,{ name = "Hungering Cold", duration = 10, color = colors.FROZEN, multiTarget = true })
 AddSpell( 48792 ,{ name = "Icebound Fortitude", duration = 12 })
@@ -366,7 +368,7 @@ AddCooldown( 26573 ,{ name = "Consecration", color = colors.CURSE })
 AddCooldown( 20473 ,{ name = "Holy Shock", color = colors.PINK })
 
 
-AddSpell( 94686 ,{ name = "Crusader", duration = 15 })
+--AddSpell( 94686 ,{ name = "Crusader", duration = 15 })
 AddSpell( 59578 ,{ name = "Exorcism", shine = true, color = colors.ORANGE, duration = 15 })
 --AddActivation( 879 ,{ name = "Exorcism", shine = true, color = colors.ORANGE, duration = 15 })
 --AddActivation( 84963 ,{ name = "Hand of Light", shine = true, showid = 85256, short = "Light", color = colors.PINK, duration = 8 })
