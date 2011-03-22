@@ -66,7 +66,7 @@ end
 if class == "WARLOCK" then
 AddSpell( 74434 ,{ name = "Soulburn",duration = 20, color = colors.CURSE })
 
-AddSpell( 348 ,{ name = "Immolate", recast_mark = 1.5, duration = 15, ghost = true, color = colors.RED, init = function(self)self.duration = 15 + Talent(85105)*3 end })
+AddSpell( 348 ,{ name = "Immolate", recast_mark = 1.5, duration = 15, priority = 10, ghost = true, color = colors.RED, init = function(self)self.duration = 15 + Talent(85105)*3 end })
 AddSpell( 34936 ,{ name = "Backlash",duration = 8, shine = true, color = colors.CURSE })
 AddSpell( 47283 ,{ name = "Soulfire!",duration = 8, shine = true, color = colors.LRED })
 AddSpell( 85383 ,{ name = "Imp Soul Fire",duration = 8, ghost = true, priority = 4, recast_mark = 3,short = "SoulFire", color = colors.BLACK })
@@ -88,7 +88,7 @@ AddSpell( 79462 ,{ name = "Demon Soul: Voidwalker",duration = 15, short = "Misdi
 
 AddSpell( 86211 ,{ name = "Soul Swap",duration = 20, shine = true, color = colors.BLACK })
 AddSpell( 17941 ,{ name = "Nightfall",duration = 10, shine = true, color = colors.CURSE })
-AddSpell( 64371 ,{ name = "Eradication",duration = 10, color = colors.CURSE })
+AddSpell( 64371 ,{ name = "Eradication",duration = 10, color = colors.WOO })
 AddSpell( 30108 ,{ name = "Unstable Affliction", priority = 10, duration = 15, ghost = true, recast_mark = 1.5, color = colors.RED, short = "UA" })
 AddSpell( 48181 ,{ name = "",duration = 12, priority = 8, ghost = true, recast_mark = 3, color = colors.TEAL }) --Haunt
 AddSpell( 172 ,{ name = "Corruption", priority = 9, ghost = true, color = colors.PINK, duration = 18 })
@@ -141,9 +141,12 @@ AddSpell( 95799 ,{ name = "Empowered Shadow",recast_mark = 1.5, ghost = true, pr
 --AddSpell( 15286 ,{ name = "Vampiric Embrace",duration = 300, color = colors.CURSE, short = "VampEmbrace" })
 AddSpell( 8122 ,{ name = "Psychic Scream",duration = 8, multiTarget = true })
 --AddSpell( 15407, { name = "Mind Flay",  color = colors.CURSE, duration = 3 })
-AddSpell( 77487 ,{ name = "Shadow Orbs",duration = 60, charged = true, maxcharge = 3, timeless = true, color = colors.WOO })
+
+--Shadow Orbs
+AddSpell( 77487 ,{ name = "",duration = 60, charged = true, maxcharge = 3, timeless = true, shine = true, shinerefresh = true, priority = 4, color = colors.WOO })
+
 AddCooldown( 8092, { name = "Mind Blast",  color = colors.CURSE })
-AddCooldown( 32379, { name = "Shadow Word: Death", ghost = true, short = "SWD",  color = colors.RED })
+AddCooldown( 32379, { name = "Shadow Word: Death", ghost = true, short = "SW:Death",  color = colors.PURPLE })
 
 AddSpell( 81781 ,{ name = "Power Word: Barrier", short = "PW: Barrier", duration = 25, color = {1,0.7,0.5} }) -- duration actually used here, invisible aura applied
 
