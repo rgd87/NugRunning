@@ -357,6 +357,7 @@ AddSpell( 642 ,{ name = "Divine Shield",duration = 12, short = "DShield" })
 AddSpell( 1022 ,{ name = "Hand of Protection",duration = 10, short = "HoProt" })
 AddSpell( 1044 ,{ name = "Hand of Freedom",duration = 6, short = "Freedom" })
 AddSpell( 10326 ,{ name = "Turn Evil",duration = 20, pvpduration = 8, color = colors.LGREEN })
+AddSpell( 85285 ,{ name = "Sacred Shield",duration = 15, short = "SShield" })
 
 AddSpell( 53563 ,{ name = "Beacon of Light",duration = 300, short = "Beacon",color = colors.RED })
 AddSpell( 54428 ,{ name = "Divine Plea",duration = 15, short = "Plea" })
