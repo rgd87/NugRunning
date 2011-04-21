@@ -123,7 +123,7 @@ if class == "PRIEST" then
 AddSpell( 139 ,{ name = "Renew", shinerefresh = true, color = colors.LGREEN, duration = 15 })
 AddSpell( 17 ,{ name = "Power Word: Shield", shinerefresh = true, duration = 30, color = colors.LRED, short = "PW:S" })
 AddSpell( 41635 ,{ name = "Prayer of Mending", shinerefresh = true, duration = 30, color = colors.RED, textfunc = function(timer) return timer.dstName end })
-AddSpell( 33151 ,{ name = "Surge of Light",duration = 10 })
+AddSpell( 88688 ,{ name = "Surge of Light",duration = 10 })
 AddSpell( 47788 ,{ name = "Guardian Spirit", shine = true, duration = 10, color = colors.LBLUE, short = "Guardian" })
 AddSpell( 33206 ,{ name = "Pain Suppression",shine = true, duration = 8, color = colors.LBLUE })
 AddSpell( 586 ,{ name = "Fade",duration = 10 })
@@ -158,10 +158,10 @@ AddSpell( 81781 ,{ name = "Power Word: Barrier", short = "PW: Barrier", duration
 
 AddSpell( 88688 ,{ name = "Surge of Light", color = colors.LRED, duration = 10 })
 AddSpell( 14751 ,{ name = "Chakra", color = colors.CURSE, timeless = true, duration = 0.1 })
-AddSpell( 81208 ,{ name = "Chakra: Serenity", short = "Serenity", color = colors.WOO, shine = true, shinerefresh = true, duration = 30 })
-AddSpell( 81206 ,{ name = "Chakra: Sanctuary", color = colors.CURSE, short = "Sanctuary", shine = true, duration = 30 })
-AddSpell( 81209 ,{ name = "Chakra: Chastise", short = "Chastise", color = colors.RED, shine = true, duration = 30 })
-AddSpell( 88682 ,{ name = "Holy Word: Aspire", color = {1,0.7,0.5}, short = "HW: Aspire", duration = 18 })
+AddSpell( 81208 ,{ name = "Chakra: Serenity", short = "Serenity", color = colors.WOO, shine = true, timeless = true, duration = 9999 })
+AddSpell( 81206 ,{ name = "Chakra: Sanctuary", color = colors.CURSE, short = "Sanctuary", shine = true, timeless = true, duration = 9999 })
+AddSpell( 81209 ,{ name = "Chakra: Chastise", short = "Chastise", color = colors.RED, shine = true, timeless = true, duration = 9999 })
+
 AddSpell( 88625 ,{ name = "Holy Word: Chastise", color = colors.LRED, short = "HW: Chastise", duration = 18 })
 
 AddSpell( 81661 ,{ name = "Evangelism",duration = 15, color = colors.ORANGE, stackcolor = {

@@ -11,9 +11,7 @@ NugRunningConfig[1120] = nil
 if not spell then return end
 spell.id = 1120
 
---~ nrds = CreateFrame("Frame")
---~ nrds:RegisterEvent("PLAYER_LOGIN")
---~ nrds:SetScript("OnEvent",
+
 hooksecurefunc(NugRunning,"PLAYER_LOGIN",function(self,event)
     spell.timer = NugRunning:ActivateTimer(UnitGUID("player"), UnitGUID("player"), UnitName("player"), nil, spell.id, GetSpellInfo(spell.id), spell, "DEBUFF")
     spell.timer:Hide()
@@ -23,6 +21,8 @@ end)
 
 local faketimer = {}
 faketimer.filter = "HARMFUL|PLAYER"
+faketimer.fixedoffset = 0
+faketimer.opts = {}
 faketimer.SetTime = function(self,s,e)
     spell.fullduration = e - s
     spell.ticktime = spell.fullduration / 5
@@ -31,8 +31,10 @@ faketimer.SetTime = function(self,s,e)
     spell.timer:Show()
     NugRunning:ArrangeTimers()
 end
+
 hooksecurefunc(NugRunning,"COMBAT_LOG_EVENT_UNFILTERED",
-function( self, event, timestamp, eventType, srcGUID, srcName, srcFlags, dstGUID, dstName, dstFlags, spellID, spellName, spellSchool, auraType, amount)
+function( self, event, timestamp, eventType, --hideCaster,
+            srcGUID, srcName, srcFlags, dstGUID, dstName, dstFlags, spellID, spellName, spellSchool, auraType, amount)
     if spellIDs[spellID] then
         local isSrcPlayer = (bit.band(srcFlags, COMBATLOG_OBJECT_AFFILIATION_MINE) == COMBATLOG_OBJECT_AFFILIATION_MINE)
         if isSrcPlayer and dstGUID ~= srcGUID then

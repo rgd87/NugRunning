@@ -86,7 +86,8 @@ local TimerSetTime = function(self,s,e)
     self:MarkUpdate()
 end
 local TimerMakeTimeless = function(self, flag)
-    local prio = flag and 1 or 300000
+    local prio = flag and self.opts.duration or 300000
+    self.bar:SetMinMaxValues(0,100)
     self.bar:SetValue(0)
     self.startTime = GetTime(); self.endTime = self.startTime + prio;
     self.timeText:SetText("")
