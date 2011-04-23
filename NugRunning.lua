@@ -106,18 +106,13 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
     SlashCmdList["NUGRUNNING"] = NugRunning.SlashCmd
 end
 
-function NugRunning.COMBAT_LOG_EVENT_UNFILTERED( self, event, timestamp, eventType, srcGUID, srcName, srcFlags, dstGUID, dstName, dstFlags, spellID, spellName, spellSchool, auraType, amount)
---~     if (bit_band(srcFlags, COMBATLOG_OBJECT_AFFILIATION_MINE) == COMBATLOG_OBJECT_AFFILIATION_MINE) then
---~         print (eventType, spellID, spellName)
---~     end
---~     if spellID == 71165 then
---~         print(eventType, srcGUID, dstGUID, auraType, amount)
---~     end
+function NugRunning.COMBAT_LOG_EVENT_UNFILTERED( self, event, timestamp, eventType, --hideCaster,
+                srcGUID, srcName, srcFlags, dstGUID, dstName, dstFlags, spellID, spellName, spellSchool, auraType, amount)
+
     if NugRunningConfig[spellID] then
         local isSrcPlayer = (bit_band(srcFlags, COMBATLOG_OBJECT_AFFILIATION_MINE) == COMBATLOG_OBJECT_AFFILIATION_MINE)
         local opts = NugRunningConfig[spellID]
         if not isSrcPlayer and opts.anySource then
-                --srcGUID = UnitGUID("player")
                 isSrcPlayer = true
         end
         if opts.target and dstGUID ~= UnitGUID(opts.target) then return end
@@ -702,7 +697,7 @@ function NugRunning.SlashCmd(msg)
     if k == "debug" then
         NugRunning.debug = CreateFrame("Frame")
         NugRunning.debug:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
-        NugRunning.debug:SetScript("OnEvent",function( self, event, timestamp, eventType,
+        NugRunning.debug:SetScript("OnEvent",function( self, event, timestamp, eventType, --hideCaster, 
                                                         srcGUID, srcName, srcFlags, dstGUID, dstName, dstFlags,
                                                         spellID, spellName, spellSchool, auraType, amount)
             local isSrcPlayer = (bit_band(srcFlags, COMBATLOG_OBJECT_AFFILIATION_MINE) == COMBATLOG_OBJECT_AFFILIATION_MINE)

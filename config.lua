@@ -68,7 +68,7 @@ AddSpell( 74434 ,{ name = "Soulburn",duration = 20, color = colors.CURSE })
 
 AddSpell( 348 ,{ name = "Immolate", recast_mark = 1.5, duration = 15, priority = 10, ghost = true, color = colors.RED, init = function(self)self.duration = 15 + Talent(85105)*3 end })
 AddSpell( 34936 ,{ name = "Backlash",duration = 8, shine = true, color = colors.CURSE })
-AddSpell( 47283 ,{ name = "Soulfire!",duration = 8, shine = true, color = colors.LRED })
+AddSpell( 47283 ,{ name = "Soulfire!",duration = 8, shine = true, color = colors.CURSE })
 AddSpell( 85383 ,{ name = "Imp Soul Fire",duration = 8, ghost = true, priority = 4, recast_mark = 3,short = "SoulFire", color = colors.BLACK })
 AddSpell( 80240 ,{ name = "Bane of Havoc",duration = 300, color = colors.WOO, short = "Havoc" })
 AddSpell( 30283 ,{ name = "Shadowfury",duration = 3, multiTarget = true })
@@ -121,7 +121,7 @@ if class == "PRIEST" then
 AddSpell( 139 ,{ name = "Renew", shinerefresh = true, color = colors.LGREEN, duration = 15 })
 AddSpell( 17 ,{ name = "Power Word: Shield", shinerefresh = true, duration = 30, color = colors.LRED, short = "PW:S" })
 AddSpell( 41635 ,{ name = "Prayer of Mending", shinerefresh = true, duration = 30, color = colors.RED, textfunc = function(timer) return timer.dstName end })
-AddSpell( 33151 ,{ name = "Surge of Light",duration = 10 })
+AddSpell( 88688 ,{ name = "Surge of Light",duration = 10 })
 AddSpell( 47788 ,{ name = "Guardian Spirit", shine = true, duration = 10, color = colors.LBLUE, short = "Guardian" })
 AddSpell( 33206 ,{ name = "Pain Suppression",shine = true, duration = 8, color = colors.LBLUE })
 AddSpell( 586 ,{ name = "Fade",duration = 10 })
@@ -156,10 +156,9 @@ AddSpell( 81781 ,{ name = "Power Word: Barrier", short = "PW: Barrier", duration
 
 AddSpell( 88688 ,{ name = "Surge of Light", color = colors.LRED, duration = 10 })
 AddSpell( 14751 ,{ name = "Chakra", color = colors.CURSE, timeless = true, duration = 0.1 })
-AddSpell( 81208 ,{ name = "Chakra: Serenity", short = "Serenity", color = colors.WOO, shine = true, shinerefresh = true, duration = 30 })
-AddSpell( 81206 ,{ name = "Chakra: Sanctuary", color = colors.CURSE, short = "Sanctuary", shine = true, duration = 30 })
-AddSpell( 81209 ,{ name = "Chakra: Chastise", short = "Chastise", color = colors.RED, shine = true, duration = 30 })
-AddSpell( 88682 ,{ name = "Holy Word: Aspire", color = {1,0.7,0.5}, short = "HW: Aspire", duration = 18 })
+AddSpell( 81208 ,{ name = "Chakra: Serenity", short = "Serenity", color = colors.WOO, shine = true, timeless = true, duration = 9999 })
+AddSpell( 81206 ,{ name = "Chakra: Sanctuary", color = colors.WOO2, short = "Sanctuary", shine = true, timeless = true, duration = 9999 })
+AddSpell( 81209 ,{ name = "Chakra: Chastise", short = "Chastise", color = colors.RED, shine = true, timeless = true, duration = 9999 })
 AddSpell( 88625 ,{ name = "Holy Word: Chastise", color = colors.LRED, short = "HW: Chastise", duration = 18 })
 
 AddSpell( 81661 ,{ name = "Evangelism",duration = 15, color = colors.ORANGE, stackcolor = {
@@ -303,7 +302,7 @@ end
 
 if class == "MAGE" then
 --ARCANE
-AddSpell( 80353 ,{ name = "Time Warp", shine = true, target = "player", duration = 40, color = colors.RED })
+AddSpell( 80353 ,{ name = "Time Warp", shine = true, target = "player", duration = 40, color = colors.WOO2 })
 AddSpell({ 118,61305,28271,28272,61721,61780 },{ name = "Polymorph", duration = 50, color = colors.LGREEN, pvpduration = 8, short = "Poly" })
 AddSpell( 12042 ,{ name = "Arcane Power",duration = 15, short = "APwr", color = colors.PINK })
 --~ AddSpell( 66 ,{ name = "Fading",duration = 3 - NugRunning.TalentInfo(31574) })
@@ -320,13 +319,14 @@ AddSpell( 31589 ,{ name = "Slow", duration = 15, pvpduration = 8 })
 AddSpell( 18469 ,{ name = "Silenced",duration = 2, color = colors.PINK }) -- imp CS
 AddSpell( 55021 ,{ name = "Silenced",duration = 4, color = colors.PINK }) -- imp CS
 --FIRE
-AddSpell( 22959 ,{ name = "Critical Mass", shinerefresh = true, duration = 30, recast_mark = 2.5, color = colors.CURSE, short = "Scorch" })
-AddSpell( 64343 ,{ name = "Impact", shine = true, duration = 10, color = LRED })
-AddSpell( 44457 ,{ name = "Living Bomb",duration = 12, target = "target", color = colors.PURPLE, short = "Bomb" })
-AddSpell( 48108 ,{ name = "Hot Streak",duration = 10, color = colors.LRED, short = "Pyro!" })
+--AddSpell( 22959 ,{ name = "Critical Mass", shinerefresh = true, duration = 30, recast_mark = 2.5, color = colors.CURSE, short = "Scorch" })
+AddSpell( 64343 ,{ name = "Impact", shine = true, duration = 10, color = colors.BLACK })
+AddSpell( 44457 ,{ name = "Living Bomb",duration = 12, ghost = true, target = "target", color = colors.RED, short = "Bomb" })
+AddSpell( 48108 ,{ name = "Hot Streak",duration = 10, shine = true, color = colors.CURSE, short = "Pyro!" })
 AddSpell( 11113 ,{ name = "Blast Wave", color = colors.CHILL, duration = 3, multiTarget = true })
 AddSpell( 31661 ,{ name = "Dragon's Breath", duration = 5, color = colors.ORANGE, short = "Breath", multiTarget = true })
-AddSpell( 2120 ,{ name = "Flamestrike", duration = 8, multiTarget = true })
+AddSpell( 2120 ,{ name = "Flamestrike", duration = 8, color = colors.PURPLE, multiTarget = true })
+AddCooldown( 82731, { name = "Flame Orb", color = colors.WOO})
 --AddCooldown( 2136, { name = "Fire Blast", resetable = true, color = colors.LRED})
 
 --FROST
@@ -392,11 +392,11 @@ AddSpell( 48517 ,{ name = "Solar Eclipse", timeless = true, duration = 0.1, shor
 AddSpell( 48518 ,{ name = "Lunar Eclipse", timeless = true, duration = 0.1, short = "Lunar", color = colors.LBLUE }) -- Starfire boost
 AddSpell( 2637 ,{ name = "Hibernate",duration = 40, pvpduration = 8 })
 AddSpell( 33786 ,{ name = "Cyclone", duration = 6 })
-AddSpell( 8921 ,{ name = "Moonfire",duration = 12, color = colors.PURPLE, init = function(self) self.duration = 12 + Talent(57810)*2 end })
-AddSpell( 93402 ,{ name = "Sunfire",duration = 12, color = colors.ORANGE, init = function(self) self.duration = 12 + Talent(57810)*2 end })
-AddSpell( 5570 ,{ name = "Insect Swarm",duration = 12, color = colors.LGREEN, init = function(self) self.duration = 12 + Talent(57810)*2 end })
+AddSpell( 8921 ,{ name = "Moonfire",duration = 12, ghost = true, color = colors.PURPLE, init = function(self) self.duration = 12 + Talent(57810)*2 end })
+AddSpell( 93402 ,{ name = "Sunfire",duration = 12, ghost = true, color = colors.ORANGE, init = function(self) self.duration = 12 + Talent(57810)*2 end })
+AddSpell( 5570 ,{ name = "Insect Swarm",duration = 12, ghost = true, color = colors.LGREEN, init = function(self) self.duration = 12 + Talent(57810)*2 end })
 AddSpell( 93400 ,{ name = "Shooting Stars", shine = true, duration = 12, color = colors.CURSE })
-AddCooldown( 78674 ,{ name = "Starsurge", resetable = true, color = colors.CURSE })
+AddCooldown( 78674 ,{ name = "Starsurge", resetable = true, ghost = true, color = colors.CURSE })
 
 AddSpell( 50334 ,{ name = "Berserk", duration = 15 })
 --cat
