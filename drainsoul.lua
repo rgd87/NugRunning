@@ -33,7 +33,7 @@ faketimer.SetTime = function(self,s,e)
 end
 
 hooksecurefunc(NugRunning,"COMBAT_LOG_EVENT_UNFILTERED",
-function( self, event, timestamp, eventType, --hideCaster,
+function( self, event, timestamp, eventType, hideCaster,
             srcGUID, srcName, srcFlags, dstGUID, dstName, dstFlags, spellID, spellName, spellSchool, auraType, amount)
     if spellIDs[spellID] then
         local isSrcPlayer = (bit.band(srcFlags, COMBATLOG_OBJECT_AFFILIATION_MINE) == COMBATLOG_OBJECT_AFFILIATION_MINE)
