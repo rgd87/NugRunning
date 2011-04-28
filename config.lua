@@ -319,7 +319,7 @@ AddSpell( 31589 ,{ name = "Slow", duration = 15, pvpduration = 8 })
 AddSpell( 18469 ,{ name = "Silenced",duration = 2, color = colors.PINK }) -- imp CS
 AddSpell( 55021 ,{ name = "Silenced",duration = 4, color = colors.PINK }) -- imp CS
 --FIRE
---AddSpell( 22959 ,{ name = "Critical Mass", shinerefresh = true, duration = 30, recast_mark = 2.5, color = colors.CURSE, short = "Scorch" })
+AddSpell( 22959 ,{ name = "Critical Mass", shinerefresh = true, duration = 30, recast_mark = 2.5, color = colors.CURSE, short = "Scorch" })
 AddSpell( 64343 ,{ name = "Impact", shine = true, duration = 10, color = colors.BLACK })
 AddSpell( 44457 ,{ name = "Living Bomb",duration = 12, ghost = true, target = "target", color = colors.RED, short = "Bomb" })
 AddSpell( 48108 ,{ name = "Hot Streak",duration = 10, shine = true, color = colors.CURSE, short = "Pyro!" })
