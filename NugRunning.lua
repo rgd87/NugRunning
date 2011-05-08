@@ -67,6 +67,7 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
     NRunDB.swapTarget = (NRunDB.swapTarget == nil and true) or NRunDB.swapTarget
     NRunDB.localNames   = (NRunDB.localNames == nil and false) or NRunDB.localNames
     NRunDB.CustomSpells = NRunDB.CustomSpells or {}
+    NRunDB.totems = (NRunDB.totems == nil and true) or NRunDB.totems
     for id,opts in pairs(NRunDB.CustomSpells) do
         NugRunningConfig[id] = opts
     end
@@ -105,6 +106,8 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
     SLASH_NUGRUNNING1= "/nugrunning"
     SLASH_NUGRUNNING2= "/nrun"
     SlashCmdList["NUGRUNNING"] = NugRunning.SlashCmd
+    
+    if NRunDB.totems and NugRunning.InitTotems then NugRunning:InitTotems() end
 end
 
 function NugRunning.COMBAT_LOG_EVENT_UNFILTERED( self, event, timestamp, eventType, hideCaster,
@@ -577,6 +580,7 @@ function NugRunning.SlashCmd(msg)
       |cff00ff00/nrun spelltext|r : toggle spell text on bars
       |cff00ff00/nrun shorttext|r : toggle using short names
       |cff00ff00/nrun swaptarget|r : static order of target debuffs
+      |cff00ff00/nrun totems|r : static order of target debuffs
       |cff00ff00/nrun localnames|r: toggle localized spell names
       |cff00ff00/nrun set|r width=120 height=20 fontscale=1.1 growth=up/down nontargetopacity=0.7: W & H of timers
       |cff00ff00/nrun setpos|r point=CENTER parent=UIParent to=CENTER x=0 y=0]]
@@ -654,6 +658,10 @@ function NugRunning.SlashCmd(msg)
         NRunDB.swapTarget = not NRunDB.swapTarget
         NugRunning:SetupArrange()
         print("Target swapping turned "..(NRunDB.swapTarget and "on" or "off"))
+    end
+    if k == "totems" then
+        NRunDB.totems = not NRunDB.totems
+        print("Totems turned "..(NRunDB.swapTarget and "on" or "off")..". Will take effect after /reload")
     end
     if k == "set" then
         local p = ParseOpts(v)
