@@ -34,7 +34,9 @@ end
 
 hooksecurefunc(NugRunning,"COMBAT_LOG_EVENT_UNFILTERED",
 function( self, event, timestamp, eventType, hideCaster,
-            srcGUID, srcName, srcFlags, dstGUID, dstName, dstFlags, spellID, spellName, spellSchool, auraType, amount)
+            srcGUID, srcName, srcFlags, --srcFlags2,
+            dstGUID, dstName, dstFlags, --dstFlags2,
+            spellID, spellName, spellSchool, auraType, amount)
     if spellIDs[spellID] then
         local isSrcPlayer = (bit.band(srcFlags, COMBATLOG_OBJECT_AFFILIATION_MINE) == COMBATLOG_OBJECT_AFFILIATION_MINE)
         if isSrcPlayer and dstGUID ~= srcGUID then

@@ -119,7 +119,7 @@ end
 if class == "PRIEST" then
 -- BUFFS
 AddSpell( 139 ,{ name = "Renew", shinerefresh = true, color = colors.LGREEN, duration = 15 })
-AddSpell( 17 ,{ name = "Power Word: Shield", shinerefresh = true, duration = 30, color = colors.LRED, short = "PW:S" })
+AddSpell( 17 ,{ name = "Power Word: Shield", shinerefresh = true, duration = 15, color = colors.LRED, short = "PW:S" })
 AddSpell( 41635 ,{ name = "Prayer of Mending", shinerefresh = true, duration = 30, color = colors.RED, textfunc = function(timer) return timer.dstName end })
 AddSpell( 88688 ,{ name = "Surge of Light",duration = 10 })
 AddSpell( 47788 ,{ name = "Guardian Spirit", shine = true, duration = 10, color = colors.LBLUE, short = "Guardian" })
@@ -170,7 +170,7 @@ AddSpell( 81661 ,{ name = "Evangelism",duration = 15, color = colors.ORANGE, sta
                             } })
 --AddSpell( 81700 ,{ name = "Archangel",duration = 18, color = colors.CURSE })
 
---AddSpell( 63731 ,{ name = "Serendipity",duration = 20, color = {0.4,0.4,0.9} })
+--AddSpell({ 63731,63735 } ,{ name = "Serendipity",duration = 20, color = {0.4,0.4,0.9} })
 end
 
 
