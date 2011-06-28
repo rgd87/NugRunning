@@ -111,8 +111,8 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
 end
 
 function NugRunning.COMBAT_LOG_EVENT_UNFILTERED( self, event, timestamp, eventType, hideCaster,
-                srcGUID, srcName, srcFlags, --srcFlags2,
-                dstGUID, dstName, dstFlags, --dstFlags2,
+                srcGUID, srcName, srcFlags, srcFlags2,
+                dstGUID, dstName, dstFlags, dstFlags2,
                 spellID, spellName, spellSchool, auraType, amount)
 
     if NugRunningConfig[spellID] then
@@ -718,11 +718,11 @@ function NugRunning.SlashCmd(msg)
         NugRunning.debug = CreateFrame("Frame")
         NugRunning.debug:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
         NugRunning.debug:SetScript("OnEvent",function( self, event, timestamp, eventType, hideCaster, 
-                                                        srcGUID, srcName, srcFlags, --srcFlags2,
-                                                        dstGUID, dstName, dstFlags, --dstFlags2,
+                                                        srcGUID, srcName, srcFlags, srcFlags2,
+                                                        dstGUID, dstName, dstFlags, dstFlags2,
                                                         spellID, spellName, spellSchool, auraType, amount)
             local isSrcPlayer = (bit_band(srcFlags, COMBATLOG_OBJECT_AFFILIATION_MINE) == COMBATLOG_OBJECT_AFFILIATION_MINE)
-            if isSrcPlayer then print (spellID, spellName, eventType) end
+            if isSrcPlayer then print (spellID, spellName, eventType, srcGUID,"->",dstGUID, amount) end
         end)
     end
     if k == "nodebug" then

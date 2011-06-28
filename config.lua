@@ -278,6 +278,7 @@ AddSpell( 81130 ,{ name = "Scarlet Fever", duration = 30, color = colors.LRED })
 AddSpell( 73975 ,{ name = "Necrotic Strike", duration = 10, color = colors.WOO })
 AddSpell( 55233 ,{ name = "Vampiric Blood", duration = 10, color = colors.RED })
 AddSpell( 81256 ,{ name = "Dancing Rune Weapon", duration = 12, color = colors.RED })
+AddSpell( 49222 ,{ name = "Bone Shield", duration = 300, color = colors.WOO2 })
 
 --FROST
 AddSpell( 57330 ,{ name = "Horn of Winter", duration = 120, shout = true, glowtime = 8, color = colors.CURSE, multiTarget = true, short = "Horn", init = function(self)self.duration = 120 + Glyph(58680)*60 end })
