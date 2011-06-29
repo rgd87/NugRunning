@@ -190,7 +190,7 @@ AddSpell( 5171 ,{ name = "Slice and Dice", shinerefresh = true,  short = "SnD", 
 AddSpell( 1833 ,{ name = "Cheap Shot", duration = 4, color = colors.LRED })
 AddSpell( 408 ,{ name = "Kidney Shot", shine = true, duration = 5,color = colors.LRED })
 AddSpell( 1776 ,{ name = "Gouge", color = colors.PINK, duration = 4, init = function(self)self.duration = 4 + Talent(13741)*1 end })
-AddSpell( 2094 ,{ name = "Blind",duration = 10, pvpduration = 8, color = {0.20, 0.80, 0.2} })
+AddSpell( 2094 ,{ name = "Blind",duration = 60, pvpduration = 8, color = {0.20, 0.80, 0.2} })
 AddSpell( 8647 ,{ name = "Expose Armor", shinerefresh = true, color = colors.LBLUE, duration = function() return NugRunning.cpWas * 10 end })
 AddSpell( 51722 ,{ name = "Dismantle",duration = 10,color = colors.LRED })
 AddSpell( 6770 ,{ name = "Sap",duration = 60, color = colors.LBLUE })
@@ -278,7 +278,7 @@ AddSpell( 81130 ,{ name = "Scarlet Fever", duration = 30, color = colors.LRED })
 AddSpell( 73975 ,{ name = "Necrotic Strike", duration = 10, color = colors.WOO })
 AddSpell( 55233 ,{ name = "Vampiric Blood", duration = 10, color = colors.RED })
 AddSpell( 81256 ,{ name = "Dancing Rune Weapon", duration = 12, color = colors.RED })
-AddSpell( 49222 ,{ name = "Bone Shield", duration = 300, color = colors.WOO2 })
+--AddSpell( 49222 ,{ name = "Bone Shield", duration = 300, color = colors.WOO2 })
 
 --FROST
 AddSpell( 57330 ,{ name = "Horn of Winter", duration = 120, shout = true, glowtime = 8, color = colors.CURSE, multiTarget = true, short = "Horn", init = function(self)self.duration = 120 + Glyph(58680)*60 end })

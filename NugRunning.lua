@@ -247,6 +247,31 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
     return timer
 end
 
+-- 4.2 hack
+local h = CreateFrame("Frame")
+h:SetScript("OnEvent",function(self, event, unit)
+    if unit ~= "target" and unit ~= "player" then return end
+    local targetGUID = UnitGUID(unit)
+    local targetName = UnitName(unit)
+    local playerGUID = UnitGUID("player")
+    for timer in pairs(active) do 
+        if  timer.dstGUID == targetGUID then
+            for i=1,100 do
+                local name, _,_, count, _, duration, expirationTime, caster, _,_, aura_spellID = UnitAura(unit, GetSpellInfo(timer.spellID), nil, timer.filter)
+                if  caster == "player" and
+                    timer.spellID == aura_spellID and
+                    GetTime() + duration - expirationTime < 0.1
+                    then
+--~                     print (GetTime() + duration - expirationTime)
+                    NugRunning:RefreshTimer(playerGUID,targetGUID,targetName,nil, timer.spellID, timer.spellName, timer.opts, timer.timerType, duration, count)
+                
+                end
+            end
+        end
+    end
+end)
+h:RegisterEvent("UNIT_AURA")
+
 function NugRunning.RefreshTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID, spellName, opts, timerType, override, amount)
     local multiTargetGUID
     if opts.multiTarget then multiTargetGUID = dstGUID; dstGUID = nil; end
