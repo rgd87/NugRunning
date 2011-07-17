@@ -283,7 +283,7 @@ AddSpell( 81256 ,{ name = "Dancing Rune Weapon", duration = 12, color = colors.R
 --FROST
 AddSpell( 57330 ,{ name = "Horn of Winter", duration = 120, shout = true, glowtime = 8, color = colors.CURSE, multiTarget = true, short = "Horn", init = function(self)self.duration = 120 + Glyph(58680)*60 end })
 AddSpell( 45524 ,{ name = "Chains of Ice", duration = 8, color = colors.CHILL })
-AddSpell( 51209 ,{ name = "Hungering Cold", duration = 10, color = colors.FROZEN, multiTarget = true })
+AddSpell( 49203 ,{ name = "Hungering Cold", duration = 10, color = colors.FROZEN, multiTarget = true })
 AddSpell( 48792 ,{ name = "Icebound Fortitude", duration = 12 })
 AddSpell( 51124 ,{ name = "Killing Machine", duration = 30 })
 AddSpell( 59052 ,{ name = "Freezing Fog", duration = 15 })
