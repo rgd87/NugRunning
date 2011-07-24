@@ -84,7 +84,7 @@ AddSpell( 79459 ,{ name = "Demon Soul: Imp",duration = 30, short = "DemonSoul", 
 AddSpell( 79460 ,{ name = "Demon Soul: Felhunter",duration = 20, short = "DemonSoul", color = colors.CURSE })
 AddSpell( 79463 ,{ name = "Demon Soul: Succubus",duration = 20, short = "DemonSoul", color = colors.CURSE })
 AddSpell( 79462 ,{ name = "Demon Soul: Felguard",duration = 20, short = "DemonSoul", color = colors.CURSE })
-AddSpell( 79462 ,{ name = "Demon Soul: Voidwalker",duration = 15, short = "Misdirect", color = colors.CURSE })
+AddSpell( 79464 ,{ name = "Demon Soul: Voidwalker",duration = 15, short = "Misdirect", color = colors.CURSE })
 
 AddSpell( 86211 ,{ name = "Soul Swap",duration = 20, shine = true, color = colors.BLACK })
 AddSpell( 17941 ,{ name = "Nightfall",duration = 10, shine = true, color = colors.CURSE })
@@ -112,7 +112,8 @@ AddSpell( 7812 ,{ name = "Sacrifice",duration = 30, color = colors.PURPLE })
 AddSpell( 5782 ,{ name = "Fear", duration = 20, pvpduration = 8 })
 AddSpell( 5484 ,{ name = "Howl of Terror", duration = 8, multiTarget = true })                    
 AddSpell( 710 ,{ name = "Banish", duration = 30 })
---AddCooldown( 59164, { name = "HAUNT",  color = colors.LRED })
+--AddCooldown( 48181, { name = "HAUNT",  color = colors.LRED })
+--AddCooldown( 47897, { name = "Shadowflame", color = colors.PURPLE })
 end
    
 
