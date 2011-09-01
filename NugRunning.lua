@@ -33,6 +33,7 @@ end
 
 local bit_band = bit.band
 local UnitAura = UnitAura
+local table_wipe = table.wipe
 
 NugRunning.active = active
 NugRunning.free = free
@@ -40,7 +41,6 @@ NugRunning.timers = alltimers
 
 NugRunning:RegisterEvent("PLAYER_LOGIN")
 function NugRunning.PLAYER_LOGIN(self,event,arg1)
-    
     NRunDB_Global = NRunDB_Global or {}
     NRunDB_Char = NRunDB_Char or {}
     NRunDB_Global.charspec = NRunDB_Global.charspec or {}
@@ -226,6 +226,7 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
         if timer.SetTime then timer:SetTime(now + timer.fixedoffset, now + time) end
         if timer.SetCount then timer:SetCount(1) end
     else
+        timer:MarkUpdate() -- it is also called by SetTime but...
         timer:MakeTimeless( (not opts.charged) )
         if timer.SetCount then timer:SetCount(1) end
     end
@@ -313,10 +314,11 @@ function NugRunning.RefreshTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID,
         if timer.SetTime and time then timer:SetTime(now + timer.fixedoffset, now + time) end
         if timer.SetCount then timer:SetCount(amount) end
     end
+    timer:MarkUpdate() -- it is also called by SetTime but...
     if amount and opts.charged then
         timer:SetCharge(amount)
     end
-
+    if timer.glow:IsPlaying() then timer.glow:Stop() end
     if opts.shinerefresh and not timer.shine:IsPlaying() then timer.shine:Play() end
     self:ArrangeTimers()
     return timer
@@ -477,8 +479,11 @@ function NugRunning.ArrangeTimers(self)
     if arrangeInProgress then arrangePending = true; return end
     arrangePending = false
     arrangeInProgress = true -- a little synchronization
-    while next(playerTimers) do table.remove(playerTimers) end
-    while next(targetTimers) do table.remove(targetTimers) end
+    -- while next(playerTimers) do table.remove(playerTimers) end
+    table_wipe(playerTimers)
+    table_wipe(targetTimers)
+    -- while next(targetTimers) do table.remove(targetTimers) end
+
 
     local sorted = {}
     local targetGUID = UnitGUID("target")

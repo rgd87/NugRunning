@@ -64,3 +64,81 @@ local DisMon = CreateFrame("Frame",nil,UIParent)
 DisMon:RegisterEvent("UNIT_AURA")
 DisMon:RegisterEvent("PLAYER_TARGET_CHANGED")
 DisMon:SetScript("OnEvent", dismon_onevent)
+
+
+
+-- local deathwish = GetSpellInfo(12292)
+-- local enrage = GetSpellInfo(12880)
+-- 14202
+-- 14201
+-- local bersrage = GetSpellInfo(18499)
+
+if class  == "WARRIOR" then
+
+local enrageIDs = {
+    [12880] = true,
+    [14201] = true,
+    [14202] = true,
+    [12292] = true,
+    [18499] = true,
+}
+local enrage_name = GetSpellInfo(12880)
+local RB_ID = 85288
+local enrage_opts = NugRunningConfig[RB_ID]
+NugRunningConfig[RB_ID] = nil
+
+local enrage_timer
+local enrage_frame = CreateFrame("Frame")
+enrage_frame.CheckFury = function(self)
+    if IsSpellKnown(RB_ID) then
+        self:RegisterEvent("UNIT_AURA")
+    else
+        self:UnregisterEvent("UNIT_AURA")
+    end
+end
+
+enrage_frame:SetScript("OnEvent",function(self, event, unit)
+    if event == "ACTIVE_TALENT_GROUP_CHANGED" then
+        return self:CheckFury()
+    end
+    if unit ~= "player" then return end
+    local longest = 0
+    local longestDuration
+    for i=1, 100 do
+        local _,_,_,_,_, duration, expires, _,_,_, spellID = UnitAura("player",i,"HELPFUL")
+        if not spellID then break end
+        if enrageIDs[spellID] then
+            if expires > longest then
+                longest = expires
+                longestDuration = duration
+            end
+        end
+    end
+    
+    if longest > 0 then
+        if not enrage_timer then
+            enrage_timer = NugRunning:ActivateTimer(UnitGUID("player"), UnitGUID("player"),
+                             UnitName("plyer"), nil,
+                             12880, enrage_name, enrage_opts, "BUFF")
+            enrage_timer.dontfree = true
+        end
+        if not enrage_timer then return end
+        active[enrage_timer] = true
+        enrage_timer.dstGUID = UnitGUID("target")
+        enrage_timer:SetTime(longest - longestDuration, longest)
+        enrage_timer:SetAlpha(1)
+        enrage_timer:Show()
+        NugRunning:ArrangeTimers()
+    elseif enrage_timer then
+        active[enrage_timer] = nil
+        enrage_timer:Hide()
+        NugRunning:ArrangeTimers()
+    end
+end)
+
+hooksecurefunc(NugRunning,"PLAYER_LOGIN",function(self,event)
+    enrage_frame:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
+    enrage_frame:CheckFury()
+end)
+
+end

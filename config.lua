@@ -244,7 +244,7 @@ AddSpell( 6343 ,{ name = "Thunder Clap", anySource = true, color = {149/255, 121
 --~ AddSpell( 56112 ,{ name = "Furious Attacks", duration = 10 })
 --AddActivation( 5308, { name = "Execute", shine = true, timeless = true, color = colors.CURSE, duration = 0.1 })
 
-AddCooldown( 12294, { name = "Mortal Strike", ghost = true,  color = colors.CURSE })
+AddCooldown( 12294, { name = "Mortal Strike", short = "", recast_mark = 1.5, fixedlen = 9, ghost = true,  color = colors.CURSE })
 --AddSpell( 52437 ,{ name = "Reset", shine = true, color = colors.BLACK, timeless = true, duration = 0.1 })
 --AddActivation( 86346, { name = "Reset", shine = true,  color = colors.BLACK, duration = 0.1 })
 AddCooldown( 86346 ,{ name = "Colossus Smash", ghost = true, color = colors.BLACK, resetable = true, duration = 20 })
@@ -252,9 +252,12 @@ AddCooldown( 86346 ,{ name = "Colossus Smash", ghost = true, color = colors.BLAC
 AddSpell( 60503 ,{ name = "", recast_mark = 4, color = colors.RED, duration = 9 }) -- Taste for blood
 --AddSpell( 90806 ,{ name = "Executioneer", color = colors.WOO, duration = 30 })
 
-AddCooldown( 23881, { name = "Bloodthirst", ghost = true,  color = colors.CURSE })
+AddCooldown( 23881, { name = "Bloodthirst", short = "", ghost = true, recast_mark = 1.5, fixedlen = 6,  color = colors.CURSE })
 AddSpell( 46916 ,{ name = "Bloodsurge", shine = true, color = colors.LRED, duration = 10 })
-AddActivation( 85288, { name = "Enraged", shine = true, timeless = true, showid = 14202,color = colors.RED, duration = 0.1 })
+
+AddSpell( 85288, { name = "Enraged", shine = true, showid = 14202, color = colors.RED, duration = 10 })
+-- it's enrage timer config
+
 AddCooldown( 85288, { name = "Raging Blow", ghost = true,  color = colors.WOO })
 AddCooldown( 1680, { name = "Whirlwind", color = colors.LBLUE })
 

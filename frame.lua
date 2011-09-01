@@ -46,6 +46,7 @@ local TimerMarkUpdate = function(self)
         self.mark.texture:Show()
     else
         self.mark:Hide()
+        self.mark.texture:Hide()
     end    
 end
 local TimerOnUpdate = function(self,time)
