@@ -90,7 +90,7 @@ NugRunningConfig[RB_ID] = nil
 local enrage_timer
 local enrage_frame = CreateFrame("Frame")
 enrage_frame.CheckFury = function(self)
-    if IsSpellKnown(RB_ID) then
+    if IsSpellKnown(23881) then -- Bloodthirst, Raging Blow becomes known only after event is fired
         self:RegisterEvent("UNIT_AURA")
     else
         self:UnregisterEvent("UNIT_AURA")
