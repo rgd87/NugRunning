@@ -263,10 +263,15 @@ AddCooldown( 1680, { name = "Whirlwind", color = colors.LBLUE })
 
 AddSpell( 12976, { name = "Last Stand", color = colors.BLACK, duration = 20 })
 AddSpell( 871, { name = "Shield Wall", color = colors.WOO2, duration = 12 })
-AddCooldown( 23922, { name = "Shield Slam", ghost = true,  color = colors.CURSE, resetable = true })
+AddCooldown( 23922, { name = "Shield Slam", short = "", recast_mark = 1.5, ghost = true,  color = colors.CURSE, resetable = true })
 --AddActivation( 23922, { name = "Slam!", shine = true, timeless = true, color = colors.CURSE, duration = 0.1 })
 --AddSpell( 50227 ,{ name = "Slam!", shine = true, timeless = true, color = colors.CURSE, duration = 0.1 })
---AddCooldown( 6572, { name = "Revenge" })
+AddCooldown( 6572, { name = "Revenge", color = colors.LBLUE, fixedlen = 6, ghost = true })
+AddActivation( 6572, { name = "RevengeActivation", for_cd = true })
+-- AddCooldown( 78, { name = "Heroic Strike", short = "Heroic", fixedlen = 6, ghost = true })
+-- AddCooldown( 6343, { name = "Thunder Clap", short = "Clap", ghost = true })
+
+
 AddSpell( 32216, { name = "Victory Rush", color = colors.PINK, duration = 20})
 
 AddSpell( 20253, { name = "Intercept", duration = 3 })

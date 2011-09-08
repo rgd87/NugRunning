@@ -33,6 +33,7 @@ end
 
 local bit_band = bit.band
 local UnitAura = UnitAura
+local UnitGUID = UnitGUID
 local table_wipe = table.wipe
 
 NugRunning.active = active
@@ -143,15 +144,25 @@ end
 function NugRunning.SPELL_ACTIVATION_OVERLAY_GLOW_SHOW(self,event, spellID)
     if NugRunningConfig.activations[spellID] then
         local opts = NugRunningConfig.activations[spellID]
-        if opts.showid then spellID = opts.showid end
-        self:ActivateTimer(UnitGUID("player"),UnitGUID("player"), UnitName("player"), nil, spellID, opts.localname, opts, "ACTIVATION", opts.duration)
+        if not opts.for_cd then
+            if opts.showid then spellID = opts.showid end
+            self:ActivateTimer(UnitGUID("player"),UnitGUID("player"), UnitName("player"), nil, spellID, opts.localname, opts, "ACTIVATION", opts.duration)
+        else
+            local timer = gettimer(active,spellID,UnitGUID("player"),"COOLDOWN")
+            if timer then timer:SetAlpha(1) end
+        end
     end
 end
 function NugRunning.SPELL_ACTIVATION_OVERLAY_GLOW_HIDE(self,event, spellID)
     if NugRunningConfig.activations[spellID] then
         local opts = NugRunningConfig.activations[spellID]
-        if opts.showid then spellID = opts.showid end
-        self:DeactivateTimer(UnitGUID("player"),UnitGUID("player"), spellID, nil, opts, "ACTIVATION")
+        if not opts.for_cd then
+            if opts.showid then spellID = opts.showid end
+            self:DeactivateTimer(UnitGUID("player"),UnitGUID("player"), spellID, nil, opts, "ACTIVATION")
+        else
+            local timer = gettimer(active,spellID,UnitGUID("player"),"COOLDOWN")
+            if timer then timer:SetAlpha(0.5) end
+        end
     end
 end
 
@@ -166,9 +177,12 @@ function NugRunning.SPELL_UPDATE_COOLDOWN(self,event)
                 opts.timer = self:ActivateTimer(UnitGUID("player"),UnitGUID("player"), UnitName("player"), nil, spellID, opts.localname, opts, "COOLDOWN", duration + startTime - GetTime())
             end
         elseif timer and (active[timer] and opts.resetable) then
-            if not timer.isGhost then
-                free[timer] = true
-                opts.timer = nil
+            local oldcdrem = timer.endTime - GetTime()
+            if oldcdrem > duration or oldcdrem < 0 then
+                if not timer.isGhost then
+                    free[timer] = true
+                    opts.timer = nil
+                end
             end
         end
     end
