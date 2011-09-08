@@ -255,10 +255,11 @@ AddSpell( 60503 ,{ name = "", recast_mark = 4, color = colors.RED, duration = 9 
 AddCooldown( 23881, { name = "Bloodthirst", short = "", ghost = true, recast_mark = 1.5, fixedlen = 6,  color = colors.CURSE })
 AddSpell( 46916 ,{ name = "Bloodsurge", shine = true, color = colors.LRED, duration = 10 })
 
+AddCooldown( 85288, { name = "Raging Blow", ghost = true,  color = colors.WOO })
+AddActivation( 85288, { name = "Enraged", for_cd = true })
 AddSpell( 85288, { name = "Enraged", shine = true, showid = 14202, color = colors.RED, duration = 10 })
 -- it's enrage timer config
 
-AddCooldown( 85288, { name = "Raging Blow", ghost = true,  color = colors.WOO })
 AddCooldown( 1680, { name = "Whirlwind", color = colors.LBLUE })
 
 AddSpell( 12976, { name = "Last Stand", color = colors.BLACK, duration = 20 })
@@ -266,7 +267,7 @@ AddSpell( 871, { name = "Shield Wall", color = colors.WOO2, duration = 12 })
 AddCooldown( 23922, { name = "Shield Slam", short = "", recast_mark = 1.5, ghost = true,  color = colors.CURSE, resetable = true })
 --AddActivation( 23922, { name = "Slam!", shine = true, timeless = true, color = colors.CURSE, duration = 0.1 })
 --AddSpell( 50227 ,{ name = "Slam!", shine = true, timeless = true, color = colors.CURSE, duration = 0.1 })
-AddCooldown( 6572, { name = "Revenge", color = colors.LBLUE, fixedlen = 6, ghost = true })
+AddCooldown( 6572, { name = "Revenge", color = colors.WOO, fixedlen = 6, ghost = true })
 AddActivation( 6572, { name = "RevengeActivation", for_cd = true })
 -- AddCooldown( 78, { name = "Heroic Strike", short = "Heroic", fixedlen = 6, ghost = true })
 -- AddCooldown( 6343, { name = "Thunder Clap", short = "Clap", ghost = true })
