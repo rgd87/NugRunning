@@ -172,16 +172,18 @@ function NugRunning.SPELL_UPDATE_COOLDOWN(self,event)
         local startTime, duration, enabled = GetSpellCooldown(opts.localname)
         local timer
         if opts.timer and (opts.timer.spellID == spellID) then timer = opts.timer end
-        if duration and duration > 1.5 then
-            if not active[timer] or timer.isGhost then
-                opts.timer = self:ActivateTimer(UnitGUID("player"),UnitGUID("player"), UnitName("player"), nil, spellID, opts.localname, opts, "COOLDOWN", duration + startTime - GetTime())
-            end
-        elseif timer and (active[timer] and opts.resetable) then
-            local oldcdrem = timer.endTime - GetTime()
-            if oldcdrem > duration or oldcdrem < 0 then
-                if not timer.isGhost then
-                    free[timer] = true
-                    opts.timer = nil
+        if duration then
+            if duration > 1.5 then
+                if not active[timer] or timer.isGhost then
+                    opts.timer = self:ActivateTimer(UnitGUID("player"),UnitGUID("player"), UnitName("player"), nil, spellID, opts.localname, opts, "COOLDOWN", duration + startTime - GetTime())
+                end
+            elseif timer and (active[timer] and opts.resetable) then
+                local oldcdrem = timer.endTime - GetTime()
+                if oldcdrem > duration or oldcdrem < 0 then
+                    if not timer.isGhost then
+                        free[timer] = true
+                        opts.timer = nil
+                    end
                 end
             end
         end
@@ -277,7 +279,6 @@ h:SetScript("OnEvent",function(self, event, unit)
                     timer.spellID == aura_spellID and
                     GetTime() + duration - expirationTime < 0.1
                     then
---~                     print (GetTime() + duration - expirationTime)
                     NugRunning:RefreshTimer(playerGUID,targetGUID,targetName,nil, timer.spellID, timer.spellName, timer.opts, timer.timerType, duration, count)
                 
                 end
@@ -307,7 +308,6 @@ function NugRunning.RefreshTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID,
         timer:SetColor(unpack(opts.color))
     end
 
-    
     local time
     if override then time = override
     else
@@ -325,6 +325,7 @@ function NugRunning.RefreshTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID,
     
     if not opts.timeless then 
         local now = GetTime()
+        timer.fixedoffset = opts.fixedlen and time - opts.fixedlen or 0
         if timer.SetTime and time then timer:SetTime(now + timer.fixedoffset, now + time) end
         if timer.SetCount then timer:SetCount(amount) end
     end
@@ -416,6 +417,7 @@ function NugRunning.UNIT_AURA (self,event,unit)
         local name, _,_, count, _, duration, expirationTime, caster, _,_, aura_spellID = UnitAura(unit, GetSpellInfo(spellID), nil, timer.filter)
         if name then
             if not timer.opts.timeless then
+                timer.fixedoffset = timer.opts.fixedlen and duration - timer.opts.fixedlen or 0
                 if timer.SetTime then timer:SetTime(expirationTime - duration + timer.fixedoffset,expirationTime) end
                 if timer.SetCount then timer:SetCount(count) end
             end
@@ -565,7 +567,6 @@ function NugRunning.ArrangeTimers(self)
     arrangeInProgress = false
     if arrangePending then NugRunning:ArrangeTimers() end
 end
-
 
 
 

@@ -4,6 +4,7 @@ local AddCooldown = helpers.AddCooldown
 local AddActivation = helpers.AddActivation
 local Talent = helpers.Talent
 local Glyph = helpers.Glyph
+local GetCP = helpers.GetCP
 local _,class = UnitClass("player")
 
 --[[
@@ -44,6 +45,7 @@ local colors = {
     BLACK = {0.4,0.4,0.4},
     WOO = {151/255, 86/255, 168/255},
     WOO2 = {80/255, 83/255, 150/255},
+    BROWN = { 192/255, 77/255, 48/255},
 }
 NugRunningConfig.colors = colors
 
@@ -106,7 +108,7 @@ AddSpell( 1490 ,{ name = "Curse of Elements",duration = 300, glowtime = 15, colo
 AddSpell( 24259 ,{ name = "Spell Lock",duration = 3, color = colors.PINK })
 AddSpell( 6358 ,{ name = "Seduction",duration = 15, pvpduration = 8 })
 AddSpell( 17767 ,{ name = "Consume Shadows", duration = 6, color = colors.PURPLE, short = "Consume" })
-AddSpell( 30153 ,{ name = "Intercept",duration = 3 })
+AddSpell( 89766 ,{ name = "Axe Toss", color = colors.BROWN, duration = 4 })
 AddSpell( 7812 ,{ name = "Sacrifice",duration = 30, color = colors.PURPLE })
 --
 AddSpell( 5782 ,{ name = "Fear", duration = 20, pvpduration = 8 })
@@ -177,26 +179,36 @@ end
 
 if class == "ROGUE" then
 -- BUFFS
-AddSpell( 32645 ,{ name = "Envenom", color = { 0, 0.65, 0}, duration = function() return (1+NugRunning.cpWas) end })
+AddSpell( 32645 ,{ name = "Envenom", color = { 0, 0.65, 0}, duration = function() return (1+GetCP()) end })
 
 AddSpell( 2983 ,{ name = "Sprint", shine = true, duration = 15 })
 AddSpell( 5277 ,{ name = "Evasion", color = colors.PINK, duration = 15 })
 AddSpell( 31224 ,{ name = "Cloak of Shadows", color = colors.CURSE, duration = 5, short = "CloS" })
 AddSpell( 14183 ,{ name = "Premeditation",duration = 20, color = colors.CURSE })                    
 AddSpell( 74002 ,{ name = "Combat Insight", shine = true, shinerefresh = true, duration = 6, color = colors.CURSE })
-AddSpell( 73651 ,{ name = "Recuperate", shinerefresh = true, color = colors.LGREEN ,duration = function() return (6 * NugRunning.cpWas) end })
-AddSpell( 5171 ,{ name = "Slice and Dice", shinerefresh = true,  short = "SnD", color = colors.PURPLE,  duration = function() return (6 + NugRunning.cpWas*3)*(1+Talent(14165)*0.25) end  })
+AddSpell( 73651 ,{ name = "Recuperate", shinerefresh = true, color = colors.LGREEN ,duration = function() return (6 * GetCP()) end })
+AddSpell( 5171 ,{ name = "Slice and Dice", shinerefresh = true,  short = "SnD", color = colors.PURPLE,
+    duration = function() return (6 + GetCP()*3)*(1+Talent(14165)*0.25) end,
+    init = function(self) self.fixedlen = (21 + Glyph(56810)*6) * (1+Talent(14165)*0.25) end
+})
     
 -- DEBUFFS
 AddSpell( 1833 ,{ name = "Cheap Shot", duration = 4, color = colors.LRED })
 AddSpell( 408 ,{ name = "Kidney Shot", shine = true, duration = 5,color = colors.LRED })
-AddSpell( 1776 ,{ name = "Gouge", color = colors.PINK, duration = 4, init = function(self)self.duration = 4 + Talent(13741)*1 end })
+AddSpell( 1776 ,{ name = "Gouge", color = colors.PINK, duration = 4,
+    init = function(self) self.duration = 4 + Talent(13741)*1 end
+})
 AddSpell( 2094 ,{ name = "Blind",duration = 60, pvpduration = 8, color = {0.20, 0.80, 0.2} })
-AddSpell( 8647 ,{ name = "Expose Armor", shinerefresh = true, color = colors.LBLUE, duration = function() return NugRunning.cpWas * 10 end })
+AddSpell( 8647 ,{ name = "Expose Armor", shinerefresh = true, color = colors.LBLUE,
+    duration = function() return GetCP() * 10 end
+})
 AddSpell( 51722 ,{ name = "Dismantle",duration = 10,color = colors.LRED })
 AddSpell( 6770 ,{ name = "Sap",duration = 60, color = colors.LBLUE })
 
-AddSpell( 1943 ,{ name = "Rupture", shinerefresh = true, color = colors.RED, duration = function() return (6 + NugRunning.cpWas * 2) + Glyph(56801)*4 end})
+AddSpell( 1943 ,{ name = "Rupture", shinerefresh = true, color = colors.RED, fixedlen = 16,
+    duration = function() return (6 + GetCP() * 2) + Glyph(56801)*4 end,
+    init = function(self) self.fixedlen = 16 + Glyph(56801)*4 end
+})
 AddSpell( 703 ,{ name = "Garrote", color = colors.RED, duration = 18 })
 AddSpell( 1330 ,{ name = "Silence", color = colors.PINK, duration = 3 })
 
@@ -231,7 +243,7 @@ AddSpell( 85730 ,{ name = "Deadly Calm", duration = 10 })
 AddSpell( 12328 ,{ name = "Sweeping Strikes", color = colors.LRED, short = "Sweeping", duration = 10 })
 
 --~ AddSpell( 86346 ,{ name = "Colossus Smash", color = colors.BLACK, duration = 6 })
-AddSpell( 1715 ,{ name = "Hamstring", ghost = true, color = { 192/255, 77/255, 48/255}, duration = 15, pvpduration = 8 })
+AddSpell( 1715 ,{ name = "Hamstring", ghost = true, color = colors.BROWN, duration = 15, pvpduration = 8 })
 AddSpell( 23694 ,{ name = "Imp Hamstring", shine = true, color = colors.LRED, duration = 5 })
 AddSpell( 85388 ,{ name = "Throwdown", color = colors.LRED, duration = 5 })
 AddSpell( 94009 ,{ name = "Rend", color = colors.RED, duration = 15 })   -- like DKs frost fever & plague
@@ -416,9 +428,9 @@ AddSpell( 9007 ,{ name = "Pounce Bleed", color = colors.RED, duration = 18 })
 AddSpell( 33876 ,{ name = "Mangle", color = colors.CURSE, duration = 60 })
 AddSpell( 1822 ,{ name = "Rake", duration = 15, color = colors.LRED })
 AddSpell( 1079 ,{ name = "Rip",duration = 16, color = colors.RED })
-AddSpell( 22570 ,{ name = "Maim", color = colors.PINK, duration = function() return NugRunning.cpWas end })
+AddSpell( 22570 ,{ name = "Maim", color = colors.PINK, duration = function() return GetCP() end })
 AddCooldown(5217, { name = "Tiger's Fury", color = colors.LBLUE})
-AddSpell( 52610 ,{ name = "Savage Roar", color = colors.PURPLE, duration = function() return (17 + NugRunning.cpWas * 5) end })
+AddSpell( 52610 ,{ name = "Savage Roar", color = colors.PURPLE, duration = function() return (17 + GetCP() * 5) end })
 AddSpell( 1850 ,{ name = "Dash", duration = 15 })
 AddSpell( 81022 ,{ name = "Stampede", duration = 8 })
 --bear

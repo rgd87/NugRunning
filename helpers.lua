@@ -23,9 +23,13 @@ helpers.Talent = function (spellID)
     end
     return 0
 end
+helpers.GetCP = function()
+    if not NugRunning.cpNow then return GetComboPoints("player") end
+    return NugRunning.cpWas > NugRunning.cpNow and NugRunning.cpWas or NugRunning.cpNow
+end
 helpers.Glyph = function (gSpellID)
     for i = 1, GetNumGlyphSockets() do
-        if select(3,GetGlyphSocketInfo(i,GetActiveTalentGroup()) ) == gSpellID then return 1 end
+        if select(4,GetGlyphSocketInfo(i,GetActiveTalentGroup()) ) == gSpellID then return 1 end
     end
     return 0
 end
