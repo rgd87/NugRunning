@@ -38,6 +38,7 @@ local colors = {
     ORANGE = { 1, 124/255, 33/255 },
     FIRE = {1,80/255,0},
     LBLUE = {149/255, 121/255, 214/255},
+    GOLD = {1,0.7,0.5},
     LGREEN = { 0.63, 0.8, 0.35 },
     PURPLE = { 187/255, 75/255, 128/255 },
     FROZEN = { 65/255, 110/255, 1 },
@@ -159,9 +160,9 @@ AddSpell( 81781 ,{ name = "Power Word: Barrier", short = "PW: Barrier", duration
 
 AddSpell( 88688 ,{ name = "Surge of Light", color = colors.LRED, duration = 10 })
 AddSpell( 14751 ,{ name = "Chakra", color = colors.CURSE, timeless = true, duration = 0.1 })
-AddSpell( 81208 ,{ name = "Chakra: Serenity", short = "Serenity", color = colors.WOO, shine = true, timeless = true, duration = 9999 })
-AddSpell( 81206 ,{ name = "Chakra: Sanctuary", color = colors.WOO2, short = "Sanctuary", shine = true, timeless = true, duration = 9999 })
-AddSpell( 81209 ,{ name = "Chakra: Chastise", short = "Chastise", color = colors.RED, shine = true, timeless = true, duration = 9999 })
+-- AddSpell( 81208 ,{ name = "Chakra: Serenity", short = "Serenity", color = colors.WOO, shine = true, timeless = true, duration = 9999 })
+-- AddSpell( 81206 ,{ name = "Chakra: Sanctuary", color = colors.WOO2, short = "Sanctuary", shine = true, timeless = true, duration = 9999 })
+-- AddSpell( 81209 ,{ name = "Chakra: Chastise", short = "Chastise", color = colors.RED, shine = true, timeless = true, duration = 9999 })
 AddSpell( 88625 ,{ name = "Holy Word: Chastise", color = colors.LRED, short = "HW: Chastise", duration = 18 })
 
 AddSpell( 81661 ,{ name = "Evangelism",duration = 15, color = colors.ORANGE, stackcolor = {
@@ -370,40 +371,43 @@ end
 if class == "PALADIN" then
 
 --AddSpell( 53657 ,{ name = "Judgements of the Pure", short = "JotP", duration = 100500, color = colors.LBLUE })
-AddSpell( 84963 ,{ name = "Inquisition",duration = 10, color = colors.PURPLE })  -- 10 * CP
-AddSpell( 31884 ,{ name = "Avenging Wrath",duration = 20, short = "AW" })
-AddSpell( 498 ,{ name = "Divine Protection",duration = 12, short = "DProt" })
-AddSpell( 642 ,{ name = "Divine Shield",duration = 12, short = "DShield" })
-AddSpell( 1022 ,{ name = "Hand of Protection",duration = 10, short = "HoProt" })
+AddSpell( 84963 ,{ name = "Inquisition",duration = 12, fixedlen = 12,  color = colors.PURPLE })  -- 10 * CP
+AddSpell( 31884 ,{ name = "Avenging Wrath",duration = 20, short = "AW", color = colors.FIRE })
+AddSpell( 498 ,{ name = "Divine Protection",duration = 10, short = "DProt", color = colors.BLACK })
+AddSpell( 642 ,{ name = "Divine Shield",duration = 8, short = "DShield", color = colors.BLACK })
+AddSpell( 31850,{ name = "Ardent Defender",duration = 10, color = colors.BLACK})
+AddSpell( 70940,{ name = "Divine Guardian", duration = 6, multiTarget = true, short = "DGuardian", color = colors.GOLD})
+AddSpell( 1022 ,{ name = "Hand of Protection",duration = 10, short = "HoProt", color = colors.WOO2 })
 AddSpell( 1044 ,{ name = "Hand of Freedom",duration = 6, short = "Freedom" })
 AddSpell( 10326 ,{ name = "Turn Evil",duration = 20, pvpduration = 8, color = colors.LGREEN })
 
 AddSpell( 53563 ,{ name = "Beacon of Light",duration = 300, short = "Beacon",color = colors.RED })
 AddSpell( 54428 ,{ name = "Divine Plea",duration = 15, short = "Plea" })
-AddSpell( 31842 ,{ name = "Divine Favor",duration = 20, short = "Favor" })
-AddSpell( 20066 ,{ name = "Repentance",duration = 60, pvpduration = 8 })
-AddSpell( 853 ,{ name = "Hammer of Justice",duration = 6, short = "HoJ", color = colors.FROZEN })
+-- AddSpell( 31842 ,{ name = "Divine Favor",duration = 20, short = "Favor" })
+AddSpell( 20066 ,{ name = "Repentance",duration = 60, pvpduration = 8, color = colors.LBLUE })
+AddSpell( 853 ,{ name = "Hammer of Justice", duration = 6, short = "HoJ", color = colors.FROZEN })
 --AddSpell( 31803 ,{ name = "Censure",duration = 15, color = colors.RED})
-AddSpell( 85696 ,{ name = "Zealotry",duration = 20 })
+-- AddSpell( 85696 ,{ name = "Zealotry",duration = 20 })
 
-AddCooldown( 35395 ,{ name = "Crusader Strike", color = colors.RED })
-AddCooldown( 20925 ,{ name = "Holy Shield", color = colors.RED })
-AddCooldown( 24275 ,{ name = "HoW", color = colors.TEAL })
-AddCooldown( 20271 ,{ name = "Judgement", color = colors.LRED })
-AddCooldown( 26573 ,{ name = "Consecration", color = colors.CURSE })
+AddCooldown( 35395 ,{ name = "Crusader Strike", ghost = true, short = "Crusader", color = colors.CURSE, recast_mark = 1.5, fixedlen = 8 })
+AddCooldown( 20271 ,{ name = "Judgement", ghost = true, color = colors.RED })
+AddSpell( 20925 ,{ name = "Holy Shield", color = colors.WOO2, duration = 10 })
+AddCooldown( 24275 ,{ name = "HoWrath", color = colors.TEAL })
+-- AddCooldown( 2812, { name = "Holy Wrath", color = colors.BROWN })
+-- AddCooldown( 26573 ,{ name = "Consecration", color = colors.LBLUE })
 AddCooldown( 20473 ,{ name = "Holy Shock", color = colors.PINK })
 
 
 --AddSpell( 94686 ,{ name = "Crusader", duration = 15 })
-AddSpell( 59578 ,{ name = "Exorcism", shine = true, color = colors.ORANGE, duration = 15 })
+AddSpell( 59578 ,{ name = "Exorcism", shine = true, color = colors.LRED, duration = 15 }) -- Art of War
 --AddActivation( 879 ,{ name = "Exorcism", shine = true, color = colors.ORANGE, duration = 15 })
 --AddActivation( 84963 ,{ name = "Hand of Light", shine = true, showid = 85256, short = "Light", color = colors.PINK, duration = 8 })
 AddSpell( 90174 ,{ name = "Hand of Light", shine = true, showid = 85256, short = "Light", color = colors.PINK, duration = 8 })
 
 AddSpell( 62124 ,{ name = "Taunt", duration = 3 })
-AddSpell( 85416 ,{ name = "Reset", shine = true, timeless = true, duration = 0.1, color = colors.BLACK })
+-- AddSpell( 85416 ,{ name = "Reset", shine = true, timeless = true, duration = 0.1, color = colors.BLACK })
 --AddActivation( 31935 ,{ name = "Reset", shine = true, timeless = true, duration = 0.1, color = colors.BLACK })
-AddCooldown( 31935 ,{ name = "Avenger's Shield", resetable = true, duration = 15, short = "AShield", color = colors.BLACK })
+AddCooldown( 31935 ,{ name = "Avenger's Shield", resetable = true, duration = 15, short = "Avenger", color = colors.BLACK, ghost = true })
 end
 
 if class == "DRUID" then

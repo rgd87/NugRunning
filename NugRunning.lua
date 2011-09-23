@@ -57,6 +57,7 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
     NRunDB.anchor.to = NRunDB.anchor.to or "CENTER"
     NRunDB.anchor.x = NRunDB.anchor.x or 0
     NRunDB.anchor.y = NRunDB.anchor.y or 0
+
     NRunDB.growth = NRunDB.growth or "up"
     NRunDB.width = NRunDB.width or 150
     NRunDB.height = NRunDB.height or 20
@@ -72,7 +73,6 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
     for id,opts in pairs(NRunDB.CustomSpells) do
         NugRunningConfig[id] = opts
     end
-    NugRunning:SetupArrange()
         
     NugRunning:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
         
@@ -96,9 +96,21 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
     NugRunning:RegisterEvent("SPELL_ACTIVATION_OVERLAY_GLOW_HIDE")
         
         
-    NugRunning.anchor = NugRunning.CreateAnchor()
+    NugRunning.anchor = NugRunning.CreateAnchor(NRunDB.anchor)
     local pos = NRunDB.anchor
     NugRunning.anchor:SetPoint(pos.point, pos.parent, pos.to, pos.x, pos.y)
+
+    if NRunDB.separate then
+        if not NRunDB.anchor2 then
+            NRunDB.anchor2 = {point = "CENTER", parent = "UIParent", to = "CENTER", x = 0, y = 0}
+        end
+        NugRunning.anchor2 = NugRunning.CreateAnchor(NRunDB.anchor2)
+        local pos2 = NRunDB.anchor2
+        NugRunning.anchor2:SetPoint(pos2.point, pos2.parent, pos2.to, pos2.x, pos2.y)
+    end
+
+    NugRunning:SetupArrange()
+
     for i=1,MAX_TIMERS do
         local timer = NugRunning:CreateTimer()
         free[timer] = true
@@ -474,12 +486,14 @@ local to
 local ySign
 local nonTargetOpacity
 local doswap
+local anchor2
 function NugRunning.SetupArrange(self)
     point = ( NRunDB.growth == "down" and "TOPLEFT" ) or "BOTTOMLEFT"
     to = ( NRunDB.growth == "down" and "BOTTOMLEFT" ) or "TOPLEFT"
     ySign = ( NRunDB.growth == "down" and -1 ) or 1
     nonTargetOpacity = NRunDB.nonTargetOpacity
     doswap = NRunDB.swapTarget
+    anchor2 = NugRunning.anchor2
 end
 local playerTimers = {}
 local targetTimers = {}
@@ -539,9 +553,16 @@ function NugRunning.ArrangeTimers(self)
         gap = 0
     end
     gap = prev and 10 or 0
+    local separated
     for i,timer in ipairs(targetTimers) do
         timer:SetAlpha(1)
-        timer:SetPoint(point,prev or self.anchor,( prev and to ) or "TOPRIGHT", xOffset, (yOffset+gap)*ySign)
+        if i == 1 and anchor2 then
+            timer:SetPoint(point,anchor2, "TOPRIGHT",  xOffset, yOffset*ySign)
+            separated = true
+        else
+            timer:SetPoint(point,prev or self.anchor,( prev and to ) or "TOPRIGHT", xOffset, (yOffset+gap)*ySign)
+        end
+
         prev = timer
         prevGUID = timer.dstGUID
         gap = 0
@@ -556,7 +577,12 @@ function NugRunning.ArrangeTimers(self)
                 else
                     timer:SetAlpha(1)
                 end
-                timer:SetPoint(point,prev or self.anchor,( prev and to ) or "TOPRIGHT", xOffset, (yOffset+gap)*ySign)
+                if not separated and anchor2 and i == 1 then
+                    timer:SetPoint(point,anchor2, "TOPRIGHT",  xOffset, yOffset*ySign)
+                    separated = true
+                else
+                    timer:SetPoint(point,prev or self.anchor,( prev and to ) or "TOPRIGHT", xOffset, (yOffset+gap)*ySign)
+                end
                 prev = timer
                 prevGUID = timer.dstGUID
                 gap = 0
@@ -625,6 +651,7 @@ function NugRunning.SlashCmd(msg)
       |cff00ff00/nrun spelltext|r : toggle spell text on bars
       |cff00ff00/nrun shorttext|r : toggle using short names
       |cff00ff00/nrun swaptarget|r : static order of target debuffs
+      |cff00ff00/nrun separate|r : move target timers to second anchor
       |cff00ff00/nrun totems|r : static order of target debuffs
       |cff00ff00/nrun localnames|r: toggle localized spell names
       |cff00ff00/nrun set|r width=120 height=20 fontscale=1.1 growth=up/down nontargetopacity=0.7: W & H of timers
@@ -632,6 +659,7 @@ function NugRunning.SlashCmd(msg)
     )end
     if k == "unlock" then
         NugRunning.anchor:Show()
+        if NugRunning.anchor2 then NugRunning.anchor2:Show() end
         local prev
         for i,timer in ipairs(alltimers) do
             local fakeopts = {}
@@ -678,6 +706,10 @@ function NugRunning.SlashCmd(msg)
         else NRunDB_Global.charspec[user] = true
         end
         print ("NRun: "..(NRunDB_Global.charspec[user] and "Enabled" or "Disabled").." character specific options for this toon. Will take effect after ui reload")
+    end
+    if k == "separate" then
+        NRunDB.separate = not NRunDB.separate
+        print ("NRun: "..(NRunDB.separate and "Enabled" or "Disabled").." target and player timers separation. Will take effect after ui reload")
     end
     if k == "cooldowns" then
         if NRunDB.cooldownsEnabled then
@@ -775,7 +807,7 @@ function NugRunning.SlashCmd(msg)
     end
 end
 
-function NugRunning.CreateAnchor()
+function NugRunning.CreateAnchor(opts)
     local f = CreateFrame("Frame",nil,UIParent)
     f:SetHeight(20)
     f:SetWidth(20)
@@ -800,11 +832,11 @@ function NugRunning.CreateAnchor()
     f:SetScript("OnMouseUp",function(self)
             self:StopMovingOrSizing();
             local point,_,to,x,y = self:GetPoint(1)
-            NRunDB.anchor.point = point
-            NRunDB.anchor.parent = "UIParent"
-            NRunDB.anchor.to = to
-            NRunDB.anchor.x = x
-            NRunDB.anchor.y = y
+            opts.point = point
+            opts.parent = "UIParent"
+            opts.to = to
+            opts.x = x
+            opts.y = y
     end)
     return f
 end
