@@ -92,7 +92,7 @@ AddSpell( 79464 ,{ name = "Demon Soul: Voidwalker",duration = 15, short = "Misdi
 AddSpell( 86211 ,{ name = "Soul Swap",duration = 20, shine = true, color = colors.BLACK })
 AddSpell( 17941 ,{ name = "Nightfall",duration = 10, shine = true, color = colors.CURSE })
 AddSpell( 64371 ,{ name = "Eradication",duration = 10, color = colors.WOO })
-AddSpell( 30108 ,{ name = "Unstable Affliction", priority = 10, duration = 15, ghost = true, recast_mark = 1.5, color = colors.RED, short = "UA" })
+AddSpell( 30108 ,{ name = "Unstable Affliction", priority = 10, duration = 15, ghost = true, recast_mark = 1.3, color = colors.RED, short = "UA" })
 AddSpell( 48181 ,{ name = "",duration = 12, priority = 8, ghost = true, recast_mark = 3, color = colors.TEAL }) --Haunt
 AddSpell( 172 ,{ name = "Corruption", priority = 9, ghost = true, color = colors.PINK, duration = 18 })
 AddSpell( 980 ,{ name = "Bane of Agony",duration = 24, ghost = true, priority = 6, color = colors.WOO, short = "Agony", init = function(self)self.duration = 24 + Glyph(56241)*4 end })
@@ -144,6 +144,8 @@ AddSpell( 15487 ,{ name = "Silence",duration = 5, color = colors.PINK })
 AddSpell( 95799 ,{ name = "Empowered Shadow",recast_mark = 1.5, ghost = true, priority = 5, short = "Empowered", duration = 15, color = colors.BLACK })
 --AddSpell( 15286 ,{ name = "Vampiric Embrace",duration = 300, color = colors.CURSE, short = "VampEmbrace" })
 AddSpell( 8122 ,{ name = "Psychic Scream",duration = 8, multiTarget = true })
+
+AddSpell( 47537,{ name = "Rapture", duration = 12, color = colors.BLACK }) -- special timer
 --AddSpell( 15407, { name = "Mind Flay",  color = colors.CURSE, duration = 3 })
 
 --Shadow Orbs
@@ -220,7 +222,7 @@ AddSpell( 1330 ,{ name = "Silence", color = colors.PINK, duration = 3 })
 AddSpell( 14177 ,{ name = "Cold Blood", shine = true, color = colors.TEAL, timeless = true, duration = 0.1})
 AddSpell( 79140 ,{ name = "Vendetta", shine = true, color = colors.CURSE, duration = 30 })
 AddSpell( 79126 ,{ name = "Groggy", shine = true, color = colors.BLACK, duration = 8 })
---AddSpell( 58427 ,{ name = "Overkill", duration = 20, color =  colors.LRED })
+-- AddSpell( 58427 ,{ name = "Overkill", duration = 20, color =  colors.LRED }) --broken atm
 
 AddSpell( 84745 ,{ name = "Shallow Insight", short = "1x Insight", shine = true, color = colors.CURSE, duration = 15 })
 AddSpell( 84746 ,{ name = "Moderate Insight", short = "2x Insight", shine = true, color = colors.CURSE, duration = 15 })
@@ -243,8 +245,8 @@ AddSpell( 2565 ,{ name = "Shield Block", color = colors.WOO2, duration = 10 })
 AddSpell( 85730 ,{ name = "Deadly Calm", duration = 10 })
 AddSpell( 12328 ,{ name = "Sweeping Strikes", color = colors.LRED, short = "Sweeping", duration = 10 })
 
---~ AddSpell( 86346 ,{ name = "Colossus Smash", color = colors.BLACK, duration = 6 })
-AddSpell( 1715 ,{ name = "Hamstring", ghost = true, color = colors.BROWN, duration = 15, pvpduration = 8 })
+AddSpell( 86346 ,{ name = "Colossus Smash", color = colors.BROWN, duration = 6 })
+AddSpell( 1715 ,{ name = "Hamstring", ghost = true, color = colors.PURPLE, duration = 15, pvpduration = 8 })
 AddSpell( 23694 ,{ name = "Imp Hamstring", shine = true, color = colors.LRED, duration = 5 })
 AddSpell( 85388 ,{ name = "Throwdown", color = colors.LRED, duration = 5 })
 AddSpell( 94009 ,{ name = "Rend", color = colors.RED, duration = 15 })   -- like DKs frost fever & plague
@@ -338,7 +340,7 @@ AddSpell( 79683 ,{ name = "Arcane Missiles!", shine = true, duration = 20, color
 --~ AddSpell( 55342 ,{ name = "Mirror Image",duration = 30 })
 --~ AddSpell( 44413 ,{ name = "Incanter's Absorption",duration = 10, color = colors.LRED, short = "Absorb" })
 
-AddSpell( 12536 ,{ name = "Clearcast",duration = 15, color = colors.BLACK })
+-- AddSpell( 12536 ,{ name = "Clearcast",duration = 15, color = colors.BLACK })
 AddSpell( 31589 ,{ name = "Slow", duration = 15, pvpduration = 8 })
 AddSpell( 18469 ,{ name = "Silenced",duration = 2, color = colors.PINK }) -- imp CS
 AddSpell( 55021 ,{ name = "Silenced",duration = 4, color = colors.PINK }) -- imp CS
@@ -415,8 +417,8 @@ AddSpell( 339 ,{ name = "Entangling Roots",duration = 30 })
 AddSpell( 91565 ,{ name = "Faerie Fire",duration = 300, pvpduration = 40, color = colors.CURSE }) --second is feral
 
 --AddSpell( 48391 ,{ name = "Owlkin Frenzy", duration = 10 })
-AddSpell( 48517 ,{ name = "Solar Eclipse", timeless = true, duration = 0.1, short = "Solar", color = colors.ORANGE }) -- Wrath boost
-AddSpell( 48518 ,{ name = "Lunar Eclipse", timeless = true, duration = 0.1, short = "Lunar", color = colors.LBLUE }) -- Starfire boost
+-- AddSpell( 48517 ,{ name = "Solar Eclipse", timeless = true, duration = 0.1, short = "Solar", color = colors.ORANGE }) -- Wrath boost
+-- AddSpell( 48518 ,{ name = "Lunar Eclipse", timeless = true, duration = 0.1, short = "Lunar", color = colors.LBLUE }) -- Starfire boost
 AddSpell( 2637 ,{ name = "Hibernate",duration = 40, pvpduration = 8 })
 AddSpell( 33786 ,{ name = "Cyclone", duration = 6 })
 AddSpell( 8921 ,{ name = "Moonfire",duration = 12, ghost = true, color = colors.PURPLE, init = function(self) self.duration = 12 + Talent(57810)*2 end })
@@ -460,7 +462,8 @@ AddSpell( 33763 ,{ name = "Lifebloom", shinerefresh = true, duration = 10, init 
                                                                         }})
 AddSpell( 48438 ,{ name = "Wild Growth", duration = 7, multiTarget = true, color = colors.LGREEN })
 AddSpell( 29166 ,{ name = "Innervate",duration = 10 })
-AddSpell( 16870 ,{ name = "Clearcasting",  duration = 15 })
+AddSpell(100977,{ name = "Harmony", color = colors.BLACK, recast_mark = 2.5, duration = 10 })
+-- AddSpell( 16870 ,{ name = "Clearcasting",  duration = 15 })
 end
 
 if class == "HUNTER" then

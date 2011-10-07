@@ -1,144 +1,167 @@
--- Special DK sauce
 local class = select(2,UnitClass("player"))
-if class  ~= "DEATHKNIGHT" and class ~= "WARRIOR" then return end
 
-local infect
-local active = NugRunning.active
-local free = NugRunning.free
-if class  == "DEATHKNIGHT" then
-    local FF = { id = 55095 }
-    local BP = { id = 55078 }
-    FF.name = GetSpellInfo(FF.id)
-    BP.name = GetSpellInfo(BP.id)
-    FF.opts = NugRunningConfig[FF.id]
-    BP.opts = NugRunningConfig[BP.id]
-    NugRunningConfig[BP.id] = nil
-    NugRunningConfig[FF.id] = nil
-    
-    local SF = { id = 81130 }
-    SF.name = GetSpellInfo(SF.id)
-    SF.opts = NugRunningConfig[SF.id]
-    NugRunningConfig[SF.id] = nil
-    
-    infect = { FF, BP, SF }
-end
-if class  == "WARRIOR" then
-    local rend = { id = 94009 }
-    rend.name = GetSpellInfo(rend.id)
-    rend.opts = NugRunningConfig[rend.id]
-    NugRunningConfig[rend.id] = nil
-    
-    infect = { rend }
-end
-NugRunning.infect = infect
+if class == "WARRIOR" or class == "DEATHKNIGHT" then
 
-local prevTargetGUID
-local dismon_onevent = function(self, event, unit)
-    if unit and unit ~= "target" then return end
-    for _, spell in ipairs(infect) do
-        local _, _, _, _, _, duration, expirationTime = UnitAura("target",spell.name, nil,"HARMFUL|PLAYER")
-        if duration then
-            if event == "PLAYER_TARGET_CHANGED" or spell.expirationTime ~= expirationTime then
-            spell.expirationTime = expirationTime
-            --print ("Updating "..spell.name)
-            if not spell.timer then
-                spell.timer = NugRunning:ActivateTimer(UnitGUID("player"), UnitGUID("target"), UnitName("target"), nil, spell.id, spell.name, spell.opts, "DEBUFF")
-                spell.timer.dontfree = true
+    local infect
+    local active = NugRunning.active
+    local free = NugRunning.free
+    if class  == "DEATHKNIGHT" then
+        local FF = { id = 55095 }
+        local BP = { id = 55078 }
+        FF.name = GetSpellInfo(FF.id)
+        BP.name = GetSpellInfo(BP.id)
+        FF.opts = NugRunningConfig[FF.id]
+        BP.opts = NugRunningConfig[BP.id]
+        NugRunningConfig[BP.id] = nil
+        NugRunningConfig[FF.id] = nil
+        
+        local SF = { id = 81130 }
+        SF.name = GetSpellInfo(SF.id)
+        SF.opts = NugRunningConfig[SF.id]
+        NugRunningConfig[SF.id] = nil
+        
+        infect = { FF, BP, SF }
+    end
+    if class  == "WARRIOR" then
+        local rend = { id = 94009 }
+        rend.name = GetSpellInfo(rend.id)
+        rend.opts = NugRunningConfig[rend.id]
+        NugRunningConfig[rend.id] = nil
+        
+        infect = { rend }
+    end
+    NugRunning.infect = infect
+
+    local prevTargetGUID
+    local dismon_onevent = function(self, event, unit)
+        if unit and unit ~= "target" then return end
+        for _, spell in ipairs(infect) do
+            local _, _, _, _, _, duration, expirationTime = UnitAura("target",spell.name, nil,"HARMFUL|PLAYER")
+            if duration then
+                if event == "PLAYER_TARGET_CHANGED" or spell.expirationTime ~= expirationTime then
+                spell.expirationTime = expirationTime
+                --print ("Updating "..spell.name)
+                if not spell.timer then
+                    spell.timer = NugRunning:ActivateTimer(UnitGUID("player"), UnitGUID("target"), UnitName("target"), nil, spell.id, spell.name, spell.opts, "DEBUFF")
+                    spell.timer.dontfree = true
+                end
+                if not spell.timer then return end
+                active[spell.timer] = true
+                spell.timer.dstGUID = UnitGUID("target")
+                spell.timer:SetTime(expirationTime - duration, expirationTime)
+                spell.timer:SetAlpha(1)
+                spell.timer:Show()
+                NugRunning:ArrangeTimers()
+                end
+            elseif spell.timer then
+                active[spell.timer] = nil
+                spell.timer:Hide()
+                NugRunning:ArrangeTimers()
             end
-            if not spell.timer then return end
-            active[spell.timer] = true
-            spell.timer.dstGUID = UnitGUID("target")
-            spell.timer:SetTime(expirationTime - duration, expirationTime)
-            spell.timer:SetAlpha(1)
-            spell.timer:Show()
-            NugRunning:ArrangeTimers()
-            end
-        elseif spell.timer then
-            active[spell.timer] = nil
-            spell.timer:Hide()
-            NugRunning:ArrangeTimers()
         end
     end
-end
-local DisMon = CreateFrame("Frame",nil,UIParent)
-DisMon:RegisterEvent("UNIT_AURA")
-DisMon:RegisterEvent("PLAYER_TARGET_CHANGED")
-DisMon:SetScript("OnEvent", dismon_onevent)
+    local DisMon = CreateFrame("Frame",nil,UIParent)
+    DisMon:RegisterEvent("UNIT_AURA")
+    DisMon:RegisterEvent("PLAYER_TARGET_CHANGED")
+    DisMon:SetScript("OnEvent", dismon_onevent)
 
 
+end -- end infect
 
--- local deathwish = GetSpellInfo(12292)
--- local enrage = GetSpellInfo(12880)
--- 14202
--- 14201
--- local bersrage = GetSpellInfo(18499)
 
 if class  == "WARRIOR" then
 
-local enrageIDs = {
-    [12880] = true,
-    [14201] = true,
-    [14202] = true,
-    [12292] = true,
-    [18499] = true,
-}
-local enrage_name = GetSpellInfo(12880)
-local RB_ID = 85288
-local enrage_opts = NugRunningConfig[RB_ID]
-NugRunningConfig[RB_ID] = nil
+    local enrageIDs = {
+        [12880] = true,
+        [14201] = true,
+        [14202] = true,
+        [12292] = true,
+        [18499] = true,
+    }
+    local enrage_name = GetSpellInfo(12880)
+    local RB_ID = 85288
+    local enrage_opts = NugRunningConfig[RB_ID]
+    NugRunningConfig[RB_ID] = nil
 
-local enrage_timer
-local enrage_frame = CreateFrame("Frame")
-enrage_frame.CheckFury = function(self)
-    if IsSpellKnown(23881) then -- Bloodthirst, Raging Blow becomes known only after event is fired
-        self:RegisterEvent("UNIT_AURA")
-    else
-        self:UnregisterEvent("UNIT_AURA")
+    local enrage_timer
+    local enrage_frame = CreateFrame("Frame")
+    enrage_frame.CheckFury = function(self)
+        if IsSpellKnown(23881) then -- Bloodthirst, Raging Blow becomes known only after event is fired
+            self:RegisterEvent("UNIT_AURA")
+        else
+            self:UnregisterEvent("UNIT_AURA")
+        end
     end
-end
 
-enrage_frame:SetScript("OnEvent",function(self, event, unit)
-    if event == "ACTIVE_TALENT_GROUP_CHANGED" then
-        return self:CheckFury()
-    end
-    if unit ~= "player" then return end
-    local longest = 0
-    local longestDuration
-    for i=1, 100 do
-        local _,_,_,_,_, duration, expires, _,_,_, spellID = UnitAura("player",i,"HELPFUL")
-        if not spellID then break end
-        if enrageIDs[spellID] then
-            if expires > longest then
-                longest = expires
-                longestDuration = duration
+    enrage_frame:SetScript("OnEvent",function(self, event, unit)
+        if event == "ACTIVE_TALENT_GROUP_CHANGED" then
+            return self:CheckFury()
+        end
+        if unit ~= "player" then return end
+        local longest = 0
+        local longestDuration
+        for i=1, 100 do
+            local _,_,_,_,_, duration, expires, _,_,_, spellID = UnitAura("player",i,"HELPFUL")
+            if not spellID then break end
+            if enrageIDs[spellID] then
+                if expires > longest then
+                    longest = expires
+                    longestDuration = duration
+                end
             end
         end
-    end
-    
-    if longest > 0 then
-        if not enrage_timer then
-            enrage_timer = NugRunning:ActivateTimer(UnitGUID("player"), UnitGUID("player"),
-                             UnitName("plyer"), nil,
-                             12880, enrage_name, enrage_opts, "BUFF")
-            enrage_timer.dontfree = true
+        
+        if longest > 0 then
+            if not enrage_timer then
+                enrage_timer = NugRunning:ActivateTimer(UnitGUID("player"), UnitGUID("player"),
+                                 UnitName("plyer"), nil,
+                                 12880, enrage_name, enrage_opts, "BUFF")
+                enrage_timer.dontfree = true
+            end
+            if not enrage_timer then return end
+            active[enrage_timer] = true
+            enrage_timer.dstGUID = UnitGUID("target")
+            enrage_timer:SetTime(longest - longestDuration, longest)
+            enrage_timer:SetAlpha(1)
+            enrage_timer:Show()
+            NugRunning:ArrangeTimers()
+        elseif enrage_timer then
+            active[enrage_timer] = nil
+            enrage_timer:Hide()
+            NugRunning:ArrangeTimers()
         end
-        if not enrage_timer then return end
-        active[enrage_timer] = true
-        enrage_timer.dstGUID = UnitGUID("target")
-        enrage_timer:SetTime(longest - longestDuration, longest)
-        enrage_timer:SetAlpha(1)
-        enrage_timer:Show()
-        NugRunning:ArrangeTimers()
-    elseif enrage_timer then
-        active[enrage_timer] = nil
-        enrage_timer:Hide()
-        NugRunning:ArrangeTimers()
-    end
-end)
+    end)
 
-hooksecurefunc(NugRunning,"PLAYER_LOGIN",function(self,event)
-    enrage_frame:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
-    enrage_frame:CheckFury()
+    hooksecurefunc(NugRunning,"PLAYER_LOGIN",function(self,event)
+        enrage_frame:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
+        enrage_frame:CheckFury()
+    end)
+
+end
+
+
+if class  == "PRIEST" then
+
+local raptureOpts = NugRunningConfig[47537]
+NugRunningConfig[47537] = nil
+if not raptureOpts then return end
+local raptureID = 47755
+
+hooksecurefunc(NugRunning,"COMBAT_LOG_EVENT_UNFILTERED",
+function( self, event, timestamp, eventType, hideCaster,
+            srcGUID, srcName, srcFlags, srcFlags2,
+            dstGUID, dstName, dstFlags, dstFlags2,
+            spellID, spellName, spellSchool, auraType, amount)
+
+    if spellID == raptureID and eventType == "SPELL_ENERGIZE" then
+        local isSrcPlayer = (bit.band(srcFlags, COMBATLOG_OBJECT_AFFILIATION_MINE) == COMBATLOG_OBJECT_AFFILIATION_MINE)
+        if not isSrcPlayer then return end
+
+        NugRunning:ActivateTimer(UnitGUID("player"), UnitGUID("player"),
+                                 UnitName("plyer"), nil,
+                                 spellID, spellName, raptureOpts, "COOLDOWN", 12)
+
+    end
 end)
 
 end
