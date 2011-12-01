@@ -277,28 +277,67 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
 end
 
 -- 4.2 hack
+local filters = { harmful, helpful }
+local targetTimers = {}
+
 local h = CreateFrame("Frame")
 h:SetScript("OnEvent",function(self, event, unit)
-    if unit ~= "target" and unit ~= "player" then return end
-    local targetGUID = UnitGUID(unit)
-    local targetName = UnitName(unit)
-    local playerGUID = UnitGUID("player")
-    for timer in pairs(active) do 
-        if  timer.dstGUID == targetGUID then
+    if event == "UNIT_AURA" then        
+        if unit ~= "target" and unit ~= "player" then return end
+        local targetGUID = UnitGUID(unit)
+        local targetName = UnitName(unit)
+        local playerGUID = UnitGUID("player")
+        for timer in pairs(active) do 
+            if  timer.dstGUID == targetGUID then
+                for i=1,100 do
+                    local name, _,_, count, _, duration, expirationTime, caster, _,_, aura_spellID = UnitAura(unit, GetSpellInfo(timer.spellID), nil, timer.filter)
+                    if  caster == "player" and
+                        timer.spellID == aura_spellID and
+                        GetTime() + duration - expirationTime < 0.1
+                        then
+                        NugRunning:RefreshTimer(playerGUID,targetGUID,targetName,nil, timer.spellID, timer.spellName, timer.opts, timer.timerType, duration, count)
+
+                    end
+                end
+            end
+        end
+    elseif event == "PLAYER_TARGET_CHANGED" then
+        -- updating timers from target unit when possible
+        local targetGUID = UnitGUID("target")
+        local playerGUID = UnitGUID("player")
+        table_wipe(targetTimers)
+        for timer in pairs(active) do
+            if timer.dstGUID == targetGUID and timer.srcGUID == playerGUID then
+                table.insert(targetTimers, timer)
+            end
+        end
+        
+        for _, filter in ipairs(filters) do
             for i=1,100 do
-                local name, _,_, count, _, duration, expirationTime, caster, _,_, aura_spellID = UnitAura(unit, GetSpellInfo(timer.spellID), nil, timer.filter)
-                if  caster == "player" and
-                    timer.spellID == aura_spellID and
-                    GetTime() + duration - expirationTime < 0.1
-                    then
-                    NugRunning:RefreshTimer(playerGUID,targetGUID,targetName,nil, timer.spellID, timer.spellName, timer.opts, timer.timerType, duration, count)
-                
+                local name, _,_, count, _, duration, expirationTime, caster, _,_, aura_spellID = UnitAura("target", i, filter) -- filter contains |PLAYER
+                if config[aura_spellID] then
+                    local found
+                    -- searching in generated earlier table of player->target timers for matching spell
+                    for _, timer in ipairs(targetTimers) do
+                        if timer.spellID == aura_spellID then found = true; break; end
+                    end
+
+                    local auraType = (filter == harmful) and "DEBUFF" or "BUFF"
+                    local newtimer
+                    if found then
+                        newtimer = NugRunning:RefreshTimer(playerGUID, targetGUID, UnitName("target"), nil, aura_spellID, name, config[aura_spellID], auraType, duration, count)
+                    else
+                        newtimer = NugRunning:ActivateTimer(playerGUID, targetGUID, UnitName("target"), nil, aura_spellID, name, config[aura_spellID], auraType, duration, count)
+                    end
+
+                    if newtimer.SetTime then newtimer:SetTime( expirationTime - duration + newtimer.fixedoffset, expirationTime) end
                 end
             end
         end
     end
 end)
 h:RegisterEvent("UNIT_AURA")
+h:RegisterEvent("PLAYER_TARGET_CHANGED")
 
 function NugRunning.RefreshTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID, spellName, opts, timerType, override, amount)
     local multiTargetGUID

@@ -70,12 +70,12 @@ if class == "WARLOCK" then
 AddSpell( 74434 ,{ name = "Soulburn",duration = 20, color = colors.CURSE })
 
 AddSpell( 348 ,{ name = "Immolate", recast_mark = 1.5, duration = 15, priority = 10, ghost = true, color = colors.RED, init = function(self)self.duration = 15 + Talent(85105)*3 end })
-AddSpell( 34936 ,{ name = "Backlash",duration = 8, shine = true, color = colors.CURSE })
-AddSpell( 47283 ,{ name = "Soulfire!",duration = 8, shine = true, color = colors.CURSE })
-AddSpell( 85383 ,{ name = "Imp Soul Fire",duration = 8, ghost = true, priority = 4, recast_mark = 3,short = "SoulFire", color = colors.BLACK })
-AddSpell( 80240 ,{ name = "Bane of Havoc",duration = 300, color = colors.WOO, short = "Havoc" })
-AddSpell( 30283 ,{ name = "Shadowfury",duration = 3, multiTarget = true })
-AddSpell( 47960 ,{ name = "Shadowflame",duration = 6, multiTarget = true })
+AddSpell( 34936 ,{ name = "Backlash", duration = 8, shine = true, color = colors.CURSE })
+AddSpell( 47283 ,{ name = "Soulfire!", duration = 8, shine = true, color = colors.CURSE })
+AddSpell( 85383 ,{ name = "Imp Soul Fire", duration = 20, ghost = true, priority = 4, recast_mark = 3,short = "SoulFire", color = colors.BLACK })
+AddSpell( 80240 ,{ name = "Bane of Havoc", duration = 300, color = colors.WOO, short = "Havoc" })
+AddSpell( 30283 ,{ name = "Shadowfury", duration = 3, multiTarget = true })
+AddSpell( 47960 ,{ name = "Shadowflame", duration = 6, multiTarget = true })
 AddCooldown( 50796, { name = "Chaos Bolt", ghost = true, priority = 3, color = colors.LBLUE })
 AddCooldown( 17962, { name = "Conflagrate", ghost = true, priority = 5, color = colors.LRED })
 
