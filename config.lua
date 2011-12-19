@@ -2,11 +2,11 @@ local _, helpers = ...
 local AddSpell = helpers.AddSpell
 local AddCooldown = helpers.AddCooldown
 local AddActivation = helpers.AddActivation
+local AddEventTimer = helpers.AddEventTimer
 local Talent = helpers.Talent
 local Glyph = helpers.Glyph
 local GetCP = helpers.GetCP
 local _,class = UnitClass("player")
-
 --[[
 GUIDE:
         Settings:
@@ -29,7 +29,8 @@ GUIDE:
             
 ]]
 
-local colors = {
+
+NugRunningConfig.colors = {
     RED = { 0.8, 0, 0},
     LRED = { 1,0.4,0.4},
     CURSE = { 0.6, 0, 1 },
@@ -47,8 +48,15 @@ local colors = {
     WOO = {151/255, 86/255, 168/255},
     WOO2 = {80/255, 83/255, 150/255},
     BROWN = { 192/255, 77/255, 48/255},
+    DEFAULT_DEBUFF = { 0.8, 0.1, 0.7},
+    DEFAULT_BUFF = { 1, 0.4, 0.2},
 }
-NugRunningConfig.colors = colors
+local colors = NugRunningConfig.colors
+
+
+
+-- AddEventTimer({ event = "SPELL_AURA_APPLIED", spellID = 101291, color = colors.WOO, duration = 45 })
+            --internal (or not) cooldown example. 45 second timer is activated when prco spell aura is applied.
 
 
 local useTrinkets = true
@@ -58,12 +66,12 @@ if useTrinkets then
     AddSpell({ 33702,33697,20572 },{ name = "Blood Fury", duration = 15 }) --Orc Racial
     AddSpell( 26297 ,{ name = "Berserking", duration = 10 }) --Troll Racial
 end
-if procTrinkets then
-    --AddSpell( 60437 ,{ name = "Grim Toll", duration = 10 })
-end
-if stackingTrinkets then
-    --AddSpell( 65006 ,{ name = "EotBM",duration = 10 }) --Eye of the Broodmother
-end
+-- if procTrinkets then
+--     --AddSpell( 60437 ,{ name = "Grim Toll", duration = 10 })
+-- end
+-- if stackingTrinkets then
+--     --AddSpell( 65006 ,{ name = "EotBM",duration = 10 }) --Eye of the Broodmother
+-- end
 
 
 if class == "WARLOCK" then
@@ -455,7 +463,7 @@ AddSpell( 22812 ,{ name = "Barkskin",duration = 12 })
 AddSpell( 17116 ,{ name = "Nature's Swiftness", timeless = true, duration = 0.1, color = colors.TEAL, short = "NS" })
 AddSpell( 774 ,{ name = "Rejuvenation",duration = 12, color = { 1, 0.2, 1} })
 AddSpell( 8936 ,{ name = "Regrowth",duration = 6, color = { 198/255, 233/255, 80/255} })
-AddSpell( 33763 ,{ name = "Lifebloom", shinerefresh = true, duration = 10, init = function(self)self.duration = 7 + Talent(57865)*2 end, stackcolor = {
+AddSpell( 33763 ,{ name = "Lifebloom", shinerefresh = true, recast_mark = 3, duration = 10, init = function(self)self.duration = 7 + Talent(57865)*2 end, stackcolor = {
                                                                             [1] = { 0, 0.8, 0},
                                                                             [2] = { 0.2, 1, 0.2},
                                                                             [3] = { 0.5, 1, 0.5},

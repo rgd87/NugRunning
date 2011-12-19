@@ -3,6 +3,7 @@ local _, helpers = ...
 NugRunningConfig = {}
 NugRunningConfig.cooldowns = {}
 NugRunningConfig.activations = {}
+NugRunningConfig.event_timers = {}
 
 helpers.Talent = function (spellID)
     local spellName
@@ -56,4 +57,12 @@ helpers.AddActivation = function(id, opts)
     opts.localname = GetSpellInfo(id)
     if not opts.localname then print("nrun: misssing spell #"..id) return end
     NugRunningConfig.activations[id] = opts
+end
+
+helpers.AddEventTimer = function( opts )
+    if not opts.event then print(string.format("nrun: missing combat log event (#%s)", opts.spellID)); return end
+    if not opts.duration then print(string.format("nrun: duration is required for event timers(#%s)", opts.spellID)); return end
+    if not opts.name then opts.name = "" end
+    if not NugRunningConfig.event_timers[opts.event] then NugRunningConfig.event_timers[opts.event] = {} end
+    table.insert(NugRunningConfig.event_timers[opts.event], opts)
 end
