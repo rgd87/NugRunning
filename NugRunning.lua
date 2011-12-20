@@ -282,8 +282,8 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
     end
     
     if not opts.color then
-    if timerType == "DEBUFF" then opts.color = { 0.8, 0.1, 0.7}
-    else opts.color = { 1, 0.4, 0.2} end
+    if timerType == "DEBUFF" then opts.color = NugRunningConfig.colors.DEFAULT_DEBUFF
+    else opts.color = NugRunningConfig.colors.DEFAULT_BUFF end
     end
     timer:SetColor(unpack(opts.color))
     if timer.glow:IsPlaying() then timer.glow:Stop() end

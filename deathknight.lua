@@ -90,11 +90,16 @@ if class  == "WARRIOR" then
             self:RegisterEvent("UNIT_AURA")
         else
             self:UnregisterEvent("UNIT_AURA")
+            if enrage_timer then
+                active[enrage_timer] = nil
+                enrage_timer:Hide()
+                NugRunning:ArrangeTimers()
+            end
         end
     end
 
     enrage_frame:SetScript("OnEvent",function(self, event, unit)
-        if event == "ACTIVE_TALENT_GROUP_CHANGED" then
+        if event == "ACTIVE_TALENT_GROUP_CHANGED" or event == "PLAYER_TALENT_UPDATE" then
             return self:CheckFury()
         end
         if unit ~= "player" then return end
@@ -134,6 +139,7 @@ if class  == "WARRIOR" then
 
     hooksecurefunc(NugRunning,"PLAYER_LOGIN",function(self,event)
         enrage_frame:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
+        enrage_frame:RegisterEvent("PLAYER_TALENT_UPDATE")
         enrage_frame:CheckFury()
     end)
 
