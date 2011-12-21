@@ -1,10 +1,12 @@
 local class = select(2,UnitClass("player"))
 
+
+local active = NugRunning.active
+local free = NugRunning.free
+
 if class == "WARRIOR" or class == "DEATHKNIGHT" then
 
     local infect
-    local active = NugRunning.active
-    local free = NugRunning.free
     if class  == "DEATHKNIGHT" then
         local FF = { id = 55095 }
         local BP = { id = 55078 }
