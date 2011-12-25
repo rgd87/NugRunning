@@ -308,7 +308,7 @@ h:SetScript("OnEvent",function(self, event, unit)
         local playerGUID = UnitGUID("player")
         for timer in pairs(active) do 
             if  timer.dstGUID == targetGUID then
-                if timer.eventType == "BUFF" or  timer.eventType == "DEBUFF" then
+                if timer.timerType == "BUFF" or  timer.timerType== "DEBUFF" then
                     for i=1,100 do
                         local name, _,_, count, _, duration, expirationTime, caster, _,_, aura_spellID = UnitAura(unit, GetSpellInfo(timer.spellID), nil, timer.filter)
                         if  caster == "player" and
