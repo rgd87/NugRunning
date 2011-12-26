@@ -109,7 +109,7 @@ end
 local SpellTextUpdate = function(self)
     if NRunDB.spellTextEnabled then
         if NRunDB.localNames then
-            self.spellText:SetText(spellName)
+            self.spellText:SetText(self.spellName)
         elseif NRunDB.shortTextEnabled and self.opts.short then
             self.spellText:SetText(self.opts.short)
         else
@@ -136,8 +136,16 @@ local TimerOnSettingsChanged = function (self)
     self.shine:GetParent():SetHeight(height*1.8)
     self.bar:SetWidth(width-height-1)
     self.bar:SetHeight(height)
-    self.timeText:SetFont("Fonts\\FRIZQT__.TTF",height*.4*fontscale)
-    self.spellText:SetFont("Fonts\\FRIZQT__.TTF",height*.5*fontscale)
+    if NugRunning.timeFont then
+        self.timeText:SetFont(NugRunning.timeFont.font, NugRunning.timeFont.size)
+    else
+        self.timeText:SetFont("Fonts\\FRIZQT__.TTF",height*.4*fontscale)
+    end
+    if NugRunning.nameFont then
+        self.nameText:SetFont(NugRunning.nameFont.font, NugRunning.nameFont.size)
+    else
+        self.spellText:SetFont("Fonts\\FRIZQT__.TTF",height*.5*fontscale)
+    end
     self.spellText:SetWidth(self.bar:GetWidth()*0.8)
     self.stacktext:SetFont("Fonts\\FRIZQT__.TTF",height*.5*fontscale,"OUTLINE")
 end
@@ -182,7 +190,8 @@ NugRunning.BarFrame = function(f)
     
     f.bar = CreateFrame("StatusBar",nil,f)
     f.bar:SetFrameStrata("MEDIUM")
-    f.bar:SetStatusBarTexture("Interface\\AddOns\\NugRunning\\statusbar")
+    local texture = NugRunning.texture or "Interface\\AddOns\\NugRunning\\statusbar"
+    f.bar:SetStatusBarTexture(texture)
     f.bar:GetStatusBarTexture():SetDrawLayer("ARTWORK")
     f.bar:SetHeight(height)
     f.bar:SetWidth(width - height - 1)
@@ -193,13 +202,21 @@ NugRunning.BarFrame = function(f)
 	f.bar.bg:SetTexture("Interface\\AddOns\\NugRunning\\statusbar")
     
     f.timeText = f.bar:CreateFontString();
-    f.timeText:SetFont("Fonts\\FRIZQT__.TTF",height*.4*fontscale)
+    if NugRunning.timeFont then
+        f.timeText:SetFont(NugRunning.timeFont.font, NugRunning.timeFont.size)
+    else
+        f.timeText:SetFont("Fonts\\FRIZQT__.TTF",height*.4*fontscale)
+    end
     f.timeText:SetJustifyH("RIGHT")
     f.timeText:SetVertexColor(1,1,1)
     f.timeText:SetPoint("RIGHT", f.bar, "RIGHT",-6,0)
     
     f.spellText = f.bar:CreateFontString();
-    f.spellText:SetFont("Fonts\\FRIZQT__.TTF",height*.5*fontscale)
+    if NugRunning.nameFont then
+        f.spellText:SetFont(NugRunning.nameFont.font, NugRunning.nameFont.size)
+    else
+        f.spellText:SetFont("Fonts\\FRIZQT__.TTF",height*.5*fontscale)
+    end
     f.spellText:SetWidth(f.bar:GetWidth()*0.8)
     f.spellText:SetHeight(height/2+1)
     f.spellText:SetJustifyH("CENTER")

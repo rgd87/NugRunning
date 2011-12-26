@@ -35,34 +35,89 @@ helpers.Glyph = function (gSpellID)
     return 0
 end
 
-helpers.AddSpell = function(id, opts)
+local function apply_overrides(opts, mods)
+    if not opts or not mods then return end
+    for k,v in pairs(mods) do
+        opts[k] = v
+    end
+end
+
+
+helpers.Spell = function(id, opts)
     if type(id) == "table" then
         for _, i in ipairs(id) do
-            if not GetSpellInfo(i) then print(string.format("nrun: misssing spell #%d (%s)",i,opts.name)) return end
+            if opts and not GetSpellInfo(i) then print(string.format("nrun: misssing spell #%d (%s)",i,opts.name)) return end
             NugRunningConfig[i] = opts
         end
     else
-        if not GetSpellInfo(id) then print(string.format("nrun: misssing spell #%d (%s)",id,opts.name)) return end
+        if opts and not GetSpellInfo(id) then print(string.format("nrun: misssing spell #%d (%s)",id,opts.name)) return end
         NugRunningConfig[id] = opts
     end
 end
-helpers.AddCooldown = function(id, opts)
+helpers.AddSpell = helpers.Spell
+helpers.ModSpell = function(id, mods)
+    if type(id) == "table" then
+        for _, i in ipairs(id) do
+            apply_overrides(NugRunningConfig[i], mods)
+        end
+    else
+        apply_overrides(NugRunningConfig[id], mods)
+    end
+end
+
+helpers.Cooldown = function(id, opts)
     if type(id) == "table" then id = id[1] end
-    opts.localname = GetSpellInfo(id)
-    if not opts.localname then print("nrun: misssing spell #"..id) return end
+    if opts then 
+        opts.localname = GetSpellInfo(id)
+        if not opts.localname then print("nrun: misssing spell #"..id) return end
+    end
     NugRunningConfig.cooldowns[id] = opts
 end
-
-helpers.AddActivation = function(id, opts)
-    opts.localname = GetSpellInfo(id)
-    if not opts.localname then print("nrun: misssing spell #"..id) return end
-    NugRunningConfig.activations[id] = opts
+helpers.AddCooldown = helpers.Cooldown
+helpers.ModCooldown = function(id, mods)
+    if type(id) == "table" then id = id[1] end
+    apply_overrides(NugRunningConfig.cooldowns[id], mods)
 end
 
-helpers.AddEventTimer = function( opts )
+helpers.Activation = function(id, opts)
+    if opts then
+        opts.localname = GetSpellInfo(id)
+        if not opts.localname then print("nrun: misssing spell #"..id) return end
+    end
+    NugRunningConfig.activations[id] = opts
+end
+helpers.AddActivation = helpers.Activation
+helpers.ModActivation = function(id, mods)
+    apply_overrides(NugRunningConfig.activations[id], mods)
+end
+
+helpers.EventTimer = function( opts )
     if not opts.event then print(string.format("nrun: missing combat log event (#%s)", opts.spellID)); return end
     if not opts.duration then print(string.format("nrun: duration is required for event timers(#%s)", opts.spellID)); return end
     if not opts.name then opts.name = "" end
     if not NugRunningConfig.event_timers[opts.event] then NugRunningConfig.event_timers[opts.event] = {} end
     table.insert(NugRunningConfig.event_timers[opts.event], opts)
+end
+helpers.AddEventTimer = helpers.EventTimer
+
+helpers.WipeColors = function()
+    local L = { NugRunningConfig, NugRunningConfig.activations, NugRunningConfig.cooldowns }
+    for _,T in ipairs(L) do
+        print (T)
+        for id, opts in pairs(T) do
+            opts.color = nil
+        end
+    end
+    for event,T in pairs(NugRunningConfig.event_timers) do
+        for _, opts in pairs(T) do
+            opts.color = nil
+        end
+    end
+end
+
+helpers.RemoveAll = function()
+    NugRunningConfig = {}
+    NugRunningConfig.cooldowns = {}
+    NugRunningConfig.activations = {}
+    NugRunningConfig.event_timers = {}
 end

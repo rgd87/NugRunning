@@ -1,3 +1,5 @@
+local _, helpers = ...
+
 NugRunning = CreateFrame("Frame","NugRunning")
 
 NugRunning:SetScript("OnEvent", function(self, event, ...)
@@ -41,6 +43,7 @@ local table_wipe = table.wipe
 NugRunning.active = active
 NugRunning.free = free
 NugRunning.timers = alltimers
+NugRunning.helpers = helpers
 
 NugRunning:RegisterEvent("PLAYER_LOGIN")
 function NugRunning.PLAYER_LOGIN(self,event,arg1)
@@ -262,6 +265,7 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
     timer.dstName = dstName
     if multiTargetGUID then timer.targets[multiTargetGUID] = true end
     timer.spellID = spellID
+    timer.spellName = spellName
     timer.timerType = timerType
     timer.icon:SetTexture(select(3,GetSpellInfo(spellID)))
     timer.opts = opts
