@@ -5,17 +5,17 @@ NugRunning.InitTotems = function(self)
     local active = NugRunning.active
     local free = NugRunning.free
     
-    local totems = {}
-    totems[1] = { name = "Fire", color = {1,80/255,0} }
-    totems[2] = { name = "Earth", color = {74/255, 142/255, 42/255} }
-    totems[3] = { name = "Water", color = { 65/255, 110/255, 1 } }
-    totems[4] = { name = "Air", color = { 0.6, 0, 1 }}
+    local totems = NugRunningConfig.totems
     
     local UpdateTotem = function( id, opts, name, startTime, duration, icon )
         local timer = opts.timer
         timer:SetTime(startTime,startTime+duration)
-        opts.name = name
-        timer:SetName(name)
+        if not totems.hideNames then
+            opts.name = name
+            timer:SetName(name)
+        else
+            timer:SetName(opts.name)
+        end
         timer:SetColor(unpack(opts.color))
         timer.icon:SetTexture(icon)
         active[timer] = true
@@ -24,8 +24,7 @@ NugRunning.InitTotems = function(self)
 
     NugRunning.PLAYER_TOTEM_UPDATE = function (self, event) 
         for id, opts in ipairs(totems) do
-            local broken_haveTotem, name, startTime, duration, icon = GetTotemInfo(id)
-            local haveTotem = (GetTotemTimeLeft(id) > 0)
+            local haveTotem, name, startTime, duration, icon = GetTotemInfo(id)
             if haveTotem then
                 UpdateTotem(id, opts, name, startTime, duration, icon)
             else
@@ -36,6 +35,7 @@ NugRunning.InitTotems = function(self)
         NugRunning:ArrangeTimers()
     end
     
+    -- reserving timers for totems
     for id, opts in ipairs(totems) do
         opts.timer = next(free)
         free[opts.timer] = nil

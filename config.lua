@@ -492,4 +492,12 @@ Spell( 53817 ,{ name = "Maelstrom Weapon", duration = 12, color = colors.PURPLE,
 Cooldown( 17364 ,{ name = "Stormstrike", color = colors.CURSE })
 Cooldown( 73680 ,{ name = "Unleash Elements", color = colors.WOO, short = "Unleash" })
 
+-- TOTEMS
+NugRunningConfig.totems = {}
+NugRunningConfig.totems.hideNames = true
+NugRunningConfig.totems[1] = { name = "Fire", color = {1,80/255,0} }
+NugRunningConfig.totems[2] = { name = "Earth", color = {74/255, 142/255, 42/255} }
+NugRunningConfig.totems[3] = { name = "Water", color = { 65/255, 110/255, 1} }
+NugRunningConfig.totems[4] = { name = "Air", color = {0.6, 0, 1} }
+
 end

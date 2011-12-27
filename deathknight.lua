@@ -155,21 +155,23 @@ NugRunningConfig[47537] = nil
 if not raptureOpts then return end
 local raptureID = 47755
 
-hooksecurefunc(NugRunning,"COMBAT_LOG_EVENT_UNFILTERED",
-function( self, event, timestamp, eventType, hideCaster,
-            srcGUID, srcName, srcFlags, srcFlags2,
-            dstGUID, dstName, dstFlags, dstFlags2,
-            spellID, spellName, spellSchool, auraType, amount)
+-- hooksecurefunc(NugRunning,"COMBAT_LOG_EVENT_UNFILTERED",
+-- function( self, event, timestamp, eventType, hideCaster,
+--             srcGUID, srcName, srcFlags, srcFlags2,
+--             dstGUID, dstName, dstFlags, dstFlags2,
+--             spellID, spellName, spellSchool, auraType, amount)
 
-    if spellID == raptureID and eventType == "SPELL_ENERGIZE" then
-        local isSrcPlayer = (bit.band(srcFlags, COMBATLOG_OBJECT_AFFILIATION_MINE) == COMBATLOG_OBJECT_AFFILIATION_MINE)
-        if not isSrcPlayer then return end
+--     if spellID == raptureID and eventType == "SPELL_ENERGIZE" then
+--         local isSrcPlayer = (bit.band(srcFlags, COMBATLOG_OBJECT_AFFILIATION_MINE) == COMBATLOG_OBJECT_AFFILIATION_MINE)
+--         if not isSrcPlayer then return end
 
-        NugRunning:ActivateTimer(UnitGUID("player"), UnitGUID("player"),
-                                 UnitName("plyer"), nil,
-                                 spellID, spellName, raptureOpts, "COOLDOWN", 12)
+--         NugRunning:ActivateTimer(UnitGUID("player"), UnitGUID("player"),
+--                                  UnitName("plyer"), nil,
+--                                  spellID, spellName, raptureOpts, "COOLDOWN", 12)
 
-    end
-end)
+--     end
+-- end)
+
+NugRunning.helpers.EventTimer({ event = "SPELL_ENERGIZE", spellID = raptureID, name = raptureOpts.name, color = raptureOpts.color, duration = raptureOpts.duration })
 
 end
