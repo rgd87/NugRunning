@@ -468,7 +468,7 @@ function NugRunning.TimerFunc(self,time)
 
     if beforeEnd <= 0 then
         if not self.dontfree then
-            while next(self.targets) do self.targets[next(self.targets)] = nil end
+            table_wipe(self.targets)
             NugRunning.free[self] = true
             return
         end
@@ -554,15 +554,12 @@ function NugRunning.ArrangeTimers(self)
     if arrangeInProgress then arrangePending = true; return end
     arrangePending = false
     arrangeInProgress = true -- a little synchronization
-    -- while next(playerTimers) do table.remove(playerTimers) end
     table_wipe(playerTimers)
     table_wipe(targetTimers)
-    -- while next(targetTimers) do table.remove(targetTimers) end
 
 
     local sorted = {}
     local targetGUID = UnitGUID("target")
-    local playerGUID = UnitGUID("player")
     for timer in pairs(active) do
         if timer.opts.group then
             sorted[timer.opts.group] = sorted[timer.opts.group] or {}
@@ -873,7 +870,6 @@ h:SetScript("OnEvent",function(self, event, unit)
         if unit ~= "target" and unit ~= "player" then return end
         local targetGUID = UnitGUID(unit)
         local targetName = UnitName(unit)
-        local playerGUID = UnitGUID("player")
         for timer in pairs(active) do 
             if  timer.dstGUID == targetGUID then
                 if timer.timerType == "BUFF" or  timer.timerType== "DEBUFF" then
@@ -893,7 +889,6 @@ h:SetScript("OnEvent",function(self, event, unit)
     elseif event == "PLAYER_TARGET_CHANGED" then
         -- updating timers from target unit when possible
         local targetGUID = UnitGUID("target")
-        local playerGUID = UnitGUID("player")
         table_wipe(targetTimers)
         for timer in pairs(active) do
             if timer.dstGUID == targetGUID and timer.srcGUID == playerGUID then

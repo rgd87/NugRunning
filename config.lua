@@ -3,6 +3,7 @@ local Spell = helpers.Spell
 local Cooldown = helpers.Cooldown
 local Activation = helpers.Activation
 local EventTimer = helpers.EventTimer
+local Anchor = helpers.Anchor
 local Talent = helpers.Talent
 local Glyph = helpers.Glyph
 local GetCP = helpers.GetCP

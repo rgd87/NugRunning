@@ -25,12 +25,14 @@ faketimer.fixedoffset = 0
 faketimer.opts = {}
 faketimer.SetTime = function(self,s,e)
     spell.fullduration = e - s
-    spell.ticktime = spell.fullduration / 5
+    spell.ticktime = spell.fullduration / 6
     spell.timer:SetTime(s,s+spell.ticktime)
     active[spell.timer] = true
     spell.timer:Show()
     NugRunning:ArrangeTimers()
 end
+faketimer.SetCount = function() end
+local t1, realTickTime
 
 hooksecurefunc(NugRunning,"COMBAT_LOG_EVENT_UNFILTERED",
 function( self, event, timestamp, eventType, hideCaster,
@@ -45,9 +47,12 @@ function( self, event, timestamp, eventType, hideCaster,
                 spell.timer.dstName = dstName
                 NugRunning.QueueAura(spellID, dstGUID, auraType, faketimer )
                 spell.ticks = 5
+                t1 = GetTime()
+                realTickTime = nil
             elseif eventType == "SPELL_PERIODIC_DAMAGE" then
                 local now = GetTime()
-                spell.timer:SetTime(now, now+spell.ticktime)
+                if not realTickTime then realTickTime = now - t1 end
+                spell.timer:SetTime(now, now + realTickTime)
                 NugRunning:ArrangeTimers()
             elseif eventType == "SPELL_AURA_REMOVED" then
                 active[spell.timer] = nil
