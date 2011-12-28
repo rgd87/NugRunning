@@ -1,103 +1,22 @@
-local CreateMark = function(self)
-        local m = CreateFrame("Frame",nil,self)
-        m:SetParent(self)
-        m:SetWidth(16)
-        m:SetHeight(self:GetHeight()*0.9)
-        m:SetFrameLevel(4)
-        m:SetAlpha(0.6)
-        
-        local texture = m:CreateTexture(nil, "OVERLAY")
-		texture:SetTexture("Interface\\AddOns\\NugRunning\\mark")
-        texture:SetVertexColor(1,1,1,0.3)
-        texture:SetAllPoints(m)
-        m.texture = texture
-        
-        
-        local spark = m:CreateTexture(nil, "OVERLAY")
-		spark:SetTexture("Interface\\CastingBar\\UI-CastingBar-Spark")
-        spark:SetAlpha(0)
-        spark:SetWidth(20)
-        spark:SetHeight(m:GetWidth()*4)
-        spark:SetPoint("CENTER",m)
-		spark:SetBlendMode('ADD')
-        m.spark = spark
-        
-        local ag = spark:CreateAnimationGroup()
-        local a1 = ag:CreateAnimation("Alpha")
-        a1:SetChange(1)
-        a1:SetDuration(0.2)
-        a1:SetOrder(1)
-        local a2 = ag:CreateAnimation("Alpha")
-        a2:SetChange(-1)
-        a2:SetDuration(0.4)
-        a2:SetOrder(2)
-        
-        m.shine = ag
 
-        return m
+NugRunning.TimerBar = {}
+local TimerBar = NugRunning.TimerBar
+
+
+function TimerBar.SetName(self, name)
+    self.spellText:SetText(name)
 end
 
-
-local TimerMarkUpdate = function(self)
-    if self.opts.recast_mark then
-        local pos = self.opts.recast_mark / (self.endTime - self.startTime) * self.bar:GetWidth()
-        self.mark:SetPoint("CENTER",self.bar,"LEFT",pos,0)
-        self.mark:Show()
-        self.mark.texture:Show()
-    else
-        self.mark:Hide()
-        self.mark.texture:Hide()
-    end    
+function TimerBar.SetColor(self,r,g,b)
+    self.bar:SetStatusBarColor(r,g,b)
+    self.bar.bg:SetVertexColor(r*.5, g*.5, b*.5)
 end
-local TimerOnUpdate = function(self,time)
-    self.OnUpdateCounter = (self.OnUpdateCounter or 0) + time
-    if self.OnUpdateCounter < 0.05 then return end
-    self.OnUpdateCounter = 0
 
-    if self.opts.timeless then
-        return 
-    end
+function TimerBar.SetIcon(self, icon)
+    self.icon:SetTexture(icon)
+end
 
-    local beforeEnd = self.endTime - GetTime()
-
-    if beforeEnd <= 0 then
-        if not self.dontfree then
-        while next(self.targets) do self.targets[next(self.targets)] = nil end
-        NugRunning.free[self] = true
-        NugRunning:ArrangeTimers()
-        return
-        end
-    end
-    
-    if self.opts.glowtime and beforeEnd < self.opts.glowtime then
-        if not self.glow:IsPlaying() then self.glow:Play() end
-    end
-
-    self.bar:SetValue(beforeEnd + self.startTime)
-    self.timeText:SetFormattedText("%.1f",beforeEnd)
-    if self.opts.recast_mark and beforeEnd < self.opts.recast_mark and beforeEnd > self.opts.recast_mark-0.1 then
-        self.mark.shine:Play()
-    end
-end
-NugRunning.TimerFunc = TimerOnUpdate
-local TimerSetTime = function(self,s,e)
-    self.startTime = s
-    self.endTime = e
-    self.bar:SetMinMaxValues(s,e)
-    self:MarkUpdate()
-end
-local TimerMakeTimeless = function(self, flag)
-    local prio = flag and self.opts.duration or 300000
-    self.bar:SetMinMaxValues(0,100)
-    self.bar:SetValue(0)
-    self.startTime = GetTime(); self.endTime = self.startTime + prio;
-    self.timeText:SetText("")
-end
-local TimerSetCharge = function(self,val, min, max)
-    if min and max then self.bar:SetMinMaxValues(min,max) end
-    self.bar:SetValue(val)
-end
-local StackTextUpdate = function(self,amount)
+function TimerBar.SetCount(self,amount)
     if not amount then return end
     if self.opts.stackcolor then
         self:SetColor(unpack(self.opts.stackcolor[amount]))
@@ -106,50 +25,57 @@ local StackTextUpdate = function(self,amount)
     if amount > 1 then self.stacktext:Show()
     else self.stacktext:Hide() end
 end
-local SpellTextUpdate = function(self)
-    if NRunDB.spellTextEnabled then
-        if NRunDB.localNames then
-            self.spellText:SetText(self.spellName)
-        elseif NRunDB.shortTextEnabled and self.opts.short then
-            self.spellText:SetText(self.opts.short)
-        else
-            self.spellText:SetText(self.opts.name)
-        end
-    else
-        self.spellText:SetText("")
-    end
-    if self.opts.textfunc and type(self.opts.textfunc) == "function" then self.spellText:SetText(self.opts.textfunc(self)) end
+
+function TimerBar.SetTime(self,s,e)
+    self.startTime = s
+    self.endTime = e
+    self.bar:SetMinMaxValues(s,e)
+    self:UpdateMark()
 end
-local TimerSetColor = function(self,r,g,b)
-    self.bar:SetStatusBarColor(r,g,b)
-    self.bar.bg:SetVertexColor(r*.5, g*.5, b*.5)
-end
-local TimerOnSettingsChanged = function (self)
-    local width = NRunDB.width
-    local height = NRunDB.height
-    local fontscale = NRunDB.fontscale
-    self:SetWidth(width)
-    self:SetHeight(height)
-    self.icon:GetParent():SetWidth(height)
-    self.icon:GetParent():SetHeight(height)
-    self.shine:GetParent():SetWidth(height*1.8)
-    self.shine:GetParent():SetHeight(height*1.8)
-    self.bar:SetWidth(width-height-1)
-    self.bar:SetHeight(height)
-    if NugRunning.timeFont then
-        self.timeText:SetFont(NugRunning.timeFont.font, NugRunning.timeFont.size)
+function TimerBar.UpdateMark(self)
+    if self.opts.recast_mark then
+        local duration = self.endTime - self.startTime
+        local pos = self.opts.recast_mark / duration * self.bar:GetWidth()
+        self.mark:SetPoint("CENTER",self.bar,"LEFT",pos,0)
+        self.mark:Show()
+        self.mark.texture:Show()
     else
-        self.timeText:SetFont("Fonts\\FRIZQT__.TTF",height*.4*fontscale)
-    end
-    if NugRunning.nameFont then
-        self.nameText:SetFont(NugRunning.nameFont.font, NugRunning.nameFont.size)
-    else
-        self.spellText:SetFont("Fonts\\FRIZQT__.TTF",height*.5*fontscale)
-    end
-    self.spellText:SetWidth(self.bar:GetWidth()*0.8)
-    self.stacktext:SetFont("Fonts\\FRIZQT__.TTF",height*.5*fontscale,"OUTLINE")
+        self.mark:Hide()
+        self.mark.texture:Hide()
+    end    
 end
-NugRunning.BarFrame = function(f)
+function TimerBar.SetMinMaxCharge(self, min, max)
+    self.bar:SetMinMaxValues(min,max)
+end
+function TimerBar.SetCharge(self,val)
+    self.bar:SetValue(val)
+end
+
+
+function TimerBar.ToInfinite(self)
+    self.bar:SetMinMaxValues(0,100)
+    self.bar:SetValue(0)
+    self.startTime = GetTime()
+    self.endTime = self.startTime + 1
+    self.timeText:SetText("")
+end
+
+function TimerBar.ToGhost(self)
+    self:SetColor(0.5,0,0)
+    self.timeText:SetText("")
+    self.bar:SetValue(0)
+    --self:SetAlpha(0.8)
+end
+
+function TimerBar.Update(self, beforeEnd)
+    self.bar:SetValue(beforeEnd + self.startTime)
+    self.timeText:SetFormattedText("%.1f", beforeEnd)
+end
+
+NugRunning.ConstructTimerBar = function()
+    local f = CreateFrame("Frame",nil,UIParent)
+    f.prototype = "TimerBar"
+
     local width = NRunDB.width
     local height = NRunDB.height
     local fontscale = NRunDB.fontscale
@@ -157,15 +83,6 @@ NugRunning.BarFrame = function(f)
         bgFile = "Interface\\Tooltips\\UI-Tooltip-Background", tile = true, tileSize = 0,
         insets = {left = -2, right = -2, top = -2, bottom = -2},
     }
-    
-    f.SetColor = TimerSetColor
-    f.SetName = SpellTextUpdate
-    f.SetCount = StackTextUpdate
-    f.SetTime = TimerSetTime
-    f.MakeTimeless = TimerMakeTimeless
-    f.SetCharge = TimerSetCharge
-    f.MarkUpdate = TimerMarkUpdate
-    f.OnSettingsChanged = TimerOnSettingsChanged
     
     f:SetWidth(width)
     f:SetHeight(height)
@@ -269,10 +186,44 @@ NugRunning.BarFrame = function(f)
     f.glow = glow
     
     f.animIn = aag
-
-    f:SetScript("OnUpdate",TimerOnUpdate)    
+     
     
-    f.mark = CreateMark(f)
+    local m = CreateFrame("Frame",nil,self)
+    m:SetParent(f)
+    m:SetWidth(16)
+    m:SetHeight(f:GetHeight()*0.9)
+    m:SetFrameLevel(4)
+    m:SetAlpha(0.6)
+    
+    local texture = m:CreateTexture(nil, "OVERLAY")
+    texture:SetTexture("Interface\\AddOns\\NugRunning\\mark")
+    texture:SetVertexColor(1,1,1,0.3)
+    texture:SetAllPoints(m)
+    m.texture = texture
+    
+    
+    local spark = m:CreateTexture(nil, "OVERLAY")
+    spark:SetTexture("Interface\\CastingBar\\UI-CastingBar-Spark")
+    spark:SetAlpha(0)
+    spark:SetWidth(20)
+    spark:SetHeight(m:GetWidth()*4)
+    spark:SetPoint("CENTER",m)
+    spark:SetBlendMode('ADD')
+    m.spark = spark
+    
+    local ag = spark:CreateAnimationGroup()
+    local a1 = ag:CreateAnimation("Alpha")
+    a1:SetChange(1)
+    a1:SetDuration(0.2)
+    a1:SetOrder(1)
+    local a2 = ag:CreateAnimation("Alpha")
+    a2:SetChange(-1)
+    a2:SetDuration(0.4)
+    a2:SetOrder(2)
+    
+    m.shine = ag
+
+    f.mark = m
 --~     if nobars then
 --~         f.bar:SetWidth(0)
 --~         f.bar:SetAlpha(0)

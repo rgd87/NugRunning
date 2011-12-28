@@ -108,7 +108,7 @@ Spell({ 59889,59888,59887 },{ name = "Borrowed Time", duration = 6 })
 -- DEBUFFS
 Spell( 589 ,{ name = "Shadow Word: Pain",duration = 18, ghost = true, priority = 9, color = colors.PURPLE, refreshed = true, short = "SW:Pain" })
 Spell( 34914 ,{ name = "Vampiric Touch", recast_mark = 1.5, ghost = true, priority = 10, duration = 15, color = colors.RED, short = "VampTouch", hasted = true })
-Spell( 2944 ,{ name = "Devouring Plague",duration = 24, ghost = true, priority = 8, color = colors.WOO, short = "Plague", hasted = true })
+Spell( 2944 ,{ name = "Devouring Plague",duration = 24, ghost = true, priority = 8, color = colors.WOO, short = "Plague" })
 Spell( 9484 ,{ name = "Shackle Undead",duration = 50, pvpduration = 8, short = "Shackle" })
 Spell( 15487 ,{ name = "Silence",duration = 5, color = colors.PINK })
 Spell( 95799 ,{ name = "Empowered Shadow",recast_mark = 1.5, ghost = true, priority = 5, short = "Empowered", duration = 15, color = colors.BLACK })
@@ -119,7 +119,7 @@ Spell( 47537,{ name = "Rapture", duration = 12, color = colors.BLACK }) -- speci
 --Spell( 15407, { name = "Mind Flay",  color = colors.CURSE, duration = 3 })
 
 --Shadow Orbs
-Spell( 77487 ,{ name = "",duration = 60, charged = true, maxcharge = 3, timeless = true, shine = true, shinerefresh = true, priority = 4, color = colors.WOO })
+Spell( 77487 ,{ name = "",duration = 60, charged = true, maxcharge = 3, shine = true, shinerefresh = true, priority = -3, color = colors.WOO })
 
 Cooldown( 8092, { name = "Mind Blast",  color = colors.CURSE })
 Cooldown( 32379, { name = "Shadow Word: Death", ghost = true, short = "SW:Death",  color = colors.PURPLE })

@@ -1,6 +1,7 @@
 local _, helpers = ...
 
 NugRunningConfig = {}
+NugRunningConfig.anchors = {}
 NugRunningConfig.cooldowns = {}
 NugRunningConfig.activations = {}
 NugRunningConfig.event_timers = {}
@@ -42,6 +43,10 @@ local function apply_overrides(opts, mods)
     end
 end
 
+
+helpers.Anchor = function(name, opts)
+    NugRunningConfig.anchors[name] = opts
+end
 
 helpers.Spell = function(id, opts)
     if type(id) == "table" then
