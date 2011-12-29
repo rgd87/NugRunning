@@ -9,6 +9,10 @@ local Glyph = helpers.Glyph
 local GetCP = helpers.GetCP
 local _,class = UnitClass("player")
 
+NugRunningConfig.texture = "Interface\\AddOns\\NugRunning\\statusbar"
+NugRunningConfig.nameFont = { font = "Fonts\\FRIZQT__.TTF", size = 10 }
+NugRunningConfig.timeFont = { font = "Fonts\\FRIZQT__.TTF", size = 8 }
+NugRunningConfig.stackFont = { font = "Fonts\\FRIZQT__.TTF", size = 10 }
 
 NugRunningConfig.colors = {}
 local colors = NugRunningConfig.colors

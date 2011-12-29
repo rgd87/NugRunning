@@ -72,15 +72,26 @@ function TimerBar.Update(self, beforeEnd)
     self.timeText:SetFormattedText("%.1f", beforeEnd)
 end
 
-NugRunning.ConstructTimerBar = function()
+function TimerBar.Resize(self, width, height)
+    self:SetWidth(width)
+    self:SetHeight(height)
+    self.icon:GetParent():SetWidth(height)
+    self.icon:GetParent():SetHeight(height)
+    self.shine:GetParent():SetWidth(height*1.8)
+    self.shine:GetParent():SetHeight(height*1.8)
+    self.bar:SetWidth(width-height-1)
+    self.bar:SetHeight(height)
+    self.spellText:SetWidth(self.bar:GetWidth()*0.8)
+    self.spellText:SetHeight(height/2+1)
+end
+
+NugRunning.ConstructTimerBar = function(width, height)
     local f = CreateFrame("Frame",nil,UIParent)
     f.prototype = "TimerBar"
 
-    local width = NRunDB.width
-    local height = NRunDB.height
-    local fontscale = NRunDB.fontscale
     local backdrop = {
-        bgFile = "Interface\\Tooltips\\UI-Tooltip-Background", tile = true, tileSize = 0,
+        bgFile = "Interface\\Tooltips\\UI-Tooltip-Background",
+        tile = true, tileSize = 0,
         insets = {left = -2, right = -2, top = -2, bottom = -2},
     }
     
@@ -100,7 +111,7 @@ NugRunning.ConstructTimerBar = function()
     f.icon = ict
     
     f.stacktext = ic:CreateFontString(nil, "OVERLAY");
-    f.stacktext:SetFont("Fonts\\FRIZQT__.TTF",height*.5*fontscale,"OUTLINE")
+    f.stacktext:SetFont(NugRunningConfig.stackFont.font, NugRunningConfig.stackFont.size,"OUTLINE")
     f.stacktext:SetJustifyH("RIGHT")
     f.stacktext:SetVertexColor(1,1,1)
     f.stacktext:SetPoint("RIGHT", ic, "RIGHT",1,-5)
@@ -119,21 +130,13 @@ NugRunning.ConstructTimerBar = function()
 	f.bar.bg:SetTexture("Interface\\AddOns\\NugRunning\\statusbar")
     
     f.timeText = f.bar:CreateFontString();
-    if NugRunning.timeFont then
-        f.timeText:SetFont(NugRunning.timeFont.font, NugRunning.timeFont.size)
-    else
-        f.timeText:SetFont("Fonts\\FRIZQT__.TTF",height*.4*fontscale)
-    end
+    f.timeText:SetFont(NugRunningConfig.timeFont.font, NugRunningConfig.timeFont.size)
     f.timeText:SetJustifyH("RIGHT")
     f.timeText:SetVertexColor(1,1,1)
     f.timeText:SetPoint("RIGHT", f.bar, "RIGHT",-6,0)
     
     f.spellText = f.bar:CreateFontString();
-    if NugRunning.nameFont then
-        f.spellText:SetFont(NugRunning.nameFont.font, NugRunning.nameFont.size)
-    else
-        f.spellText:SetFont("Fonts\\FRIZQT__.TTF",height*.5*fontscale)
-    end
+    f.spellText:SetFont(NugRunningConfig.nameFont.font, NugRunningConfig.nameFont.size)
     f.spellText:SetWidth(f.bar:GetWidth()*0.8)
     f.spellText:SetHeight(height/2+1)
     f.spellText:SetJustifyH("CENTER")
@@ -186,8 +189,7 @@ NugRunning.ConstructTimerBar = function()
     f.glow = glow
     
     f.animIn = aag
-     
-    
+         
     local m = CreateFrame("Frame",nil,self)
     m:SetParent(f)
     m:SetWidth(16)
@@ -200,7 +202,6 @@ NugRunning.ConstructTimerBar = function()
     texture:SetVertexColor(1,1,1,0.3)
     texture:SetAllPoints(m)
     m.texture = texture
-    
     
     local spark = m:CreateTexture(nil, "OVERLAY")
     spark:SetTexture("Interface\\CastingBar\\UI-CastingBar-Spark")
@@ -224,15 +225,6 @@ NugRunning.ConstructTimerBar = function()
     m.shine = ag
 
     f.mark = m
---~     if nobars then
---~         f.bar:SetWidth(0)
---~         f.bar:SetAlpha(0)
---~         f:SetWidth(height)
---~         f.timeText = f:CreateFontString(nil, "OVERLAY");
---~         f.timeText:SetFont("Fonts\\FRIZQT__.TTF",height*.7) --font size here
---~         f.timeText:SetJustifyH("LEFT")
---~         f.timeText:SetVertexColor(1,1,1)
---~         f.timeText:SetPoint("LEFT", f.icon, "RIGHT",6,0)
---~     end
+
     return f
 end

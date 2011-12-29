@@ -69,7 +69,7 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
     NRunDB.growth = NRunDB.growth or "up"
     NRunDB.width = NRunDB.width or 150
     NRunDB.height = NRunDB.height or 20
-    NRunDB.fontscale = NRunDB.fontscale or 1
+    -- NRunDB.fontscale = NRunDB.fontscale or 1
     NRunDB.nonTargetOpacity = NRunDB.nonTargetOpacity or 0.7
     NRunDB.cooldownsEnabled = (NRunDB.cooldownsEnabled  == nil and true) or NRunDB.cooldownsEnabled
     NRunDB.spellTextEnabled = (NRunDB.spellTextEnabled == nil and true) or NRunDB.spellTextEnabled
@@ -494,7 +494,7 @@ function NugRunning.GhostFunc(self,time)
     self.isGhost = nil
 end
 function NugRunning.CreateTimer(self)
-    local f = NugRunning.ConstructTimerBar()
+    local f = NugRunning.ConstructTimerBar(NRunDB.width, NRunDB.height)
     f._elapsed = 0
 
     f.prototype = NugRunning[f.prototype or "TimerBar"]
@@ -777,21 +777,22 @@ function NugRunning.SlashCmd(msg)
         NRunDB.totems = not NRunDB.totems
         print("Totems turned "..(NRunDB.swapTarget and "on" or "off")..". Will take effect after /reload")
     end
-    -- if k == "set" then
-    --     local p = ParseOpts(v)
-    --     NRunDB.width = p["width"] or NRunDB.width
-    --     NRunDB.height = p["height"] or NRunDB.height
-    --     NRunDB.growth = p["growth"] or NRunDB.growth
-    --     NRunDB.fontscale = p["fontscale"] or NRunDB.fontscale
-    --     --NRunDB.fontsize = p["fontsize"] or NRunDB.fonsize
-    --     NRunDB.nonTargetOpacity = p["nontargetopacity"] or NRunDB.nonTargetOpacity
-    --     for i,timer in ipairs(alltimers) do
-    --         timer:ClearAllPoints()
-    --     end
-    --     NugRunning:SettingsChanged()
-    --     NugRunning:SetupArrange()
-    --     NugRunning:ArrangeTimers()
-    -- end
+    if k == "set" then
+        local p = ParseOpts(v)
+        NRunDB.width = p["width"] or NRunDB.width
+        NRunDB.height = p["height"] or NRunDB.height
+        NRunDB.growth = p["growth"] or NRunDB.growth
+        -- NRunDB.fontscale = p["fontscale"] or NRunDB.fontscale
+        NRunDB.nonTargetOpacity = p["nontargetopacity"] or NRunDB.nonTargetOpacity
+        for i,timer in ipairs(alltimers) do
+            timer:ClearAllPoints()
+        end
+        for _,timer in pairs(alltimers) do
+            timer:Resize(NRunDB.width, NRunDB.height)
+        end
+        NugRunning:SetupArrange()
+        NugRunning:ArrangeTimers()
+    end
     if k == "setpos" then
         local p = ParseOpts(v)
         NRunDB.anchor.point = p["point"] or NRunDB.anchor.point
