@@ -494,7 +494,9 @@ function NugRunning.GhostFunc(self,time)
     self.isGhost = nil
 end
 function NugRunning.CreateTimer(self)
-    local f = NugRunning.ConstructTimerBar(NRunDB.width, NRunDB.height)
+    local w = NugRunningConfig.width or NRunDB.width
+    local h = NugRunningConfig.height or NRunDB.height
+    local f = NugRunning.ConstructTimerBar(w,h)
     f._elapsed = 0
 
     f.prototype = NugRunning[f.prototype or "TimerBar"]
@@ -649,7 +651,7 @@ function NugRunning.UNIT_COMBO_POINTS(self,event,unit)
 end
 function NugRunning.ReInitSpells(self,event,arg1)
     for id,opts in pairs(NugRunningConfig) do
-        if opts.init_done then
+        if type(opts) == "table" and opts.init_done then
             opts:init()
         end
     end

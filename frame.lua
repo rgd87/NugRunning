@@ -111,7 +111,9 @@ NugRunning.ConstructTimerBar = function(width, height)
     f.icon = ict
     
     f.stacktext = ic:CreateFontString(nil, "OVERLAY");
-    f.stacktext:SetFont(NugRunningConfig.stackFont.font, NugRunningConfig.stackFont.size,"OUTLINE")
+    f.stacktext:SetFont(NugRunningConfig.stackFont.font,
+                        NugRunningConfig.stackFont.size,
+                        "OUTLINE")
     f.stacktext:SetJustifyH("RIGHT")
     f.stacktext:SetVertexColor(1,1,1)
     f.stacktext:SetPoint("RIGHT", ic, "RIGHT",1,-5)
