@@ -37,6 +37,20 @@ local gettimer = function(self,spellID,dstGUID,timerType)
         end
     end
 end
+local GetSpellInfo_ = GetSpellInfo
+local SpellInfoCache = {}
+local GetSpellInfo = function(id)
+    local info = SpellInfoCache[id]
+    if not SpellInfoCache[id] then
+        info = { GetSpellInfo_(id) }
+        SpellInfoCache[id] = info
+    end
+    return unpack(info)
+end
+
+ASD = function ( )
+    return unpack({1,2,3,4,5})
+end
 
 local bit_band = bit.band
 local UnitAura = UnitAura
@@ -55,9 +69,15 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
     NRunDB_Global.charspec = NRunDB_Global.charspec or {}
     user = UnitName("player").."@"..GetRealmName()
     if NRunDB_Global.charspec[user] then
-        setmetatable(NRunDB,{__index = function(t,k) return NRunDB_Char[k] end, __newindex = function(t,k,v) rawset(NRunDB_Char,k,v) end})
+        setmetatable(NRunDB,{
+            __index = function(t,k) return NRunDB_Char[k] end,
+            __newindex = function(t,k,v) rawset(NRunDB_Char,k,v) end
+            })
     else
-        setmetatable(NRunDB,{__index = function(t,k) return NRunDB_Global[k] end, __newindex = function(t,k,v) rawset(NRunDB_Global,k,v) end})
+        setmetatable(NRunDB,{
+            __index = function(t,k) return NRunDB_Global[k] end,
+            __newindex = function(t,k,v) rawset(NRunDB_Global,k,v) end
+            })
     end
     NRunDB.anchor = NRunDB.anchor or {}
     NRunDB.anchor.point = NRunDB.anchor.point or "CENTER"
@@ -868,11 +888,23 @@ local filters = { harmful, helpful }
 local targetTimers = {}
 
 local h = CreateFrame("Frame")
+local hUnits = {
+    ["player"] = true,
+    ["target"] = true,
+    ["focus"] = true,
+    ["mouseover"] = true,
+    ["boss1"] = true,
+    ["boss2"] = true,
+    ["arena1"] = true,
+    ["arena2"] = true,
+    ["arena3"] = true,
+    ["arena4"] = true,
+    ["arena5"] = true,
+}
 h:SetScript("OnEvent",function(self, event, unit)
     if event == "UNIT_AURA" then        
-        if unit ~= "target" and unit ~= "player" then return end
+        if not hUnits[unit] then return end
         local targetGUID = UnitGUID(unit)
-        local targetName = UnitName(unit)
         for timer in pairs(active) do 
             if  timer.dstGUID == targetGUID then
                 if timer.timerType == "BUFF" or  timer.timerType== "DEBUFF" then
@@ -882,7 +914,7 @@ h:SetScript("OnEvent",function(self, event, unit)
                             timer.spellID == aura_spellID and
                             GetTime() + duration - expirationTime < 0.1
                             then
-                            NugRunning:RefreshTimer(playerGUID,targetGUID,targetName,nil, timer.spellID, timer.spellName, timer.opts, timer.timerType, duration, count)
+                            NugRunning:RefreshTimer(playerGUID,targetGUID,UnitName(unit),nil, timer.spellID, timer.spellName, timer.opts, timer.timerType, duration, count)
 
                         end
                     end
