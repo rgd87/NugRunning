@@ -48,10 +48,6 @@ local GetSpellInfo = function(id)
     return unpack(info)
 end
 
-ASD = function ( )
-    return unpack({1,2,3,4,5})
-end
-
 local bit_band = bit.band
 local UnitAura = UnitAura
 local UnitGUID = UnitGUID
@@ -899,24 +895,27 @@ local targetTimers = {}
 
 local h = CreateFrame("Frame")
 local hUnits = {
-    ["player"] = true,
-    ["target"] = true,
-    ["focus"] = true,
-    ["mouseover"] = true,
-    ["boss1"] = true,
-    ["boss2"] = true,
-    ["arena1"] = true,
-    ["arena2"] = true,
-    ["arena3"] = true,
-    ["arena4"] = true,
-    ["arena5"] = true,
+    ["player"] = 1,
+    ["target"] = 1,
+    ["focus"] = 2,
+    ["mouseover"] = 2,
+    ["boss1"] = 2,
+    ["boss2"] = 2,
+    ["arena1"] = 2,
+    ["arena2"] = 2,
+    ["arena3"] = 2,
+    ["arena4"] = 2,
+    ["arena5"] = 2,
 }
 h:SetScript("OnEvent",function(self, event, unit)
-    if event == "UNIT_AURA" then        
-        if not hUnits[unit] then return end
-        local targetGUID = UnitGUID(unit)
+    if event == "UNIT_AURA" then
+        local up = hUnits[unit]
+        if not up then return end
+        local unitGUID = UnitGUID(unit)
+        if up == 2 and UnitGUID("target") == unitGUID then return end
+
         for timer in pairs(active) do 
-            if  timer.dstGUID == targetGUID then
+            if  timer.dstGUID == unitGUID then
                 if timer.timerType == "BUFF" or  timer.timerType== "DEBUFF" then
                     for i=1,100 do
                         local name, _,_, count, _, duration, expirationTime, caster, _,_, aura_spellID = UnitAura(unit, GetSpellInfo(timer.spellID), nil, timer.filter)
@@ -924,7 +923,7 @@ h:SetScript("OnEvent",function(self, event, unit)
                             timer.spellID == aura_spellID and
                             GetTime() + duration - expirationTime < 0.1
                             then
-                            NugRunning:RefreshTimer(playerGUID,targetGUID,UnitName(unit),nil, timer.spellID, timer.spellName, timer.opts, timer.timerType, duration, count)
+                            NugRunning:RefreshTimer(playerGUID,unitGUID,UnitName(unit),nil, timer.spellID, timer.spellName, timer.opts, timer.timerType, duration, count)
 
                         end
                     end
