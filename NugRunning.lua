@@ -686,9 +686,33 @@ function NugRunning.ClearTimers(self, keepSelfBuffs)
 end
 
 
-
-
-
+function NugRunning.Unlock(self)
+    local prev
+    for i,timer in ipairs(alltimers) do
+        if i > 7 then break end
+        local fakeopts = {}
+        if not timer.opts then timer.opts = fakeopts; timer.startTime = GetTime(); timer.endTime = GetTime()+130-(i*10); end
+        timer:SetIcon("Interface\\Icons\\inv_misc_questionmark")
+        timer:SetName("Test timer")
+        timer:SetColor(0.4, 0.4, 0.4)
+        timer:Show()
+        local point, to
+        local xOffset, yOffset, ySign = 0, 4, 1
+        if NRunDB.growth == "down" then
+            point = "TOPLEFT"
+            to = "BOTTOMLEFT"
+            ySign = -1
+        else
+            point = "BOTTOMLEFT"
+            to = "TOPLEFT"
+            ySign = 1
+        end
+        timer:ClearAllPoints()
+        timer:SetPoint(point,prev or NugRunning.anchor,( prev and to ) or "TOPRIGHT", xOffset,yOffset * ySign)
+        prev = timer
+    end
+    NugRunning.unlocked = true
+end
 
 
 local ParseOpts = function(str)
@@ -719,25 +743,7 @@ function NugRunning.SlashCmd(msg)
     if k == "unlock" then
         NugRunning.anchor:Show()
         if NugRunning.anchor2 then NugRunning.anchor2:Show() end
-        local prev
-        for i,timer in ipairs(alltimers) do
-            local fakeopts = {}
-            if not timer.opts then timer.opts = fakeopts; timer.startTime = GetTime(); timer.endTime = GetTime()+40; end
-            timer:Show()
-            local point, to
-            local xOffset, yOffset, ySign = 0, 4, 1
-            if NRunDB.growth == "down" then
-                point = "TOPLEFT"
-                to = "BOTTOMLEFT"
-                ySign = -1
-            else
-                point = "BOTTOMLEFT"
-                to = "TOPLEFT"
-                ySign = 1
-            end
-            timer:SetPoint(point,prev or NugRunning.anchor,( prev and to ) or "TOPRIGHT", xOffset,yOffset * ySign)
-            prev = timer
-        end
+        NugRunning:Unlock()
     end
     if k == "lock" then
         NugRunning.anchor:Hide()
@@ -746,6 +752,7 @@ function NugRunning.SlashCmd(msg)
                 timer:Hide()
             end
         end
+        NugRunning.unlocked = nil
     end
     if k == "reset" then
         NRunDB.anchor.point = "CENTER"
@@ -807,13 +814,16 @@ function NugRunning.SlashCmd(msg)
         -- NRunDB.fontscale = p["fontscale"] or NRunDB.fontscale
         NRunDB.nonTargetOpacity = p["nontargetopacity"] or NRunDB.nonTargetOpacity
         for i,timer in ipairs(alltimers) do
-            timer:ClearAllPoints()
-        end
-        for _,timer in pairs(alltimers) do
             timer:Resize(NRunDB.width, NRunDB.height)
+            
         end
-        NugRunning:SetupArrange()
-        NugRunning:ArrangeTimers()
+        if NugRunning.unlocked  then
+            NugRunning:Unlock()
+        elseif NRunDB.growth then
+            for i,timer in ipairs(alltimers) do timer:ClearAllPoints() end
+            NugRunning:SetupArrange()
+            NugRunning:ArrangeTimers()
+        end
     end
     if k == "setpos" then
         local p = ParseOpts(v)
