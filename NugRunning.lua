@@ -455,7 +455,7 @@ function NugRunning.UNIT_AURA (self,event,unit)
     if not queue[unit] then return end
     for spellID, timer in pairs(queue[unit]) do
         local name, _,_, count, _, duration, expirationTime, caster, _,_, aura_spellID = UnitAura(unit, GetSpellInfo(spellID), nil, timer.filter)
-        if name then
+        if aura_spellID and aura_spellID == timer.spellID then
             if timer.opts.charged then
                 timer:SetCharge(count)
             elseif not timer.opts.timeless then
