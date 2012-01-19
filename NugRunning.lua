@@ -56,6 +56,7 @@ local table_wipe = table.wipe
 NugRunning.active = active
 NugRunning.free = free
 NugRunning.timers = alltimers
+NugRunning.gettimer = gettimer
 NugRunning.helpers = helpers
 
 NugRunning:RegisterEvent("PLAYER_LOGIN")
@@ -260,11 +261,20 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
         opts:init()
         opts.init_done = true
     end
+
+    timer.srcGUID = srcGUID
+    timer.dstGUID = dstGUID
+    timer.dstName = dstName
+    if multiTargetGUID then timer.targets[multiTargetGUID] = true end
+    timer.spellID = spellID
+    timer.timerType = timerType
+    timer:SetIcon(select(3,GetSpellInfo(spellID)))
+    timer.opts = opts
         
     local time
     if override then time = override
     else
-        time = NugRunning.SetDefaultDuration(dstFlags, opts)
+        time = NugRunning.SetDefaultDuration(dstFlags, opts, timer)
         if timerType == "BUFF" or timerType == "DEBUFF" then
             if timerType == "BUFF"
             then timer.filter = helpful
@@ -274,15 +284,7 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
             NugRunning.QueueAura(spellID, _guid, timerType, timer)
         end
     end
-    
-    timer.srcGUID = srcGUID
-    timer.dstGUID = dstGUID
-    timer.dstName = dstName
-    if multiTargetGUID then timer.targets[multiTargetGUID] = true end
-    timer.spellID = spellID
-    timer.timerType = timerType
-    timer:SetIcon(select(3,GetSpellInfo(spellID)))
-    timer.opts = opts
+
     timer.priority = opts.priority or 0
     local now = GetTime()
     timer.fixedoffset = opts.fixedlen and time - opts.fixedlen or 0
@@ -353,7 +355,7 @@ function NugRunning.RefreshTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID,
     local time
     if override then time = override
     else
-        time = NugRunning.SetDefaultDuration(dstFlags, opts)
+        time = NugRunning.SetDefaultDuration(dstFlags, opts, timer)
         if timerType == "BUFF" or timerType == "DEBUFF" then
             if not dstGUID then
                 if timer.queued and GetTime() < timer.queued + 0.9 then
@@ -426,12 +428,12 @@ function NugRunning.DeactivateTimersOnDeath(self,dstGUID)
     end
 end
 
-function NugRunning.SetDefaultDuration(dstFlags, v )
-    if v.pvpduration
+function NugRunning.SetDefaultDuration(dstFlags, opts, timer )
+    if opts.pvpduration
         and bit.band(dstFlags, COMBATLOG_FILTER_HOSTILE_PLAYERS) == COMBATLOG_FILTER_HOSTILE_PLAYERS
-        then return v.pvpduration
+        then return opts.pvpduration
     end
-    return ((type(v.duration) == "function" and v.duration()) or v.duration)
+    return ((type(opts.duration) == "function" and opts.duration(timer, opts)) or opts.duration)
 end
 
 local debuffUnits = {"target","mouseover","arena1","arena2","arena3","arena4","arena5","focus"}
