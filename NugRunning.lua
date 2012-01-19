@@ -122,6 +122,7 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
         
     NugRunning.anchor = NugRunning.CreateAnchor(NRunDB.anchor)
     local pos = NRunDB.anchor
+    -- local pos = { point = "CENTER", parent = "UIParent", to = "CENTER", x = 0, y = 0 }
     NugRunning.anchor:SetPoint(pos.point, pos.parent, pos.to, pos.x, pos.y)
 
     if NRunDB.separate then
@@ -868,10 +869,12 @@ function NugRunning.CreateAnchor(opts)
     t:SetVertexColor(1, 0, 0)
     t:SetAllPoints(f)
     
+    f.anchor_table = opts
     f:SetScript("OnMouseDown",function(self)
             self:StartMoving()
         end)
     f:SetScript("OnMouseUp",function(self)
+            local opts = self.anchor_table
             self:StopMovingOrSizing();
             local point,_,to,x,y = self:GetPoint(1)
             opts.point = point
