@@ -134,7 +134,8 @@ Spell( 113792 ,{ name = "Psychic Terror",duration = 30, pvpduration = 8 })
 Spell( 8122 ,{ name = "Psychic Scream",duration = 8, multiTarget = true })
 -- Spell( 64044 ,{ name = "Psychic Horror",duration = 1, multiTarget = true })
 
-Spell( 47536,{ name = "Rapture", duration = 12, color = colors.BLACK }) -- special timer
+--Rapture
+EventTimer({ event = "SPELL_ENERGIZE", spellID = 47755, name = "Rapture", color = colors.BLACK, duration = 12 })
 --Spell( 15407, { name = "Mind Flay",  color = colors.CURSE, duration = 3 })
 
 --Old Shadow Orbs
@@ -143,7 +144,7 @@ Spell( 47536,{ name = "Rapture", duration = 12, color = colors.BLACK }) -- speci
 Cooldown( 8092, { name = "Mind Blast",  color = colors.CURSE })
 Cooldown( 32379, { name = "Shadow Word: Death", ghost = true, short = "SW:Death",  color = colors.PURPLE })
 
-Spell( 81782 ,{ name = "Power Word: Barrier", short = "PW: Barrier", duration = 25, color = {1,0.7,0.5} }) -- duration actually used here, invisible aura applied
+Spell( 81781 ,{ name = "Power Word: Barrier", short = "PW: Barrier", duration = 25, color = {1,0.7,0.5} }) -- duration actually used here, invisible aura applied
 
 -- Spell( 81208 ,{ name = "Chakra: Serenity", short = "Serenity", color = colors.WOO, shine = true, timeless = true, duration = 9999 })
 -- Spell( 81206 ,{ name = "Chakra: Sanctuary", color = colors.WOO2, short = "Sanctuary", shine = true, timeless = true, duration = 9999 })
@@ -164,48 +165,41 @@ end
 
 
 if class == "ROGUE" then
--- BUFFS
-Spell( 32645 ,{ name = "Envenom", color = { 0, 0.65, 0}, duration = function() return (1+GetCP()) end })
-
-Spell( 2983 ,{ name = "Sprint", shine = true, duration = 15 })
+Spell( 2983 ,{ name = "Sprint", shine = true, duration = 8 })
 Spell( 5277 ,{ name = "Evasion", color = colors.PINK, duration = 15 })
 Spell( 31224 ,{ name = "Cloak of Shadows", color = colors.CURSE, duration = 5, short = "CloS" })
-Spell( 14183 ,{ name = "Premeditation",duration = 20, color = colors.CURSE })                    
-Spell( 74002 ,{ name = "Combat Insight", shine = true, shinerefresh = true, duration = 6, color = colors.CURSE })
 Spell( 73651 ,{ name = "Recuperate", shinerefresh = true, color = colors.LGREEN ,duration = function() return (6 * GetCP()) end })
-Spell( 5171 ,{ name = "Slice and Dice", shinerefresh = true,  short = "SnD", color = colors.PURPLE,
-    duration = function() return (6 + GetCP()*3)*(1+Talent(14165)*0.25) end,
-    init = function(self) self.fixedlen = (21 + Glyph(56810)*6) * (1+Talent(14165)*0.25) end
-})
+Spell( 5171 ,{ name = "Slice and Dice", shinerefresh = true, fixedlen = 24, short = "SnD", color = colors.PURPLE,
+    duration = function() return (6 + GetCP()*6) end,
+}) -- SnD fixedlen set to match Rupture maximum duration
+Spell( 122233 ,{ name = "Crimson Tempest", short = "Tempest", color = colors.RED, duration = 12, multiTarget = true })
     
--- DEBUFFS
 Spell( 1833 ,{ name = "Cheap Shot", duration = 4, color = colors.LRED })
-Spell( 408 ,{ name = "Kidney Shot", shine = true, duration = 5,color = colors.LRED })
-Spell( 1776 ,{ name = "Gouge", color = colors.PINK, duration = 4,
-    init = function(self) self.duration = 4 + Talent(13741)*1 end
-})
+Spell( 408 ,{ name = "Kidney Shot", shine = true, duration = function() return 1+GetCP() end, color = colors.LRED })
+Spell( 1776 ,{ name = "Gouge", color = colors.PINK, duration = 4 })
 Spell( 2094 ,{ name = "Blind",duration = 60, pvpduration = 8, color = {0.20, 0.80, 0.2} })
-Spell( 8647 ,{ name = "Expose Armor", shinerefresh = true, color = colors.LBLUE,
-    duration = function() return GetCP() * 10 end
-})
+
+-- Spell( 113746 ,{ name = "Weakened Armor", short = "WeakArmor", anySource = true, color = colors.BROWN, duration = 30 })
+
 Spell( 51722 ,{ name = "Dismantle",duration = 10,color = colors.LRED })
 Spell( 6770 ,{ name = "Sap",duration = 60, color = colors.LBLUE })
 
-Spell( 1943 ,{ name = "Rupture", shinerefresh = true, color = colors.RED, fixedlen = 16,
-    duration = function() return (6 + GetCP() * 2) + Glyph(56801)*4 end,
-    init = function(self) self.fixedlen = 16 + Glyph(56801)*4 end
+Spell( 1943 ,{ name = "Rupture", shinerefresh = true, fixedlen = 24, color = colors.RED, fixedlen = 16,
+    duration = function() return (4 + GetCP() * 4) end,
 })
 Spell( 703 ,{ name = "Garrote", color = colors.RED, duration = 18 })
 Spell( 1330 ,{ name = "Silence", color = colors.PINK, duration = 3 })
 
---Spell( 2818, { name = "Deadly Poison", color = { 0.1, 0.75, 0.1}, duration = 12, short = "Deadly"})
 --Spell( 3409 ,{ name = "Crippling Poison", color = { 192/255, 77/255, 48/255}, duration = 12, short = "Crippling" })
---Spell( 51693 ,{ name = "Waylay", color = { 192/255, 77/255, 48/255}, duration = 8 })
 
-Spell( 14177 ,{ name = "Cold Blood", shine = true, color = colors.TEAL, timeless = true, duration = 0.1})
-Spell( 79140 ,{ name = "Vendetta", shine = true, color = colors.CURSE, duration = 30 })
-Spell( 79126 ,{ name = "Groggy", shine = true, color = colors.BLACK, duration = 8 })
--- Spell( 58427 ,{ name = "Overkill", duration = 20, color =  colors.LRED }) --broken atm
+Spell( 32645 ,{ name = "Envenom", color = { 0, 0.65, 0}, duration = function() return (1+GetCP()) end })
+Spell( 79140 ,{ name = "Vendetta", shine = true, color = colors.CURSE, duration = 20 })
+Spell( 121153 ,{ name = "Blindside", shine = true, color = colors.BLACK, duration = 10 })
+
+Spell( 108212,{ name = "Burst of Speed", short = "Burst", shine = true, duration = 4 })
+Spell( 115197,{ name = "Partial Paralysis", short = "Rooted", shine = true, color = colors.BROWN, duration = 4 })
+Spell( 14183 ,{ name = "Premeditation",duration = 20, color = colors.CURSE })                    
+Spell( 74002 ,{ name = "Combat Insight", shine = true, shinerefresh = true, duration = 10, color = colors.CURSE })
 
 Spell( 84745 ,{ name = "Shallow Insight", short = "1x Insight", shine = true, color = colors.CURSE, duration = 15 })
 Spell( 84746 ,{ name = "Moderate Insight", short = "2x Insight", shine = true, color = colors.CURSE, duration = 15 })
@@ -213,12 +207,15 @@ Spell( 84747 ,{ name = "Deep Insight", short = "3x Insight", shine = true, color
 Spell( 13750 ,{ name = "Adrenaline Rush",duration = 15, color = colors.LRED })
 Spell( 13877 ,{ name = "Blade Flurry",duration = 15, color = colors.LRED })
 
-Spell( 51713 ,{ name = "Shadow Dance",duration = 10, color = colors.BLACK })
-Spell( 16511 ,{ name = "Hemo",duration = 60, color = colors.CURSE })
+Spell( 51713 ,{ name = "Shadow Dance",duration = 8, color = colors.BLACK })
+-- Spell( 89775 ,{ name = "Hemo",duration = 60, color = colors.CURSE })
+-- Spell( 91021 ,{ name = "Find Weakness", duration = 10, color =  colors.LRED })
 
 --Spell( 1784 ,{ name = "Stealth", color = colors.CURSE, timeless = true, duration = 0.1})
--- 1725, { name = "Distract", color = colors.PURPLE, duration = 10 })
+Spell( 114018,{ name = "Shroud of Concealment", short = "Shroud", color = colors.CURSE, duration = 15 })
+Spell( 114842,{ name = "Shadow Walk", color = colors.PINK, duration = 6 })
 
+EventTimer({ event = "SPELL_CAST_SUCCESS", spellID = 1725, name = "Distract", color = colors.PURPLE, duration = 10 })
 end
 
 if class == "WARRIOR" then
@@ -236,7 +233,7 @@ Spell( 1715 ,{ name = "Hamstring", ghost = true, color = colors.PURPLE, duration
 
 -- Spell( 12809 ,{ name = "Concussion Blow", color = { 1, 0.3, 0.6 }, duration = 5 })
 Spell( 355 ,{ name = "Taunt", duration = 3 })
-Spell( 113746 ,{ name = "Weakened Armor", short = "WeakArmor", anySource = true, color = { 1, 0.2, 0.2}, duration = 30 })
+Spell( 113746 ,{ name = "Weakened Armor", short = "WeakArmor", anySource = true, color = colors.BROWN, duration = 30 })
 Spell( 1160 ,{ name = "Demoralizing Shout", short = "DemoShout", anySource = true, color = {0.3, 0.9, 0.3}, duration = 30, multiTarget = true })
 Spell( 115798 ,{ name = "Weakened Blows", short = "WeakBlows", anySource = true, color = {149/255, 121/255, 214/255}, duration = 30, multiTarget = true })
 Spell( 122510 ,{ name = "Ultimatum", shine = true, timeless = true, color = colors.CURSE, duration = 0.1 })
