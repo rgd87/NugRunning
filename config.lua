@@ -220,53 +220,59 @@ Spell( 2565 ,{ name = "Shield Block", color = colors.WOO2, duration = 10 })
 Spell( 85730 ,{ name = "Deadly Calm", duration = 10 })
 Spell( 12328 ,{ name = "Sweeping Strikes", color = colors.LRED, short = "Sweeping", duration = 10 })
 
-Spell( 86346 ,{ name = "Colossus Smash", color = colors.BROWN, duration = 6 })
+-- Spell( 86346 ,{ name = "Colossus Smash", color = colors.BROWN, duration = 6 })
+Cooldown( 86346 ,{ name = "Colossus Smash", ghost = true, color = colors.BLACK, resetable = true, duration = 20 })
+Spell( 85288, { name = "Enraged", shine = true, showid = 14202, color = colors.RED, duration = 10 })
+
 Spell( 1715 ,{ name = "Hamstring", ghost = true, color = colors.PURPLE, duration = 15, pvpduration = 8 })
-Spell( 23694 ,{ name = "Imp Hamstring", shine = true, color = colors.LRED, duration = 5 })
-Spell( 85388 ,{ name = "Throwdown", color = colors.LRED, duration = 5 })
-Spell( 94009 ,{ name = "Rend", color = colors.RED, duration = 15 })   -- like DKs frost fever & plague
-Spell( 46968 ,{ name = "Shockwave", color = { 0.6, 0, 1 }, shine = true, duration = 4, multiTarget = true })
-Spell( 12809 ,{ name = "Concussion Blow", color = { 1, 0.3, 0.6 }, duration = 5 })
+
+-- Spell( 12809 ,{ name = "Concussion Blow", color = { 1, 0.3, 0.6 }, duration = 5 })
 Spell( 355 ,{ name = "Taunt", duration = 3 })
-Spell( 58567 ,{ name = "Sunder Armor", short = "Sunder", anySource = true, color = { 1, 0.2, 0.2}, duration = 30 })
-Spell( 1160 ,{ name = "Demoralizing Shout", anySource = true, short = "DemoShout", color = {0.3, 0.9, 0.3}, duration = 30, multiTarget = true })
-Spell( 6343 ,{ name = "Thunder Clap", anySource = true, color = {149/255, 121/255, 214/255}, duration = 30, multiTarget = true })
---~ Spell( 56112 ,{ name = "Furious Attacks", duration = 10 })
+Spell( 113746 ,{ name = "Weakened Armor", short = "WeakArmor", anySource = true, color = { 1, 0.2, 0.2}, duration = 30 })
+Spell( 1160 ,{ name = "Demoralizing Shout", short = "DemoShout", anySource = true, color = {0.3, 0.9, 0.3}, duration = 30, multiTarget = true })
+Spell( 115798 ,{ name = "Weakened Blows", short = "WeakBlows", anySource = true, color = {149/255, 121/255, 214/255}, duration = 30, multiTarget = true })
+Spell( 122510 ,{ name = "Ultimatum", shine = true, timeless = true, color = colors.CURSE, duration = 0.1 })
+Cooldown( 6572, { name = "Revenge", color = colors.WOO, fixedlen = 6, ghost = true })
+Activation( 6572, { name = "RevengeActivation", for_cd = true })
+
+Spell( 55694, { name = "Enraged Regeneration", short = "Regen", color = colors.LGREEN, duration = 5 })
+Spell( 46968 ,{ name = "Shockwave", color = colors.CURSE, shine = true, duration = 4, multiTarget = true })
+Spell( 12323 ,{ name = "Piercing Howl", color = colors.PURPLE, duration = 5 })
+Spell( 107566 ,{ name = "Staggering Shout", duration = 5 })
+Spell( 105771, { name = "Warbringer", duration = 3 })
+Spell( 107574, { name = "Avatar", shine = true, color = colors.TEAL, duration = 20 })
+Spell( 107570, { name = "Storm Bolt", color = { 1, 0.3, 0.6 }, duration = 3})
+-- Cooldown( 107570, { name = "Storm Bolt", color = colors.TEAL })
+
+--Spell( 56112 ,{ name = "Furious Attacks", duration = 10 })
 --Activation( 5308, { name = "Execute", shine = true, timeless = true, color = colors.CURSE, duration = 0.1 })
 
 Cooldown( 12294, { name = "Mortal Strike", short = "", recast_mark = 1.5, fixedlen = 9, ghost = true,  color = colors.CURSE })
---Spell( 52437 ,{ name = "Reset", shine = true, color = colors.BLACK, timeless = true, duration = 0.1 })
---Activation( 86346, { name = "Reset", shine = true,  color = colors.BLACK, duration = 0.1 })
-Cooldown( 86346 ,{ name = "Colossus Smash", ghost = true, color = colors.BLACK, resetable = true, duration = 20 })
---Activation( 7384, { name = "Overpower", shine = true, color = colors.LBLUE, duration = 6})
-Spell( 60503 ,{ name = "", recast_mark = 4, color = colors.RED, duration = 9 }) -- Taste for blood
---Spell( 90806 ,{ name = "Executioneer", color = colors.WOO, duration = 30 })
+Activation( 7384, { name = "Overpower", short = "", shine = true, color = colors.RED, recast_mark = 4.5, duration = 9})
+-- Spell( 60503 ,{ name = "", recast_mark = 4, color = colors.RED, duration = 9 }) -- Taste for blood: new id 125831
 
 Cooldown( 23881, { name = "Bloodthirst", short = "", ghost = true, recast_mark = 1.5, fixedlen = 6,  color = colors.CURSE })
 Spell( 46916 ,{ name = "Bloodsurge", shine = true, color = colors.LRED, duration = 10 })
 
 Cooldown( 85288, { name = "Raging Blow", ghost = true,  color = colors.WOO })
 Activation( 85288, { name = "Enraged", for_cd = true })
-Spell( 85288, { name = "Enraged", shine = true, showid = 14202, color = colors.RED, duration = 10 })
 -- it's enrage timer config
 
-Cooldown( 1680, { name = "Whirlwind", color = colors.LBLUE })
 
-Spell( 12976, { name = "Last Stand", color = colors.BLACK, duration = 20 })
+Cooldown( 1680, { name = "Whirlwind", color = colors.LBLUE })
+Spell( 12975, { name = "Last Stand", color = colors.BLACK, duration = 20 })
 Spell( 871, { name = "Shield Wall", color = colors.WOO2, duration = 12 })
 Cooldown( 23922, { name = "Shield Slam", short = "", recast_mark = 1.5, ghost = true,  color = colors.CURSE, resetable = true })
 --Activation( 23922, { name = "Slam!", shine = true, timeless = true, color = colors.CURSE, duration = 0.1 })
---Spell( 50227 ,{ name = "Slam!", shine = true, timeless = true, color = colors.CURSE, duration = 0.1 })
-Cooldown( 6572, { name = "Revenge", color = colors.WOO, fixedlen = 6, ghost = true })
-Activation( 6572, { name = "RevengeActivation", for_cd = true })
+
 -- Cooldown( 78, { name = "Heroic Strike", short = "Heroic", fixedlen = 6, ghost = true })
 -- Cooldown( 6343, { name = "Thunder Clap", short = "Clap", ghost = true })
 
 
+
 Spell( 32216, { name = "Victory Rush", color = colors.PINK, duration = 20})
 
-Spell( 20253, { name = "Intercept", duration = 3 })
-Spell( 7922, { name = "Charge", duration = 1, init = function(self)self.duration = 1 + Talent(64976)*2 end })
+-- Spell( 7922, { name = "Charge", duration = 1 })
 end
 
 if class == "DEATHKNIGHT" then

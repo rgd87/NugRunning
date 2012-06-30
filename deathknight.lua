@@ -4,7 +4,7 @@ local class = select(2,UnitClass("player"))
 local active = NugRunning.active
 local free = NugRunning.free
 
-if class == "WARRIOR" or class == "DEATHKNIGHT" then
+if class == "DEATHKNIGHT" then
 
     local infect
     if class  == "DEATHKNIGHT" then
@@ -24,14 +24,14 @@ if class == "WARRIOR" or class == "DEATHKNIGHT" then
         
         infect = { FF, BP, SF }
     end
-    if class  == "WARRIOR" then
-        local rend = { id = 94009 }
-        rend.name = GetSpellInfo(rend.id)
-        rend.opts = NugRunningConfig[rend.id]
-        NugRunningConfig[rend.id] = nil
+    -- if class  == "WARRIOR" then
+    --     local rend = { id = 94009 }
+    --     rend.name = GetSpellInfo(rend.id)
+    --     rend.opts = NugRunningConfig[rend.id]
+    --     NugRunningConfig[rend.id] = nil
         
-        infect = { rend }
-    end
+    --     infect = { rend }
+    -- end
     NugRunning.infect = infect
 
     local prevTargetGUID
@@ -74,11 +74,8 @@ end -- end infect
 if class  == "WARRIOR" then
 
     local enrageIDs = {
-        [12880] = true,
-        [14201] = true,
-        [14202] = true,
-        [12292] = true,
-        [18499] = true,
+        [12880] = true, --enrage
+        [18499] = true, --berserker rage
     }
     local enrage_name = GetSpellInfo(12880)
     local RB_ID = 85288

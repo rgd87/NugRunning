@@ -7,23 +7,24 @@ NugRunningConfig.activations = {}
 NugRunningConfig.event_timers = {}
 
 helpers.Talent = function (spellID)
-    local spellName
-    if type(spellID) == "number" then 
-        spellName = GetSpellInfo(spellID)
-    elseif type(spellID) == "string" then
-        spellName = spellID
-    end
-    local numTabs = GetNumTalentTabs()
-    for t=1, numTabs do
-        local numTalents = GetNumTalents(t)
-        for i=1, numTalents do
-            local name, _,_,_, rank = GetTalentInfo(t, i)
-            if spellName == name then
-                return rank
-            end
-        end
-    end
-    return 0
+    -- local spellName
+    -- if type(spellID) == "number" then 
+    --     spellName = GetSpellInfo(spellID)
+    -- elseif type(spellID) == "string" then
+    --     spellName = spellID
+    -- end
+    return IsSpellKnown(spellID) and 1 or 0
+    -- local numTabs = GetNumTalentTabs()
+    -- for t=1, numTabs do
+    --     local numTalents = GetNumTalents(t)
+    --     for i=1, numTalents do
+    --         local name, _,_,_, rank = GetTalentInfo(t, i)
+    --         if spellName == name then
+    --             return rank
+    --         end
+    --     end
+    -- end
+    -- return 0
 end
 helpers.GetCP = function()
     if not NugRunning.cpNow then return GetComboPoints("player") end
@@ -31,7 +32,7 @@ helpers.GetCP = function()
 end
 helpers.Glyph = function (gSpellID)
     for i = 1, GetNumGlyphSockets() do
-        if select(4,GetGlyphSocketInfo(i,GetActiveTalentGroup()) ) == gSpellID then return 1 end
+        if select(4,GetGlyphSocketInfo(i,GetActiveSpecGroup()) ) == gSpellID then return 1 end
     end
     return 0
 end
