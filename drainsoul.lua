@@ -20,9 +20,10 @@ hooksecurefunc(NugRunning,"PLAYER_LOGIN",function(self,event)
 end)
 
 local faketimer = {}
-faketimer.filter = "HARMFUL|PLAYER"
+faketimer.filter = "HARMFUL" --|PLAYER"
 faketimer.fixedoffset = 0
 faketimer.opts = {}
+faketimer.spellID = 1120
 faketimer.SetTime = function(self,s,e)
     spell.fullduration = e - s
     spell.ticktime = spell.fullduration / 6
@@ -46,7 +47,7 @@ function( self, event, timestamp, eventType, hideCaster,
                 spell.timer.dstGUID = dstGUID
                 spell.timer.dstName = dstName
                 NugRunning.QueueAura(spellID, dstGUID, auraType, faketimer )
-                spell.ticks = 5
+                spell.ticks = 6
                 t1 = GetTime()
                 realTickTime = nil
             elseif eventType == "SPELL_PERIODIC_DAMAGE" then

@@ -48,6 +48,8 @@ local GetSpellInfo = function(id)
     return unpack(info)
 end
 
+local GetSpellCooldown = GetSpellCooldown
+
 local bit_band = bit.band
 local UnitAura = UnitAura
 local UnitGUID = UnitGUID
@@ -218,16 +220,60 @@ function NugRunning.SPELL_ACTIVATION_OVERLAY_GLOW_HIDE(self,event, spellID)
 end
 
 -- cooldowns
+
+--- 5.0 hack for broken GetSpellCooldown. Using GetActionCooldown instead and keeping action - spell map
+local spell_to_action = {}
+
+GetSpellCooldown = function(id)
+    local action = spell_to_action[id]
+    if action then
+        return GetActionCooldown(action)
+    else
+        return 0,0,1,0
+    end
+end
+local function updateAction(actionID, fixtable)
+    local actionType, spellID = GetActionInfo(actionID)
+    if actionType == "spell" then
+        spell_to_action[spellID] = actionID
+        if fixtable then
+            for spell,action in pairs(spell_to_action) do
+                if action == actionID and spell ~= spellID then
+                    spell_to_action[spell] = nil
+                end
+            end
+        end
+    end
+end
+
+hooksecurefunc(NugRunning,"PLAYER_LOGIN",function(self,event)
+    for i=1,120 do
+        updateAction(i)
+    end
+end)
+
+function NugRunning.ACTIONBAR_SLOT_CHANGED(self, event, slot)
+    updateAction(slot, true)
+end
+
+NugRunning:RegisterEvent("ACTIONBAR_SLOT_CHANGED")
+
 function NugRunning.SPELL_UPDATE_COOLDOWN(self,event)
     for spellID,opts in pairs(NugRunningConfig.cooldowns) do
-        local startTime, duration, enabled = GetSpellCooldown(opts.localname)
+        local startTime, duration, enabled, charge = GetSpellCooldown(spellID) --opts.localname)
         local timer
         if opts.timer and (opts.timer.spellID == spellID) then timer = opts.timer end
         if duration then
             if duration > 1.5 then
                 if not active[timer] or timer.isGhost then
                     opts.timer = self:ActivateTimer(UnitGUID("player"),UnitGUID("player"), UnitName("player"), nil, spellID, opts.localname, opts, "COOLDOWN", duration + startTime - GetTime())
+                    opts.timer.cd_startTime = startTime
+                elseif timer.cd_startTime < startTime then
+                    timer.cd_startTime = startTime
+                    timer.fixedoffset = timer.opts.fixedlen and duration - timer.opts.fixedlen or 0
+                    timer:SetTime(startTime +  timer.fixedoffset, startTime + duration)
                 end
+                opts.timer:SetCount(charge)
             elseif timer and (active[timer] and opts.resetable) then
                 local oldcdrem = timer.endTime - GetTime()
                 if oldcdrem > duration or oldcdrem < 0 then

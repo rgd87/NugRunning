@@ -58,28 +58,30 @@ Spell({ 47383,71162,71165 },{ name = "Molten Core",duration = 18, shine = true, 
 -- REMOVED_DOSE event is not fired for molten core, so it's stuck at 3
 Spell({ 63167,63165 },{ name = "Decimation",duration = 8, color = colors.LBLUE })
 Cooldown( 71521, { name = "Hand of Gul'dan",  color = colors.LRED })
-Spell( 79459 ,{ name = "Demon Soul: Imp",duration = 30, short = "DemonSoul", color = colors.CURSE })
-Spell( 79460 ,{ name = "Demon Soul: Felhunter",duration = 20, short = "DemonSoul", color = colors.CURSE })
-Spell( 79463 ,{ name = "Demon Soul: Succubus",duration = 20, short = "DemonSoul", color = colors.CURSE })
-Spell( 79462 ,{ name = "Demon Soul: Felguard",duration = 20, short = "DemonSoul", color = colors.CURSE })
-Spell( 79464 ,{ name = "Demon Soul: Voidwalker",duration = 15, short = "Misdirect", color = colors.CURSE })
+
+Spell( 104773,{ name = "Unending Resolve",duration = 12, color = colors.WOO2 })
+Spell( 113860 ,{ name = "Dark Soul: Misery",duration = 20, short = "DarkSoul", color = colors.CURSE })
+Spell( 113861 ,{ name = "Dark Soul: Knowledge",duration = 20, short = "DarkSoul", color = colors.CURSE })
+Spell( 113858 ,{ name = "Dark Soul: Instability",duration = 20, short = "DarkSoul", color = colors.CURSE })
 
 Spell( 86211 ,{ name = "Soul Swap",duration = 20, shine = true, color = colors.BLACK })
 Spell( 17941 ,{ name = "Nightfall",duration = 10, shine = true, color = colors.CURSE })
 Spell( 64371 ,{ name = "Eradication",duration = 10, color = colors.WOO })
+Spell( 103103 ,{ name = "Malefic Grasp", priority = 14, duration = 15, color = colors.CURSE, target = "target" })
 Spell( 30108 ,{ name = "Unstable Affliction", priority = 10, duration = 15, ghost = true, recast_mark = 1.3, color = colors.RED, short = "UA" })
 Spell( 48181 ,{ name = "",duration = 12, priority = 8, ghost = true, recast_mark = 3, color = colors.TEAL }) --Haunt
 Spell( 172 ,{ name = "Corruption", priority = 9, ghost = true, color = colors.PINK, duration = 18 })
-Spell( 980 ,{ name = "Bane of Agony",duration = 24, ghost = true, priority = 6, color = colors.WOO, short = "Agony", init = function(self)self.duration = 24 + Glyph(56241)*4 end })
+Spell( 980 ,{ name = "Agony",duration = 24, ghost = true, priority = 6, color = colors.WOO })
 Spell( 603 ,{ name = "Bane of Doom", ghost = true, duration = 60, color = colors.WOO, short = "Doom" })
 Spell( 1120 ,{ name = "Drain Soul",duration = 15, color = colors.LRED })
-Spell( 27243 ,{ name = "Seed of Corruption",duration = 15, color = colors.LRED, short = "SoC" })
+Spell( 27243 ,{ name = "Seed of Corruption",duration = 18, color = colors.LRED, short = "SoC" })
 
-Spell( 1714 ,{ name = "Curse of Tongues",duration = 30, color = colors.CURSE, pvpduration = 12, short = "CoT" })
-Spell( 702 ,{ name = "Curse of Weakness",duration = 120, color = colors.CURSE, short = "Weakness" })
-Spell( 18223 ,{ name = "Curse of Exhaustion",duration = 12, color = colors.CURSE, short = "CoEx" })
+Spell( 109466 ,{ name = "Curse of Enfeeblement",duration = 120, color = colors.CURSE, short = "CoEnf" })
+Spell( 18223 ,{ name = "Curse of Exhaustion", duration = 30, pvpduration = 8, color = colors.CURSE, short = "CoEx" })
 Spell( 1490 ,{ name = "Curse of Elements",duration = 300, glowtime = 15, color = colors.CURSE, pvpduration = 120, short = "CoE" })
 -- JINX ID 85547
+
+Spell( 60478 ,{ name = "Doomguard", duration = 60 })
 
 Spell( 24259 ,{ name = "Spell Lock",duration = 3, color = colors.PINK })
 Spell( 6358 ,{ name = "Seduction",duration = 15, pvpduration = 8 })
