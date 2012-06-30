@@ -328,7 +328,17 @@ Spell( 55021 ,{ name = "Silenced",duration = 4, color = colors.PINK }) -- imp CS
 --FIRE
 Spell( 22959 ,{ name = "Critical Mass", shinerefresh = true, duration = 30, recast_mark = 2.5, color = colors.CURSE, short = "Scorch" })
 Spell( 64343 ,{ name = "Impact", shine = true, duration = 10, color = colors.BLACK })
-Spell( 44457 ,{ name = "Living Bomb",duration = 12, ghost = true, target = "target", color = colors.RED, short = "Bomb" })
+Spell( 44457 ,{ name = "Living Bomb",duration = function(self, opts) 
+            local targetGUID = UnitGUID("target")
+            if self.dstGUID == targetGUID then return 12 end
+            local origin_timer = NugRunning.gettimer(NugRunning.active, 44457, targetGUID, "DEBUFF")
+            if origin_timer then
+                return origin_timer.endTime - GetTime()
+            else
+                return 12
+            end
+        end,
+        ghost = true, color = colors.RED, short = "Bomb" })
 Spell( 48108 ,{ name = "Hot Streak",duration = 10, shine = true, color = colors.CURSE, short = "Pyro!" })
 Spell( 11113 ,{ name = "Blast Wave", color = colors.CHILL, duration = 3, multiTarget = true })
 Spell( 31661 ,{ name = "Dragon's Breath", duration = 5, color = colors.ORANGE, short = "Breath", multiTarget = true })
