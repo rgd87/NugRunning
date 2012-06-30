@@ -147,8 +147,8 @@ end
 
 if class  == "PRIEST" then
 
-local raptureOpts = NugRunningConfig[47537]
-NugRunningConfig[47537] = nil
+local raptureOpts = NugRunningConfig[47536]
+NugRunningConfig[47536] = nil
 if not raptureOpts then return end
 local raptureID = 47755
 

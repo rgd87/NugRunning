@@ -46,103 +46,109 @@ Spell( 74434 ,{ name = "Soulburn",duration = 20, color = colors.CURSE })
 
 Spell( 348 ,{ name = "Immolate", recast_mark = 1.5, duration = 15, priority = 10, ghost = true, color = colors.RED, init = function(self)self.duration = 15 + Talent(85105)*3 end })
 Spell( 34936 ,{ name = "Backlash", duration = 8, shine = true, color = colors.CURSE })
-Spell( 47283 ,{ name = "Soulfire!", duration = 8, shine = true, color = colors.CURSE })
-Spell( 85383 ,{ name = "Imp Soul Fire", duration = 20, ghost = true, priority = 4, recast_mark = 3,short = "SoulFire", color = colors.BLACK })
-Spell( 80240 ,{ name = "Bane of Havoc", duration = 300, color = colors.WOO, short = "Havoc" })
-Spell( 30283 ,{ name = "Shadowfury", duration = 3, multiTarget = true })
-Spell( 47960 ,{ name = "Shadowflame", duration = 6, multiTarget = true })
-Cooldown( 50796, { name = "Chaos Bolt", ghost = true, priority = 3, color = colors.LBLUE })
-Cooldown( 17962, { name = "Conflagrate", ghost = true, priority = 5, color = colors.LRED })
+Spell( 80240 ,{ name = "Havoc", duration = 15, color = colors.WOO, target = "player" })
 
-Spell({ 47383,71162,71165 },{ name = "Molten Core",duration = 18, shine = true, color = colors.PURPLE })
+Spell( 108683 ,{ name = "Fire and Brimstone", short = "FnB", timeless = true, color = colors.ORANGE })
+Cooldown( 17962, { name = "Conflagrate", ghost = true, recharging = true, priority = 5, color = colors.LRED })
+
+Spell( 122355,{ name = "Molten Core",duration = 30, shine = true, color = colors.PURPLE })
 -- REMOVED_DOSE event is not fired for molten core, so it's stuck at 3
-Spell({ 63167,63165 },{ name = "Decimation",duration = 8, color = colors.LBLUE })
-Cooldown( 71521, { name = "Hand of Gul'dan",  color = colors.LRED })
+
+Cooldown( 105174, { name = "Hand of Gul'dan",  color = colors.CURSE, recharging = true, replaces = 124916 })
+Cooldown( 124916, { name = "Chaos Wave",  color = colors.CURSE, recharging = true, replaces = 105174 })
+-- Spell( 47960 ,{ name = "Shadowflame", duration = 6, multiTarget = true })
 
 Spell( 104773,{ name = "Unending Resolve",duration = 12, color = colors.WOO2 })
 Spell( 113860 ,{ name = "Dark Soul: Misery",duration = 20, short = "DarkSoul", color = colors.CURSE })
 Spell( 113861 ,{ name = "Dark Soul: Knowledge",duration = 20, short = "DarkSoul", color = colors.CURSE })
 Spell( 113858 ,{ name = "Dark Soul: Instability",duration = 20, short = "DarkSoul", color = colors.CURSE })
 
-Spell( 86211 ,{ name = "Soul Swap",duration = 20, shine = true, color = colors.BLACK })
-Spell( 17941 ,{ name = "Nightfall",duration = 10, shine = true, color = colors.CURSE })
-Spell( 64371 ,{ name = "Eradication",duration = 10, color = colors.WOO })
+Spell( 86211 ,{ name = "Soul Swap", duration = 20, shine = true, color = colors.BLACK })
+Spell( 17941 ,{ name = "Nightfall", duration = 10, shine = true, color = colors.CURSE })
 Spell( 103103 ,{ name = "Malefic Grasp", priority = 14, duration = 15, color = colors.CURSE, target = "target" })
 Spell( 30108 ,{ name = "Unstable Affliction", priority = 10, duration = 15, ghost = true, recast_mark = 1.3, color = colors.RED, short = "UA" })
 Spell( 48181 ,{ name = "",duration = 12, priority = 8, ghost = true, recast_mark = 3, color = colors.TEAL }) --Haunt
 Spell( 172 ,{ name = "Corruption", priority = 9, ghost = true, color = colors.PINK, duration = 18 })
 Spell( 980 ,{ name = "Agony",duration = 24, ghost = true, priority = 6, color = colors.WOO })
-Spell( 603 ,{ name = "Bane of Doom", ghost = true, duration = 60, color = colors.WOO, short = "Doom" })
 Spell( 1120 ,{ name = "Drain Soul",duration = 15, color = colors.LRED })
 Spell( 27243 ,{ name = "Seed of Corruption",duration = 18, color = colors.LRED, short = "SoC" })
 
-Spell( 109466 ,{ name = "Curse of Enfeeblement",duration = 120, color = colors.CURSE, short = "CoEnf" })
+Spell( 109466 ,{ name = "Curse of Enfeeblement",duration = 30, color = colors.CURSE, short = "CoEnf" })
 Spell( 18223 ,{ name = "Curse of Exhaustion", duration = 30, pvpduration = 8, color = colors.CURSE, short = "CoEx" })
 Spell( 1490 ,{ name = "Curse of Elements",duration = 300, glowtime = 15, color = colors.CURSE, pvpduration = 120, short = "CoE" })
--- JINX ID 85547
+-- JINX ID 85547p
 
 Spell( 60478 ,{ name = "Doomguard", duration = 60 })
 
 Spell( 24259 ,{ name = "Spell Lock",duration = 3, color = colors.PINK })
-Spell( 6358 ,{ name = "Seduction",duration = 15, pvpduration = 8 })
-Spell( 17767 ,{ name = "Consume Shadows", duration = 6, color = colors.PURPLE, short = "Consume" })
+Spell( 6358 ,{ name = "Seduction",duration = 30, pvpduration = 8 })
 Spell( 89766 ,{ name = "Axe Toss", color = colors.BROWN, duration = 4 })
-Spell( 7812 ,{ name = "Sacrifice",duration = 30, color = colors.PURPLE })
---
+
+Spell( 6789 ,{ name = "Mortal Coil", duration = 3 })
+Spell( 5484 ,{ name = "Howl of Terror", duration = 20, pvpduration = 8, multiTarget = true })
+Spell( 110913 ,{ name = "Dark Bargain", duration = 10 })
+Spell( 108416 ,{ name = "Sacrificial Pact", duration = 10 })
+Spell( 30283 ,{ name = "Shadowfury", duration = 3, multiTarget = true })
+
 Spell( 5782 ,{ name = "Fear", duration = 20, pvpduration = 8 })
-Spell( 5484 ,{ name = "Howl of Terror", duration = 8, multiTarget = true })                    
+Spell( 118699 ,{ name = "Blood Fear", duration = 20, pvpduration = 8 })
+Spell( 104045 ,{ name = "Sleep", duration = 20, pvpduration = 8 })
 Spell( 710 ,{ name = "Banish", duration = 30 })
---Cooldown( 48181, { name = "HAUNT",  color = colors.LRED })
---Cooldown( 47897, { name = "Shadowflame", color = colors.PURPLE })
 end
    
 
 if class == "PRIEST" then
 -- BUFFS
-Spell( 139 ,{ name = "Renew", shinerefresh = true, color = colors.LGREEN, duration = 15 })
+Spell( 139 ,{ name = "Renew", shinerefresh = true, color = colors.LGREEN, duration = 12 })
 Spell( 17 ,{ name = "Power Word: Shield", shinerefresh = true, duration = 15, color = colors.LRED, short = "PW:S" })
 Spell( 41635 ,{ name = "Prayer of Mending", shinerefresh = true, duration = 30, color = colors.RED, textfunc = function(timer) return timer.dstName end })
-Spell( 88688 ,{ name = "Surge of Light",duration = 10 })
 Spell( 47788 ,{ name = "Guardian Spirit", shine = true, duration = 10, color = colors.LBLUE, short = "Guardian" })
 Spell( 33206 ,{ name = "Pain Suppression",shine = true, duration = 8, color = colors.LBLUE })
 Spell( 586 ,{ name = "Fade",duration = 10 })
 Spell( 89485 ,{ name = "Inner Focus", shine = true, color = colors.LBLUE, timeless = true, duration = 0.1 })
 -- Spell( 49694,59000 ,{ name = "Improved Spirit Tap",duration = 8 })
 -- Spell( 15271 ,{ name = "Spirit Tap",duration = 15 })
-Spell( 47585 ,{ name = "Dispersion",duration = 6, color = colors.PURPLE })
---~ Spell( 47753 ,{ name = "Divine Aegis", duration = 12 })
-Spell({ 59889,59888,59887 },{ name = "Borrowed Time", duration = 6 })
--- DEBUFFS
-Spell( 589 ,{ name = "Shadow Word: Pain",duration = 18, ghost = true, priority = 9, color = colors.PURPLE, refreshed = true, short = "SW:Pain" })
+Spell( 589 ,{ name = "Shadow Word: Pain",duration = 18, ghost = true, priority = 9, color = colors.PURPLE, refreshed =true, short = "SW:Pain" })
+
 Spell( 34914 ,{ name = "Vampiric Touch", recast_mark = 1.5, ghost = true, priority = 10, duration = 15, color = colors.RED, short = "VampTouch", hasted = true })
-Spell( 2944 ,{ name = "Devouring Plague",duration = 24, ghost = true, priority = 8, color = colors.WOO, short = "Plague" })
+Spell( 2944 ,{ name = "Devouring Plague",duration = 6, priority = 8, color = colors.WOO, short = "Plague" })
+Spell( 47585 ,{ name = "Dispersion",duration = 6, color = colors.PURPLE })
+--Spell( 15286 ,{ name = "Vampiric Embrace",duration = 15, color = colors.CURSE, short = "VampEmbrace" })
+
+--~ Spell( 47753 ,{ name = "Divine Aegis", duration = 12 })
+Spell( 59889,{ name = "Borrowed Time", duration = 6 })
+-- DEBUFFS
+
+Spell( 87160 ,{ name = "Surge of Darkness", duration = 10, color = colors.LRED })
+Spell( 114255,{ name = "Surge of Light", duration = 20, color = colors.LRED })
+Spell( 112833,{ name = "Spectral Guise", duration = 6, color = colors.CURSE })
+Spell( 123266,{ name = "Divine Insight", duration = 10, color = colors.BLACK }) -- discipline
+Spell( 123267,{ name = "Divine Insight", duration = 10, color = colors.BLACK }) -- holy
+Spell( 124430,{ name = "Divine Insight", duration = 12, color = colors.BLACK }) -- shadow
+
+
 Spell( 9484 ,{ name = "Shackle Undead",duration = 50, pvpduration = 8, short = "Shackle" })
 Spell( 15487 ,{ name = "Silence",duration = 5, color = colors.PINK })
-Spell( 95799 ,{ name = "Empowered Shadow",recast_mark = 1.5, ghost = true, priority = 5, short = "Empowered", duration = 15, color = colors.BLACK })
---Spell( 15286 ,{ name = "Vampiric Embrace",duration = 300, color = colors.CURSE, short = "VampEmbrace" })
-Spell( 8122 ,{ name = "Psychic Scream",duration = 8, multiTarget = true })
 
-Spell( 47537,{ name = "Rapture", duration = 12, color = colors.BLACK }) -- special timer
+Spell( 113792 ,{ name = "Psychic Terror",duration = 30, pvpduration = 8 })
+Spell( 8122 ,{ name = "Psychic Scream",duration = 8, multiTarget = true })
+-- Spell( 64044 ,{ name = "Psychic Horror",duration = 1, multiTarget = true })
+
+Spell( 47536,{ name = "Rapture", duration = 12, color = colors.BLACK }) -- special timer
 --Spell( 15407, { name = "Mind Flay",  color = colors.CURSE, duration = 3 })
 
---Shadow Orbs
-Spell( 77487 ,{ name = "",duration = 60, charged = true, maxcharge = 3, shine = true, shinerefresh = true, priority = -3, color = colors.WOO })
+--Old Shadow Orbs
+-- Spell( 77487 ,{ name = "",duration = 60, charged = true, maxcharge = 3, shine = true, shinerefresh = true, priority = -3, color = colors.WOO })
 
 Cooldown( 8092, { name = "Mind Blast",  color = colors.CURSE })
 Cooldown( 32379, { name = "Shadow Word: Death", ghost = true, short = "SW:Death",  color = colors.PURPLE })
 
-Spell( 81781 ,{ name = "Power Word: Barrier", short = "PW: Barrier", duration = 25, color = {1,0.7,0.5} }) -- duration actually used here, invisible aura applied
+Spell( 81782 ,{ name = "Power Word: Barrier", short = "PW: Barrier", duration = 25, color = {1,0.7,0.5} }) -- duration actually used here, invisible aura applied
 
---Spell( 77487 ,{ name = "Shadow Orb",duration = 60, color = colors.CURSE })
---Spell( 87718 ,{ name = "Dark Evangelism",duration = 15, color = colors.CURSE })
---Spell( 87153 ,{ name = "Dark Archangel",duration = 18, color = colors.CURSE })
-
-Spell( 88688 ,{ name = "Surge of Light", color = colors.LRED, duration = 10 })
-Spell( 14751 ,{ name = "Chakra", color = colors.CURSE, timeless = true, duration = 0.1 })
 -- Spell( 81208 ,{ name = "Chakra: Serenity", short = "Serenity", color = colors.WOO, shine = true, timeless = true, duration = 9999 })
 -- Spell( 81206 ,{ name = "Chakra: Sanctuary", color = colors.WOO2, short = "Sanctuary", shine = true, timeless = true, duration = 9999 })
 -- Spell( 81209 ,{ name = "Chakra: Chastise", short = "Chastise", color = colors.RED, shine = true, timeless = true, duration = 9999 })
-Spell( 88625 ,{ name = "Holy Word: Chastise", color = colors.LRED, short = "HW: Chastise", duration = 18 })
+Spell( 88625 ,{ name = "Holy Word: Chastise", color = colors.LRED, short = "HW: Chastise", duration = 3 })
 
 Spell( 81661 ,{ name = "Evangelism",duration = 15, color = colors.ORANGE, stackcolor = {
                                 [1] = {0.7,0,0},
@@ -218,7 +224,7 @@ end
 if class == "WARRIOR" then
 Spell( 6673 ,{ name = "Battle Shout", multiTarget = true, glowtime = 10, shout = true, color = colors.PURPLE, duration = 120,init = function(self)self.duration = (120 + Glyph(58385)*120) * (1+Talent(12321) * 0.25)  end })
 Spell( 469 ,{ name = "Commanding Shout", multiTarget = true, glowtime = 10, short = "CommShout", shout = true, color = colors.PURPLE, duration = 120, init = function(self)self.duration = (120 + Glyph(68164)*120) * (1+Talent(12321) * 0.25)  end })
-Spell( 2565 ,{ name = "Shield Block", color = colors.WOO2, duration = 10 })
+Spell( 2565 ,{ name = "Shield Block", color = colors.WOO2, duration = 6 })
 Spell( 85730 ,{ name = "Deadly Calm", duration = 10 })
 Spell( 12328 ,{ name = "Sweeping Strikes", color = colors.LRED, short = "Sweeping", duration = 10 })
 

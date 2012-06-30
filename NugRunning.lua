@@ -49,6 +49,7 @@ local GetSpellInfo = function(id)
 end
 
 local GetSpellCooldown = GetSpellCooldown
+local GetSpellCooldown2
 
 local bit_band = bit.band
 local UnitAura = UnitAura
@@ -224,7 +225,7 @@ end
 --- 5.0 hack for broken GetSpellCooldown. Using GetActionCooldown instead and keeping action - spell map
 local spell_to_action = {}
 
-GetSpellCooldown = function(id)
+GetSpellCooldown2 = function(id)
     local action = spell_to_action[id]
     if action then
         return GetActionCooldown(action)
@@ -260,20 +261,42 @@ NugRunning:RegisterEvent("ACTIONBAR_SLOT_CHANGED")
 
 function NugRunning.SPELL_UPDATE_COOLDOWN(self,event)
     for spellID,opts in pairs(NugRunningConfig.cooldowns) do
-        local startTime, duration, enabled, charge = GetSpellCooldown(spellID) --opts.localname)
+
+        local startTime, duration, enabled, charge
+        if not opts.recharging then
+            startTime, duration, enabled, charge = GetSpellCooldown(spellID)
+        else
+            startTime, duration, enabled = GetSpellCooldown2(spellID)
+        end
         local timer
-        if opts.timer and (opts.timer.spellID == spellID) then timer = opts.timer end
+        if opts.timer and (opts.timer.spellID == spellID) then
+            timer = opts.timer
+        elseif opts.replaces then
+            timer = gettimer(active, opts.replaces, UnitGUID("player"), "COOLDOWN")
+        end
         if duration then
             if duration > 1.5 then
                 if not active[timer] or timer.isGhost then
                     opts.timer = self:ActivateTimer(UnitGUID("player"),UnitGUID("player"), UnitName("player"), nil, spellID, opts.localname, opts, "COOLDOWN", duration + startTime - GetTime())
+
                     opts.timer.cd_startTime = startTime
-                elseif timer.cd_startTime < startTime then
-                    timer.cd_startTime = startTime
-                    timer.fixedoffset = timer.opts.fixedlen and duration - timer.opts.fixedlen or 0
-                    timer:SetTime(startTime +  timer.fixedoffset, startTime + duration)
+                else
+                    if timer.cd_startTime < startTime then
+                        timer.cd_startTime = startTime
+                        timer.fixedoffset = timer.opts.fixedlen and duration - timer.opts.fixedlen or 0
+                        timer:SetTime(startTime +  timer.fixedoffset, startTime + duration)
+                    end
+                    -- It's a miracle that it works.
+                    -- Well, if it'll stop, look into Action bar slot event, and all that
+                    -- And I'm not sure how this will work with GetSpellCooldown, when it will be fixed. Probably won't
+                    if opts.replaces then
+                        timer:SetIcon(select(3,GetSpellInfo(spellID)))
+                        timer:SetName(self:MakeName(opts))
+                        if opts.color then timer:SetColor(unpack(opts.color)) end
+                    end
+                    opts.timer = timer
                 end
-                opts.timer:SetCount(charge)
+                if charge then opts.timer:SetCount(charge) end
             elseif timer and (active[timer] and opts.resetable) then
                 local oldcdrem = timer.endTime - GetTime()
                 if oldcdrem > duration or oldcdrem < 0 then
@@ -286,6 +309,21 @@ function NugRunning.SPELL_UPDATE_COOLDOWN(self,event)
         end
     end
 end
+
+function NugRunning.MakeName(self, opts)
+    if NRunDB.spellTextEnabled then
+        if NRunDB.localNames then
+            return spellName
+        elseif NRunDB.shortTextEnabled and opts.short then
+            return opts.short
+        else
+            return opts.name
+        end
+    else
+        return ""
+    end
+end
+
 
 local helpful = "HELPFUL|PLAYER"
 local harmful = "HARMFUL|PLAYER"
@@ -336,18 +374,8 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
     local now = GetTime()
     timer.fixedoffset = opts.fixedlen and time - opts.fixedlen or 0
 
-    local nameText
-    if NRunDB.spellTextEnabled then
-        if NRunDB.localNames then
-            nameText = spellName
-        elseif NRunDB.shortTextEnabled and opts.short then
-            nameText = opts.short
-        else
-            nameText = opts.name
-        end
-    else
-        nameText = ""
-    end
+    nameText = NugRunning:MakeName(opts)
+
     if opts.textfunc and type(opts.textfunc) == "function" then nameText = opts.textfunc(timer) end
     if timer.SetName then timer:SetName(nameText) end
 
