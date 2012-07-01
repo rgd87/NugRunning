@@ -21,6 +21,7 @@ colors["LRED"] = { 1,0.4,0.4}
 colors["CURSE"] = { 0.6, 0, 1 }
 colors["PINK"] = { 1, 0.3, 0.6 }
 colors["TEAL"] = { 0.32, 0.52, 0.82 }
+colors["TEAL2"] = {38/255, 221/255, 163/255}
 colors["ORANGE"] = { 1, 124/255, 33/255 }
 colors["FIRE"] = {1,80/255,0}
 colors["LBLUE"] = {149/255, 121/255, 214/255}
@@ -448,11 +449,12 @@ end
 
 if class == "DRUID" then
 Spell( 339 ,{ name = "Entangling Roots",duration = 30 })
-Spell( 91565 ,{ name = "Faerie Fire",duration = 300, pvpduration = 40, color = colors.CURSE }) --second is feral
+-- Spell( 113746 ,{ name = "Weakened Armor", short = "WeakArmor", anySource = true, color = colors.BROWN, duration = 30 })
 
---Spell( 48391 ,{ name = "Owlkin Frenzy", duration = 10 })
+Spell( 48391 ,{ name = "Owlkin Frenzy", duration = 10 })
 -- Spell( 48517 ,{ name = "Solar Eclipse", timeless = true, duration = 0.1, short = "Solar", color = colors.ORANGE }) -- Wrath boost
 -- Spell( 48518 ,{ name = "Lunar Eclipse", timeless = true, duration = 0.1, short = "Lunar", color = colors.LBLUE }) -- Starfire boost
+Spell( 78675,{ name = "Solar Beam", duration = 10, color = colors.GOLD, target = "player" })
 Spell( 2637 ,{ name = "Hibernate",duration = 40, pvpduration = 8 })
 Spell( 33786 ,{ name = "Cyclone", duration = 6 })
 Spell( 8921 ,{ name = "Moonfire",duration = 12, ghost = true, color = colors.PURPLE, init = function(self) self.duration = 12 + Talent(57810)*2 end })
@@ -461,30 +463,46 @@ Spell( 5570 ,{ name = "Insect Swarm",duration = 12, ghost = true, color = colors
 Spell( 93400 ,{ name = "Shooting Stars", shine = true, duration = 12, color = colors.CURSE })
 Cooldown( 78674 ,{ name = "Starsurge", resetable = true, ghost = true, color = colors.CURSE })
 
-Spell( 50334 ,{ name = "Berserk", duration = 15 })
+Spell( 106951 ,{ name = "Berserk", duration = 15 })
 --cat
-Spell( 9005 ,{ name = "Pounce", duration = 3, color = colors.PINK, init = function(self)self.duration = 3 + Talent(16940)*0.5 end })
+Spell( 9005 ,{ name = "Pounce", duration = 4, color = colors.PINK })
 Spell( 9007 ,{ name = "Pounce Bleed", color = colors.RED, duration = 18 })
 Spell( 33876 ,{ name = "Mangle", color = colors.CURSE, duration = 60 })
 Spell( 1822 ,{ name = "Rake", duration = 15, color = colors.LRED })
 Spell( 1079 ,{ name = "Rip",duration = 16, color = colors.RED })
 Spell( 22570 ,{ name = "Maim", color = colors.PINK, duration = function() return GetCP() end })
 Cooldown(5217, { name = "Tiger's Fury", color = colors.LBLUE})
-Spell( 52610 ,{ name = "Savage Roar", color = colors.PURPLE, duration = function() return (17 + GetCP() * 5) end })
+Spell( 52610 ,{ name = "Savage Roar", color = colors.PURPLE, duration = function() return (12 + GetCP() * 6) end })
 Spell( 1850 ,{ name = "Dash", duration = 15 })
-Spell( 81022 ,{ name = "Stampede", duration = 8 })
+-- Spell( 81022 ,{ name = "Stampede", duration = 8 })
 --bear
-Spell( 99 ,{ name = "Demoralizing Roar", anySource = true, short = "DemoRoar", color = {0.3, 0.9, 0.3}, duration = 30, multiTarget = true })
+Spell( 62606 ,{ name = "Savage Defense", duration = 6, color = colors.WOO2 })
+-- Spell( 115798 ,{ name = "Weakened Blows", short = "WeakBlows", anySource = true, color = {149/255, 121/255, 214/255}, duration = 30, multiTarget = true })
+Spell( 106922 ,{ name = "Might of the Ursoc", duration = 20, color = colors.BLACK })
+Spell( 99 ,{ name = "Disorienting Roar", short = "Disorient", duration = 3, multiTarget = true })
 Spell( 6795 ,{ name = "Taunt", duration = 3 })
 Spell( 33745 ,{ name = "Lacerate", duration = 15, color = colors.RED })
-Spell( 5209 ,{ name = "Challenging Roar", shine = true, duration = 6, multiTarget = true })
-Spell( 45334 ,{ name = "Feral Charge",duration = 4, color = colors.LRED, init = function(self)self.duration = 4 + Talent(16940)*0.5 end })
-Spell( 5211 ,{ name = "Bash",duration = 4, shine = true, color = colors.PINK, init = function(self)self.duration = 4 + Talent(16940)*0.5 end })
+-- Spell( 5209 ,{ name = "Challenging Roar", shine = true, duration = 6, multiTarget = true })
+Spell( 45334 ,{ name = "Wild Charge",duration = 4, color = colors.LRED }) --bear
+Spell( 5211 ,{ name = "Bash",duration = 5, shine = true, color = colors.PINK })
 Cooldown( 77758, { name = "Thrash", color = colors.LBLUE })
+Cooldown( 33745 ,{ name = "Lacerate", color = colors.PURPLE })
 Cooldown( 33878 ,{ name = "Mangle", resetable = true, color = colors.CURSE })
 Spell( 93622 ,{ name = "Reset", shine = true, color = colors.CURSE, duration = 5 })
-Spell( 80951 ,{ name = "Pulverize", shinerefresh = true, color = colors.PURPLE, duration = 18 })
+Spell( 102795 ,{ name = "Bear Hug", duration = 3, color = colors.RED })
 
+Spell( 102359 ,{ name = "Mass Entanglement", duration = 20, color = colors.BROWN })
+Spell( 102351 ,{ name = "Cenarion Ward",duration = 30, color = colors.WOO2 })
+Spell( 102352 ,{ name = "Cenarion Ward",duration = 6, color = colors.TEAL })
+
+Spell( 117679 ,{ name = "Incarnation: Tree of Life", short = "Incarnation", duration =  30, color = colors.TEAL2 })
+Spell( 102558 ,{ name = "Incarnation: Son of Ursoc", short = "Incarnation", duration =  30, color = colors.TEAL2 })
+Spell( 102560 ,{ name = "Incarnation: Chosen of Elune", short = "Incarnation", duration =  30, color = colors.TEAL2 })
+Spell( 102543 ,{ name = "Incarnation: King of the Jungle", short = "Incarnation", duration =  30, color = colors.TEAL2 })
+
+
+
+Spell( 102342 ,{ name = "Ironbark",duration = 12 })
 Spell( 22812 ,{ name = "Barkskin",duration = 12 })
 Spell( 17116 ,{ name = "Nature's Swiftness", timeless = true, duration = 0.1, color = colors.TEAL, short = "NS" })
 Spell( 774 ,{ name = "Rejuvenation",duration = 12, color = { 1, 0.2, 1} })
