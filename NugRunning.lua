@@ -262,9 +262,9 @@ NugRunning:RegisterEvent("ACTIONBAR_SLOT_CHANGED")
 function NugRunning.SPELL_UPDATE_COOLDOWN(self,event)
     for spellID,opts in pairs(NugRunningConfig.cooldowns) do
 
-        local startTime, duration, enabled, charge
+        local startTime, duration, enabled, available
         if not opts.recharging then
-            startTime, duration, enabled, charge = GetSpellCooldown(spellID)
+            startTime, duration, enabled, available = GetSpellCooldown(spellID)
         else
             startTime, duration, enabled = GetSpellCooldown2(spellID)
         end
@@ -296,7 +296,6 @@ function NugRunning.SPELL_UPDATE_COOLDOWN(self,event)
                     end
                     opts.timer = timer
                 end
-                if charge then opts.timer:SetCount(charge) end
             elseif timer and (active[timer] and opts.resetable) then
                 local oldcdrem = timer.endTime - GetTime()
                 if oldcdrem > duration or oldcdrem < 0 then

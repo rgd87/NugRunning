@@ -228,7 +228,7 @@ Spell( 12328 ,{ name = "Sweeping Strikes", color = colors.LRED, short = "Sweepin
 -- Spell( 86346 ,{ name = "Colossus Smash", color = colors.BROWN, duration = 6 })
 Cooldown( 86346 ,{ name = "Colossus Smash", ghost = true, color = colors.BLACK, resetable = true, duration = 20 })
 Spell( 85288, { name = "Enraged", shine = true, showid = 14202, color = colors.RED, duration = 10 })
-
+Spell( 676  ,{ name = "Disarm", color = colors.BROWN, duration = 10 })
 Spell( 1715 ,{ name = "Hamstring", ghost = true, color = colors.PURPLE, duration = 15, pvpduration = 8 })
 
 -- Spell( 12809 ,{ name = "Concussion Blow", color = { 1, 0.3, 0.6 }, duration = 5 })
@@ -278,6 +278,44 @@ Cooldown( 23922, { name = "Shield Slam", short = "", recast_mark = 1.5, ghost = 
 Spell( 32216, { name = "Victory Rush", color = colors.PINK, duration = 20})
 
 -- Spell( 7922, { name = "Charge", duration = 1 })
+end
+
+if class == "MONK" then
+-- Spell( 120086, { name = "Fists of Fury", color = colors.BLUE, duration = 4 })
+Spell( 120954, { name = "Fortifying Brew", color = colors.WOO2, duration = 20 })
+Spell( 117368, { name = "Grapple Weapon", short = "Disarm", color = colors.BROWN, duration = 10 })
+Spell( 115078, { name = "Paralysis", color = colors.PURPLE, duration = 30, pvpduration = 8 })
+Spell( 115546 ,{ name = "Provoke", short = "Taunt", duration = 3 })
+Spell( 115072, { name = "Expel Harm", color = colors.TEAL })
+
+Spell( 118864 ,{ name = "CB: Tiger Palm", short = "Tiger Palm", color = colors.WOO, duration = 15 })
+Spell( 116768 ,{ name = "CB: Blackout Kick", short = "Blackout Kick", color = colors.PINK, duration = 15 })
+
+Spell( 125195 ,{ name = "Tigereye Brew", color = colors.BLACK, duration = 120 }) --stacks
+Spell( 116740 ,{ name = "Tigereye Brew", color = colors.BLACK, duration = 15 }) --activation
+
+Cooldown( 107428, { name = "Rising Sun Kick", short = "RSK", color = colors.PURPLE })
+
+Spell( 119611 ,{ name = "Renewing Mist", color = colors.LGREEN, duration = 18 })
+Spell( 116849 ,{ name = "Life Cocoon", color = colors.PURPLE, duration = 12 })
+Spell( 116680 ,{ name = "Thunder Focus Tea", color = colors.CURSE, duration = 30 })
+Spell( 118674 ,{ name = "Vital Mists", color = colors.BLACK, duration = 30 })
+
+
+Spell( 115213 ,{ name = "Avert Harm", duration = 15 })
+Spell( 115307 ,{ name = "Shuffle", color = colors.RED, duration = 6 })
+Spell( 116330 ,{ name = "Dizzying Haze", color = colors.PURPLE, duration = 15, multiTarget = true })
+Spell( 123727 ,{ name = "Dizzying Haze", color = colors.PURPLE, duration = 15, multiTarget = true }) -- from Keg Smash
+Spell( 128939 ,{ name = "Evusive Brew", duration = 30, color = colors.BLACK })
+Spell( 115308 ,{ name = "Evusive Brew", duration = 15, color = colors.BLACK })
+Cooldown( 115295, { name = "Guard", color = colors.GOLD })
+Cooldown( 121253, { name = "Keg Smash", color = colors.CURSE })
+-- Spell( 115798 ,{ name = "Weakened Blows", short = "WeakBlows", anySource = true, color = {149/255, 121/255, 214/255}, duration = 30, multiTarget = true })
+
+
+Spell( 124081 ,{ name = "Zen Sphere", duration = 16, color = { 1, 0.2, 1} })
+Spell( 119381 ,{ name = "Leg Sweep", duration = 5, color = colors.RED })
+Spell( 122783 ,{ name = "Diffuse Magic", duration = 6, color = colors.CURSE })
 end
 
 if class == "DEATHKNIGHT" then
