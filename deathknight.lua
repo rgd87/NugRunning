@@ -70,7 +70,57 @@ if class == "DEATHKNIGHT" then
 
 end -- end infect
 
+if class == "WARRIOR" then
+    local overpower_id = 7384
+    local op_opts = NugRunningConfig[overpower_id]
+    NugRunningConfig[overpower_id] = nil
 
+    local op_timer
+    local op_frame = CreateFrame("Frame")
+    local old = false
+    --[[op_frame.CheckFury = function(self)
+        if IsSpellKnown(23881) then -- Bloodthirst, Raging Blow becomes known only after event is fired
+            self:RegisterEvent("UNIT_AURA")
+        else
+            self:UnregisterEvent("UNIT_AURA")
+            if enrage_timer then
+                active[enrage_timer] = nil
+                enrage_timer:Hide()
+                NugRunning:ArrangeTimers()
+            end
+        end
+    end]]
+    local pGUID = UnitGUID("player")
+
+    op_frame:SetScript("OnEvent",function(self, event, unit)
+        --if event == "ACTIVE_TALENT_GROUP_CHANGED" or event == "PLAYER_TALENT_UPDATE" then
+        --    return self:CheckFury()
+        --end
+        --if unit ~= "player" then return end
+        local new = IsUsableSpell(overpower_id)
+        if new ~= old then
+            old = new
+            if new then
+                    op_timer = NugRunning:ActivateTimer(pGUID, pGUID,
+                                     UnitName("plyer"), nil,
+                                     overpower_id, GetSpellInfo(overpower_id), op_opts, "SPELL")
+            else
+                NugRunning:DeactivateTimer(pGUID, pGUID, overpower_id,  GetSpellInfo(overpower_id), op_opts, "SPELL")
+            end
+        end
+    end)
+
+    hooksecurefunc(NugRunning,"PLAYER_LOGIN",function(self,event)
+        --[[op_frame:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
+        op_frame:RegisterEvent("PLAYER_TALENT_UPDATE")
+        op_frame:CheckFury()]]
+        op_frame:RegisterEvent"SPELL_UPDATE_USABLE"
+    end)
+
+end
+
+-- Enrage Timer
+--[[
 if class  == "WARRIOR" then
 
     local enrageIDs = {
@@ -143,3 +193,4 @@ if class  == "WARRIOR" then
     end)
 
 end
+]]

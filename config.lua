@@ -254,14 +254,18 @@ Spell( 107570, { name = "Storm Bolt", color = { 1, 0.3, 0.6 }, duration = 3})
 --Activation( 5308, { name = "Execute", shine = true, timeless = true, color = colors.CURSE, duration = 0.1 })
 
 Cooldown( 12294, { name = "Mortal Strike", short = "", recast_mark = 1.5, fixedlen = 9, ghost = true,  color = colors.CURSE })
-Activation( 7384, { name = "Overpower", short = "", shine = true, color = colors.RED, recast_mark = 4.5, duration = 9})
+
+-- special timer
+Spell( 7384, { name = "Overpower", short = "", shine = true, color = colors.RED, recast_mark = 4.5, duration = 9})
+--Activation( 7384, { name = "Overpower", short = "", shine = true, color = colors.RED, recast_mark = 4.5, duration = 9})
 -- Spell( 60503 ,{ name = "", recast_mark = 4, color = colors.RED, duration = 9 }) -- Taste for blood: new id 125831
 
 Cooldown( 23881, { name = "Bloodthirst", short = "", ghost = true, recast_mark = 1.5, fixedlen = 6,  color = colors.CURSE })
 Spell( 46916 ,{ name = "Bloodsurge", shine = true, color = colors.LRED, duration = 10 })
 
-Cooldown( 85288, { name = "Raging Blow", ghost = true,  color = colors.WOO })
-Activation( 85288, { name = "Enraged", for_cd = true })
+Spell( 131116 ,{ name = "Raging Blow", shine = true, color = colors.WOO, duration = 12 })
+--Cooldown( 85288, { name = "Raging Blow", ghost = true,  color = colors.WOO })
+--Activation( 85288, { name = "Enraged", for_cd = true })
 -- it's enrage timer config
 
 

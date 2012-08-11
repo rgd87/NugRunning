@@ -37,6 +37,7 @@ local gettimer = function(self,spellID,dstGUID,timerType)
         end
     end
 end
+local IsSpellKnown = IsSpellKnown
 local GetSpellInfo_ = GetSpellInfo
 local SpellInfoCache = {}
 local GetSpellInfo = function(id)
@@ -115,7 +116,8 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
     if NRunDB.cooldownsEnabled then
         NugRunning:RegisterEvent("SPELL_UPDATE_COOLDOWN")
     end
-        
+    
+    --NugRunning:RegisterEvent("SPELL_UPDATE_USABLE")    
     NugRunning:RegisterEvent("SPELL_ACTIVATION_OVERLAY_GLOW_SHOW")
     NugRunning:RegisterEvent("SPELL_ACTIVATION_OVERLAY_GLOW_HIDE")
 
@@ -195,6 +197,9 @@ function NugRunning.COMBAT_LOG_EVENT_UNFILTERED( self, event, timestamp, eventTy
     end
 end
 
+--function NugRunning.SPELL_UPDATE_USABLE(self, event)
+--end
+
 function NugRunning.SPELL_ACTIVATION_OVERLAY_GLOW_SHOW(self,event, spellID)
     if NugRunningConfig.activations[spellID] then
         local opts = NugRunningConfig.activations[spellID]
@@ -261,6 +266,7 @@ NugRunning:RegisterEvent("ACTIONBAR_SLOT_CHANGED")
 
 function NugRunning.SPELL_UPDATE_COOLDOWN(self,event)
     for spellID,opts in pairs(NugRunningConfig.cooldowns) do
+        if IsSpellKnown(spellID) then
 
         local startTime, duration, enabled, available
         if not opts.recharging then
@@ -268,6 +274,9 @@ function NugRunning.SPELL_UPDATE_COOLDOWN(self,event)
         else
             startTime, duration, enabled = GetSpellCooldown2(spellID)
         end
+        --print(spellID, GetSpellInfo(spellID), IsSpellKnown(spellID), startTime, duration, enabled)
+        
+
         local timer
         if opts.timer and (opts.timer.spellID == spellID) then
             timer = opts.timer
@@ -305,6 +314,7 @@ function NugRunning.SPELL_UPDATE_COOLDOWN(self,event)
                     end
                 end
             end
+        end
         end
     end
 end
