@@ -253,14 +253,14 @@ Spell( 107570, { name = "Storm Bolt", color = { 1, 0.3, 0.6 }, duration = 3})
 --Spell( 56112 ,{ name = "Furious Attacks", duration = 10 })
 --Activation( 5308, { name = "Execute", shine = true, timeless = true, color = colors.CURSE, duration = 0.1 })
 
-Cooldown( 12294, { name = "Mortal Strike", short = "", recast_mark = 1.5, fixedlen = 9, ghost = true,  color = colors.CURSE })
+Cooldown( 12294, { name = "Mortal Strike", short = "", check_known = true, recast_mark = 1.5, fixedlen = 9, ghost = true,  color = colors.CURSE })
 
 -- special timer
 Spell( 7384, { name = "Overpower", short = "", shine = true, color = colors.RED, recast_mark = 4.5, duration = 9})
 --Activation( 7384, { name = "Overpower", short = "", shine = true, color = colors.RED, recast_mark = 4.5, duration = 9})
 -- Spell( 60503 ,{ name = "", recast_mark = 4, color = colors.RED, duration = 9 }) -- Taste for blood: new id 125831
 
-Cooldown( 23881, { name = "Bloodthirst", short = "", ghost = true, recast_mark = 1.5, fixedlen = 6,  color = colors.CURSE })
+Cooldown( 23881, { name = "Bloodthirst", short = "", check_known = true, ghost = true, recast_mark = 1.5, fixedlen = 6,  color = colors.CURSE })
 Spell( 46916 ,{ name = "Bloodsurge", shine = true, color = colors.LRED, duration = 10 })
 
 Spell( 131116 ,{ name = "Raging Blow", shine = true, color = colors.WOO, duration = 12 })
@@ -272,7 +272,7 @@ Spell( 131116 ,{ name = "Raging Blow", shine = true, color = colors.WOO, duratio
 Cooldown( 1680, { name = "Whirlwind", color = colors.LBLUE })
 Spell( 12975, { name = "Last Stand", color = colors.BLACK, duration = 20 })
 Spell( 871, { name = "Shield Wall", color = colors.WOO2, duration = 12 })
-Cooldown( 23922, { name = "Shield Slam", short = "", recast_mark = 1.5, ghost = true,  color = colors.CURSE, resetable = true })
+Cooldown( 23922, { name = "Shield Slam", short = "", check_known = true, recast_mark = 1.5, ghost = true,  color = colors.CURSE, resetable = true })
 --Activation( 23922, { name = "Slam!", shine = true, timeless = true, color = colors.CURSE, duration = 0.1 })
 
 -- Cooldown( 78, { name = "Heroic Strike", short = "Heroic", fixedlen = 6, ghost = true })
@@ -361,9 +361,7 @@ Spell( 80353 ,{ name = "Time Warp", shine = true, target = "player", duration = 
 Spell({ 118,61305,28271,28272,61721,61780 },{ name = "Polymorph", duration = 50, color = colors.LGREEN, pvpduration = 8, short = "Poly" })
 Spell( 12042 ,{ name = "Arcane Power",duration = 15, short = "APwr", color = colors.PINK })
 --~ Spell( 66 ,{ name = "Fading",duration = 3 - NugRunning.TalentInfo(31574) })
-Spell( 32612 ,{ name = "Invisibility",duration = 20 })
-Spell( 12043 ,{ name = "Presence of Mind", shine = true, timeless = true, duration = 0.1, color = colors.CURSE, short = "PoM" })
-Spell( 36032 ,{ name = "Arcane Blast",duration = 6, color = colors.CURSE })
+Spell( 36032 ,{ name = "Arcane Charge",duration = 10, color = colors.CURSE })
 Cooldown( 44425 ,{ name = "Arcane Barrage", color = colors.RED })
 Spell( 79683 ,{ name = "Arcane Missiles!", shine = true, duration = 20, color = colors.WOO })
 --~ Spell( 55342 ,{ name = "Mirror Image",duration = 30 })
@@ -371,11 +369,39 @@ Spell( 79683 ,{ name = "Arcane Missiles!", shine = true, duration = 20, color = 
 
 -- Spell( 12536 ,{ name = "Clearcast",duration = 15, color = colors.BLACK })
 Spell( 31589 ,{ name = "Slow", duration = 15, pvpduration = 8 })
-Spell( 18469 ,{ name = "Silenced",duration = 2, color = colors.PINK }) -- imp CS
 Spell( 55021 ,{ name = "Silenced",duration = 4, color = colors.PINK }) -- imp CS
 --FIRE
-Spell( 22959 ,{ name = "Critical Mass", shinerefresh = true, duration = 30, recast_mark = 2.5, color = colors.CURSE, short = "Scorch" })
-Spell( 64343 ,{ name = "Impact", shine = true, duration = 10, color = colors.BLACK })
+Spell( 48108 ,{ name = "Hot Streak",duration = 10, shine = true, color = colors.CURSE, short = "Pyro!" })
+Spell( 11113 ,{ name = "Blast Wave", color = colors.CHILL, duration = 3, multiTarget = true })
+Spell( 31661 ,{ name = "Dragon's Breath", duration = 5, color = colors.ORANGE, short = "Breath", multiTarget = true })
+Spell( 2120 ,{ name = "Flamestrike", duration = 8, color = colors.PURPLE, multiTarget = true })
+Cooldown( 84714, { name = "Frozen Orb", color = colors.WOO})
+--Cooldown( 2136, { name = "Fire Blast", resetable = true, color = colors.LRED})
+Cooldown( 108853, { name = "Infeno Blast", color = colors.LRED})
+
+--FROST
+Spell( 12472 ,{ name = "Icy Veins",duration = 20 })
+Spell( 82691 ,{ name = "Ring of Frost", shine = true, color = colors.FROZEN, multiTarget = true, duration = 12, pvpduration = 8 }) -- it's not multi target, but... it can spam
+Spell( 122 ,{ name = "Frost Nova",duration = 8, short = "FrNova", color = colors.FROZEN, multiTarget = true })
+Spell( 33395 ,{ name = "Freeze",duration = 8, color = colors.FROZEN })
+Spell( 44544 ,{ name = "Fingers of Frost", shine = true, duration = 15, color = colors.FROZEN, short = "FoF" })
+Spell( 57761 ,{ name = "Brain Freeze", shine = true, duration = 15, color = colors.LRED })
+
+Spell( 45438 ,{ name = "Ice Block",duration = 10 })
+Spell( 44572 ,{ name = "Deep Freeze",duration = 5 })
+Spell( 120 ,{ name = "Cone of Cold", duration = 8, color = colors.CHILL, short = "CoC", multiTarget = true })
+
+--talents
+Spell( 12043 ,{ name = "Presence of Mind", shine = true, timeless = true, duration = 0.1, color = colors.CURSE, short = "PoM" })
+Spell( 11426 ,{ name = "Ice Barrier",duration = 60, color = colors.LGREEN })
+Spell( 108839 ,{ name = "Ice Floes", duration = 10, color = colors.CURSE })
+Spell( 115610 ,{ name = "Temporal Shield", duration = 4, color = colors.LGREEN })
+Spell( 102051 ,{ name = "Frostjaw", duration = 8, pvpduration = 4,  color = colors.PINK })
+
+Spell( 32612 ,{ name = "Invisibility",duration = 20 })
+Spell( 110960 ,{ name = "Greater Invisibility", duration = 20, color = colors.CURSE })
+
+Spell( 112948 ,{ name = "Frost Bomb", duration = 5, color = colors.CURSE })
 Spell( 44457 ,{ name = "Living Bomb",duration = function(self, opts) 
             local targetGUID = UnitGUID("target")
             if self.dstGUID == targetGUID then return 12 end
@@ -387,26 +413,8 @@ Spell( 44457 ,{ name = "Living Bomb",duration = function(self, opts)
             end
         end,
         ghost = true, color = colors.RED, short = "Bomb" })
-Spell( 48108 ,{ name = "Hot Streak",duration = 10, shine = true, color = colors.CURSE, short = "Pyro!" })
-Spell( 11113 ,{ name = "Blast Wave", color = colors.CHILL, duration = 3, multiTarget = true })
-Spell( 31661 ,{ name = "Dragon's Breath", duration = 5, color = colors.ORANGE, short = "Breath", multiTarget = true })
-Spell( 2120 ,{ name = "Flamestrike", duration = 8, color = colors.PURPLE, multiTarget = true })
-Cooldown( 82731, { name = "Flame Orb", color = colors.WOO})
---Cooldown( 2136, { name = "Fire Blast", resetable = true, color = colors.LRED})
+Spell( 114923 ,{ name = "Nether Tempest", duration = 12, color = colors.PURPLE })
 
---FROST
-Spell( 12472 ,{ name = "Icy Veins",duration = 20 })
-Spell( 82691 ,{ name = "Ring of Frost", shine = true, color = colors.FROZEN, multiTarget = true, duration = 12, pvpduration = 8 }) -- it's not multi target, but... it can spam
-Spell( 122 ,{ name = "Frost Nova",duration = 8, short = "FrNova", color = colors.FROZEN, multiTarget = true })
-Spell( 33395 ,{ name = "Freeze",duration = 8, color = colors.FROZEN })
-Spell( 44544 ,{ name = "Fingers of Frost", shine = true, duration = 15, color = colors.FROZEN, short = "FoF" })
-Spell( 57761 ,{ name = "Brain Freeze", shine = true, duration = 15, color = colors.LRED, short = "Fireball!" })
-Spell( 55080 ,{ name = "Shattered Barrier",duration = 4, color = colors.FROZEN, short = "Shattered" })
-Spell( 11426 ,{ name = "Ice Barrier",duration = 60, color = colors.LGREEN })
-Spell( 45438 ,{ name = "Ice Block",duration = 10 })
-Spell( 44572 ,{ name = "Deep Freeze",duration = 5 })
-Spell( 120 ,{ name = "Cone of Cold", duration = 8, color = colors.CHILL, short = "CoC", multiTarget = true })
-Spell( 83302 ,{ name = "Improved Cone of Cold", duration = 4, color = colors.FROZEN, short = "ICoC", multiTarget = true })
 end
 
 if class == "PALADIN" then

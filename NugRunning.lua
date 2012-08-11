@@ -266,7 +266,9 @@ NugRunning:RegisterEvent("ACTIONBAR_SLOT_CHANGED")
 
 function NugRunning.SPELL_UPDATE_COOLDOWN(self,event)
     for spellID,opts in pairs(NugRunningConfig.cooldowns) do
-        if IsSpellKnown(spellID) then
+        if opts.check_known then
+            if not IsSpellKnown(spellID) then return end
+        end
 
         local startTime, duration, enabled, available
         if not opts.recharging then
@@ -314,7 +316,6 @@ function NugRunning.SPELL_UPDATE_COOLDOWN(self,event)
                     end
                 end
             end
-        end
         end
     end
 end

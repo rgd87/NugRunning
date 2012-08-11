@@ -103,9 +103,9 @@ if class == "WARRIOR" then
             if new then
                     op_timer = NugRunning:ActivateTimer(pGUID, pGUID,
                                      UnitName("plyer"), nil,
-                                     overpower_id, GetSpellInfo(overpower_id), op_opts, "SPELL")
+                                     overpower_id, GetSpellInfo(overpower_id), op_opts, "COOLDOWN")
             else
-                NugRunning:DeactivateTimer(pGUID, pGUID, overpower_id,  GetSpellInfo(overpower_id), op_opts, "SPELL")
+                NugRunning:DeactivateTimer(pGUID, pGUID, overpower_id,  GetSpellInfo(overpower_id), op_opts, "COOLDOWN")
             end
         end
     end)
