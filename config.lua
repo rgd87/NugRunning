@@ -534,18 +534,26 @@ if class == "HUNTER" then
 Spell( 51755 ,{ name = "Camouflage", duration = 60, target = "player", color = colors.CURSE })
 Spell( 19263 ,{ name = "Deterrence", duration = 5, color = colors.LBLUE })
 
-Spell( 19615 ,{ name = "Frenzy", duration = 10, color = colors.CURSE })
+--Spell( 77769 ,{ name = "Trap Launcher", shine = true, timeless = true, duration = 0.1, color = colors.CURSE })
+--Spell( 53220 ,{ name = "Steady Focus", duration = 10, color = colors.BLACK })
+
+Spell( 82925 ,{ name = "Ready, Set, Aim...", short = "", duration = 30, shinerefresh = true, color = colors.LBLUE })
+Spell( 82926 ,{ name = "Aimed Shot!", duration = 10, shine = true, color = colors.WOO2 })
+
+Spell( 19615 ,{ name = "Frenzy", duration = 10, target = "player", color = colors.CURSE })
 Spell( 82654 ,{ name = "Widow Venom", duration = 30, color = { 0.1, 0.75, 0.1} })
 
 Spell( 56453 ,{ name = "Lock and Load", duration = 12, color = colors.LRED })
 Spell( 19574 ,{ name = "Bestial Wrath", duration = 18, color = colors.LRED })
+Spell( 82692 ,{ name = "Focus Fire", duration = 20, color = colors.GOLD })
+
 
 Spell( 136 ,{ name = "Mend Pet", duration = 10, color = colors.LGREEN })
 
-Spell( 2974 ,{ name = "Wing Clip", duration = 10, pvpduration = 8, color = { 192/255, 77/255, 48/255} })
-Spell( 19306 ,{ name = "Counterattack", duration = 5, color = { 192/255, 77/255, 48/255} })
+--Spell( 2974 ,{ name = "Wing Clip", duration = 10, pvpduration = 8, color = { 192/255, 77/255, 48/255} })
+--Spell( 19306 ,{ name = "Counterattack", duration = 5, color = { 192/255, 77/255, 48/255} })
 Spell( 13797 ,{ name = "Immolation Trap", duration = 15, color = colors.ORANGE, init = function(self)self.duration = 15 - Glyph(56846)*6 end })
-Spell( 1978 ,{ name = "Serpent Sting", duration = 15, color = colors.PURPLE })
+Spell( 118253 ,{ name = "Serpent Sting", duration = 15, color = colors.PURPLE })
 Spell( 19503 ,{ name = "Scatter Shot", duration = 4, color = colors.CHILL })
 Spell( 5116 ,{ name = "Concussive Shot", duration = 6, color = colors.CHILL, init = function(self)self.duration = 4 + Talent(19407) end })
 Spell( 34490 ,{ name = "Silencing Shot", duration = 3, color = colors.PINK, short = "Silence" })
@@ -560,10 +568,19 @@ Spell( 1513 ,{ name = "Scare Beast", duration = 20, pvpduration = 8, color = col
 
 Spell( 3045 ,{ name = "Rapid Fire", duration = 15, color = colors.CURSE })
 
-Cooldown( 83381 ,{ name = "Kill Command", color = colors.LRED })
+Cooldown( 34026 ,{ name = "Kill Command", color = colors.LRED })
 Cooldown( 53209 ,{ name = "Chimera Shot", color = colors.RED })
 Cooldown( 53301 ,{ name = "Explosive Shot", color = colors.RED })
 Cooldown( 3674 ,{ name = "Black Arrow", color = colors.CURSE })
+
+Spell( 128405 ,{ name = "Narrow Escape", duration = 8, color = colors.BROWN, multiTarget = true })
+Spell( 117526 ,{ name = "Binding Shot", duration = 5, pvpduration = 3, color = colors.RED, multiTarget = true })
+
+Cooldown( 130392 ,{ name = "Blink Strike", color = colors.WOO })
+Cooldown( 109259 ,{ name = "Powershot", color = colors.BLACK })
+Cooldown( 117050 ,{ name = "Glaive Toss", color = colors.BLACK })
+Cooldown( 120360 ,{ name = "Barrage", color = colors.BLACK })
+
 end
 
 if class == "SHAMAN" then
