@@ -24,7 +24,6 @@ setmetatable(free,{ __newindex = function(t,k,v)
     k:Hide()
     rawset(active,k,nil)
     rawset(t,k,v)
-
     NugRunning:ArrangeTimers()
 end})
 
@@ -162,7 +161,7 @@ function NugRunning.COMBAT_LOG_EVENT_UNFILTERED( self, event, timestamp, eventTy
         local isSrcPlayer = (bit_band(srcFlags, COMBATLOG_OBJECT_AFFILIATION_MINE) == COMBATLOG_OBJECT_AFFILIATION_MINE)
         local opts = NugRunningConfig[spellID]
         if not isSrcPlayer and opts.anySource then
-                isSrcPlayer = true
+            isSrcPlayer = true
         end
         if opts.target and dstGUID ~= UnitGUID(opts.target) then return end
         if isSrcPlayer then
@@ -462,6 +461,7 @@ function NugRunning.RefreshTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID,
 
     if timer.glow:IsPlaying() then timer.glow:Stop() end
     if not noshine and opts.shinerefresh and not timer.shine:IsPlaying() then timer.shine:Play() end
+
     self:ArrangeTimers()
     return timer
 end
@@ -646,6 +646,7 @@ function NugRunning.SetupArrange(self)
 end
 local playerTimers = {}
 local targetTimers = {}
+local sorted = {}
 local sortfunc = function(a,b)
     if a.priority == b.priority then
         return a.endTime > b.endTime
@@ -658,18 +659,19 @@ local arrangeInProgress
 function NugRunning.ArrangeTimers(self)
     if arrangeInProgress then arrangePending = true; return end
     arrangePending = false
-    arrangeInProgress = true -- a little synchronization
+    arrangeInProgress = true
+
     table_wipe(playerTimers)
     table_wipe(targetTimers)
+    table_wipe(sorted)
 
-
-    local sorted = {}
     local targetGUID = UnitGUID("target")
     for timer in pairs(active) do
-        if timer.opts.group then
-            sorted[timer.opts.group] = sorted[timer.opts.group] or {}
-            table.insert(sorted[timer.opts.group],timer)
-        elseif doswap and timer.dstGUID == targetGUID then table.insert(targetTimers,timer)
+        -- if timer.opts.group then
+        --     sorted[timer.opts.group] = sorted[timer.opts.group] or {}
+        --     table.insert(sorted[timer.opts.group],timer)
+        --else
+        if doswap and timer.dstGUID == targetGUID then table.insert(targetTimers,timer)
         elseif timer.dstGUID == playerGUID then table.insert(playerTimers,timer)
         elseif timer.dstGUID == nil then
             if timer.timerType == "BUFF" then
@@ -683,11 +685,10 @@ function NugRunning.ArrangeTimers(self)
         end
     end
     
-    --everything here is stupdid
     table.sort(playerTimers,sortfunc)
     table.sort(targetTimers,sortfunc)
     for group,tbl in pairs(sorted) do
-    table.sort(tbl,sortfunc)
+        table.sort(tbl,sortfunc)
     end
 
     local prev
@@ -984,7 +985,7 @@ local targetTimers = {}
 
 local h = CreateFrame("Frame")
 local hUnits = {
-    ["player"] = 1,
+    ["player"] = 0,
     ["target"] = 1,
     ["focus"] = 2,
     ["mouseover"] = 2,
@@ -996,6 +997,7 @@ local hUnits = {
     ["arena4"] = 2,
     ["arena5"] = 2,
 }
+local last_taget_update = 0
 h:SetScript("OnEvent",function(self, event, unit)
     if event == "UNIT_AURA" then
         local up = hUnits[unit]
@@ -1003,20 +1005,23 @@ h:SetScript("OnEvent",function(self, event, unit)
         local unitGUID = UnitGUID(unit)
         if up == 2 and UnitGUID("target") == unitGUID then return end
 
-        for timer in pairs(active) do 
-            if  timer.dstGUID == unitGUID then
-                if timer.timerType == "BUFF" or  timer.timerType== "DEBUFF" then
-                    for i=1,100 do
-                        local name, _,_, count, _, duration, expirationTime, caster, _,_, aura_spellID = UnitAura(unit, GetSpellInfo(timer.spellID), nil, timer.filter)
-                        if  caster == "player" and
-                            timer.spellID == aura_spellID and
-                            GetTime() + duration - expirationTime < 0.1
-                            then
-                            NugRunning:RefreshTimer(playerGUID,unitGUID,UnitName(unit),nil, timer.spellID, timer.spellName, timer.opts, timer.timerType, duration, count)
+        local now = GetTime()
+        if up == 1 then --throttle target updates
+            if now - last_taget_update < 200 then return end
+        end
 
-                        end
+
+        for timer in pairs(active) do 
+            if  timer.dstGUID == unitGUID and
+                (timer.timerType == "BUFF" or timer.timerType == "DEBUFF")
+            then
+                    local name, _,_, count, _, duration, expirationTime, caster, _,_, aura_spellID = UnitAura(unit, GetSpellInfo(timer.spellID), nil, timer.filter)
+                    if  caster == "player" and
+                        timer.spellID == aura_spellID and
+                        now + duration - expirationTime < 0.1
+                        then
+                        NugRunning:RefreshTimer(playerGUID,unitGUID,UnitName(unit),nil, timer.spellID, timer.spellName, timer.opts, timer.timerType, duration, count, true)
                     end
-                end
             end
         end
     elseif event == "PLAYER_TARGET_CHANGED" then
