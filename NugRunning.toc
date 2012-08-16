@@ -8,6 +8,5 @@ helpers.lua
 config.lua
 NugRunning.lua
 frame.lua
-deathknight.lua
-drainsoul.lua
+special.lua
 totems.lua

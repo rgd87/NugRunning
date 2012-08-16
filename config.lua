@@ -1,3 +1,7 @@
+-----------------------------------------------------------------------------------
+-- It's a better idea to edit userconfig.lua in NugRunningUserConfig addon folder
+-- CONFIG GUIDE: https://github.com/rgd87/NugRunning/wiki/NugRunningUserConfig
+-----------------------------------------------------------------------------------
 local _, helpers = ...
 local Spell = helpers.Spell
 local Cooldown = helpers.Cooldown
