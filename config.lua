@@ -319,7 +319,7 @@ Cooldown( 121253, { name = "Keg Smash", color = colors.CURSE })
 
 
 Spell( 124081 ,{ name = "Zen Sphere", duration = 16, color = { 1, 0.2, 1} })
-Spell( 119381 ,{ name = "Leg Sweep", duration = 5, color = colors.RED })
+Spell( 119381 ,{ name = "Leg Sweep", duration = 5, color = colors.RED, multiTarget = true })
 Spell( 122783 ,{ name = "Diffuse Magic", duration = 6, color = colors.CURSE })
 end
 
