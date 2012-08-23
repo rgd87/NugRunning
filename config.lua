@@ -22,6 +22,7 @@ NugRunningConfig.colors = {}
 local colors = NugRunningConfig.colors
 colors["RED"] = { 0.8, 0, 0}
 colors["LRED"] = { 1,0.4,0.4}
+colors["DRED"] = { 0.6,0,0}
 colors["CURSE"] = { 0.6, 0, 1 }
 colors["PINK"] = { 1, 0.3, 0.6 }
 colors["TEAL"] = { 0.32, 0.52, 0.82 }
@@ -241,7 +242,7 @@ Spell( 355 ,{ name = "Taunt", duration = 3 })
 Spell( 113746 ,{ name = "Weakened Armor", short = "WeakArmor", anySource = true, target = "target", color = colors.BROWN, duration = 30 })
 Spell( 1160 ,{ name = "Demoralizing Shout", short = "DemoShout", color = {0.3, 0.9, 0.3}, duration = 30, multiTarget = true })
 Spell( 115798 ,{ name = "Weakened Blows", short = "WeakBlows", anySource = true, target = "target", color = {149/255, 121/255, 214/255}, duration = 30, multiTarget = true })
-Spell( 122510 ,{ name = "Ultimatum", shine = true, timeless = true, color = colors.CURSE, duration = 0.1 })
+Spell( 122510 ,{ name = "Ultimatum", shine = true, color = colors.CURSE, duration = 10 })
 Cooldown( 6572, { name = "Revenge", color = colors.WOO, fixedlen = 6, ghost = true })
 Activation( 6572, { name = "RevengeActivation", for_cd = true })
 
@@ -330,21 +331,27 @@ end
 if class == "DEATHKNIGHT" then
 Spell( 55095 ,{ name = "Frost Fever", color = colors.CHILL, duration = 21, init = function(self)self.duration = 21 + Talent(49036)*4 end })
 Spell( 55078 ,{ name = "Blood Plague", color = colors.PURPLE, duration = 21, init = function(self)self.duration = 21 + Talent(49036)*4 end })
+Spell( 43265 ,{ name = "Death and Decay", short = "DnD", color = colors.RED, duration = 10, target = "player" })
+
+Spell({114866, 130735, 130736}, { name = "Soul Reaper", color = colors.BLACK, duration = 5 })
+Spell( 73975 ,{ name = "Necrotic Strike", duration = 10, color = colors.WOO })
 
 --BLOOD
-Spell( 81130 ,{ name = "Scarlet Fever", duration = 30, color = colors.LRED })
-Spell( 73975 ,{ name = "Necrotic Strike", duration = 10, color = colors.WOO })
+Spell( 56222 ,{ name = "Taunt", duration = 3 })
 Spell( 55233 ,{ name = "Vampiric Blood", duration = 10, color = colors.RED })
-Spell( 81256 ,{ name = "Dancing Rune Weapon", duration = 12, color = colors.RED })
+Spell( 81256 ,{ name = "Dancing Rune Weapon", duration = 12, color = colors.BROWN })
 --Spell( 49222 ,{ name = "Bone Shield", duration = 300, color = colors.WOO2 })
+
+Spell( 81141 ,{ name = "Crimson Scourge", duration = 15, color = colors.LRED })
+Spell( 50421 ,{ name = "Scent of Blood", duration = 30, color = colors.WOO2 })
 
 --FROST
 Spell( 57330 ,{ name = "Horn of Winter", duration = 120, shout = true, glowtime = 8, color = colors.CURSE, multiTarget = true, short = "Horn", init = function(self)self.duration = 120 + Glyph(58680)*60 end })
 Spell( 45524 ,{ name = "Chains of Ice", duration = 8, color = colors.CHILL })
-Spell( 49203 ,{ name = "Hungering Cold", duration = 10, color = colors.FROZEN, multiTarget = true })
 Spell( 48792 ,{ name = "Icebound Fortitude", duration = 12 })
-Spell( 51124 ,{ name = "Killing Machine", duration = 30 })
-Spell( 59052 ,{ name = "Freezing Fog", duration = 15 })
+Spell( 51124 ,{ name = "Killing Machine", duration = 30, color = colors.LRED, shine = true })
+Spell( 59052 ,{ name = "Freezing Fog", duration = 15, color = colors.WOO2, shine = true })
+
 Spell( 49039 ,{ name = "Lichborne", duration = 10, color = colors.BLACK })
 
 --UNHOLY
@@ -357,6 +364,13 @@ Spell( 91797 ,{ name = "Monstrous Blow", duration = 4, color = colors.RED, short
 Spell( 49016 ,{ name = "Unholy Frenzy", duration = 30, color = colors.LRED })
 Spell( 48707 ,{ name = "Anti-Magic Shell", duration = 5, short = "Shell", color = colors.LGREEN })
 
+Spell( 50461 ,{ name = "Anti-Magic Zone", color = colors.GOLD, duration = 10, multiTarget = true })
+Spell( 116888 ,{ name = "Purgatory", color = colors.LGREEN, duration = 3, shine = true })
+Spell( 108194 ,{ name = "Asphyxiate", color = colors.PINK, duration = 5 })
+Spell( 96268 ,{ name = "Death's Advance", color = colors.PINK, duration = 6, shine = true })
+Spell( 114851 ,{ name = "Blood Charge", color = colors.DRED, duration = 24 })
+
+Spell( 115018 ,{ name = "Desecrated Ground", color = colors.BLACK, duration = 10, multiTarget = true }) -- untested
 end
 
 if class == "MAGE" then
