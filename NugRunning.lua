@@ -577,7 +577,8 @@ function NugRunning.TimerFunc(self,time)
     local opts = self.opts
     if opts.timeless or opts.charged then return end
 
-    local beforeEnd = self.endTime - GetTime()
+    local endTime = self.endTime
+    local beforeEnd = endTime - GetTime()
 
     if beforeEnd <= 0 then
         if not self.dontfree then
@@ -593,7 +594,8 @@ function NugRunning.TimerFunc(self,time)
         if self.glow and not self.glow:IsPlaying() then self.glow:Play() end
     end
 
-    if opts.recast_mark and beforeEnd < opts.recast_mark and beforeEnd > opts.recast_mark-0.1 then
+    local rm = opts.recast_mark
+    if rm and beforeEnd < rm and beforeEnd > rm-0.1 then
         self.mark.shine:Play()
     end
 end

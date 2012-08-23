@@ -32,7 +32,10 @@ colors["FIRE"] = {1,80/255,0}
 colors["LBLUE"] = {149/255, 121/255, 214/255}
 colors["GOLD"] = {1,0.7,0.5}
 colors["LGREEN"] = { 0.63, 0.8, 0.35 }
+colors["GREEN"] = {0.3, 0.9, 0.3}
+colors["DGREEN"] = { 0, 0.35, 0 }
 colors["PURPLE"] = { 187/255, 75/255, 128/255 }
+colors["DPURPLE"] = {74/255, 14/255, 85/255}
 colors["FROZEN"] = { 65/255, 110/255, 1 }
 colors["CHILL"] = { 0.6, 0.6, 1}
 colors["BLACK"] = {0.4,0.4,0.4}
@@ -242,7 +245,7 @@ Spell( 1715 ,{ name = "Hamstring", ghost = true, color = colors.PURPLE, duration
 -- Spell( 12809 ,{ name = "Concussion Blow", color = { 1, 0.3, 0.6 }, duration = 5 })
 Spell( 355 ,{ name = "Taunt", duration = 3 })
 Spell( 113746 ,{ name = "Weakened Armor", short = "WeakArmor", anySource = true, target = "target", color = colors.BROWN, duration = 30 })
-Spell( 1160 ,{ name = "Demoralizing Shout", short = "DemoShout", color = {0.3, 0.9, 0.3}, duration = 30, multiTarget = true })
+Spell( 1160 ,{ name = "Demoralizing Shout", short = "DemoShout", color = colors.GREEN, duration = 30, multiTarget = true })
 Spell( 115798 ,{ name = "Weakened Blows", short = "WeakBlows", anySource = true, target = "target", color = {149/255, 121/255, 214/255}, duration = 30, multiTarget = true })
 Spell( 122510 ,{ name = "Ultimatum", shine = true, color = colors.CURSE, duration = 10 })
 Cooldown( 6572, { name = "Revenge", color = colors.WOO, fixedlen = 6, ghost = true })
@@ -263,7 +266,7 @@ Spell( 107570, { name = "Storm Bolt", color = { 1, 0.3, 0.6 }, duration = 3})
 Cooldown( 12294, { name = "Mortal Strike", short = "", check_known = true, recast_mark = 1.5, fixedlen = 9, ghost = true,  color = colors.CURSE })
 
 -- special timer
-Spell( 7384, { name = "Overpower", short = "", shine = true, color = colors.RED, recast_mark = 4.5, duration = 9})
+Spell( 7384, { name = "Overpower", short = "", shine = true, color = colors.RED, recast_mark = -4.5, duration = 9})
 --Activation( 7384, { name = "Overpower", short = "", shine = true, color = colors.RED, recast_mark = 4.5, duration = 9})
 -- Spell( 60503 ,{ name = "", recast_mark = 4, color = colors.RED, duration = 9 }) -- Taste for blood: new id 125831
 
@@ -312,7 +315,7 @@ Spell( 119611 ,{ name = "Renewing Mist", color = colors.LGREEN, duration = 18 })
 Spell( 116849 ,{ name = "Life Cocoon", color = colors.PURPLE, duration = 12 })
 Spell( 116680 ,{ name = "Thunder Focus Tea", color = colors.CURSE, duration = 30 })
 Spell( 118674 ,{ name = "Vital Mists", color = colors.BLACK, duration = 30 })
-NugRunningConfig.totems[1] = { name = "Statue", color = colors.BLACK, priority = - 100, hideName = true }
+NugRunningConfig.totems[1] = { name = "Statue", color = colors.DGREEN, priority = - 100, hideName = true }
 
 
 Spell( 115213 ,{ name = "Avert Harm", duration = 15 })
@@ -446,38 +449,50 @@ Spell( 31884 ,{ name = "Avenging Wrath",duration = 20, short = "AW", color = col
 Spell( 498 ,{ name = "Divine Protection",duration = 10, short = "DProt", color = colors.BLACK })
 Spell( 642 ,{ name = "Divine Shield",duration = 8, short = "DShield", color = colors.BLACK })
 Spell( 31850,{ name = "Ardent Defender",duration = 10, color = colors.BLACK})
-Spell( 70940,{ name = "Divine Guardian", duration = 6, multiTarget = true, short = "DGuardian", color = colors.GOLD})
+Spell( 31821,{ name = "Devotion Aura", duration = 6, multiTarget = true, color = colors.GOLD})
 Spell( 1022 ,{ name = "Hand of Protection",duration = 10, short = "HoProt", color = colors.WOO2 })
 Spell( 1044 ,{ name = "Hand of Freedom",duration = 6, short = "Freedom" })
 Spell( 10326 ,{ name = "Turn Evil",duration = 20, pvpduration = 8, color = colors.LGREEN })
+Spell( 105421 ,{ name = "Blinding Light",duration = 6, color = colors.DRED, multiTarget= true })
 
-Spell( 53563 ,{ name = "Beacon of Light",duration = 300, short = "Beacon",color = colors.RED })
+
+Spell( 53563 ,{ name = "Beacon of Light", duration = 300, timeless = true, priority = -20, short = "Beacon",color = colors.RED })
 Spell( 54428 ,{ name = "Divine Plea",duration = 15, short = "Plea" })
 -- Spell( 31842 ,{ name = "Divine Favor",duration = 20, short = "Favor" })
 Spell( 20066 ,{ name = "Repentance",duration = 60, pvpduration = 8, color = colors.LBLUE })
 Spell( 853 ,{ name = "Hammer of Justice", duration = 6, short = "HoJ", color = colors.FROZEN })
+Spell( 105593 ,{ name = "Fist of Justice", duration = 6, short = "FoJ", color = colors.FROZEN })
 --Spell( 31803 ,{ name = "Censure",duration = 15, color = colors.RED})
 -- Spell( 85696 ,{ name = "Zealotry",duration = 20 })
+Spell( 2812 ,{ name = "Denounce", duration = 4, color = colors.GREEN })
 
-Cooldown( 35395 ,{ name = "Crusader Strike", ghost = true, short = "Crusader", color = colors.CURSE, recast_mark = 1.5, fixedlen = 8 })
-Cooldown( 20271 ,{ name = "Judgement", ghost = true, color = colors.RED })
-Spell( 20925 ,{ name = "Holy Shield", color = colors.WOO2, duration = 10 })
-Cooldown( 24275 ,{ name = "HoWrath", color = colors.TEAL })
--- Cooldown( 2812, { name = "Holy Wrath", color = colors.BROWN })
--- Cooldown( 26573 ,{ name = "Consecration", color = colors.LBLUE })
-Cooldown( 20473 ,{ name = "Holy Shock", color = colors.PINK })
+Cooldown( 35395 ,{ name = "Crusader Strike", ghost = true, short = "Crusader", priority = 2, fixedlen = 6, color = colors.CURSE, recast_mark = 1.5 })
+Cooldown( 20271 ,{ name = "Judgment", ghost = true, fixedlen = 6, priority = 1, color = colors.RED })
+Cooldown( 24275 ,{ name = "Hammer of Wrath", short = "HWrath", color = colors.TEAL })
+Cooldown( 119072, { name = "Holy Wrath", color = colors.BROWN })
+Cooldown( 26573 ,{ name = "Consecration", color = colors.LBLUE })
 
+Spell( 114637 ,{ name = "Bastion of Glory", short = "Bastion", duration = 20, priority = -15, color = colors.DRED })
+Spell( 132403 ,{ name = "Shield of the Righteous", short = "SotR", duration = 3, priority = 10, color = colors.DPURPLE })
 
 --Spell( 94686 ,{ name = "Crusader", duration = 15 })
 Spell( 59578 ,{ name = "Exorcism", shine = true, color = colors.LRED, duration = 15 }) -- Art of War
 --Activation( 879 ,{ name = "Exorcism", shine = true, color = colors.ORANGE, duration = 15 })
 --Activation( 84963 ,{ name = "Hand of Light", shine = true, showid = 85256, short = "Light", color = colors.PINK, duration = 8 })
-Spell( 90174 ,{ name = "Hand of Light", shine = true, showid = 85256, short = "Light", color = colors.PINK, duration = 8 })
 
 Spell( 62124 ,{ name = "Taunt", duration = 3 })
 -- Spell( 85416 ,{ name = "Reset", shine = true, timeless = true, duration = 0.1, color = colors.BLACK })
 --Activation( 31935 ,{ name = "Reset", shine = true, timeless = true, duration = 0.1, color = colors.BLACK })
 Cooldown( 31935 ,{ name = "Avenger's Shield", resetable = true, duration = 15, short = "Avenger", color = colors.BLACK, ghost = true })
+
+
+Spell( 85499 ,{ name = "Speed of Light", short = "Speed", duration = 7 })
+Spell( 114250 ,{ name = "Selfless Healer", short = "Selfless", duration = 15 })
+Spell( 114163 ,{ name = "Eternal Flame", duration = 30, color = colors.LGREEN })
+Spell( 20925 ,{ name = "Sacred Shield", color = colors.WOO2, duration = 30 })
+Spell( 90174 ,{ name = "Divine Purpose", shine = true, short = "DPurpose", color = colors.PINK, duration = 8 })
+Cooldown( 114165 ,{ name = "Holy Prism", color = colors.BLACK })
+Spell( {114916, 114917} ,{ name = "Execution Sentence", short = "Execution", color = colors.BLACK, duration = 10 })
 end
 
 if class == "DRUID" then

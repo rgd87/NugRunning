@@ -34,8 +34,14 @@ function TimerBar.SetTime(self,s,e)
 end
 function TimerBar.UpdateMark(self)
     if self.opts.recast_mark then
+        local rm = self.opts.recast_mark
         local duration = self.endTime - self.startTime
-        local pos = self.opts.recast_mark / duration * self.bar:GetWidth()
+        local pos
+        if rm >= 0 then
+            pos = rm / duration * self.bar:GetWidth()
+        else
+            pos = duration-rm / duration * self.bar:GetWidth()
+        end
         self.mark:SetPoint("CENTER",self.bar,"LEFT",pos,0)
         self.mark:Show()
         self.mark.texture:Show()
@@ -72,19 +78,19 @@ do
     local ceil = math.ceil
     function TimerBar.FormatTime(self, s)
         if s >= hour then
-            return format("%dh", ceil(s / hour))
+            return "%dh", ceil(s / hour)
         elseif s >= minute*2 then
-            return format("%dm", ceil(s / minute))
-        elseif s >= 5 then
-            return floor(s)
+            return "%dm", ceil(s / minute)
+        elseif s >= 30 then
+            return "%ds", floor(s)
         end
-        return format("%.1f", s)
+        return "%.1f", s
     end
 end
 
 function TimerBar.Update(self, beforeEnd)
     self.bar:SetValue(beforeEnd + self.startTime)
-    self.timeText:SetText(self:FormatTime(beforeEnd))
+    self.timeText:SetFormattedText(self:FormatTime(beforeEnd))
 end
 
 function TimerBar.Resize(self, width, height)
