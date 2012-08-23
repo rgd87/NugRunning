@@ -66,10 +66,25 @@ function TimerBar.ToGhost(self)
     self.bar:SetValue(0)
     --self:SetAlpha(0.8)
 end
+do
+    local hour, minute = 3600, 60
+    local format = string.format
+    local ceil = math.ceil
+    function TimerBar.FormatTime(self, s)
+        if s >= hour then
+            return format("%dh", ceil(s / hour))
+        elseif s >= minute*2 then
+            return format("%dm", ceil(s / minute))
+        elseif s >= 5 then
+            return floor(s)
+        end
+        return format("%.1f", s)
+    end
+end
 
 function TimerBar.Update(self, beforeEnd)
     self.bar:SetValue(beforeEnd + self.startTime)
-    self.timeText:SetFormattedText("%.1f", beforeEnd)
+    self.timeText:SetText(self:FormatTime(beforeEnd))
 end
 
 function TimerBar.Resize(self, width, height)

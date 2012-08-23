@@ -22,7 +22,7 @@ NugRunningConfig.colors = {}
 local colors = NugRunningConfig.colors
 colors["RED"] = { 0.8, 0, 0}
 colors["LRED"] = { 1,0.4,0.4}
-colors["DRED"] = { 0.6,0,0}
+colors["DRED"] = { 0.55,0,0}
 colors["CURSE"] = { 0.6, 0, 1 }
 colors["PINK"] = { 1, 0.3, 0.6 }
 colors["TEAL"] = { 0.32, 0.52, 0.82 }
@@ -46,6 +46,8 @@ local _, race = UnitRace("player")
 if race == "Troll" then Spell( 26297 ,{ name = "Berserking", duration = 10 }) end --Troll Racial
 if race == "Orc" then Spell({ 33702,33697,20572 },{ name = "Blood Fury", duration = 15 }) end --Orc Racial
 
+
+Spell({2825, 32182, 80353} ,{ name = "Bloodlust", duration = 40, priority = -100, color = colors.DRED, shine = true, anySource = true, target = "player" })
 
 if class == "WARLOCK" then
 Spell( 74434 ,{ name = "Soulburn",duration = 20, color = colors.CURSE })
@@ -310,6 +312,7 @@ Spell( 119611 ,{ name = "Renewing Mist", color = colors.LGREEN, duration = 18 })
 Spell( 116849 ,{ name = "Life Cocoon", color = colors.PURPLE, duration = 12 })
 Spell( 116680 ,{ name = "Thunder Focus Tea", color = colors.CURSE, duration = 30 })
 Spell( 118674 ,{ name = "Vital Mists", color = colors.BLACK, duration = 30 })
+NugRunningConfig.totems[1] = { name = "Statue", color = colors.BLACK, priority = - 100, hideName = true }
 
 
 Spell( 115213 ,{ name = "Avert Harm", duration = 15 })
@@ -604,16 +607,18 @@ end
 if class == "SHAMAN" then
 Spell( 8056 ,{ name = "Frost Shock", duration = 8, color = colors.CHILL, short = "FrS" })
 
-Spell( 16188 ,{ name = "Nature's Swiftness", timeless = true, duration = 0.1, color = colors.TEAL, short = "NS" })
+Spell( 16188 ,{ name = "Ancestal Swiftness", timeless = true, duration = 0.1, color = colors.TEAL, shine = true, short = "Swiftness" })
 Spell( 61295 ,{ name = "Riptide", duration = 15, color = colors.FROZEN })
 Spell( 76780 ,{ name = "Bind Elemental", duration = 50, pvpduration = 8, color = colors.PINK })
 Spell( 51514 ,{ name = "Hex", duration = 50, pvpduration = 8, color = colors.CURSE })
 Spell( 79206 ,{ name = "Spiritwalker's Grace", duration = 10, color = colors.LGREEN })
 
-Spell( 8050 ,{ name = "Flame Shock", duration = 18, color = colors.PURPLE, short = "FlS" })
+Spell( 8050 ,{ name = "Flame Shock", duration = 18, color = colors.PURPLE })
 Spell( 16166 ,{ name = "Elemental Mastery", duration = 30, color = colors.CURSE })
 Cooldown( 8056 ,{ name = "Shock", color = colors.LRED })
 Cooldown( 51505 ,{ name = "Lava Burst", color = colors.RED, resetable = true })
+Spell( 77762 ,{ name = "Flame Surge", duration = 18, color = colors.FIRE, shine = true })
+Cooldown( 51490 ,{ name = "Thunderstorm", color = colors.WOO2 })
 
 Spell( 30823 ,{ name = "Shamanistic Rage", duration = 15, color = colors.BLACK })
 Cooldown( 60103 ,{ name = "Lava Lash", color = colors.RED })
@@ -621,12 +626,16 @@ Spell( 53817 ,{ name = "Maelstrom Weapon", duration = 12, color = colors.PURPLE,
 Cooldown( 17364 ,{ name = "Stormstrike", color = colors.CURSE })
 Cooldown( 73680 ,{ name = "Unleash Elements", color = colors.WOO, short = "Unleash" })
 
+Spell({ 114050, 114051, 114052} ,{ name = "Ascendance", duration = 15, color = colors.PINK }) --ele, enh, resto
+Spell( 108271 ,{ name = "Astral Shift", duration = 6, color = colors.BLACK })
+Spell( 63685 ,{ name = "Freeze", duration = 5, color = colors.FROZEN })
+Cooldown( 117014 ,{ name = "Elemental Blast", color = colors.BLACK })
+
+
 -- TOTEMS
-NugRunningConfig.totems = {}
-NugRunningConfig.totems.hideNames = true
-NugRunningConfig.totems[1] = { name = "Fire", color = {1,80/255,0} }
-NugRunningConfig.totems[2] = { name = "Earth", color = {74/255, 142/255, 42/255} }
-NugRunningConfig.totems[3] = { name = "Water", color = { 65/255, 110/255, 1} }
-NugRunningConfig.totems[4] = { name = "Air", color = {0.6, 0, 1} }
+NugRunningConfig.totems[1] = { name = "Fire", color = {1,80/255,0}, hideName = false, priority = -77 }
+NugRunningConfig.totems[2] = { name = "Earth", color = {74/255, 142/255, 42/255}, priority = -78 }
+NugRunningConfig.totems[3] = { name = "Water", color = { 65/255, 110/255, 1}, priority = -79 }
+NugRunningConfig.totems[4] = { name = "Air", color = {0.6, 0, 1}, priority = -80 }
 
 end

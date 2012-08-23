@@ -1,4 +1,5 @@
-if select(2,UnitClass("player")) ~= "SHAMAN" then return end
+-- if select(2,UnitClass("player")) ~= "SHAMAN" then return end
+if not next(NugRunningConfig.totems) then return end
 
 NugRunning.InitTotems = function(self)
     
@@ -10,7 +11,7 @@ NugRunning.InitTotems = function(self)
     local UpdateTotem = function( id, opts, name, startTime, duration, icon )
         local timer = opts.timer
         timer:SetTime(startTime,startTime+duration)
-        if not totems.hideNames then
+        if not opts.hideName then
             opts.name = name
             timer:SetName(name)
         else

@@ -5,6 +5,7 @@ NugRunningConfig.anchors = {}
 NugRunningConfig.cooldowns = {}
 NugRunningConfig.activations = {}
 NugRunningConfig.event_timers = {}
+NugRunningConfig.totems = {}
 
 helpers.Talent = function (spellID)
     -- local spellName
