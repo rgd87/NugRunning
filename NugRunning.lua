@@ -50,6 +50,7 @@ local GetSpellInfo = setmetatable({},{
 })
 
 local GetSpellCooldown = GetSpellCooldown
+local GetSpellCharges = GetSpellCharges
 
 local bit_band = bit.band
 local UnitAura = UnitAura
@@ -231,42 +232,17 @@ function NugRunning.SPELL_ACTIVATION_OVERLAY_GLOW_HIDE(self,event, spellID)
 end
 
 ---------------------------
--- COOLDOWNS
----------------------------
--- 5.0 workaround for broken(?) GetSpellCooldown. Using GetActionCooldown instead and keeping action-spell map
-local spell_to_action = {}
-local GetSpellCooldown2 = function(id)
-    local action = spell_to_action[id]
-    if action then
-        return GetActionCooldown(action)
-    else
-        return 0,0,1,0
-    end
-end
-local function updateAction(actionID, fixtable)
-    local actionType, spellID = GetActionInfo(actionID)
-    if actionType == "spell" then
-        spell_to_action[spellID] = actionID
-        if fixtable then
-            for spell,action in pairs(spell_to_action) do
-                if action == actionID and spell ~= spellID then
-                    spell_to_action[spell] = nil
-                end
-            end
-        end
-    end
-end
-hooksecurefunc(NugRunning,"PLAYER_LOGIN",function(self,event)
-    for i=1,120 do
-        updateAction(i)
-    end
-end)
-function NugRunning.ACTIONBAR_SLOT_CHANGED(self, event, slot)
-    updateAction(slot, true)
-end
-NugRunning:RegisterEvent("ACTIONBAR_SLOT_CHANGED")
+--   COOLDOWNS
 
-
+local function GetSpellCooldownCharges(spellID)
+    local startTime, duration, enabled = GetSpellCooldown(spellID)
+    local charges, maxCharges, chargeStart, chargeDuration = GetSpellCharges(spellID)
+    if charges and charges ~= maxCharges then
+        startTime = chargeStart
+        duration = chargeDuration
+    end
+    return startTime, duration, enabled, charges, maxCharges
+end
 
 function NugRunning.SPELL_UPDATE_COOLDOWN(self,event)
     for spellID,opts in pairs(NugRunningConfig.cooldowns) do
@@ -274,12 +250,7 @@ function NugRunning.SPELL_UPDATE_COOLDOWN(self,event)
             if not IsSpellKnown(spellID) then return end
         end
 
-        local startTime, duration, enabled, available
-        if not opts.recharging then
-            startTime, duration, enabled, available = GetSpellCooldown(spellID)
-        else
-            startTime, duration, enabled = GetSpellCooldown2(spellID)
-        end        
+        local startTime, duration, enabled, charges, maxCharges = GetSpellCooldownCharges(spellID) 
 
         local timer
         if opts.timer and (opts.timer.spellID == spellID) then
@@ -299,15 +270,16 @@ function NugRunning.SPELL_UPDATE_COOLDOWN(self,event)
                         timer.fixedoffset = timer.opts.fixedlen and duration - timer.opts.fixedlen or 0
                         timer:SetTime(startTime +  timer.fixedoffset, startTime + duration)
                     end
-                    -- It's a miracle that it works.
-                    -- Well, if it'll stop, look into Action bar slot event, and all that
-                    -- And I'm not sure how this will work with GetSpellCooldown, when it will be fixed. Probably won't
+
                     if opts.replaces then
                         timer:SetIcon(select(3,GetSpellInfo(spellID)))
                         timer:SetName(self:MakeName(opts))
                         if opts.color then timer:SetColor(unpack(opts.color)) end
                     end
                     opts.timer = timer
+                end
+                if charges then 
+                    opts.timer:SetCount(maxCharges-charges)
                 end
             elseif timer and (active[timer] and opts.resetable) then
                 local oldcdrem = timer.endTime - GetTime()
@@ -548,18 +520,24 @@ end
 function NugRunning.UNIT_AURA (self,event,unit)
     if not queue[unit] then return end
     for spellID, timer in pairs(queue[unit]) do
-        local name, _,_, count, _, duration, expirationTime, caster, _,_, aura_spellID = UnitAura(unit, GetSpellInfo(spellID), nil, timer.filter)
-        if aura_spellID and aura_spellID == timer.spellID then
-            if timer.opts.charged then
-                timer:SetCharge(count)
-            elseif not timer.opts.timeless then
-                timer.fixedoffset = timer.opts.fixedlen and duration - timer.opts.fixedlen or 0
-                timer:SetTime(expirationTime - duration + timer.fixedoffset,expirationTime)
-                timer:SetCount(count)
+        local timer_spellID = timer.spellID
+        for auraIndex=1,100 do
+            local name, _,_, count, _, duration, expirationTime, caster, _,_, aura_spellID = UnitAura(unit, auraIndex, timer.filter)
+            if aura_spellID then
+                if aura_spellID == timer_spellID then
+                    if timer.opts.charged then
+                        timer:SetCharge(count)
+                    elseif not timer.opts.timeless then
+                        timer.fixedoffset = timer.opts.fixedlen and duration - timer.opts.fixedlen or 0
+                        timer:SetTime(expirationTime - duration + timer.fixedoffset,expirationTime)
+                        timer:SetCount(count)
+                    end
+                    queue[unit][spellID] = nil
+                    break
+                end
+            elseif timer.queued and timer.queued + 0.4 < GetTime() then
+                queue[unit][spellID] = nil
             end
-            queue[unit][spellID] = nil
-        elseif timer.queued and timer.queued + 0.4 < GetTime() then
-            queue[unit][spellID] = nil
         end
     end
     if not next(queue[unit]) then queue[unit] = nil end

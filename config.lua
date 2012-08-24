@@ -315,7 +315,7 @@ Spell( 119611 ,{ name = "Renewing Mist", color = colors.LGREEN, duration = 18 })
 Spell( 116849 ,{ name = "Life Cocoon", color = colors.PURPLE, duration = 12 })
 Spell( 116680 ,{ name = "Thunder Focus Tea", color = colors.CURSE, duration = 30 })
 Spell( 118674 ,{ name = "Vital Mists", color = colors.BLACK, duration = 30 })
-NugRunningConfig.totems[1] = { name = "Statue", color = colors.DGREEN, priority = - 100, hideName = true }
+NugRunningConfig.totems[1] = { name = "Statue", color = colors.DPURPLE, priority = - 100, hideName = true }
 
 
 Spell( 115213 ,{ name = "Avert Harm", duration = 15 })
@@ -492,7 +492,7 @@ Spell( 114163 ,{ name = "Eternal Flame", duration = 30, color = colors.LGREEN })
 Spell( 20925 ,{ name = "Sacred Shield", color = colors.WOO2, duration = 30 })
 Spell( 90174 ,{ name = "Divine Purpose", shine = true, short = "DPurpose", color = colors.PINK, duration = 8 })
 Cooldown( 114165 ,{ name = "Holy Prism", color = colors.BLACK })
-Spell( {114916, 114917} ,{ name = "Execution Sentence", short = "Execution", color = colors.BLACK, duration = 10 })
+Spell( {114916, 114917} ,{ name = "Execution Sentence", ghost = true, short = "Execution", color = colors.BLACK, duration = 10 })
 end
 
 if class == "DRUID" then
