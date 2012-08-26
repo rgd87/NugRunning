@@ -40,7 +40,7 @@ function TimerBar.UpdateMark(self)
         if rm >= 0 then
             pos = rm / duration * self.bar:GetWidth()
         else
-            pos = duration-rm / duration * self.bar:GetWidth()
+            pos = (duration+rm) / duration * self.bar:GetWidth()
         end
         self.mark:SetPoint("CENTER",self.bar,"LEFT",pos,0)
         self.mark:Show()

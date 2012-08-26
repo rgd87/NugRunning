@@ -3,6 +3,7 @@ local class = select(2,UnitClass("player"))
 
 local active = NugRunning.active
 local free = NugRunning.free
+local UnitGUID = UnitGUID
 
 if class == "DEATHKNIGHT" then
 
@@ -85,7 +86,6 @@ if class == "WARRIOR" then
             end
         end
     end]]
-    local pGUID = UnitGUID("player")
 
     op_frame:SetScript("OnEvent",function(self, event, unit)
         --if event == "ACTIVE_TALENT_GROUP_CHANGED" or event == "PLAYER_TALENT_UPDATE" then
@@ -96,11 +96,11 @@ if class == "WARRIOR" then
         if new ~= old then
             old = new
             if new then
-                    op_timer = NugRunning:ActivateTimer(pGUID, pGUID,
+                    op_timer = NugRunning:ActivateTimer(UnitGUID("player"), UnitGUID("player"),
                                      UnitName("plyer"), nil,
                                      overpower_id, GetSpellInfo(overpower_id), op_opts, "COOLDOWN")
             else
-                NugRunning:DeactivateTimer(pGUID, pGUID, overpower_id,  GetSpellInfo(overpower_id), op_opts, "COOLDOWN")
+                NugRunning:DeactivateTimer(UnitGUID("player"), UnitGUID("player"), overpower_id,  GetSpellInfo(overpower_id), op_opts, "COOLDOWN")
             end
         end
     end)

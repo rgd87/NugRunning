@@ -268,7 +268,7 @@ Cooldown( 12294, { name = "Mortal Strike", short = "", check_known = true, recas
 -- special timer
 Spell( 7384, { name = "Overpower", short = "", shine = true, color = colors.RED, recast_mark = -4.5, duration = 9})
 --Activation( 7384, { name = "Overpower", short = "", shine = true, color = colors.RED, recast_mark = 4.5, duration = 9})
--- Spell( 60503 ,{ name = "", recast_mark = 4, color = colors.RED, duration = 9 }) -- Taste for blood: new id 125831
+Spell( 125831 ,{ name = "Taste for Blood", color = colors.PURPLE, duration = 15 }) -- Taste for blood
 
 Cooldown( 23881, { name = "Bloodthirst", short = "", check_known = true, ghost = true, recast_mark = 1.5, fixedlen = 6,  color = colors.CURSE })
 Spell( 46916 ,{ name = "Bloodsurge", shine = true, color = colors.LRED, duration = 10 })
@@ -552,7 +552,7 @@ Spell( 102543 ,{ name = "Incarnation: King of the Jungle", short = "Incarnation"
 
 Spell( 102342 ,{ name = "Ironbark",duration = 12 })
 Spell( 22812 ,{ name = "Barkskin",duration = 12 })
-Spell( 17116 ,{ name = "Nature's Swiftness", timeless = true, duration = 0.1, color = colors.TEAL, short = "NS" })
+Spell( 132158 ,{ name = "Nature's Swiftness", timeless = true, duration = 0.1, color = colors.TEAL, short = "NS" })
 Spell( 774 ,{ name = "Rejuvenation",duration = 12, color = { 1, 0.2, 1} })
 Spell( 8936 ,{ name = "Regrowth",duration = 6, color = { 198/255, 233/255, 80/255} })
 Spell( 33763 ,{ name = "Lifebloom", shinerefresh = true, recast_mark = 3, duration = 10, init = function(self)self.duration = 7 + Talent(57865)*2 end, stackcolor = {
