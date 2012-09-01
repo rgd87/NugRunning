@@ -60,13 +60,13 @@ Spell( 34936 ,{ name = "Backlash", duration = 8, shine = true, color = colors.CU
 Spell( 80240 ,{ name = "Havoc", duration = 15, color = colors.WOO, target = "player" })
 
 Spell( 108683 ,{ name = "Fire and Brimstone", short = "FnB", timeless = true, color = colors.ORANGE })
-Cooldown( 17962, { name = "Conflagrate", ghost = true, recharging = true, priority = 5, color = colors.LRED })
+Cooldown( 17962, { name = "Conflagrate", ghost = true, priority = 5, color = colors.LRED })
 
 Spell( 122355,{ name = "Molten Core",duration = 30, shine = true, color = colors.PURPLE })
 -- REMOVED_DOSE event is not fired for molten core, so it's stuck at 3
 
-Cooldown( 105174, { name = "Hand of Gul'dan",  color = colors.CURSE, recharging = true, replaces = 124916 })
-Cooldown( 124916, { name = "Chaos Wave",  color = colors.CURSE, recharging = true, replaces = 105174 })
+Cooldown( 105174, { name = "Hand of Gul'dan",  color = colors.CURSE })
+-- Cooldown( 124916, { name = "Chaos Wave",  color = colors.CURSE, replaces = 105174 })
 -- Spell( 47960 ,{ name = "Shadowflame", duration = 6, multiTarget = true })
 
 Spell( 104773,{ name = "Unending Resolve",duration = 12, color = colors.WOO2 })
