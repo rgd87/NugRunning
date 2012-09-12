@@ -141,7 +141,7 @@ NugRunning.ConstructTimerBar = function(width, height)
     
     f.bar = CreateFrame("StatusBar",nil,f)
     f.bar:SetFrameStrata("MEDIUM")
-    local texture = NugRunning.texture or "Interface\\AddOns\\NugRunning\\statusbar"
+    local texture = NugRunningConfig.texture or "Interface\\AddOns\\NugRunning\\statusbar"
     f.bar:SetStatusBarTexture(texture)
     f.bar:GetStatusBarTexture():SetDrawLayer("ARTWORK")
     f.bar:SetHeight(height)
@@ -155,6 +155,7 @@ NugRunning.ConstructTimerBar = function(width, height)
     f.timeText = f.bar:CreateFontString();
     f.timeText:SetFont(NugRunningConfig.timeFont.font, NugRunningConfig.timeFont.size)
     f.timeText:SetJustifyH("RIGHT")
+    f.timeText:SetAlpha(NugRunningConfig.timeFont.alpha or 1)
     f.timeText:SetVertexColor(1,1,1)
     f.timeText:SetPoint("RIGHT", f.bar, "RIGHT",-6,0)
     
@@ -163,6 +164,7 @@ NugRunning.ConstructTimerBar = function(width, height)
     f.spellText:SetWidth(f.bar:GetWidth()*0.8)
     f.spellText:SetHeight(height/2+1)
     f.spellText:SetJustifyH("CENTER")
+    f.spellText:SetAlpha(NugRunningConfig.nameFont.alpha or 1)
     f.spellText:SetPoint("LEFT", f.bar, "LEFT",6,0)
     f.spellText.SetName = SpellTextUpdate
     

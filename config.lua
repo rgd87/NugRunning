@@ -14,8 +14,8 @@ local GetCP = helpers.GetCP
 local _,class = UnitClass("player")
 
 NugRunningConfig.texture = "Interface\\AddOns\\NugRunning\\statusbar"
-NugRunningConfig.nameFont = { font = "Fonts\\FRIZQT__.TTF", size = 10 }
-NugRunningConfig.timeFont = { font = "Fonts\\FRIZQT__.TTF", size = 8 }
+NugRunningConfig.nameFont = { font = "Fonts\\FRIZQT__.TTF", size = 10, alpha = 0.5 }
+NugRunningConfig.timeFont = { font = "Fonts\\FRIZQT__.TTF", size = 8, alpha = 1 }
 NugRunningConfig.stackFont = { font = "Fonts\\FRIZQT__.TTF", size = 10 }
 
 NugRunningConfig.colors = {}
@@ -63,6 +63,7 @@ Spell( 108683 ,{ name = "Fire and Brimstone", short = "FnB", timeless = true, co
 Cooldown( 17962, { name = "Conflagrate", ghost = true, priority = 5, color = colors.LRED })
 
 Spell( 122355,{ name = "Molten Core",duration = 30, shine = true, color = colors.PURPLE })
+Spell( 603 ,{ name = "Doom",duration = 90, ghost = true, priority = 6, color = colors.WOO })
 -- REMOVED_DOSE event is not fired for molten core, so it's stuck at 3
 
 Cooldown( 105174, { name = "Hand of Gul'dan",  color = colors.CURSE })
@@ -473,7 +474,7 @@ Cooldown( 119072, { name = "Holy Wrath", color = colors.BROWN })
 Cooldown( 26573 ,{ name = "Consecration", color = colors.LBLUE })
 
 Spell( 114637 ,{ name = "Bastion of Glory", short = "Bastion", duration = 20, priority = -15, color = colors.DRED })
-Spell( 132403 ,{ name = "Shield of the Righteous", short = "SotR", duration = 3, priority = 10, color = colors.DPURPLE })
+-- Spell( 132403 ,{ name = "Shield of the Righteous", short = "SotR", duration = 3, priority = 10, color = colors.DPURPLE })
 
 --Spell( 94686 ,{ name = "Crusader", duration = 15 })
 Spell( 59578 ,{ name = "Exorcism", shine = true, color = colors.LRED, duration = 15 }) -- Art of War
@@ -567,6 +568,7 @@ Spell(100977,{ name = "Harmony", color = colors.BLACK, recast_mark = 2.5, durati
 end
 
 if class == "HUNTER" then
+EventTimer({ spellID = 131894, event = "SPELL_CAST_SUCCESS", name = "A Murder of Crows", duration = 30, color = colors.LBLUE })
 Spell( 51755 ,{ name = "Camouflage", duration = 60, target = "player", color = colors.CURSE })
 Spell( 19263 ,{ name = "Deterrence", duration = 5, color = colors.LBLUE })
 

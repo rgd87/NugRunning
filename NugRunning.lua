@@ -272,8 +272,9 @@ function NugRunning.SPELL_UPDATE_COOLDOWN(self,event)
                     end
 
                     if opts.replaces then
-                        timer:SetIcon(select(3,GetSpellInfo(spellID)))
-                        timer:SetName(self:MakeName(opts))
+                        local name,_, texture = GetSpellInfo(spellID)
+                        timer:SetIcon(texture)
+                        timer:SetName(self:MakeName(opts, name) )
                         if opts.color then timer:SetColor(unpack(opts.color)) end
                     end
                     opts.timer = timer
@@ -343,7 +344,7 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
     local now = GetTime()
     timer.fixedoffset = opts.fixedlen and time - opts.fixedlen or 0
 
-    nameText = NugRunning:MakeName(opts)
+    nameText = NugRunning:MakeName(opts, spellName)
 
     if opts.textfunc and type(opts.textfunc) == "function" then nameText = opts.textfunc(timer) end
     if timer.SetName then timer:SetName(nameText) end
@@ -481,7 +482,7 @@ function NugRunning.SetDefaultDuration(dstFlags, opts, timer )
     return ((type(opts.duration) == "function" and opts.duration(timer, opts)) or opts.duration)
 end
 
-function NugRunning.MakeName(self, opts)
+function NugRunning.MakeName(self, opts, spellName)
     if NRunDB.spellTextEnabled then
         if NRunDB.localNames then
             return spellName
