@@ -327,7 +327,7 @@ Spell( 128939 ,{ name = "Evusive Brew", duration = 30, color = colors.BLACK })
 Spell( 115308 ,{ name = "Evusive Brew", duration = 15, color = colors.BLACK })
 Cooldown( 115295, { name = "Guard", color = colors.GOLD })
 Cooldown( 121253, { name = "Keg Smash", color = colors.CURSE })
--- Spell( 115798 ,{ name = "Weakened Blows", short = "WeakBlows", anySource = true, target = "target", color = {149/255, 121/255, 214/255}, duration = 30, multiTarget = true })
+Spell( 115798 ,{ name = "Weakened Blows", short = "WeakBlows", anySource = true, target = "target", color = {149/255, 121/255, 214/255}, duration = 30, multiTarget = true })
 
 
 Spell( 124081 ,{ name = "Zen Sphere", duration = 16, color = { 1, 0.2, 1} })
@@ -467,6 +467,8 @@ Spell( 105593 ,{ name = "Fist of Justice", duration = 6, short = "FoJ", color = 
 -- Spell( 85696 ,{ name = "Zealotry",duration = 20 })
 Spell( 2812 ,{ name = "Denounce", duration = 4, color = colors.GREEN })
 
+Spell( 115798 ,{ name = "Weakened Blows", short = "WeakBlows", anySource = true, target = "target", color = {149/255, 121/255, 214/255}, duration = 30, multiTarget = true })
+
 Cooldown( 35395 ,{ name = "Crusader Strike", ghost = true, short = "Crusader", priority = 2, fixedlen = 6, color = colors.CURSE, recast_mark = 1.5 })
 Cooldown( 20271 ,{ name = "Judgment", ghost = true, fixedlen = 6, priority = 1, color = colors.RED })
 Cooldown( 24275 ,{ name = "Hammer of Wrath", short = "HWrath", color = colors.TEAL })
@@ -526,7 +528,7 @@ Spell( 1850 ,{ name = "Dash", duration = 15 })
 -- Spell( 81022 ,{ name = "Stampede", duration = 8 })
 --bear
 Spell( 62606 ,{ name = "Savage Defense", duration = 6, color = colors.WOO2 })
--- Spell( 115798 ,{ name = "Weakened Blows", short = "WeakBlows", target = "target", anySource = true, color = {149/255, 121/255, 214/255}, duration = 30, multiTarget = true })
+Spell( 115798 ,{ name = "Weakened Blows", short = "WeakBlows", target = "target", anySource = true, color = {149/255, 121/255, 214/255}, duration = 30, multiTarget = true })
 Spell( 106922 ,{ name = "Might of the Ursoc", duration = 20, color = colors.BLACK })
 Spell( 99 ,{ name = "Disorienting Roar", short = "Disorient", duration = 3, multiTarget = true })
 Spell( 6795 ,{ name = "Taunt", duration = 3 })
