@@ -1056,13 +1056,12 @@ h:SetScript("OnEvent",function(self, event, unit)
                 local name, _,_, count, _, duration, expirationTime, caster, _,_, aura_spellID = UnitAura("target", i, filter)
                 if not name then break end
 
-                if config[aura_spellID] then
+                local opts = config[aura_spellID]
+                if opts and (caster == "player" or opts.anySource) then
                     local found, timerType
                     -- searching in generated earlier table of player->target timers for matching spell
                     for _, timer in ipairs(targetTimers) do
-                        if  timer.spellID == aura_spellID and 
-                            (caster == "player" or timer.opts.anySource)
-                            then
+                        if  timer.spellID == aura_spellID then
                                 found = true
                                 timerType = timer.timerType
                                 break
