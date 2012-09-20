@@ -524,6 +524,7 @@ Spell( 1079 ,{ name = "Rip",duration = 16, color = colors.RED })
 Spell( 22570 ,{ name = "Maim", color = colors.PINK, duration = function() return GetCP() end })
 Cooldown(5217, { name = "Tiger's Fury", color = colors.LBLUE})
 Spell( 52610 ,{ name = "Savage Roar", color = colors.PURPLE, duration = function() return (12 + GetCP() * 6) end })
+Spell( 127538 ,{ name = "Savage Roar", color = colors.PURPLE, duration = 12 })
 Spell( 1850 ,{ name = "Dash", duration = 15 })
 -- Spell( 81022 ,{ name = "Stampede", duration = 8 })
 --bear
