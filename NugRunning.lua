@@ -362,6 +362,7 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
         timer:SetTime(now + timer.fixedoffset, now + time)
         timer:SetCount(1)
     end
+    timer.count = 1
     
     if not opts.color then
         if timerType == "DEBUFF" then opts.color = NugRunningConfig.colors.DEFAULT_DEBUFF
@@ -418,6 +419,7 @@ function NugRunning.RefreshTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID,
         if time then timer:SetTime(now + timer.fixedoffset, now + time) end
         timer:SetCount(amount)
     end
+    timer.count = amount
 
     if timer.glow:IsPlaying() then timer.glow:Stop() end
     if not noshine and opts.shinerefresh and not timer.shine:IsPlaying() then timer.shine:Play() end
@@ -434,6 +436,7 @@ function NugRunning.RemoveDose(self,srcGUID,dstGUID, spellID, spellName, timerTy
         and timer.srcGUID == srcGUID
         then
             timer:SetCount(amount)
+            timer.count = amount
         end
     end
 end
@@ -1033,11 +1036,12 @@ h:SetScript("OnEvent",function(self, event, unit)
                 (timer.timerType == "BUFF" or timer.timerType == "DEBUFF")
             then
                     local name, _,_, count, _, duration, expirationTime, caster, _,_, aura_spellID = UnitAura(unit, GetSpellInfo(timer.spellID), nil, timer.filter)
-                    if  (caster == "player" or timer.opts.anySource) and
-                        timer.spellID == aura_spellID and
-                        now + duration - expirationTime < 0.1
-                        then
-                        NugRunning:RefreshTimer(playerGUID,unitGUID,UnitName(unit),nil, timer.spellID, timer.spellName, timer.opts, timer.timerType, duration, count, true)
+                    if  (caster == "player" or timer.opts.anySource) and timer.spellID == aura_spellID then
+                        if (now + duration - expirationTime < 0.1) then
+                            NugRunning:RefreshTimer(playerGUID,unitGUID,UnitName(unit),nil, timer.spellID, timer.spellName, timer.opts, timer.timerType, duration, count, true)
+                        elseif count and timer.count ~= count then
+                            NugRunning:RemoveDose(playerGUID, unitGUID, aura_spellID, timer.spellName, timer.timerType, count)
+                        end
                     end
             end
         end

@@ -57,10 +57,11 @@ Spell( 74434 ,{ name = "Soulburn",duration = 20, color = colors.CURSE })
 
 Spell( 348 ,{ name = "Immolate", recast_mark = 1.5, duration = 15, priority = 10, ghost = true, color = colors.RED, init = function(self)self.duration = 15 + Talent(85105)*3 end })
 Spell( 34936 ,{ name = "Backlash", duration = 8, shine = true, color = colors.CURSE })
+-- Spell( 117828 ,{ name = "Backdraft", duration = 15, shine = true, color = colors.WOO, charged = true, maxcharge = 3 })
 Spell( 80240 ,{ name = "Havoc", duration = 15, color = colors.WOO, target = "player" })
 
 Spell( 108683 ,{ name = "Fire and Brimstone", short = "FnB", timeless = true, color = colors.ORANGE })
-Cooldown( 17962, { name = "Conflagrate", ghost = true, priority = 5, color = colors.LRED })
+Cooldown( 17962, { name = "Conflagrate", ghost = true, priority = 5, color = colors.PINK })
 
 Spell( 122355,{ name = "Molten Core",duration = 30, shine = true, color = colors.PURPLE })
 Spell( 603 ,{ name = "Doom",duration = 90, ghost = true, priority = 6, color = colors.WOO })
@@ -76,11 +77,11 @@ Spell( 113861 ,{ name = "Dark Soul: Knowledge",duration = 20, short = "DarkSoul"
 Spell( 113858 ,{ name = "Dark Soul: Instability",duration = 20, short = "DarkSoul", color = colors.CURSE })
 
 Spell( 86211 ,{ name = "Soul Swap", duration = 20, shine = true, color = colors.BLACK })
-Spell( 17941 ,{ name = "Nightfall", duration = 10, shine = true, color = colors.CURSE })
+-- Spell( 17941 ,{ name = "Nightfall", duration = 10, shine = true, color = colors.CURSE })
 Spell( 103103 ,{ name = "Malefic Grasp", priority = 14, duration = 15, color = colors.CURSE, target = "target" })
-Spell( 30108 ,{ name = "Unstable Affliction", priority = 10, duration = 15, ghost = true, recast_mark = 1.3, color = colors.RED, short = "UA" })
-Spell( 48181 ,{ name = "",duration = 12, priority = 8, ghost = true, recast_mark = 3, color = colors.TEAL }) --Haunt
-Spell( 172 ,{ name = "Corruption", priority = 9, ghost = true, color = colors.PINK, duration = 18 })
+Spell( 30108 ,{ name = "Unstable Affliction", fixedlen = 18, priority = 10, duration = 15, ghost = true, recast_mark = 1.3, color = colors.RED, short = "UA" })
+Spell( 48181 ,{ name = "",duration = 12, fixedlen = 18, priority = 8, ghost = true, recast_mark = 3, color = colors.TEAL }) --Haunt
+Spell( 172 ,{ name = "Corruption", fixedlen = 18, priority = 9, ghost = true, color = colors.PINK, duration = 18 })
 Spell( 980 ,{ name = "Agony",duration = 24, ghost = true, priority = 6, color = colors.WOO })
 Spell( 1120 ,{ name = "Drain Soul",duration = 15, color = colors.LRED })
 Spell( 27243 ,{ name = "Seed of Corruption",duration = 18, color = colors.LRED, short = "SoC" })
@@ -88,7 +89,8 @@ Spell( 27243 ,{ name = "Seed of Corruption",duration = 18, color = colors.LRED, 
 Spell( 109466 ,{ name = "Curse of Enfeeblement",duration = 30, color = colors.CURSE, short = "CoEnf" })
 Spell( 18223 ,{ name = "Curse of Exhaustion", duration = 30, pvpduration = 8, color = colors.CURSE, short = "CoEx" })
 Spell( 1490 ,{ name = "Curse of Elements",duration = 300, glowtime = 15, color = colors.CURSE, pvpduration = 120, short = "CoE" })
--- JINX ID 85547p
+--aoe version
+-- Spell( 104225 ,{ name = "Curse of Elements",duration = 300, glowtime = 15, color = colors.CURSE, pvpduration = 120, short = "CoE", multiTarget = true })
 
 Spell( 60478 ,{ name = "Doomguard", duration = 60 })
 
@@ -524,7 +526,7 @@ Spell( 1079 ,{ name = "Rip",duration = 16, color = colors.RED })
 Spell( 22570 ,{ name = "Maim", color = colors.PINK, duration = function() return GetCP() end })
 Cooldown(5217, { name = "Tiger's Fury", color = colors.LBLUE})
 Spell( 52610 ,{ name = "Savage Roar", color = colors.PURPLE, duration = function() return (12 + GetCP() * 6) end })
-Spell( 127538 ,{ name = "Savage Roar", color = colors.PURPLE, duration = 12 })
+Spell( 127538 ,{ name = "Savage Roar", color = colors.PURPLE, duration = 12 }) -- glyphed version
 Spell( 1850 ,{ name = "Dash", duration = 15 })
 -- Spell( 81022 ,{ name = "Stampede", duration = 8 })
 --bear
