@@ -193,7 +193,7 @@ Spell( 408 ,{ name = "Kidney Shot", shine = true, duration = function() return 1
 Spell( 1776 ,{ name = "Gouge", color = colors.PINK, duration = 4 })
 Spell( 2094 ,{ name = "Blind",duration = 60, pvpduration = 8, color = {0.20, 0.80, 0.2} })
 
--- Spell( 113746 ,{ name = "Weakened Armor", short = "WeakArmor", anySource = true, target = "target", color = colors.BROWN, duration = 30 })
+-- Spell( 113746 ,{ name = "Weakened Armor", short = "WeakArmor", anySource = true, singletarget = true, color = colors.BROWN, duration = 30 })
 
 Spell( 51722 ,{ name = "Dismantle",duration = 10,color = colors.LRED })
 Spell( 6770 ,{ name = "Sap",duration = 60, color = colors.LBLUE })
@@ -249,7 +249,7 @@ Spell( 1715 ,{ name = "Hamstring", ghost = true, color = colors.PURPLE, duration
 Spell( 355 ,{ name = "Taunt", duration = 3 })
 Spell( 113746 ,{ name = "Weakened Armor", short = "WeakArmor", anySource = true, singletarget = true, color = colors.BROWN, duration = 30 })
 Spell( 1160 ,{ name = "Demoralizing Shout", short = "DemoShout", color = colors.GREEN, duration = 30, multiTarget = true })
-Spell( 115798 ,{ name = "Weakened Blows", short = "WeakBlows", anySource = true, target = "target", color = {149/255, 121/255, 214/255}, duration = 30, multiTarget = true })
+Spell( 115798 ,{ name = "Weakened Blows", short = "WeakBlows", anySource = true, singletarget = true, color = {149/255, 121/255, 214/255}, duration = 30 })
 Spell( 122510 ,{ name = "Ultimatum", shine = true, color = colors.CURSE, duration = 10 })
 Cooldown( 6572, { name = "Revenge", color = colors.WOO, resetable = true, fixedlen = 9, ghost = true })
 -- Activation( 6572, { name = "RevengeActivation", for_cd = true })
@@ -329,7 +329,7 @@ Spell( 128939 ,{ name = "Evusive Brew", duration = 30, color = colors.BLACK })
 Spell( 115308 ,{ name = "Evusive Brew", duration = 15, color = colors.BLACK })
 Cooldown( 115295, { name = "Guard", color = colors.GOLD })
 Cooldown( 121253, { name = "Keg Smash", color = colors.CURSE })
-Spell( 115798 ,{ name = "Weakened Blows", short = "WeakBlows", anySource = true, target = "target", color = {149/255, 121/255, 214/255}, duration = 30, multiTarget = true })
+Spell( 115798 ,{ name = "Weakened Blows", short = "WeakBlows", anySource = true, singletarget = true, color = {149/255, 121/255, 214/255}, duration = 30 })
 
 
 Spell( 124081 ,{ name = "Zen Sphere", duration = 16, color = { 1, 0.2, 1} })
@@ -469,7 +469,7 @@ Spell( 105593 ,{ name = "Fist of Justice", duration = 6, short = "FoJ", color = 
 -- Spell( 85696 ,{ name = "Zealotry",duration = 20 })
 Spell( 2812 ,{ name = "Denounce", duration = 4, color = colors.GREEN })
 
-Spell( 115798 ,{ name = "Weakened Blows", short = "WeakBlows", anySource = true, target = "target", color = {149/255, 121/255, 214/255}, duration = 30, multiTarget = true })
+Spell( 115798 ,{ name = "Weakened Blows", short = "WeakBlows", anySource = true, singletarget = true, color = {149/255, 121/255, 214/255}, duration = 30 })
 
 Cooldown( 35395 ,{ name = "Crusader Strike", ghost = true, short = "Crusader", priority = 2, fixedlen = 6, color = colors.CURSE, recast_mark = 1.5 })
 Cooldown( 20271 ,{ name = "Judgment", ghost = true, fixedlen = 6, priority = 1, color = colors.RED })
@@ -502,7 +502,7 @@ end
 
 if class == "DRUID" then
 Spell( 339 ,{ name = "Entangling Roots",duration = 30 })
--- Spell( 113746 ,{ name = "Weakened Armor", short = "WeakArmor", anySource = true, target = "target", color = colors.BROWN, duration = 30 })
+-- Spell( 113746 ,{ name = "Weakened Armor", short = "WeakArmor", anySource = true, singletarget = true, color = colors.BROWN, duration = 30 })
 
 Spell( 48391 ,{ name = "Owlkin Frenzy", duration = 10 })
 -- Spell( 48517 ,{ name = "Solar Eclipse", timeless = true, duration = 0.1, short = "Solar", color = colors.ORANGE }) -- Wrath boost
@@ -531,7 +531,7 @@ Spell( 1850 ,{ name = "Dash", duration = 15 })
 -- Spell( 81022 ,{ name = "Stampede", duration = 8 })
 --bear
 Spell( 62606 ,{ name = "Savage Defense", duration = 6, color = colors.WOO2 })
-Spell( 115798 ,{ name = "Weakened Blows", short = "WeakBlows", target = "target", anySource = true, color = {149/255, 121/255, 214/255}, duration = 30, multiTarget = true })
+Spell( 115798 ,{ name = "Weakened Blows", short = "WeakBlows", anySource = true, singletarget = true, color = {149/255, 121/255, 214/255}, duration = 30 })
 Spell( 106922 ,{ name = "Might of the Ursoc", duration = 20, color = colors.BLACK })
 Spell( 99 ,{ name = "Disorienting Roar", short = "Disorient", duration = 3, multiTarget = true })
 Spell( 6795 ,{ name = "Taunt", duration = 3 })

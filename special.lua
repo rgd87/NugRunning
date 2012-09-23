@@ -5,60 +5,6 @@ local active = NugRunning.active
 local free = NugRunning.free
 local UnitGUID = UnitGUID
 
-if class == "SHIT" then
-
-    local infect
-    if class  == "DEATHKNIGHT" then
-        local FF = { id = 55095 }
-        local BP = { id = 55078 }
-        FF.name = GetSpellInfo(FF.id)
-        BP.name = GetSpellInfo(BP.id)
-        FF.opts = NugRunningConfig[FF.id]
-        BP.opts = NugRunningConfig[BP.id]
-        NugRunningConfig[BP.id] = nil
-        NugRunningConfig[FF.id] = nil
-        
-        infect = { FF, BP}
-    end
-
-    NugRunning.infect = infect
-
-    local prevTargetGUID
-    local dismon_onevent = function(self, event, unit)
-        if unit and unit ~= "target" then return end
-        for _, spell in ipairs(infect) do
-            local _, _, _, _, _, duration, expirationTime = UnitAura("target",spell.name, nil,"HARMFUL|PLAYER")
-            if duration then
-                if event == "PLAYER_TARGET_CHANGED" or spell.expirationTime ~= expirationTime then
-                spell.expirationTime = expirationTime
-                --print ("Updating "..spell.name)
-                if not spell.timer then
-                    spell.timer = NugRunning:ActivateTimer(UnitGUID("player"), UnitGUID("target"), UnitName("target"), nil, spell.id, spell.name, spell.opts, "DEBUFF")
-                    spell.timer.dontfree = true
-                end
-                if not spell.timer then return end
-                active[spell.timer] = true
-                spell.timer.dstGUID = UnitGUID("target")
-                spell.timer:SetTime(expirationTime - duration, expirationTime)
-                spell.timer:SetAlpha(1)
-                spell.timer:Show()
-                NugRunning:ArrangeTimers()
-                end
-            elseif spell.timer then
-                active[spell.timer] = nil
-                spell.timer:Hide()
-                NugRunning:ArrangeTimers()
-            end
-        end
-    end
-    local DisMon = CreateFrame("Frame",nil,UIParent)
-    DisMon:RegisterEvent("UNIT_AURA")
-    DisMon:RegisterEvent("PLAYER_TARGET_CHANGED")
-    DisMon:SetScript("OnEvent", dismon_onevent)
-
-
-end -- end infect
-
 if class == "WARRIOR" then
     local overpower_id = 7384
     local op_opts = NugRunningConfig[overpower_id]
