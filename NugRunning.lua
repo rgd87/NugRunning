@@ -297,7 +297,7 @@ end
 
 local helpful = "HELPFUL"
 local harmful = "HARMFUL"
-function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID, spellName, opts, timerType, override)  -- duration override
+function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID, spellName, opts, timerType, override, amount, noanim)  -- duration override
     local multiTargetGUID
     if opts.multiTarget then multiTargetGUID = dstGUID; dstGUID = nil; end
 
@@ -349,20 +349,21 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
     if opts.textfunc and type(opts.textfunc) == "function" then nameText = opts.textfunc(timer) end
     if timer.SetName then timer:SetName(nameText) end
 
+    amount = amount or 1
     if opts.charged then
         timer:ToInfinite()
         timer:SetMinMaxCharge(0,opts.maxcharge)
-        timer:SetCharge(1)
+        timer:SetCharge(amount)
         timer:UpdateMark()
     elseif opts.timeless then
         timer:ToInfinite()
         timer:UpdateMark()
-        timer:SetCount(1)
+        timer:SetCount(amount)
     else
         timer:SetTime(now + timer.fixedoffset, now + time)
-        timer:SetCount(1)
+        timer:SetCount(amount)
     end
-    timer.count = 1
+    timer.count = amount
     
     if not opts.color then
         if timerType == "DEBUFF" then opts.color = NugRunningConfig.colors.DEFAULT_DEBUFF
@@ -371,7 +372,7 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
     timer:SetColor(unpack(opts.color))
     if timer.glow:IsPlaying() then timer.glow:Stop() end
     timer:Show()
-    if not timer.animIn:IsPlaying() then timer.animIn:Play() end
+    if not timer.animIn:IsPlaying() and not noanim then timer.animIn:Play() end
     if opts.shine and not timer.shine:IsPlaying() then timer.shine:Play() end
     
     self:ArrangeTimers()
@@ -997,9 +998,9 @@ function NugRunning.CreateAnchor(opts)
 end
 
 
-
--- 4.2 hack
 -- It updates timers with UnitAura data on UNIT_AURA and PLAYER_TARGET_CHANGED events
+-- At this point this piece already became very important,
+-- and also i can abandon hope that blizzard will fix combat log refresh someday.
 local filters = { harmful, helpful }
 local targetTimers = {}
 
@@ -1048,10 +1049,17 @@ h:SetScript("OnEvent",function(self, event, unit)
     elseif event == "PLAYER_TARGET_CHANGED" then
         -- updating timers from target unit when possible
         local targetGUID = UnitGUID("target")
+        if not targetGUID then return end
         table_wipe(targetTimers)
         for timer in pairs(active) do
-            if timer.dstGUID == targetGUID and (timer.srcGUID == playerGUID or timer.opts.anySource) then
-                table.insert(targetTimers, timer)
+            if timer.dstGUID == targetGUID then
+                if (timer.srcGUID == playerGUID or timer.opts.anySource) then
+                    table.insert(targetTimers, timer)
+                end
+            else
+                if timer.opts.singletarget then
+                    free[timer] = true
+                end
             end
         end
         
@@ -1066,10 +1074,10 @@ h:SetScript("OnEvent",function(self, event, unit)
                     -- searching in generated earlier table of player->target timers for matching spell
                     for _, timer in ipairs(targetTimers) do
                         if  timer.spellID == aura_spellID then
-                                found = true
-                                timerType = timer.timerType
-                                break
-                            end
+                            found = true
+                            timerType = timer.timerType
+                            break
+                        end
                     end
                     local newtimer
                     if found then

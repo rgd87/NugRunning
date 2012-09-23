@@ -51,10 +51,13 @@ helpers.Anchor = function(name, opts)
 end
 
 helpers.Spell = function(id, opts)
+    if opts.singletarget then opts.target = "target" end
     if type(id) == "table" then
+        -- opts.idgroup = {}
         for _, i in ipairs(id) do
             if opts and not GetSpellInfo(i) then print(string.format("nrun: misssing spell #%d (%s)",i,opts.name)) return end
             NugRunningConfig[i] = opts
+            -- opts.idgroup[i] = true
         end
     else
         if opts and not GetSpellInfo(id) then print(string.format("nrun: misssing spell #%d (%s)",id,opts.name)) return end

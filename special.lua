@@ -5,7 +5,7 @@ local active = NugRunning.active
 local free = NugRunning.free
 local UnitGUID = UnitGUID
 
-if class == "DEATHKNIGHT" then
+if class == "SHIT" then
 
     local infect
     if class  == "DEATHKNIGHT" then
@@ -20,14 +20,7 @@ if class == "DEATHKNIGHT" then
         
         infect = { FF, BP}
     end
-    -- if class  == "WARRIOR" then
-    --     local rend = { id = 94009 }
-    --     rend.name = GetSpellInfo(rend.id)
-    --     rend.opts = NugRunningConfig[rend.id]
-    --     NugRunningConfig[rend.id] = nil
-        
-    --     infect = { rend }
-    -- end
+
     NugRunning.infect = infect
 
     local prevTargetGUID
