@@ -235,7 +235,8 @@ end
 if class == "WARRIOR" then
 Spell( 6673 ,{ name = "Battle Shout", target = "player", glowtime = 10, color = colors.PURPLE, duration = 120 })
 Spell( 469 ,{ name = "Commanding Shout", target = "player", glowtime = 10, short = "CommShout", color = colors.PURPLE, duration = 120 })
-Spell( 2565 ,{ name = "Shield Block", color = colors.WOO2, duration = 6 })
+Spell( 132404 ,{ name = "Shield Block", color = colors.WOO2, duration = 6 })
+Spell( 112048 ,{ name = "Shield Barrier", color = colors.WOO, duration = 6 })
 Spell( 85730 ,{ name = "Deadly Calm", duration = 10 })
 Spell( 12328 ,{ name = "Sweeping Strikes", color = colors.LRED, short = "Sweeping", duration = 10 })
 
