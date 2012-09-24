@@ -51,7 +51,7 @@ helpers.Anchor = function(name, opts)
 end
 
 helpers.Spell = function(id, opts)
-    if opts.singletarget then opts.target = "target" end
+    if opts.singleTarget then opts.target = "target" end
     if type(id) == "table" then
         -- opts.idgroup = {}
         for _, i in ipairs(id) do

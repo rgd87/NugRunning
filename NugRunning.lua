@@ -1070,6 +1070,7 @@ h:SetScript("OnEvent",function(self, event, unit)
 
                 local opts = config[aura_spellID]
                 if opts and (caster == "player" or opts.anySource) then
+                    if opts.target and opts.target ~= "target" then return end
                     local found, timerType
                     -- searching in generated earlier table of player->target timers for matching spell
                     for _, timer in ipairs(targetTimers) do
