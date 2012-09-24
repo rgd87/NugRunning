@@ -68,7 +68,7 @@ Spell( 603 ,{ name = "Doom",duration = 90, ghost = true, priority = 6, color = c
 -- REMOVED_DOSE event is not fired for molten core, so it's stuck at 3
 
 Cooldown( 105174, { name = "Hand of Gul'dan",  color = colors.CURSE })
--- Cooldown( 124916, { name = "Chaos Wave",  color = colors.CURSE, replaces = 105174 })
+-- Cooldown( 124916, { name = "Chaos Wave",  color = colors.CURSE })
 -- Spell( 47960 ,{ name = "Shadowflame", duration = 6, multiTarget = true })
 
 Spell( 104773,{ name = "Unending Resolve",duration = 12, color = colors.WOO2 })

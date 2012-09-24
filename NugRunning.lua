@@ -36,7 +36,7 @@ local gettimer = function(self,spellID,dstGUID,timerType)
         end
     end
 end
-local IsSpellKnown = IsSpellKnown
+local IsPlayerSpell = IsPlayerSpell
 local GetSpellInfo_ = GetSpellInfo
 local GetSpellInfo = setmetatable({},{
     __call = function(self, id)
@@ -246,9 +246,7 @@ end
 
 function NugRunning.SPELL_UPDATE_COOLDOWN(self,event)
     for spellID,opts in pairs(NugRunningConfig.cooldowns) do
-        if opts.check_known then
-            if not IsSpellKnown(spellID) then return end
-        end
+        if not opts.check_known or IsPlayerSpell(spellID) then -- Eh, no continue in Lua
 
         local startTime, duration, enabled, charges, maxCharges = GetSpellCooldownCharges(spellID) 
 
@@ -291,6 +289,8 @@ function NugRunning.SPELL_UPDATE_COOLDOWN(self,event)
                     end
                 end
             end
+        end
+
         end
     end
 end
