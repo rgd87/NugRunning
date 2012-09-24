@@ -335,7 +335,7 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
                 then timer.filter = "HELPFUL"
                 else timer.filter = "HARMFUL"
             end
-            local _guid = opts.shout and UnitGUID("player") or (multiTargetGUID or dstGUID)
+            local _guid = multiTargetGUID or dstGUID
             NugRunning.QueueAura(spellID, _guid, timerType, timer)
         end
     end
@@ -408,7 +408,7 @@ function NugRunning.RefreshTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID,
                     return
                 end
             end
-            local _guid = opts.shout and UnitGUID("player") or (dstGUID or multiTargetGUID)
+            local _guid = dstGUID or multiTargetGUID
             timer.queued = NugRunning.QueueAura(spellID, _guid, timerType, timer)
         end
     end
@@ -1057,7 +1057,7 @@ h:SetScript("OnEvent",function(self, event, unit)
                     table.insert(targetTimers, timer)
                 end
             else
-                if timer.opts.singletarget then
+                if timer.opts.singleTarget then
                     free[timer] = true
                 end
             end
