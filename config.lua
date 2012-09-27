@@ -239,6 +239,9 @@ Spell( 132404 ,{ name = "Shield Block", color = colors.WOO2, duration = 6 })
 Spell( 112048 ,{ name = "Shield Barrier", color = colors.WOO, duration = 6 })
 Spell( 85730 ,{ name = "Deadly Calm", duration = 10 })
 Spell( 12328 ,{ name = "Sweeping Strikes", color = colors.LRED, short = "Sweeping", duration = 10 })
+-- Spell( 115767 ,{ name = "Deep Wounds", color = colors.DRED, duration = 15, singleTarget = true })
+
+Spell( 20511 ,{ name = "Intimidating Shout", short = "Fear", duration = 8, multiTarget = true })
 
 -- Spell( 86346 ,{ name = "Colossus Smash", color = colors.BROWN, duration = 6 })
 Cooldown( 86346 ,{ name = "Colossus Smash", ghost = true, color = colors.BLACK, resetable = true, duration = 20 })
