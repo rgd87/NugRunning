@@ -285,6 +285,7 @@ function NugRunning.SPELL_UPDATE_COOLDOWN(self,event)
                 if oldcdrem > duration or oldcdrem < 0 then
                     if not timer.isGhost then
                         free[timer] = true
+                        if timer.isGhost and not timer.shine:IsPlaying() then timer.shine:Play() end
                         opts.timer = nil
                     end
                 end

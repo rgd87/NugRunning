@@ -35,6 +35,7 @@ colors["LGREEN"] = { 0.63, 0.8, 0.35 }
 colors["GREEN"] = {0.3, 0.9, 0.3}
 colors["DGREEN"] = { 0, 0.35, 0 }
 colors["PURPLE"] = { 187/255, 75/255, 128/255 }
+colors["PURPLE2"] = { 188/255, 37/255, 186/255 }
 colors["DPURPLE"] = {74/255, 14/255, 85/255}
 colors["FROZEN"] = { 65/255, 110/255, 1 }
 colors["CHILL"] = { 0.6, 0.6, 1}
@@ -209,7 +210,7 @@ Spell( 1330 ,{ name = "Silence", color = colors.PINK, duration = 3 })
 
 Spell( 32645 ,{ name = "Envenom", color = { 0, 0.65, 0}, duration = function() return (1+GetCP()) end })
 Spell( 79140 ,{ name = "Vendetta", shine = true, color = colors.CURSE, duration = 20 })
-Spell( 121153 ,{ name = "Blindside", shine = true, color = colors.BLACK, duration = 10 })
+Spell( 121153 ,{ name = "Blindside", shine = true, color = colors.TEAL, duration = 10 })
 
 Spell( 108212,{ name = "Burst of Speed", short = "Burst", shine = true, duration = 4 })
 Spell( 115197,{ name = "Partial Paralysis", short = "Rooted", shine = true, color = colors.BROWN, duration = 4 })
@@ -253,20 +254,25 @@ Spell( 1715 ,{ name = "Hamstring", ghost = true, color = colors.PURPLE, duration
 -- Spell( 12809 ,{ name = "Concussion Blow", color = { 1, 0.3, 0.6 }, duration = 5 })
 Spell( 355 ,{ name = "Taunt", duration = 3 })
 Spell( 113746 ,{ name = "Weakened Armor", short = "WeakArmor", priority = -10, anySource = true, singleTarget = true, color = colors.BROWN, duration = 30 })
-Spell( 1160 ,{ name = "Demoralizing Shout", short = "DemoShout", color = colors.GREEN, duration = 30, multiTarget = true })
+Spell( 1160 ,{ name = "Demoralizing Shout", short = "DemoShout", shine = true, color = colors.BLACK, duration = 30, multiTarget = true })
 Spell( 115798 ,{ name = "Weakened Blows", short = "WeakBlows", priority = -20, anySource = true, singleTarget = true, color = {149/255, 121/255, 214/255}, duration = 30 })
 Spell( 122510 ,{ name = "Ultimatum", shine = true, color = colors.TEAL, duration = 10 })
 Cooldown( 6572, { name = "Revenge", priority = 9, color = colors.WOO, resetable = true, fixedlen = 9, ghost = true })
 -- Activation( 6572, { name = "RevengeActivation", for_cd = true })
 
 Spell( 55694, { name = "Enraged Regeneration", short = "Regen", color = colors.LGREEN, duration = 5 })
-Spell( 46968 ,{ name = "Shockwave", color = colors.CURSE, shine = true, duration = 4, multiTarget = true })
-Spell( 12323 ,{ name = "Piercing Howl", color = colors.PURPLE, duration = 5 })
+Spell( 132168 ,{ name = "Shockwave", color = colors.CURSE, shine = true, duration = 4, multiTarget = true })
+Spell( 12323 ,{ name = "Piercing Howl", multiTarget = true, duration = 15 })
 Spell( 107566 ,{ name = "Staggering Shout", duration = 5 })
 Spell( 105771, { name = "Warbringer", duration = 3 })
-Spell( 107574, { name = "Avatar", shine = true, color = colors.TEAL, duration = 20 })
-Spell( 107570, { name = "Storm Bolt", color = { 1, 0.3, 0.6 }, duration = 3})
--- Cooldown( 107570, { name = "Storm Bolt", color = colors.TEAL })
+Spell( 107574, { name = "Avatar", shine = true, color = colors.TEAL, duration = 30 })
+Spell( 132169, { name = "Storm Bolt", color = colors.TEAL2, duration = 3})
+
+Spell( 114192, { name = "Mocking Banner", color = colors.PURPLE2, duration = 20})
+EventTimer({ spellID = 114207, event = "SPELL_CAST_SUCCESS", name = "Skull Banner", duration = 10, color = colors.RED })
+EventTimer({ spellID = 114203, event = "SPELL_CAST_SUCCESS", name = "Demoralizing Banner", short = "DemoBanner", duration = 15, color = colors.BLACK })
+-- Cooldown( 107570, { name = "Storm Bolt", color = colors.TEAL2 })
+-- Spell( 12292, { name = "Bloodbath", color = colors.DRED, duration = 6})
 
 --Spell( 56112 ,{ name = "Furious Attacks", duration = 10 })
 --Activation( 5308, { name = "Execute", shine = true, timeless = true, color = colors.CURSE, duration = 0.1 })
@@ -278,16 +284,16 @@ Spell( 7384, { name = "Overpower", short = "", priority = 9, shine = true, color
 --Activation( 7384, { name = "Overpower", short = "", shine = true, color = colors.RED, recast_mark = 4.5, duration = 9})
 Spell( 125831 ,{ name = "Taste for Blood", glowtime = 7, shinerefresh = true, shine = true, color = colors.TEAL, duration = 15 }) -- Taste for blood
 
-Cooldown( 23881, { name = "Bloodthirst", short = "", check_known = true, ghost = true, recast_mark = 1.5, fixedlen = 6,  color = colors.CURSE })
-Spell( 46916 ,{ name = "Bloodsurge", shine = true, color = colors.LRED, duration = 10 })
+Cooldown( 23881, { name = "Bloodthirst", short = "", priority = 10, check_known = true, ghost = true, recast_mark = 1.5, fixedlen = 6,  color = colors.CURSE })
+Spell( 46916 ,{ name = "Bloodsurge", shine = true, priority = 8, color = colors.TEAL, duration = 10 })
 
-Spell( 131116 ,{ name = "Raging Blow", shine = true, color = colors.WOO, duration = 12 })
+Spell( 131116 ,{ name = "Raging Blow", priority = 9, fixedlen = 9, shine = true, color = colors.RED, duration = 12 })
 --Cooldown( 85288, { name = "Raging Blow", ghost = true,  color = colors.WOO })
 --Activation( 85288, { name = "Enraged", for_cd = true })
 -- it's enrage timer config
 
 
-Cooldown( 1680, { name = "Whirlwind", color = colors.LBLUE })
+-- Cooldown( 1680, { name = "Whirlwind", color = colors.LBLUE })
 Spell( 12975, { name = "Last Stand", color = colors.BLACK, duration = 20 })
 Spell( 871, { name = "Shield Wall", color = colors.WOO2, duration = 12 })
 Cooldown( 23922, { name = "Shield Slam", short = "", priority = 10, check_known = true, fixedlen = 9, recast_mark = 1.5, ghost = true,  color = colors.CURSE, resetable = true })
