@@ -239,7 +239,7 @@ Spell( 6673 ,{ name = "Battle Shout", target = "player", glowtime = 10, priority
 Spell( 469 ,{ name = "Commanding Shout", target = "player", priority = -10, glowtime = 10, short = "CommShout", color = colors.DPURPLE, duration = 120 })
 Spell( 132404 ,{ name = "Shield Block", color = colors.WOO2, duration = 6 })
 Spell( 112048 ,{ name = "Shield Barrier", color = colors.WOO, duration = 6 })
-Spell( 85730 ,{ name = "Deadly Calm", duration = 10 })
+-- Spell( 85730 ,{ name = "Deadly Calm", duration = 10 })
 Spell( 12328 ,{ name = "Sweeping Strikes", priority = 6, color = colors.LRED, short = "Sweeping", duration = 10 })
 -- Spell( 115767 ,{ name = "Deep Wounds", color = colors.DRED, duration = 15, singleTarget = true })
 

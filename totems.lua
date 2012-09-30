@@ -42,6 +42,7 @@ NugRunning.InitTotems = function(self)
         free[opts.timer] = nil
         opts.timer.dontfree = true
         opts.timer.opts = opts
+        opts.timer.priority = opts.priority or 0
     end
     NugRunning:RegisterEvent("PLAYER_TOTEM_UPDATE")
 
