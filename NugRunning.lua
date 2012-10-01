@@ -73,6 +73,13 @@ local defaults = {
         x = 0,
         y = 0,
     },
+    anchor2 = {
+        point = "CENTER",
+        parent = "UIParent",
+        to = "CENTER",
+        x = 0,
+        y = 0,
+    },
     growth = "up",
     width = 150,
     height = 20,
@@ -83,6 +90,7 @@ local defaults = {
     swapTarget = true,
     localNames = false,
     totems = true,
+    separate = false,
     leaveGhost = false,
 }
 
@@ -99,9 +107,23 @@ local function SetupDefaults(t, defaults)
         end
     end
 end
+local function RemoveDefaults(t, defaults)
+    for k, v in pairs(defaults) do
+        if type(t[k]) == 'table' and type(v) == 'table' then
+            RemoveDefaults(t[k], v)
+            if next(t[k]) == nil then
+                t[k] = nil
+            end
+        elseif t[k] == v then
+            t[k] = nil
+        end
+    end
+    return t
+end
 
 
 NugRunning:RegisterEvent("PLAYER_LOGIN")
+NugRunning:RegisterEvent("PLAYER_LOGOUT")
 function NugRunning.PLAYER_LOGIN(self,event,arg1)
     NRunDB_Global = NRunDB_Global or {}
     NRunDB_Char = NRunDB_Char or {}
@@ -169,6 +191,10 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
     SlashCmdList["NUGRUNNING"] = NugRunning.SlashCmd
     
     if NRunDB.totems and NugRunning.InitTotems then NugRunning:InitTotems() end
+end
+
+function NugRunning.PLAYER_LOGOUT(self, event)
+    RemoveDefaults(NRunDB, defaults)
 end
 
 --------------------
@@ -874,9 +900,9 @@ function NugRunning.SlashCmd(msg)
       |cff00ff00/nrun separate|r : move target timers to second anchor
       |cff00ff00/nrun totems|r : static order of target debuffs
       |cff00ff00/nrun localnames|r: toggle localized spell names
+      |cff00ff00/nrun leaveghost|r: don't hide target/player ghosts in combat
       |cff00ff00/nrun set|r width=120 height=20 fontscale=1.1 growth=up/down nontargetopacity=0.7: W & H of timers
-      |cff00ff00/nrun setpos|r point=CENTER parent=UIParent to=CENTER x=0 y=0
-      |cff00ff00/nrun leaveghost|r ]]
+      |cff00ff00/nrun setpos|r point=CENTER parent=UIParent to=CENTER x=0 y=0]]
     )end
     if k == "unlock" then
         NugRunning.anchor:Show()
