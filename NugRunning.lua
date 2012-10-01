@@ -6,7 +6,7 @@ NugRunning:SetScript("OnEvent", function(self, event, ...)
 	return self[event](self, event, ...)
 end)
 
-NRunDB = {}
+local NRunDB
 local config = NugRunningConfig
 local MAX_TIMERS = 20
 local check_event_timers
@@ -26,6 +26,7 @@ setmetatable(free,{ __newindex = function(t,k,v)
     rawset(t,k,v)
     NugRunning:ArrangeTimers()
 end})
+local leaveGhost = true
 
 local gettimer = function(self,spellID,dstGUID,timerType)
     for timer in pairs(self) do 
@@ -63,6 +64,43 @@ NugRunning.timers = alltimers
 NugRunning.gettimer = gettimer
 NugRunning.helpers = helpers
 
+
+local defaults = {
+    anchor = {
+        point = "CENTER",
+        parent = "UIParent",
+        to = "CENTER",
+        x = 0,
+        y = 0,
+    },
+    growth = "up",
+    width = 150,
+    height = 20,
+    nonTargetOpacity = 0.7,
+    cooldownsEnabled = true,
+    spellTextEnabled = true,
+    shortTextEnabled = true,
+    swapTarget = true,
+    localNames = false,
+    totems = true,
+    leaveGhost = false,
+}
+
+local function SetupDefaults(t, defaults)
+    for k,v in pairs(defaults) do
+        if type(v) == "table" then
+            if t[k] == nil then
+                t[k] = CopyTable(v)
+            else
+                SetupDefaults(t[k], v)
+            end
+        else
+            if t[k] == nil then t[k] = v end
+        end
+    end
+end
+
+
 NugRunning:RegisterEvent("PLAYER_LOGIN")
 function NugRunning.PLAYER_LOGIN(self,event,arg1)
     NRunDB_Global = NRunDB_Global or {}
@@ -70,35 +108,15 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
     NRunDB_Global.charspec = NRunDB_Global.charspec or {}
     user = UnitName("player").."@"..GetRealmName()
     if NRunDB_Global.charspec[user] then
-        setmetatable(NRunDB,{
-            __index = function(t,k) return NRunDB_Char[k] end,
-            __newindex = function(t,k,v) rawset(NRunDB_Char,k,v) end
-            })
+        NRunDB = NRunDB_Char
     else
-        setmetatable(NRunDB,{
-            __index = function(t,k) return NRunDB_Global[k] end,
-            __newindex = function(t,k,v) rawset(NRunDB_Global,k,v) end
-            })
+        NRunDB = NRunDB_Global
     end
-    NRunDB.anchor = NRunDB.anchor or {}
-    NRunDB.anchor.point = NRunDB.anchor.point or "CENTER"
-    NRunDB.anchor.parent = NRunDB.anchor.parent or "UIParent"
-    NRunDB.anchor.to = NRunDB.anchor.to or "CENTER"
-    NRunDB.anchor.x = NRunDB.anchor.x or 0
-    NRunDB.anchor.y = NRunDB.anchor.y or 0
 
-    NRunDB.growth = NRunDB.growth or "up"
-    NRunDB.width = NRunDB.width or 150
-    NRunDB.height = NRunDB.height or 20
-    -- NRunDB.fontscale = NRunDB.fontscale or 1
-    NRunDB.nonTargetOpacity = NRunDB.nonTargetOpacity or 0.7
-    NRunDB.cooldownsEnabled = (NRunDB.cooldownsEnabled  == nil and true) or NRunDB.cooldownsEnabled
-    NRunDB.spellTextEnabled = (NRunDB.spellTextEnabled == nil and true) or NRunDB.spellTextEnabled
-    NRunDB.shortTextEnabled = (NRunDB.shortTextEnabled == nil and true) or NRunDB.shortTextEnabled
-    NRunDB.swapTarget = (NRunDB.swapTarget == nil and true) or NRunDB.swapTarget
-    NRunDB.localNames   = (NRunDB.localNames == nil and false) or NRunDB.localNames
-    NRunDB.totems = (NRunDB.totems == nil and true) or NRunDB.totems
-        
+    SetupDefaults(NRunDB, defaults)
+
+    leaveGhost = NRunDB.leaveGhost
+
     NugRunning:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
         
     NugRunning:RegisterEvent("PLAYER_TALENT_UPDATE") -- changing between dualspec
@@ -582,14 +600,22 @@ function NugRunning.TimerFunc(self,time)
         self.mark.shine:Play()
     end
 end
-function NugRunning.GhostFunc(self,time)
-    self._elapsed = self._elapsed + time
-    if self._elapsed < 3 then return end
 
+function NugRunning.GhostExpire(self)
     self:SetScript("OnUpdate", NugRunning.TimerFunc)
     self.expiredGhost = true
     free[self] = true
     self.isGhost = nil
+end
+function NugRunning.GhostFunc(self,time)
+    self._elapsed = self._elapsed + time
+    if self._elapsed < 3 then return end
+    if leaveGhost and (
+            UnitAffectingCombat("player")
+            and (self.dstGUID == UnitGUID("target") or self.dstGUID == playerGUID)
+            ) then return end
+
+    NugRunning.GhostExpire(self)
 end
 local TimerBecomeGhost = function(self)
     self.expiredGhost = nil
@@ -849,7 +875,8 @@ function NugRunning.SlashCmd(msg)
       |cff00ff00/nrun totems|r : static order of target debuffs
       |cff00ff00/nrun localnames|r: toggle localized spell names
       |cff00ff00/nrun set|r width=120 height=20 fontscale=1.1 growth=up/down nontargetopacity=0.7: W & H of timers
-      |cff00ff00/nrun setpos|r point=CENTER parent=UIParent to=CENTER x=0 y=0]]
+      |cff00ff00/nrun setpos|r point=CENTER parent=UIParent to=CENTER x=0 y=0
+      |cff00ff00/nrun leaveghost|r ]]
     )end
     if k == "unlock" then
         NugRunning.anchor:Show()
@@ -899,6 +926,11 @@ function NugRunning.SlashCmd(msg)
     if k == "spelltext" then
         NRunDB.spellTextEnabled = not NRunDB.spellTextEnabled
         print("NRun spell text "..(NRunDB.spellTextEnabled and "enabled" or "disabled"))
+    end
+    if k == "leaveghost" then
+        NRunDB.leaveGhost = not NRunDB.leaveGhost
+        leaveGhost = NRunDB.leaveGhost
+        print("NRun leaveghost "..(NRunDB.leaveGhost and "enabled" or "disabled"))
     end
     if k == "shorttext" then
         NRunDB.shortTextEnabled = not NRunDB.shortTextEnabled
@@ -1020,7 +1052,7 @@ local hUnits = {
     ["arena5"] = 2,
 }
 local last_taget_update = 0
-h:SetScript("OnEvent",function(self, event, unit)
+function NugRunning.OnAuraEvent(self, event, unit)
     if event == "UNIT_AURA" then
         local up = hUnits[unit]
         if not up then return end
@@ -1094,6 +1126,7 @@ h:SetScript("OnEvent",function(self, event, unit)
             end
         end
     end
-end)
+end
+h:SetScript("OnEvent", NugRunning.OnAuraEvent)
 h:RegisterEvent("UNIT_AURA")
 h:RegisterEvent("PLAYER_TARGET_CHANGED")
