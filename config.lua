@@ -81,10 +81,10 @@ Spell( 113858 ,{ name = "Dark Soul: Instability",duration = 20, short = "DarkSou
 Spell( 86211 ,{ name = "Soul Swap", duration = 20, shine = true, color = colors.BLACK })
 -- Spell( 17941 ,{ name = "Nightfall", duration = 10, shine = true, color = colors.CURSE })
 Spell( 103103 ,{ name = "Malefic Grasp", priority = 14, duration = 15, color = colors.CURSE, target = "target" })
-Spell( 30108 ,{ name = "Unstable Affliction", fixedlen = 18, priority = 10, duration = 15, ghost = true, recast_mark = 1.3, color = colors.RED, short = "UA" })
-Spell( 48181 ,{ name = "",duration = 12, fixedlen = 18, priority = 8, ghost = true, recast_mark = 3, color = colors.TEAL }) --Haunt
-Spell( 172 ,{ name = "Corruption", fixedlen = 18, priority = 9, ghost = true, color = colors.PINK, duration = 18 })
-Spell( 980 ,{ name = "Agony",duration = 24, ghost = true, priority = 6, color = colors.WOO })
+Spell( 30108 ,{ name = "Unstable Affliction", short = "", priority = 10, duration = 15, ghost = true, recast_mark = 7.5, color = colors.RED })
+Spell( 48181 ,{ name = "",duration = 12, priority = 8, ghost = true, recast_mark = 3, color = colors.TEAL }) --Haunt
+Spell( 172 ,{ name = "Corruption", short = "", priority = 9, recast_mark = 9,  ghost = true, color = colors.PINK, duration = 18 })
+Spell( 980 ,{ name = "Agony",  short = "", duration = 24, recast_mark = 12, ghost = true, priority = 6, color = colors.WOO })
 Spell( 1120 ,{ name = "Drain Soul",duration = 15, color = colors.LRED })
 Spell( 27243 ,{ name = "Seed of Corruption",duration = 18, color = colors.LRED, short = "SoC" })
 
@@ -245,7 +245,7 @@ Spell( 12328 ,{ name = "Sweeping Strikes", priority = 6, color = colors.LRED, sh
 
 Spell( 20511 ,{ name = "Intimidating Shout", short = "Fear", duration = 8, multiTarget = true })
 
--- Spell( 86346 ,{ name = "Colossus Smash", color = colors.BROWN, duration = 6 }) --debuff
+Spell( 86346 ,{ name = "Colossus Smash", color = colors.PURPLE2, duration = 6 }) --debuff
 Cooldown( 86346 ,{ name = "Colossus Smash", priority = 8, ghost = true, color = colors.WOO, resetable = true, duration = 20 })
 Spell( 85288, { name = "Enraged", shine = true, showid = 14202, color = colors.RED, duration = 10 })
 Spell( 676  ,{ name = "Disarm", color = colors.BROWN, duration = 10 })

@@ -91,7 +91,7 @@ local defaults = {
     localNames = false,
     totems = true,
     separate = false,
-    leaveGhost = false,
+    leaveGhost = true,
 }
 
 local function SetupDefaults(t, defaults)
@@ -466,6 +466,8 @@ function NugRunning.RefreshTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID,
         timer:SetCount(amount)
     end
     timer.count = amount
+
+    timer:UpdateMark()
 
     if timer.glow:IsPlaying() then timer.glow:Stop() end
     if not noshine and opts.shinerefresh and not timer.shine:IsPlaying() then timer.shine:Play() end
