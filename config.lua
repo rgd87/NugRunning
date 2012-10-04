@@ -57,7 +57,7 @@ Spell({2825, 32182, 80353} ,{ name = "Bloodlust", duration = 40, priority = -100
 if class == "WARLOCK" then
 Spell( 74434 ,{ name = "Soulburn",duration = 20, color = colors.CURSE })
 
-Spell( 348 ,{ name = "Immolate", recast_mark = 1.5, duration = 15, priority = 10, ghost = true, color = colors.RED, init = function(self)self.duration = 15 + Talent(85105)*3 end })
+Spell( 348 ,{ name = "Immolate", short = "", recast_mark = 7.5, duration = 15, priority = 10, ghost = true, color = colors.RED })
 Spell( 34936 ,{ name = "Backlash", duration = 8, shine = true, color = colors.CURSE })
 -- Spell( 117828 ,{ name = "Backdraft", duration = 15, shine = true, color = colors.WOO, charged = true, maxcharge = 3 })
 Spell( 80240 ,{ name = "Havoc", duration = 15, color = colors.WOO, target = "player" })
@@ -66,10 +66,10 @@ Spell( 108683 ,{ name = "Fire and Brimstone", short = "FnB", timeless = true, co
 Cooldown( 17962, { name = "Conflagrate", ghost = true, priority = 5, color = colors.PINK })
 
 Spell( 122355,{ name = "Molten Core",duration = 30, shine = true, color = colors.PURPLE })
-Spell( 603 ,{ name = "Doom",duration = 90, ghost = true, priority = 6, color = colors.WOO })
+Spell( 603 ,{ name = "Doom", short = "", duration = 60, recast_mark = 30, ghost = true, priority = 6, color = colors.WOO })
 -- REMOVED_DOSE event is not fired for molten core, so it's stuck at 3
 
-Cooldown( 105174, { name = "Hand of Gul'dan",  color = colors.CURSE })
+Cooldown( 105174, { name = "Hand of Gul'dan",  ghost = true, shinerefresh = true, color = colors.CURSE })
 -- Cooldown( 124916, { name = "Chaos Wave",  color = colors.CURSE })
 -- Spell( 47960 ,{ name = "Shadowflame", duration = 6, multiTarget = true })
 
@@ -223,6 +223,8 @@ Spell( 84747 ,{ name = "Deep Insight", short = "3x Insight", shine = true, color
 Spell( 13750 ,{ name = "Adrenaline Rush",duration = 15, color = colors.LRED })
 Spell( 13877 ,{ name = "Blade Flurry",duration = 15, color = colors.LRED })
 
+Spell( 121471 ,{ name = "Shadow Blades", duration = 12, color = colors.CURSE, shine = true })
+
 Spell( 51713 ,{ name = "Shadow Dance",duration = 8, color = colors.BLACK })
 -- Spell( 89775 ,{ name = "Hemo",duration = 60, color = colors.CURSE })
 -- Spell( 91021 ,{ name = "Find Weakness", duration = 10, color =  colors.LRED })
@@ -257,7 +259,7 @@ Spell( 113746 ,{ name = "Weakened Armor", short = "WeakArmor", priority = -10, a
 Spell( 1160 ,{ name = "Demoralizing Shout", short = "DemoShout", shine = true, color = colors.BLACK, duration = 30, multiTarget = true })
 Spell( 115798 ,{ name = "Weakened Blows", short = "WeakBlows", priority = -20, anySource = true, singleTarget = true, color = {149/255, 121/255, 214/255}, duration = 30 })
 Spell( 122510 ,{ name = "Ultimatum", shine = true, color = colors.TEAL, duration = 10 })
-Cooldown( 6572, { name = "Revenge", priority = 9, color = colors.WOO, resetable = true, fixedlen = 9, ghost = true })
+Cooldown( 6572, { name = "Revenge", priority = 5, color = colors.WOO, resetable = true, fixedlen = 9, ghost = true })
 -- Activation( 6572, { name = "RevengeActivation", for_cd = true })
 
 Spell( 55694, { name = "Enraged Regeneration", short = "Regen", color = colors.LGREEN, duration = 5 })
@@ -300,7 +302,7 @@ Cooldown( 23922, { name = "Shield Slam", short = "", priority = 10, check_known 
 --Activation( 23922, { name = "Slam!", shine = true, timeless = true, color = colors.CURSE, duration = 0.1 })
 
 -- Cooldown( 78, { name = "Heroic Strike", short = "Heroic", fixedlen = 6, ghost = true })
--- Cooldown( 6343, { name = "Thunder Clap", short = "Clap", ghost = true })
+Cooldown( 6343, { name = "Thunder Clap", color = colors.LBLUE, fixedlen = 9, priority = 6 })
 
 
 
