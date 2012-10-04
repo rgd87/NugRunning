@@ -19,8 +19,16 @@ setmetatable(active,{ __newindex = function(t,k,v)
     rawset(t,k,v)
 end})
 setmetatable(free,{ __newindex = function(t,k,v)
-    if k.opts and k.opts.ghost and not k.isGhost then return k:BecomeGhost() end
-    if k.isGhost and not k.expiredGhost then return end
+    if k.opts then
+        if k.opts.with_cooldown then 
+            local cd_opts = k.opts.with_cooldown
+            config.cooldowns[cd_opts.id] = cd_opts
+            NugRunning:SPELL_UPDATE_COOLDOWN()
+        else
+            if k.opts.ghost and not k.isGhost then return k:BecomeGhost() end
+            if k.isGhost and not k.expiredGhost then return end
+        end
+    end
     k:Hide()
     rawset(active,k,nil)
     rawset(t,k,v)
@@ -345,6 +353,18 @@ local harmful = "HARMFUL"
 function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID, spellName, opts, timerType, override, amount, noanim)  -- duration override
     local multiTargetGUID
     if opts.multiTarget then multiTargetGUID = dstGUID; dstGUID = nil; end
+
+    if opts.with_cooldown then
+        local cd_opts = opts.with_cooldown
+        config.cooldowns[cd_opts.id] = nil
+        for timer in pairs(active) do
+            if timer.opts == cd_opts then
+                free[timer] = true
+                timer:Hide()
+            end
+        end
+        cd_opts.timer = nil
+    end
 
     local timer = gettimer(active,spellID,dstGUID,timerType)
     if timer then

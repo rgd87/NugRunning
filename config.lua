@@ -274,7 +274,8 @@ Spell( 114192, { name = "Mocking Banner", color = colors.PURPLE2, duration = 20}
 EventTimer({ spellID = 114207, event = "SPELL_CAST_SUCCESS", name = "Skull Banner", duration = 10, color = colors.RED })
 EventTimer({ spellID = 114203, event = "SPELL_CAST_SUCCESS", name = "Demoralizing Banner", short = "DemoBanner", duration = 15, color = colors.BLACK })
 -- Cooldown( 107570, { name = "Storm Bolt", color = colors.TEAL2 })
--- Spell( 12292, { name = "Bloodbath", color = colors.DRED, duration = 6})
+Spell( 12292, { name = "Bloodbath", priority = -8, color = colors.PURPLE2, duration = 12,
+    with_cooldown = { id = 12292, name = "Bloodbath", priority = -8, glowtime = 5, color = colors.DRED }    })
 
 --Spell( 56112 ,{ name = "Furious Attacks", duration = 10 })
 --Activation( 5308, { name = "Execute", shine = true, timeless = true, color = colors.CURSE, duration = 0.1 })
