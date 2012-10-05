@@ -152,13 +152,13 @@ Spell( 8122 ,{ name = "Psychic Scream",duration = 8, multiTarget = true })
 
 --Rapture
 EventTimer({ event = "SPELL_ENERGIZE", spellID = 47755, name = "Rapture", color = colors.BLACK, duration = 12 })
---Spell( 15407, { name = "Mind Flay",  color = colors.CURSE, duration = 3 })
+Spell( 15407, { name = "Mind Flay",  color = colors.CURSE, priority = 11, duration = 3 })
 
 --Old Shadow Orbs
 -- Spell( 77487 ,{ name = "",duration = 60, charged = true, maxcharge = 3, shine = true, shinerefresh = true, priority = -3, color = colors.WOO })
 
 Cooldown( 8092, { name = "Mind Blast", recast_mark = 1.5, color = colors.CURSE, resetable = true, ghost = true })
-Cooldown( 32379, { name = "Shadow Word: Death", ghost = true, short = "SW:Death",  color = colors.PURPLE })
+Cooldown( 32379, { name = "Shadow Word: Death", short = "SW:Death",  color = colors.PURPLE, resetable = true })
 
 Spell( 81781 ,{ name = "Power Word: Barrier", short = "PW: Barrier", duration = 25, color = {1,0.7,0.5} }) -- duration actually used here, invisible aura applied
 
