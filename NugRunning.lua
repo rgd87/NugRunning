@@ -8,6 +8,7 @@ end)
 
 local NRunDB
 local config = NugRunningConfig
+local nameplates
 local MAX_TIMERS = 20
 local check_event_timers
 local playerGUID
@@ -100,6 +101,7 @@ local defaults = {
     totems = true,
     separate = false,
     leaveGhost = true,
+    nameplates = false,
 }
 
 local function SetupDefaults(t, defaults)
@@ -163,6 +165,17 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
         
     if NRunDB.cooldownsEnabled then
         NugRunning:RegisterEvent("SPELL_UPDATE_COOLDOWN")
+    end
+
+    if NRunDB.nameplates then
+        local found
+        for _, opts in pairs(config) do
+            if opts.nameplates then found = true; break end
+        end
+        if found then
+            NugRunning:DoNameplates()
+            nameplates = NugRunningNameplates
+        end
     end
     
     --NugRunning:RegisterEvent("SPELL_UPDATE_USABLE")
@@ -620,7 +633,7 @@ end
 -----------------------------------
 function NugRunning.TimerFunc(self,time)
     self._elapsed = self._elapsed + time
-    if self._elapsed < 0.05 then return end
+    if self._elapsed < 0.02 then return end
     self._elapsed = 0
 
     local opts = self.opts
@@ -836,10 +849,24 @@ function NugRunning.ArrangeTimers(self)
             end
             gap = 6
     end
+
+    if nameplates then
+        nameplates:Update(targetTimers, sorted)
+    end
     
     arrangeInProgress = false
     if arrangePending then NugRunning:ArrangeTimers() end
 end
+function NugRunning.GetTimersByDstGUID(self, guid) -- for nameplate updates on target
+    local guidTimers = {}
+    for timer in pairs(active) do
+        if timer.dstGUID == guid then table.insert(guidTimers, timer) end
+    end
+    table.sort(guidTimers,sortfunc)
+    return guidTimers
+end
+
+
 function NugRunning.PLAYER_TARGET_CHANGED(self)
     self:ArrangeTimers()
 end
@@ -996,6 +1023,10 @@ function NugRunning.SlashCmd(msg)
     if k == "totems" then
         NRunDB.totems = not NRunDB.totems
         print("Totems turned "..(NRunDB.swapTarget and "on" or "off")..". Will take effect after /reload")
+    end
+    if k == "nameplates" then
+        NRunDB.nameplates = not NRunDB.nameplates
+        print("Nameplates turned "..(NRunDB.nameplates and "on" or "off")..". Will take effect after /reload")
     end
     if k == "set" then
         local p = ParseOpts(v)

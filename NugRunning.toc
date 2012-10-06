@@ -10,3 +10,4 @@ NugRunning.lua
 frame.lua
 special.lua
 totems.lua
+nameplates.lua
