@@ -127,7 +127,7 @@ NugRunning.ConstructTimerBar = function(width, height)
     ic:SetWidth(height)
     ic:SetHeight(height)
     local ict = ic:CreateTexture(nil,"ARTWORK",0)
-    ict:SetTexCoord(.07, .93, .07, .93)
+    ict:SetTexCoord(.1, .9, .1, .9)
     ict:SetAllPoints(ic)
     f.icon = ict
     

@@ -93,7 +93,7 @@ function NugRunningNameplates:CreateNameplateTimer(frame)
     local f = CreateFrame("StatusBar", nil, frame)
     f:SetStatusBarTexture([[Interface\AddOns\NugRunning\statusbar]], "OVERLAY")
     f:SetWidth(70)
-    local h = 6
+    local h = 7
     f:SetHeight(h)
 
     if makeicon then
@@ -145,7 +145,7 @@ function NugRunningNameplates:UpdateNPTimers(np, nrunTimers)
         local i = 1
         while i <= #nrunTimers do
             local timer = nrunTimers[i]
-            if not timer.opts.nameplates then
+            if not timer.opts.nameplates or timer.isGhost then
                 table_remove(nrunTimers, i)
             else
                 i = i + 1
