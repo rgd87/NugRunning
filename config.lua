@@ -42,6 +42,7 @@ colors["CHILL"] = { 0.6, 0.6, 1}
 colors["BLACK"] = {0.35,0.35,0.35}
 colors["WOO"] = {151/255, 86/255, 168/255}
 colors["WOO2"] = {80/255, 83/255, 150/255}
+colors["WOO2DARK"] = {30/255, 30/255, 65/255}
 colors["BROWN"] = { 192/255, 77/255, 48/255}
 colors["DBROWN"] = { 118/255, 69/255, 50/255}
 colors["DEFAULT_DEBUFF"] = { 0.8, 0.1, 0.7}
@@ -245,7 +246,8 @@ end
 if class == "WARRIOR" then
 Spell( 6673 ,{ name = "Battle Shout", target = "player", glowtime = 10, priority = -10, color = colors.DPURPLE, duration = 120 })
 Spell( 469 ,{ name = "Commanding Shout", target = "player", priority = -10, glowtime = 10, short = "CommShout", color = colors.DPURPLE, duration = 120 })
-Spell( 132404 ,{ name = "Shield Block", color = colors.WOO2, duration = 6 })
+Spell( 132404 ,{ name = "Shield Block", color = colors.WOO2, duration = 6, priority = 4,
+    with_cooldown = { id = 2565, name = "Shield Block", priority = 4, color = colors.WOO2DARK }    })
 Spell( 112048 ,{ name = "Shield Barrier", color = colors.WOO, duration = 6 })
 -- Spell( 85730 ,{ name = "Deadly Calm", duration = 10 })
 Spell( 12328 ,{ name = "Sweeping Strikes", priority = 6, color = colors.LRED, short = "Sweeping", duration = 10 })
@@ -269,7 +271,7 @@ Cooldown( 6572, { name = "Revenge", priority = 5, color = colors.WOO, resetable 
 -- Activation( 6572, { name = "RevengeActivation", for_cd = true })
 
 Spell( 55694, { name = "Enraged Regeneration", short = "Regen", color = colors.LGREEN, duration = 5 })
-Spell( 132168 ,{ name = "Shockwave", color = colors.CURSE, shine = true, duration = 4, multiTarget = true })
+Spell( 132168 ,{ name = "Shockwave", color = colors.CURSE, shine = true, duration = 4, multiTarget = true, })
 Spell( 12323 ,{ name = "Piercing Howl", multiTarget = true, duration = 15 })
 Spell( 107566 ,{ name = "Staggering Shout", duration = 5 })
 Spell( 105771, { name = "Warbringer", duration = 3 })
