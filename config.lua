@@ -88,10 +88,10 @@ Spell( 103103 ,{ name = "Malefic Grasp", priority = 14, duration = 15, color = c
 Spell( 30108 ,{ name = "", priority = 10, nameplates = true, duration = 15, ghost = true, recast_mark = 7.5, color = colors.RED })
 --Unstable Affliction
 Spell( 48181 ,{ name = "",duration = 12, priority = 8, ghost = true, nameplates = true, recast_mark = 3, color = colors.TEAL }) --Haunt
---Corruption
-Spell( 172 ,{ name = "", priority = 9, nameplates = true, recast_mark = 9, nameplates = true, ghost = true, color = colors.PINK, duration = 18 })
+--Corruption (2nd is a Soulburn SoC Corruption)
+Spell( { 172, 87389} ,{ name = "", priority = 9, nameplates = true, recast_mark = 9, nameplates = true, ghost = true, color = colors.PINK, duration = 18 })
 --Agony
-Spell( 980 ,{ name = "", duration = 24, recast_mark = 12, ghost = true, priority = 6, color = colors.WOO })
+Spell( 980 ,{ name = "", duration = 24, nameplates = true, recast_mark = 12, ghost = true, priority = 6, color = colors.WOO })
 Spell( 1120 ,{ name = "Drain Soul",duration = 15, color = colors.LRED })
 Spell( 27243 ,{ name = "Seed of Corruption",duration = 18, nameplates = true,  color = colors.LRED, short = "SoC" })
 
@@ -100,7 +100,6 @@ Spell( 18223 ,{ name = "Curse of Exhaustion", duration = 30, pvpduration = 8, co
 Spell( {1490, 104225},{ name = "Curse of Elements",duration = 300, anySource = true, singleTarget = true, glowtime = 15, color = colors.CURSE, pvpduration = 120, short = "CoE" })
 --aoe version
 -- Spell( 104225 ,{ name = "Curse of Elements",duration = 300, glowtime = 15, color = colors.CURSE, pvpduration = 120, short = "CoE", multiTarget = true })
-
 Spell( 60478 ,{ name = "Doomguard", duration = 60 })
 
 Spell( 24259 ,{ name = "Spell Lock",duration = 3, color = colors.PINK })
