@@ -1,3 +1,6 @@
+-- Last code revision was in 4.0 beta, since then a lot of new features and workarounds has been made,
+-- I made them to be temporary but they remained and became important even if blizzard will fix combat log bug.
+-- So it's all crap now and needs a rewrite.
 local _, helpers = ...
 
 NugRunning = CreateFrame("Frame","NugRunning")
@@ -38,11 +41,21 @@ end})
 local leaveGhost = true
 
 local gettimer = function(self,spellID,dstGUID,timerType)
-    for timer in pairs(self) do 
-        if  timer.spellID == spellID and
-            timer.dstGUID == dstGUID and
-            timer.timerType == timerType then
-            return timer;
+    if type(spellID) == "number" then
+        for timer in pairs(self) do 
+            if  timer.spellID == spellID and
+                timer.dstGUID == dstGUID and
+                timer.timerType == timerType then
+                return timer;
+            end
+        end
+    else -- comparing by opts table, instead of
+        for timer in pairs(self) do 
+            if  timer.opts == spellID and
+                timer.dstGUID == dstGUID and
+                timer.timerType == timerType then
+                return timer;
+            end
         end
     end
 end
@@ -61,7 +74,7 @@ local GetSpellInfo = setmetatable({},{
 
 local GetSpellCooldown = GetSpellCooldown
 local GetSpellCharges = GetSpellCharges
-
+local GetSpecialization = GetSpecialization
 local bit_band = bit.band
 local UnitAura = UnitAura
 local UnitGUID = UnitGUID
@@ -100,7 +113,7 @@ local defaults = {
     localNames = false,
     totems = true,
     separate = false,
-    leaveGhost = true,
+    leaveGhost = false,
     nameplates = false,
 }
 
@@ -364,6 +377,13 @@ end
 local helpful = "HELPFUL"
 local harmful = "HARMFUL"
 function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID, spellName, opts, timerType, override, amount, noanim)  -- duration override
+    if opts.specmask then
+        local spec = GetSpecialization()
+        if spec then
+            spec = 0xF*math.pow(0x10, spec-1)
+            if bit_band(opts.specmask, spec) ~= spec then return end
+        end
+    end
     local multiTargetGUID
     if opts.multiTarget then multiTargetGUID = dstGUID; dstGUID = nil; end
 
@@ -379,8 +399,13 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
         cd_opts.timer = nil
     end
 
-    local timer = gettimer(active,spellID,dstGUID,timerType)
+    -- if timer.opts.idgroup then
+    --     spellID = timer.opts.idgroup[1]
+    -- end
+    local timer = gettimer(active, opts,dstGUID,timerType) -- finding timer by opts table id
     if timer then
+        -- spellID = timer.spellID -- swapping current id for existing timer id in case they're different
+                                -- refresh will be searching by spellID again
         if multiTargetGUID then timer.targets[multiTargetGUID] = true end
         return self:RefreshTimer(srcGUID, dstGUID or multiTargetGUID, dstName, dstFlags, spellID, spellName, opts, timerType, override)
     end
@@ -461,7 +486,7 @@ function NugRunning.RefreshTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID,
     local multiTargetGUID
     if opts.multiTarget then multiTargetGUID = dstGUID; dstGUID = nil; end
 
-    local timer = gettimer(active,spellID,dstGUID,timerType)
+    local timer = gettimer(active, opts or spellID,dstGUID,timerType)
     if not timer then
         return self:ActivateTimer(srcGUID, dstGUID or multiTargetGUID, dstName, dstFlags, spellID, spellName, opts, timerType)
     end
@@ -948,6 +973,7 @@ function NugRunning.SlashCmd(msg)
       |cff00ff00/nrun swaptarget|r : static order of target debuffs
       |cff00ff00/nrun separate|r : move target timers to second anchor
       |cff00ff00/nrun totems|r : static order of target debuffs
+      |cff00ff00/nrun nameplates|r : turn on nameplates
       |cff00ff00/nrun localnames|r: toggle localized spell names
       |cff00ff00/nrun leaveghost|r: don't hide target/player ghosts in combat
       |cff00ff00/nrun set|r width=120 height=20 fontscale=1.1 growth=up/down nontargetopacity=0.7: W & H of timers

@@ -30,6 +30,7 @@ colors["TEAL2"] = {38/255, 221/255, 163/255}
 colors["ORANGE"] = { 1, 124/255, 33/255 }
 colors["FIRE"] = {1,80/255,0}
 colors["LBLUE"] = {149/255, 121/255, 214/255}
+colors["DBLUE"] = { 50/255, 34/255, 151/255 }
 colors["GOLD"] = {1,0.7,0.5}
 colors["LGREEN"] = { 0.63, 0.8, 0.35 }
 colors["GREEN"] = {0.3, 0.9, 0.3}
@@ -84,12 +85,14 @@ Spell( 113858 ,{ name = "Dark Soul: Instability",duration = 20, short = "DarkSou
 Spell( 86211 ,{ name = "Soul Swap", duration = 20, shine = true, color = colors.BLACK })
 -- Spell( 17941 ,{ name = "Nightfall", duration = 10, shine = true, color = colors.CURSE })
 Spell( 103103 ,{ name = "Malefic Grasp", priority = 14, duration = 15, color = colors.CURSE, target = "target" })
---Haunt
-Spell( 30108 ,{ name = "", priority = 10, nameplates = true, duration = 15, ghost = true, recast_mark = 7.5, color = colors.RED })
+
 --Unstable Affliction
-Spell( 48181 ,{ name = "",duration = 12, priority = 8, ghost = true, nameplates = true, recast_mark = 3, color = colors.TEAL }) --Haunt
---Corruption (2nd is a Soulburn SoC Corruption)
-Spell( { 172, 87389} ,{ name = "", priority = 9, nameplates = true, recast_mark = 9, nameplates = true, ghost = true, color = colors.PINK, duration = 18 })
+Spell( 30108 ,{ name = "", priority = 10, nameplates = true, duration = 15, ghost = true, recast_mark = 7.5, color = colors.RED })
+
+--Haunt
+Spell( 48181 ,{ name = "Haunt",duration = 12, priority = 8, ghost = true, nameplates = true, color = colors.TEAL }) --Haunt
+--Corruption (2nd is a Soulburn SoC Corruption) --87389
+Spell( 172 ,{ name = "", priority = 9, nameplates = true, recast_mark = 9, nameplates = true, ghost = true, color = colors.PINK, duration = 18 })
 --Agony
 Spell( 980 ,{ name = "", duration = 24, nameplates = true, recast_mark = 12, ghost = true, priority = 6, color = colors.WOO })
 Spell( 1120 ,{ name = "Drain Soul",duration = 15, color = colors.LRED })
@@ -256,7 +259,7 @@ Spell( 20511 ,{ name = "Intimidating Shout", short = "Fear", duration = 8, multi
 
 Spell( 86346 ,{ name = "Colossus Smash", color = colors.PURPLE2, duration = 6 }) --debuff
 Cooldown( 86346 ,{ name = "Colossus Smash", priority = 8, ghost = true, color = colors.WOO, resetable = true, duration = 20 })
-Spell( 85288, { name = "Enraged", shine = true, showid = 14202, color = colors.RED, duration = 10 })
+
 Spell( 676  ,{ name = "Disarm", color = colors.BROWN, duration = 10 })
 Spell( 1715 ,{ name = "Hamstring", ghost = true, color = colors.PURPLE, duration = 15, pvpduration = 8 })
 
@@ -270,7 +273,13 @@ Cooldown( 6572, { name = "Revenge", priority = 5, color = colors.WOO, resetable 
 -- Activation( 6572, { name = "RevengeActivation", for_cd = true })
 
 Spell( 55694, { name = "Enraged Regeneration", short = "Regen", color = colors.LGREEN, duration = 5 })
-Spell( 132168 ,{ name = "Shockwave", color = colors.CURSE, shine = true, duration = 4, multiTarget = true, })
+-- Spell( 132168 ,{ name = "Shockwave", color = colors.CURSE, shine = true, duration = 4, multiTarget = true, })
+Cooldown( 46968 ,{ name = "Shockwave",  priority = 2, color = colors.DBLUE, shine = true, recast_mark = 16 })
+--can't use with_cooldown on shockwave, because without effect applied first it's not working.
+--but shockwave still needs to be used on cooldown
+--old enrage Spell( 85288, { name = "Enraged", shine = true, showid = 14202, color = colors.RED, duration = 10 })
+Spell( 12880 ,{ name = "Enrage", color = colors.DRED, specmask = 0x0FF, priority = 1, shine = true, shinerefresh = true, duration =6 })
+
 Spell( 12323 ,{ name = "Piercing Howl", multiTarget = true, duration = 15 })
 Spell( 107566 ,{ name = "Staggering Shout", duration = 5 })
 Spell( 105771, { name = "Warbringer", duration = 3 })
@@ -537,7 +546,7 @@ Spell( 5570 ,{ name = "Insect Swarm",duration = 12, ghost = true, color = colors
 Spell( 93400 ,{ name = "Shooting Stars", shine = true, duration = 12, color = colors.CURSE })
 Cooldown( 78674 ,{ name = "Starsurge", resetable = true, ghost = true, color = colors.CURSE })
 
-Spell( 106951 ,{ name = "Berserk", duration = 15 })
+Spell( {106951, 50334} ,{ name = "Berserk", duration = 15 })
 --cat
 Spell( 9005 ,{ name = "Pounce", duration = 4, color = colors.PINK })
 Spell( 9007 ,{ name = "Pounce Bleed", color = colors.RED, duration = 18 })
@@ -551,7 +560,7 @@ Spell( 127538 ,{ name = "Savage Roar", color = colors.PURPLE, duration = 12 }) -
 Spell( 1850 ,{ name = "Dash", duration = 15 })
 -- Spell( 81022 ,{ name = "Stampede", duration = 8 })
 --bear
-Spell( 62606 ,{ name = "Savage Defense", duration = 6, color = colors.WOO2 })
+Spell( 132402 ,{ name = "Savage Defense", duration = 6, color = colors.WOO2 })
 Spell( 115798 ,{ name = "Weakened Blows", short = "WeakBlows", priority = -20, anySource = true, singleTarget = true, color = {149/255, 121/255, 214/255}, duration = 30 })
 Spell( 106922 ,{ name = "Might of the Ursoc", duration = 20, color = colors.BLACK })
 Spell( 99 ,{ name = "Disorienting Roar", short = "Disorient", duration = 3, multiTarget = true })
@@ -579,6 +588,7 @@ Spell( 102543 ,{ name = "Incarnation: King of the Jungle", short = "Incarnation"
 
 Spell( 102342 ,{ name = "Ironbark",duration = 12 })
 Spell( 22812 ,{ name = "Barkskin",duration = 12 })
+Spell( 124974 ,{ name = "Nature's Vigil", color = colors.TEAL2, duration = 30 })
 Spell( 132158 ,{ name = "Nature's Swiftness", timeless = true, duration = 0.1, color = colors.TEAL, short = "NS" })
 Spell( 774 ,{ name = "Rejuvenation",duration = 12, color = { 1, 0.2, 1} })
 Spell( 8936 ,{ name = "Regrowth",duration = 6, color = { 198/255, 233/255, 80/255} })
