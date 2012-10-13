@@ -804,11 +804,10 @@ function NugRunning.ArrangeTimers(self)
 
     local targetGUID = UnitGUID("target")
     for timer in pairs(active) do
-        -- if timer.opts.group then
-        --     sorted[timer.opts.group] = sorted[timer.opts.group] or {}
-        --     table.insert(sorted[timer.opts.group],timer)
-        --else
-        if doswap and timer.dstGUID == targetGUID then table.insert(targetTimers,timer)
+        if timer.opts.group then
+            sorted[timer.opts.group] = sorted[timer.opts.group] or {}
+            table.insert(sorted[timer.opts.group],timer)
+        elseif doswap and timer.dstGUID == targetGUID then table.insert(targetTimers,timer)
         elseif timer.dstGUID == playerGUID then table.insert(playerTimers,timer)
         elseif timer.dstGUID == nil then
             if timer.timerType == "BUFF" then
