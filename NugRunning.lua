@@ -1224,8 +1224,7 @@ function NugRunning.OnAuraEvent(self, event, unit)
                         timerType = filter == "HELPFUL" and "BUFF" or "DEBUFF"
                         newtimer = NugRunning:ActivateTimer(playerGUID, targetGUID, UnitName("target"), nil, aura_spellID, name, config[aura_spellID], timerType, duration, count, true)
                     end
-
-                    newtimer:SetTime( expirationTime - duration + newtimer.fixedoffset, expirationTime)
+                    if newtimer then newtimer:SetTime( expirationTime - duration + newtimer.fixedoffset, expirationTime) end
                 end
             end
         end

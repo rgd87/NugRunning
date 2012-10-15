@@ -460,6 +460,9 @@ Spell( 102051 ,{ name = "Frostjaw", duration = 8, pvpduration = 4,  color = colo
 Spell( 32612 ,{ name = "Invisibility",duration = 20 })
 Spell( 110960 ,{ name = "Greater Invisibility", duration = 20, color = colors.CURSE })
 
+Spell( 116257 ,{ name = "Invoker's Energy", priority = -5, duration = 40, color = colors.DPURPLE })
+Spell( 116014, { name = "Rune of Power", timeless = true, duration = 1, color = colors.DPURPLE, priority = -50 })
+
 Spell( 112948 ,{ name = "Frost Bomb", duration = 5, color = colors.CURSE })
 Spell( 44457 ,{ name = "Living Bomb",duration = function(self, opts) 
             local targetGUID = UnitGUID("target")
