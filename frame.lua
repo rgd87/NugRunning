@@ -32,23 +32,43 @@ function TimerBar.SetTime(self,s,e)
     self.bar:SetMinMaxValues(s,e)
     self:UpdateMark()
 end
+local function getbarpos(timer, time)
+    local duration = timer.endTime - timer.startTime
+    if time >= 0 then
+        return time / duration * timer.bar:GetWidth()
+    else
+        return (duration+time) / duration * timer.bar:GetWidth()
+    end
+end
 function TimerBar.UpdateMark(self)
-    if self.opts.recast_mark then
-        local rm = self.opts.recast_mark
-        local duration = self.endTime - self.startTime
-        local pos
-        if rm >= 0 then
-            pos = rm / duration * self.bar:GetWidth()
-        else
-            pos = (duration+rm) / duration * self.bar:GetWidth()
-        end
+    local rm = self.opts.recast_mark
+    if rm then
+        local pos = getbarpos(self, rm)
         self.mark:SetPoint("CENTER",self.bar,"LEFT",pos,0)
         self.mark:Show()
         self.mark.texture:Show()
     else
         self.mark:Hide()
         self.mark.texture:Hide()
-    end    
+    end
+
+    local overlay = self.opts.overlay
+    if overlay then
+        local pos1 = getbarpos(self, overlay[1])
+        local pos2 = getbarpos(self, overlay[2])
+        local alpha = overlay[3] or 0.2
+        -- print(pos1, pos2)
+        if pos2 > pos1 then
+            self.overlay:SetPoint("TOPLEFT", self.bar, "TOPLEFT", pos1, 0)
+            self.overlay:SetPoint("BOTTOMRIGHT", self.bar, "BOTTOMLEFT", pos2, 0)
+            self.overlay:SetVertexColor(0,0,0, alpha)
+            self.overlay:Show()
+        else
+            self.overlay:Hide()
+        end
+    else
+        self.overlay:Hide()
+    end
 end
 function TimerBar.SetMinMaxCharge(self, min, max)
     self.bar:SetMinMaxValues(min,max)
@@ -167,6 +187,12 @@ NugRunning.ConstructTimerBar = function(width, height)
     f.spellText:SetAlpha(NugRunningConfig.nameFont.alpha or 1)
     f.spellText:SetPoint("LEFT", f.bar, "LEFT",6,0)
     f.spellText.SetName = SpellTextUpdate
+
+    local overlay = f.bar:CreateTexture(nil, "ARTWORK", nil, 3)
+    overlay:SetTexture("Interface\\Tooltips\\UI-Tooltip-Background")
+    overlay:SetVertexColor(0,0,0, 0.2)
+    overlay:Hide()
+    f.overlay = overlay
     
     
     local at = ic:CreateTexture(nil,"OVERLAY")

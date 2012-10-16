@@ -61,7 +61,7 @@ Spell( 74434 ,{ name = "Soulburn",duration = 20, color = colors.CURSE })
 --I can't know for sure what base debuff duration was because of haste,
 --so all values are just 1s less than 50% of base duration without haste to be safe
 --Immolate
-Spell( 348 ,{ name = "", recast_mark = 6.5, duration = 15, nameplates = true, priority = 10, ghost = true, color = colors.RED })
+Spell( 348 ,{ name = "", overlay = {0, 1.5, 0.2}, recast_mark = 6.5, duration = 15, nameplates = true, priority = 10, ghost = true, color = colors.RED })
 
 Spell( 34936 ,{ name = "Backlash", duration = 8, shine = true, color = colors.CURSE })
 -- Spell( 117828 ,{ name = "Backdraft", duration = 15, shine = true, color = colors.WOO, charged = true, maxcharge = 3 })
@@ -89,7 +89,7 @@ Spell( 86211 ,{ name = "Soul Swap", duration = 20, shine = true, color = colors.
 Spell( 103103 ,{ name = "Malefic Grasp", priority = 14, duration = 15, color = colors.CURSE, target = "target" })
 
 --Unstable Affliction
-Spell( 30108 ,{ name = "", priority = 10, nameplates = true, duration = 15, ghost = true, recast_mark = 6.5, color = colors.RED })
+Spell( 30108 ,{ name = "", priority = 10, overlay = {0, 1.5, 0.2}, nameplates = true, duration = 15, ghost = true, recast_mark = 6.5, color = colors.RED })
 
 --Haunt
 Spell( 48181 ,{ name = "Haunt",duration = 12, priority = 8, ghost = true, nameplates = true, color = colors.TEAL }) --Haunt
@@ -135,9 +135,9 @@ Spell( 586 ,{ name = "Fade",duration = 10 })
 Spell( 89485 ,{ name = "Inner Focus", shine = true, color = colors.LBLUE, timeless = true, duration = 0.1 })
 -- Spell( 49694,59000 ,{ name = "Improved Spirit Tap",duration = 8 })
 -- Spell( 15271 ,{ name = "Spirit Tap",duration = 15 })
-Spell( 589 ,{ name = "Shadow Word: Pain",duration = 18, ghost = true, nameplates = true, priority = 9, color = colors.PURPLE, refreshed =true, short = "SW:Pain" })
+Spell( 589 ,{ name = "Shadow Word: Pain",duration = 18, overlay = {0,1.5, 0.2}, ghost = true, nameplates = true, priority = 9, color = colors.PURPLE, refreshed =true, short = "SW:Pain" })
 
-Spell( 34914 ,{ name = "Vampiric Touch", recast_mark = 1.5, ghost = true, nameplates = true,  priority = 10, duration = 15, color = colors.RED, short = "VampTouch", hasted = true })
+Spell( 34914 ,{ name = "Vampiric Touch", overlay = {0, 1.5, 0.2}, recast_mark = 2.8, ghost = true, nameplates = true,  priority = 10, duration = 15, color = colors.RED, short = "VampTouch", hasted = true })
 Spell( 2944 ,{ name = "Devouring Plague",duration = 6, priority = 8, nameplates = true, color = colors.WOO, short = "Plague" })
 Spell( 47585 ,{ name = "Dispersion",duration = 6, color = colors.PURPLE })
 --Spell( 15286 ,{ name = "Vampiric Embrace",duration = 15, color = colors.CURSE, short = "VampEmbrace" })
@@ -275,8 +275,8 @@ Cooldown( 6572, { name = "Revenge", priority = 5, color = colors.WOO, resetable 
 -- Activation( 6572, { name = "RevengeActivation", for_cd = true })
 
 Spell( 55694, { name = "Enraged Regeneration", short = "Regen", color = colors.LGREEN, duration = 5 })
--- Spell( 132168 ,{ name = "Shockwave", color = colors.CURSE, shine = true, duration = 4, multiTarget = true, })
-Cooldown( 46968 ,{ name = "Shockwave",  priority = 2, color = colors.DBLUE, shine = true, recast_mark = 16 })
+Spell( 132168 ,{ name = "Shockwave", color = colors.CURSE, shine = true, duration = 4, multiTarget = true, })
+-- Cooldown( 46968 ,{ name = "Shockwave",  priority = 2, color = colors.DBLUE, shine = true, recast_mark = 16 })
 --can't use with_cooldown on shockwave, because without effect applied first it's not working.
 --but shockwave still needs to be used on cooldown
 --old enrage Spell( 85288, { name = "Enraged", shine = true, showid = 14202, color = colors.RED, duration = 10 })
@@ -285,25 +285,27 @@ Spell( 12880 ,{ name = "Enrage", color = colors.DRED, specmask = 0x0FF, priority
 Spell( 12323 ,{ name = "Piercing Howl", multiTarget = true, duration = 15 })
 Spell( 107566 ,{ name = "Staggering Shout", duration = 5 })
 Spell( 105771, { name = "Warbringer", duration = 3 })
-Spell( 107574, { name = "Avatar", shine = true, color = colors.TEAL, duration = 30 })
+Spell( 107574, { name = "Avatar", shine = true, group = "buffs",  color = colors.TEAL, duration = 30 })
 Spell( 132169, { name = "Storm Bolt", color = colors.TEAL2, duration = 3})
 
 Spell( 114192, { name = "Mocking Banner", color = colors.PURPLE2, duration = 20})
--- EventTimer({ spellID = 114207, event = "SPELL_CAST_SUCCESS", name = "Skull Banner", duration = 10, color = colors.RED })
+Spell( 1719, { name = "Recklessness", color = colors.LRED, group = "buffs", duration = 20})
+Spell( 64382, { name = "Shattering Throw", short = "Shattering", color = colors.TEAL, group = "buffs", duration = 10})
+EventTimer({ spellID = 114207, event = "SPELL_CAST_SUCCESS", group = "buffs", name = "Skull Banner", duration = 10, color = colors.RED })
 EventTimer({ spellID = 114203, event = "SPELL_CAST_SUCCESS", name = "Demoralizing Banner", short = "DemoBanner", duration = 15, color = colors.BLACK })
 -- Cooldown( 107570, { name = "Storm Bolt", color = colors.TEAL2 })
-Spell( 12292, { name = "Bloodbath", priority = -8, color = colors.PURPLE2, duration = 12,
+Spell( 12292, { name = "Bloodbath", priority = -8, group = "buffs", color = colors.PURPLE2, duration = 12,
     with_cooldown = { id = 12292, name = "Bloodbath", priority = -8, glowtime = 5, color = colors.DRED }    })
 
 --Spell( 56112 ,{ name = "Furious Attacks", duration = 10 })
 --Activation( 5308, { name = "Execute", shine = true, timeless = true, color = colors.CURSE, duration = 0.1 })
 
-Cooldown( 12294, { name = "Mortal Strike", priority = 10, short = "", check_known = true, recast_mark = 1.5, fixedlen = 9, ghost = true,  color = colors.CURSE })
+Cooldown( 12294, { name = "Mortal Strike", overlay = {3, 4.5}, priority = 10, short = "", check_known = true, recast_mark = 1.5, fixedlen = 9, ghost = true,  color = colors.CURSE })
 
 -- special timer
-Spell( 7384, { name = "Overpower", short = "", priority = 9, shine = true, color = colors.RED, recast_mark = -4.5, duration = 9})
+Spell( 7384, { name = "Overpower", short = "", overlay = {0,-4.5, 0.15}, priority = 9, shine = true, color = colors.RED, recast_mark = -4.5, duration = 9})
 --Activation( 7384, { name = "Overpower", short = "", shine = true, color = colors.RED, recast_mark = 4.5, duration = 9})
-Spell( 125831 ,{ name = "Taste for Blood", glowtime = 7, shinerefresh = true, shine = true, color = colors.TEAL, duration = 15 }) -- Taste for blood
+Spell( 125831 ,{ name = "Taste for Blood", glowtime = 5, shinerefresh = true, shine = true, color = colors.TEAL, duration = 15 }) -- Taste for blood
 
 Cooldown( 23881, { name = "Bloodthirst", short = "", priority = 10, check_known = true, ghost = true, recast_mark = 1.5, fixedlen = 6,  color = colors.CURSE })
 Spell( 46916 ,{ name = "Bloodsurge", shine = true, priority = 8, color = colors.TEAL, duration = 10 })
@@ -325,7 +327,7 @@ Cooldown( 6343, { name = "Thunder Clap", specmask = 0xF00, color = colors.LBLUE,
 
 
 
-Spell( 32216, { name = "Victory Rush", priority = -9, color = colors.PURPLE, duration = 20})
+-- Spell( 32216, { name = "Victory Rush", priority = -9, color = colors.PURPLE, duration = 20})
 
 -- Spell( 7922, { name = "Charge", duration = 1 })
 end
