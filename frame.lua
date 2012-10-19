@@ -128,12 +128,12 @@ end
 
 function TimerBar.SetPowerStatus(self, status)
     if status == "HIGH" then
-        self.arrow:SetTexCoord(0, 26/32, 0, 23/64)
-        self.arrow:SetVertexColor(0.5,1,0.5)
+        -- self.arrow:SetTexCoord(0, 26/32, 0, 23/64)
+        self.arrow:SetVertexColor(0.2,1,0.2, 0.7)
         self.arrow:Show()
     elseif status == "LOW" then
-        self.arrow:SetTexCoord(0, 26/32, 41/64, 1)
-        self.arrow:SetVertexColor(1,0.5,0.5)
+        -- self.arrow:SetTexCoord(0, 26/32, 41/64, 1)
+        self.arrow:SetVertexColor(1,0.2,0.2, 0.7)
         self.arrow:Show()
     else
         self.arrow:Hide()
@@ -208,16 +208,22 @@ NugRunning.ConstructTimerBar = function(width, height)
     overlay:Hide()
     f.overlay = overlay
 
-    local arrow = f.bar:CreateTexture(nil, "ARTWORK", nil, 5)
-    arrow:SetSize(11, 10)
-    arrow:SetTexture("Interface\\AddOns\\NugRunning\\arrows")
-    -- arrow:SetTexCoord(0, 26/32, 0, 23/64)
-    arrow:SetTexCoord(0, 26/32, 41/64, 1)
-    -- arrow:SetVertexColor(0.3,1,0.3)
-    arrow:SetVertexColor(1,0.3,0.3)
-    arrow:SetPoint("RIGHT", f.bar, "RIGHT",-30,1)
-    arrow:Hide()
-    f.arrow = arrow
+    -- local arrow = f.bar:CreateTexture(nil, "ARTWORK", nil, 5)
+    -- arrow:SetSize(11, 10)
+    -- arrow:SetTexture("Interface\\AddOns\\NugRunning\\arrows")
+    -- -- arrow:SetTexCoord(0, 26/32, 0, 23/64)
+    -- arrow:SetTexCoord(0, 26/32, 41/64, 1)
+    -- -- arrow:SetVertexColor(0.3,1,0.3)
+    -- arrow:SetVertexColor(1,0.3,0.3)
+    -- arrow:SetPoint("RIGHT", f.bar, "RIGHT",-30,1)
+    -- arrow:Hide()
+    local status = ic:CreateTexture(nil, "ARTWORK", nil, 5)
+    status:SetTexture("Interface\\AddOns\\NugRunning\\white")
+    status:SetPoint("TOPRIGHT", f.icon, "TOPLEFT", -2,0)
+    status:SetPoint("BOTTOMLEFT", f.icon, "BOTTOMLEFT",-5,0)
+    status:SetVertexColor(0.3,1,0.3)
+    status:Hide()
+    f.arrow = status
     
     
     local at = ic:CreateTexture(nil,"OVERLAY")
