@@ -12,7 +12,7 @@ Usage:
 --]================]
 
 
-local MAJOR, MINOR = "LibScouter", 1
+local MAJOR, MINOR = "LibScouter-1.0", 1
 local lib = LibStub:NewLibrary(MAJOR, MINOR)
 if not lib then return end
 
@@ -215,8 +215,19 @@ local QueuedUpdate = function(self)
     end
 end
 
-f:RegisterEvent("SPELLS_CHANGED")
-f:SetScript("OnEvent", function(self, event, ...)
+function callbacks.OnUsed()
+    -- print("OnUsed")
+    lib.frame:RegisterEvent("SPELLS_CHANGED")
+    lib.OnEvent(lib.frame, "SPELLS_CHANGED")
+end
+
+function callbacks.OnUnused()
+    -- print("OnUnused")
+    lib.frame:UnregisterAllEvents()
+end
+
+-- f:RegisterEvent("SPELLS_CHANGED")
+lib.OnEvent = function(self, event, ...)
     -- print(event)
     if event == "SPELLS_CHANGED" then
         local spec = GetSpecialization()
@@ -247,4 +258,5 @@ f:SetScript("OnEvent", function(self, event, ...)
     else
         self:SetScript("OnUpdate", QueuedUpdate)
     end
-end)
+end
+f:SetScript("OnEvent", lib.OnEvent)

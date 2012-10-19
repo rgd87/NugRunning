@@ -116,6 +116,7 @@ local defaults = {
     separate = false,
     leaveGhost = false,
     nameplates = false,
+    dotpower = true,
 }
 
 local function SetupDefaults(t, defaults)
@@ -221,8 +222,8 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
         free[timer] = true
     end
 
-    if select(2, UnitClass("player")) == "WARLOCK" then
-        Scouter = LibStub("LibScouter")
+    if select(2, UnitClass("player")) == "WARLOCK" and NRunDB.dotpower then
+        Scouter = LibStub("LibScouter-1.0")
         Scouter.RegisterCallback(NugRunning, "POWER_LEVEL_CHANGED", NugRunning.POWER_LEVEL_CHANGED)
     end
         
@@ -1013,6 +1014,7 @@ function NugRunning.SlashCmd(msg)
       |cff00ff00/nrun separate|r : move target timers to second anchor
       |cff00ff00/nrun totems|r : static order of target debuffs
       |cff00ff00/nrun nameplates|r : turn on nameplates
+      |cff00ff00/nrun dotpower|r : turn off dotpower feature
       |cff00ff00/nrun localnames|r: toggle localized spell names
       |cff00ff00/nrun leaveghost|r: don't hide target/player ghosts in combat
       |cff00ff00/nrun set|r width=120 height=20 fontscale=1.1 growth=up/down nontargetopacity=0.7: W & H of timers
@@ -1092,6 +1094,10 @@ function NugRunning.SlashCmd(msg)
     if k == "nameplates" then
         NRunDB.nameplates = not NRunDB.nameplates
         print("Nameplates turned "..(NRunDB.nameplates and "on" or "off")..". Will take effect after /reload")
+    end
+    if k == "dotpower" then
+        NRunDB.dotpower = not NRunDB.dotpower
+        print("Nameplates turned "..(NRunDB.dotpower and "on" or "off")..". Will take effect after /reload")
     end
     if k == "set" then
         local p = ParseOpts(v)
