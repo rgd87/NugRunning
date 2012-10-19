@@ -58,6 +58,7 @@ Spell({2825, 32182, 80353} ,{ name = "Bloodlust", duration = 40, priority = -100
 
 if class == "WARLOCK" then
 Spell( 74434 ,{ name = "Soulburn",duration = 20, color = colors.CURSE })
+Spell( 111400 ,{ name = "Burning Rush",duration = 20, timeless = true, color = colors.PURPLE2 })
 --I can't know for sure what base debuff duration was because of haste,
 --so all values are just 1s less than 50% of base duration without haste to be safe
 --Immolate
@@ -95,7 +96,7 @@ Spell( 30108 ,{ name = "", priority = 10, showpower = true, overlay = {0, 1.5, 0
 --Haunt
 Spell( 48181 ,{ name = "Haunt",duration = 12, priority = 8, ghost = true, nameplates = true, color = colors.TEAL }) --Haunt
 --Corruption (2nd is a Soulburn SoC Corruption) --87389
-Spell( 172 ,{ name = "", priority = 9, showpower = true, nameplates = true, recast_mark = 8, nameplates = true, ghost = true, color = colors.PINK, duration = 18 })
+Spell( {172, 87389} ,{ name = "", priority = 9, showpower = true, nameplates = true, recast_mark = 8, nameplates = true, ghost = true, color = colors.PINK, duration = 18 })
 --Agony
 Spell( 980 ,{ name = "", duration = 24, showpower = true, nameplates = true, recast_mark = 11, ghost = true, priority = 6, color = colors.WOO })
 Spell( 27243 ,{ name = "Seed of Corruption",duration = 18, nameplates = true,  color = colors.LRED, short = "SoC" })
@@ -183,7 +184,7 @@ EventTimer({ event = "SPELL_CAST_SUCCESS", spellID = 62618, name = "PW:Barrier",
 Spell( 88625 ,{ name = "Holy Word: Chastise", color = colors.LRED, short = "HW: Chastise", duration = 3 })
 
 Cooldown( 47540 ,{ name = "Penance", color = colors.CURSE })
-Cooldown( 14914 ,{ name = "Holy Fire", color = colors.PINK })
+Cooldown( 14914 ,{ name = "Holy Fire", recast_mark = 3, color = colors.PINK })
 Spell( 81661 ,{ name = "Evangelism",duration = 15, color = colors.ORANGE, stackcolor = {
                                 [1] = {0.7,0,0},
                                 [2] = {1,0.6,0.2},

@@ -930,7 +930,7 @@ function NugRunning:UpdateTimerPower(timer, plevel)
 end
 function NugRunning.POWER_LEVEL_CHANGED(event, plevel)
     for timer in pairs(active) do
-        if timer.opts.showpower and timer.powerLevel then
+        if timer.opts.showpower and timer.powerLevel and not timer.isGhost then
             -- timer:SetName(timer.powerLevel)
             NugRunning:UpdateTimerPower(timer, plevel)
         else
