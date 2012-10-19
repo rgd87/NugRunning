@@ -220,8 +220,10 @@ NugRunning.ConstructTimerBar = function(width, height)
     local status = ic:CreateTexture(nil, "ARTWORK", nil, 5)
     status:SetTexture("Interface\\AddOns\\NugRunning\\white")
     status:SetPoint("TOPRIGHT", f.icon, "TOPLEFT", -2,0)
-    status:SetPoint("BOTTOMLEFT", f.icon, "BOTTOMLEFT",-5,0)
-    status:SetVertexColor(0.3,1,0.3)
+    status:SetPoint("BOTTOMLEFT", f.icon, "BOTTOMLEFT",-4,0)
+    -- status:SetPoint("TOPRIGHT", f.icon, "BOTTOMLEFT", 5,5)
+    -- status:SetPoint("BOTTOMLEFT", f.icon, "BOTTOMLEFT",-1,-1)
+    -- status:SetVertexColor(0, 0.8, 0, 1)
     status:Hide()
     f.arrow = status
     
