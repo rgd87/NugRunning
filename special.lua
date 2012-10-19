@@ -190,13 +190,17 @@ function( self, event, timestamp, eventType, hideCaster,
                 spell.timer.dstGUID = dstGUID
                 spell.timer.dstName = dstName
                 NugRunning.QueueAura(spellID, dstGUID, auraType, faketimer )
+                spell.timer.powerLevel = NugRunning:GetPowerLevel()
                 spell.ticks = 6
+                spell.timer:SetCount(spell.ticks)
                 t1 = GetTime()
                 realTickTime = nil
             elseif eventType == "SPELL_PERIODIC_DAMAGE" then
                 local now = GetTime()
                 if not realTickTime then realTickTime = now - t1 end
                 spell.timer:SetTime(now, now + realTickTime)
+                spell.ticks = spell.ticks -1
+                spell.timer:SetCount(spell.ticks)
                 NugRunning:ArrangeTimers()
             elseif eventType == "SPELL_AURA_REMOVED" then
                 active[spell.timer] = nil

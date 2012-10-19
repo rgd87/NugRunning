@@ -428,7 +428,9 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
         opts.init_done = true
     end
     if not from_unitaura then
-        timer.powerLevel = self:GetPowerLevel()
+        local plevel = self:GetPowerLevel()
+        timer.powerLevel = plevel
+        self:UpdateTimerPower(timer, plevel)
     end
     timer.srcGUID = srcGUID
     timer.dstGUID = dstGUID
@@ -536,7 +538,9 @@ function NugRunning.RefreshTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID,
     timer.count = amount
 
     if not noshine then
-        timer.powerLevel = self:GetPowerLevel()
+        local plevel = self:GetPowerLevel()
+        timer.powerLevel = plevel
+        self:UpdateTimerPower(timer, plevel)
     end
 
     timer:UpdateMark()
@@ -913,17 +917,21 @@ end
 function NugRunning:GetPowerLevel()
     return Scouter and Scouter:GetPowerLevel() or 0
 end
-function NugRunning.POWER_LEVEL_CHANGED(event, plevel)
+function NugRunning:UpdateTimerPower(timer, plevel)
     local treshold = 1500
+    if timer.powerLevel > plevel+treshold then
+        timer:SetPowerStatus("HIGH")
+    elseif timer.powerLevel+treshold < plevel then
+        timer:SetPowerStatus("LOW")
+    else
+        timer:SetPowerStatus(nil)
+    end
+end
+function NugRunning.POWER_LEVEL_CHANGED(event, plevel)
     for timer in pairs(active) do
         if timer.opts.showpower and timer.powerLevel then
-            if timer.powerLevel > plevel+treshold then
-                timer:SetPowerStatus("HIGH")
-            elseif timer.powerLevel+treshold < plevel then
-                timer:SetPowerStatus("LOW")
-            else
-                timer:SetPowerStatus(nil)
-            end
+            -- timer:SetName(timer.powerLevel)
+            NugRunning:UpdateTimerPower(timer, plevel)
         else
             timer:SetPowerStatus(nil)
         end

@@ -87,6 +87,7 @@ Spell( 113858 ,{ name = "Dark Soul: Instability",duration = 20, short = "DarkSou
 Spell( 86211 ,{ name = "Soul Swap", duration = 20, shine = true, color = colors.BLACK })
 -- Spell( 17941 ,{ name = "Nightfall", duration = 10, shine = true, color = colors.CURSE })
 Spell( 103103 ,{ name = "Malefic Grasp", showpower = true, priority = 14, duration = 15, color = colors.CURSE, target = "target" })
+Spell( 1120 ,{ name = "Drain Soul", priority = 14, showpower = true, duration = 15, color = colors.CURSE })
 
 --Unstable Affliction
 Spell( 30108 ,{ name = "", priority = 10, showpower = true, overlay = {0, 1.5, 0.2}, nameplates = true, duration = 15, ghost = true, recast_mark = 6.5, color = colors.RED })
@@ -97,7 +98,6 @@ Spell( 48181 ,{ name = "Haunt",duration = 12, priority = 8, ghost = true, namepl
 Spell( 172 ,{ name = "", priority = 9, showpower = true, nameplates = true, recast_mark = 8, nameplates = true, ghost = true, color = colors.PINK, duration = 18 })
 --Agony
 Spell( 980 ,{ name = "", duration = 24, showpower = true, nameplates = true, recast_mark = 11, ghost = true, priority = 6, color = colors.WOO })
-Spell( 1120 ,{ name = "Drain Soul",duration = 15, color = colors.LRED })
 Spell( 27243 ,{ name = "Seed of Corruption",duration = 18, nameplates = true,  color = colors.LRED, short = "SoC" })
 
 Spell( 109466 ,{ name = "Curse of Enfeeblement",duration = 30, color = colors.CURSE, short = "CoEnf" })
