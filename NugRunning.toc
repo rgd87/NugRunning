@@ -11,3 +11,6 @@ frame.lua
 special.lua
 totems.lua
 nameplates.lua
+Libs\LibStub\LibStub.lua
+Libs\CallbackHandler-1.0\CallbackHandler-1.0.lua
+Libs\LibScouter\LibScouter.lua

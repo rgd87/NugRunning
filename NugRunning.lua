@@ -18,6 +18,7 @@ local playerGUID
 local alltimers = {}
 local active = {}
 local free = {}
+local Scouter
 setmetatable(active,{ __newindex = function(t,k,v)
     rawset(free,k,nil)
     rawset(t,k,v)
@@ -219,6 +220,11 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
         local timer = NugRunning:CreateTimer()
         free[timer] = true
     end
+
+    if select(2, UnitClass("player")) == "WARLOCK" then
+        Scouter = LibStub("LibScouter")
+        Scouter.RegisterCallback(NugRunning, "POWER_LEVEL_CHANGED", NugRunning.POWER_LEVEL_CHANGED)
+    end
         
     SLASH_NUGRUNNING1= "/nugrunning"
     SLASH_NUGRUNNING2= "/nrun"
@@ -378,7 +384,7 @@ end
 
 local helpful = "HELPFUL"
 local harmful = "HARMFUL"
-function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID, spellName, opts, timerType, override, amount, noanim)  -- duration override
+function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID, spellName, opts, timerType, override, amount, from_unitaura)  -- duration override
     if opts.specmask then
         local spec = GetSpecialization()
         if spec then
@@ -421,7 +427,9 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
         opts:init()
         opts.init_done = true
     end
-
+    if not from_unitaura then
+        timer.powerLevel = self:GetPowerLevel()
+    end
     timer.srcGUID = srcGUID
     timer.dstGUID = dstGUID
     timer.dstName = dstName
@@ -477,7 +485,7 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
     timer:SetColor(unpack(opts.color))
     if timer.glow:IsPlaying() then timer.glow:Stop() end
     timer:Show()
-    if not timer.animIn:IsPlaying() and not noanim then timer.animIn:Play() end
+    if not timer.animIn:IsPlaying() and not from_unitaura then timer.animIn:Play() end
     if opts.shine and not timer.shine:IsPlaying() then timer.shine:Play() end
     
     self:ArrangeTimers()
@@ -526,6 +534,10 @@ function NugRunning.RefreshTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID,
         timer:SetCount(amount)
     end
     timer.count = amount
+
+    if not noshine then
+        timer.powerLevel = self:GetPowerLevel()
+    end
 
     timer:UpdateMark()
 
@@ -708,6 +720,7 @@ end
 local TimerBecomeGhost = function(self)
     self.expiredGhost = nil
     self.isGhost = true
+    self:SetPowerStatus(nil)
     self:ToGhost()
     self._elapsed = 0
     self:SetScript("OnUpdate", NugRunning.GhostFunc)
@@ -897,7 +910,25 @@ function NugRunning.PLAYER_TARGET_CHANGED(self)
     self:ArrangeTimers()
 end
 
-
+function NugRunning:GetPowerLevel()
+    return Scouter and Scouter:GetPowerLevel() or 0
+end
+function NugRunning.POWER_LEVEL_CHANGED(event, plevel)
+    local treshold = 1500
+    for timer in pairs(active) do
+        if timer.opts.showpower and timer.powerLevel then
+            if timer.powerLevel > plevel+treshold then
+                timer:SetPowerStatus("HIGH")
+            elseif timer.powerLevel+treshold < plevel then
+                timer:SetPowerStatus("LOW")
+            else
+                timer:SetPowerStatus(nil)
+            end
+        else
+            timer:SetPowerStatus(nil)
+        end
+    end
+end
 
 function NugRunning.UNIT_COMBO_POINTS(self,event,unit)
     if unit ~= "player" then return end
@@ -911,7 +942,6 @@ function NugRunning.ReInitSpells(self,event,arg1)
         end
     end
 end
-
 
 ------------------------------------------
 -- Console Commands and related functions

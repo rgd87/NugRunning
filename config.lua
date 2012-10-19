@@ -61,7 +61,7 @@ Spell( 74434 ,{ name = "Soulburn",duration = 20, color = colors.CURSE })
 --I can't know for sure what base debuff duration was because of haste,
 --so all values are just 1s less than 50% of base duration without haste to be safe
 --Immolate
-Spell( 348 ,{ name = "", overlay = {0, 1.5, 0.2}, recast_mark = 6.5, duration = 15, nameplates = true, priority = 10, ghost = true, color = colors.RED })
+Spell( 348 ,{ name = "", overlay = {0, 1.5, 0.2}, recast_mark = 6.5, showpower = true, duration = 15, nameplates = true, priority = 10, ghost = true, color = colors.RED })
 
 Spell( 34936 ,{ name = "Backlash", duration = 8, shine = true, color = colors.CURSE })
 -- Spell( 117828 ,{ name = "Backdraft", duration = 15, shine = true, color = colors.WOO, charged = true, maxcharge = 3 })
@@ -72,7 +72,7 @@ Cooldown( 17962, { name = "Conflagrate", ghost = true, priority = 5, color = col
 
 Spell( 122355,{ name = "Molten Core",duration = 30, shine = true, color = colors.PURPLE })
 --Doom
-Spell( 603 ,{ name = "", duration = 60, nameplates = true, recast_mark = 29, ghost = true, priority = 6, color = colors.WOO })
+Spell( 603 ,{ name = "", duration = 60, nameplates = true, showpower = true, recast_mark = 29, ghost = true, priority = 6, color = colors.WOO })
 -- REMOVED_DOSE event is not fired for molten core, so it's stuck at 3
 
 Cooldown( 105174, { name = "Hand of Gul'dan",  ghost = true, shinerefresh = true, color = colors.CURSE })
@@ -86,17 +86,17 @@ Spell( 113858 ,{ name = "Dark Soul: Instability",duration = 20, short = "DarkSou
 
 Spell( 86211 ,{ name = "Soul Swap", duration = 20, shine = true, color = colors.BLACK })
 -- Spell( 17941 ,{ name = "Nightfall", duration = 10, shine = true, color = colors.CURSE })
-Spell( 103103 ,{ name = "Malefic Grasp", priority = 14, duration = 15, color = colors.CURSE, target = "target" })
+Spell( 103103 ,{ name = "Malefic Grasp", showpower = true, priority = 14, duration = 15, color = colors.CURSE, target = "target" })
 
 --Unstable Affliction
-Spell( 30108 ,{ name = "", priority = 10, overlay = {0, 1.5, 0.2}, nameplates = true, duration = 15, ghost = true, recast_mark = 6.5, color = colors.RED })
+Spell( 30108 ,{ name = "", priority = 10, showpower = true, overlay = {0, 1.5, 0.2}, nameplates = true, duration = 15, ghost = true, recast_mark = 6.5, color = colors.RED })
 
 --Haunt
 Spell( 48181 ,{ name = "Haunt",duration = 12, priority = 8, ghost = true, nameplates = true, color = colors.TEAL }) --Haunt
 --Corruption (2nd is a Soulburn SoC Corruption) --87389
-Spell( 172 ,{ name = "", priority = 9, nameplates = true, recast_mark = 8, nameplates = true, ghost = true, color = colors.PINK, duration = 18 })
+Spell( 172 ,{ name = "", priority = 9, showpower = true, nameplates = true, recast_mark = 8, nameplates = true, ghost = true, color = colors.PINK, duration = 18 })
 --Agony
-Spell( 980 ,{ name = "", duration = 24, nameplates = true, recast_mark = 11, ghost = true, priority = 6, color = colors.WOO })
+Spell( 980 ,{ name = "", duration = 24, showpower = true, nameplates = true, recast_mark = 11, ghost = true, priority = 6, color = colors.WOO })
 Spell( 1120 ,{ name = "Drain Soul",duration = 15, color = colors.LRED })
 Spell( 27243 ,{ name = "Seed of Corruption",duration = 18, nameplates = true,  color = colors.LRED, short = "SoC" })
 
@@ -281,8 +281,8 @@ Cooldown( 6572, { name = "Revenge", priority = 5, color = colors.WOO, resetable 
 -- Activation( 6572, { name = "RevengeActivation", for_cd = true })
 
 Spell( 55694, { name = "Enraged Regeneration", short = "Regen", color = colors.LGREEN, duration = 5 })
--- Spell( 132168 ,{ name = "Shockwave", color = colors.CURSE, shine = true, duration = 4, multiTarget = true, })
-Cooldown( 46968 ,{ name = "Shockwave",  priority = 2, color = colors.DBLUE, shine = true, recast_mark = 16 })
+Spell( 132168 ,{ name = "Shockwave", color = colors.CURSE, shine = true, duration = 4, multiTarget = true, })
+Cooldown( 46968 ,{ name = "Shockwave",  priority = 2, color = colors.DBLUE })
 --can't use with_cooldown on shockwave, because without effect applied first it's not working.
 --but shockwave still needs to be used on cooldown
 --old enrage Spell( 85288, { name = "Enraged", shine = true, showid = 14202, color = colors.RED, duration = 10 })
