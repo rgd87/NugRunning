@@ -356,8 +356,13 @@ Spell( 116740 ,{ name = "Tigereye Brew", color = colors.BLACK, duration = 15 }) 
 Cooldown( 107428, { name = "Rising Sun Kick", short = "RSK", color = colors.PURPLE })
 
 Spell( 119611 ,{ name = "Renewing Mist", color = colors.LGREEN, duration = 18 })
+Spell( 115151 ,{ name = "Renewing Mist", color = colors.TEAL2 })
+Spell( 115867 ,{ name = "Mana Tea", duration = 120, color = colors.BLACK })
+Cooldown( 123761 ,{ name = "Mana Tea", color = colors.CURSE })
 Spell( 116849 ,{ name = "Life Cocoon", color = colors.PURPLE, duration = 12 })
-Spell( 116680 ,{ name = "Thunder Focus Tea", color = colors.CURSE, duration = 30 })
+
+Cooldown( 116680 ,{ name = "Thunder Focus Tea", color = colors.CURSE, overlay = {0, 15}, recast_mark = 15 })
+-- Spell( 116680 ,{ name = "Thunder Focus Tea", color = colors.CURSE, duration = 30 })
 Spell( 118674 ,{ name = "Vital Mists", color = colors.BLACK, duration = 30 })
 NugRunningConfig.totems[1] = { name = "Statue", color = colors.DPURPLE, priority = - 100, hideName = true }
 
@@ -371,7 +376,6 @@ Spell( 115308 ,{ name = "Evusive Brew", duration = 15, color = colors.BLACK })
 Cooldown( 115295, { name = "Guard", color = colors.GOLD })
 Cooldown( 121253, { name = "Keg Smash", color = colors.CURSE })
 Spell( 115798 ,{ name = "Weakened Blows", short = "WeakBlows", specmask = 0x00F, priority = -20, anySource = true, singleTarget = true, color = {149/255, 121/255, 214/255}, duration = 30 })
-
 
 Spell( 124081 ,{ name = "Zen Sphere", duration = 16, color = { 1, 0.2, 1} })
 Spell( 119381 ,{ name = "Leg Sweep", duration = 5, color = colors.RED, multiTarget = true })
