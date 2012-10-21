@@ -168,7 +168,7 @@ NugRunning.ConstructTimerBar = function(width, height)
     f.stacktext = ic:CreateFontString(nil, "OVERLAY");
     f.stacktext:SetFont(NugRunningConfig.stackFont.font,
                         NugRunningConfig.stackFont.size,
-                        "OUTLINE")
+                        NugRunningConfig.stackFont.flags or "OUTLINE")
     f.stacktext:SetJustifyH("RIGHT")
     f.stacktext:SetVertexColor(1,1,1)
     f.stacktext:SetPoint("RIGHT", ic, "RIGHT",1,-5)
@@ -187,14 +187,14 @@ NugRunning.ConstructTimerBar = function(width, height)
 	f.bar.bg:SetTexture("Interface\\AddOns\\NugRunning\\statusbar")
     
     f.timeText = f.bar:CreateFontString();
-    f.timeText:SetFont(NugRunningConfig.timeFont.font, NugRunningConfig.timeFont.size)
+    f.timeText:SetFont(NugRunningConfig.timeFont.font, NugRunningConfig.timeFont.size, NugRunningConfig.timeFont.flags)
     f.timeText:SetJustifyH("RIGHT")
     f.timeText:SetAlpha(NugRunningConfig.timeFont.alpha or 1)
     f.timeText:SetVertexColor(1,1,1)
     f.timeText:SetPoint("RIGHT", f.bar, "RIGHT",-6,0)
     
     f.spellText = f.bar:CreateFontString();
-    f.spellText:SetFont(NugRunningConfig.nameFont.font, NugRunningConfig.nameFont.size)
+    f.spellText:SetFont(NugRunningConfig.nameFont.font, NugRunningConfig.nameFont.size, NugRunningConfig.nameFont.flags)
     f.spellText:SetWidth(f.bar:GetWidth()*0.8)
     f.spellText:SetHeight(height/2+1)
     f.spellText:SetJustifyH("CENTER")

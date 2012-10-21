@@ -334,7 +334,7 @@ Cooldown( 6343, { name = "Thunder Clap", specmask = 0xF00, color = colors.LBLUE,
 
 
 
--- Spell( 32216, { name = "Victory Rush", priority = -9, color = colors.PURPLE, duration = 20})
+Spell( 32216, { name = "Victory Rush", group = "buffs", priority = -9, color = colors.PURPLE, duration = 20})
 
 -- Spell( 7922, { name = "Charge", duration = 1 })
 end
