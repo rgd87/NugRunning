@@ -347,13 +347,15 @@ function NugRunning.SPELL_UPDATE_COOLDOWN(self,event)
                     local newtimer = self:ActivateTimer(UnitGUID("player"),UnitGUID("player"), UnitName("player"), nil, spellID, opts.localname, opts, "COOLDOWN", duration + startTime - GetTime())
                     if newtimer then
                         newtimer.cd_startTime = startTime
+                        newtimer.cd_duration = duration
                         opts.timer = newtimer
                     end
                 else
-                    if timer.cd_startTime < startTime then
+                    if timer.cd_startTime < startTime or timer.cd_duration ~= duration then
                         timer.cd_startTime = startTime
                         timer.fixedoffset = timer.opts.fixedlen and duration - timer.opts.fixedlen or 0
                         timer:SetTime(startTime +  timer.fixedoffset, startTime + duration)
+                    -- elseif timer.cd_duration ~= duration then
                     end
 
                     if opts.replaces then

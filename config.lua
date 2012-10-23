@@ -138,6 +138,9 @@ Spell( 89485 ,{ name = "Inner Focus", shine = true, color = colors.LBLUE, timele
 -- Spell( 15271 ,{ name = "Spirit Tap",duration = 15 })
 Spell( 589 ,{ name = "Shadow Word: Pain",duration = 18, overlay = {0,1.5, 0.2}, ghost = true, nameplates = true, priority = 9, color = colors.PURPLE, refreshed =true, short = "SW:Pain" })
 
+EventTimer({ event = "SPELL_SUMMON", spellID = 123040, name = "Mindbender", duration = 15, priority = -10, color = colors.BLACK })
+EventTimer({ event = "SPELL_SUMMON", spellID = 34433, name = "Shadowfiend", duration = 12, priority = -10, color = colors.BLACK })
+
 Spell( 34914 ,{ name = "Vampiric Touch", overlay = {0, 1.5, 0.2}, recast_mark = 2.8, ghost = true, nameplates = true,  priority = 10, duration = 15, color = colors.RED, short = "VampTouch", hasted = true })
 Spell( 2944 ,{ name = "Devouring Plague",duration = 6, priority = 8, nameplates = true, color = colors.WOO, short = "Plague" })
 Spell( 47585 ,{ name = "Dispersion",duration = 6, color = colors.PURPLE })
@@ -184,7 +187,7 @@ EventTimer({ event = "SPELL_CAST_SUCCESS", spellID = 62618, name = "PW:Barrier",
 Spell( 88625 ,{ name = "Holy Word: Chastise", color = colors.LRED, short = "HW: Chastise", duration = 3 })
 
 Cooldown( 47540 ,{ name = "Penance", color = colors.CURSE })
-Cooldown( 14914 ,{ name = "Holy Fire", recast_mark = 3, color = colors.PINK })
+Cooldown( 14914 ,{ name = "", recast_mark = 3, overlay = {0,3}, color = colors.PINK })
 Spell( 81661 ,{ name = "Evangelism",duration = 15, color = colors.ORANGE, stackcolor = {
                                 [1] = {0.7,0,0},
                                 [2] = {1,0.6,0.2},
@@ -350,14 +353,16 @@ Spell( 115072, { name = "Expel Harm", color = colors.TEAL })
 Spell( 118864 ,{ name = "CB: Tiger Palm", short = "Tiger Palm", color = colors.WOO, duration = 15 })
 Spell( 116768 ,{ name = "CB: Blackout Kick", short = "Blackout Kick", color = colors.PINK, duration = 15 })
 
-Spell( 125195 ,{ name = "Tigereye Brew", color = colors.BLACK, duration = 120 }) --stacks
+Spell( 125195 ,{ name = "Tigereye Brew", priority = -10, color = colors.BLACK, duration = 120 }) --stacks
 Spell( 116740 ,{ name = "Tigereye Brew", color = colors.BLACK, duration = 15 }) --activation
 
-Cooldown( 107428, { name = "Rising Sun Kick", short = "RSK", color = colors.PURPLE })
+Spell( 125359, { name = "Tiger Power", priority = -9, color = colors.PURPLE2, duration = 20 })
+
+Cooldown( 107428, { name = "Rising Sun Kick", short = "Rising Sun", color = colors.PURPLE })
 
 Spell( 119611 ,{ name = "Renewing Mist", color = colors.LGREEN, duration = 18 })
 Spell( 115151 ,{ name = "Renewing Mist", color = colors.TEAL2 })
-Spell( 115867 ,{ name = "Mana Tea", duration = 120, color = colors.BLACK })
+Spell( 115867 ,{ name = "Mana Tea", priority = -10, duration = 120, color = colors.BLACK })
 Cooldown( 123761 ,{ name = "Mana Tea", color = colors.CURSE })
 Spell( 116849 ,{ name = "Life Cocoon", color = colors.PURPLE, duration = 12 })
 
@@ -371,8 +376,8 @@ Spell( 115213 ,{ name = "Avert Harm", duration = 15 })
 Spell( 115307 ,{ name = "Shuffle", color = colors.RED, duration = 6 })
 Spell( 116330 ,{ name = "Dizzying Haze", color = colors.PURPLE, duration = 15, multiTarget = true })
 Spell( 123727 ,{ name = "Dizzying Haze", color = colors.PURPLE, duration = 15, multiTarget = true }) -- from Keg Smash
-Spell( 128939 ,{ name = "Evusive Brew", duration = 30, color = colors.BLACK })
-Spell( 115308 ,{ name = "Evusive Brew", duration = 15, color = colors.BLACK })
+Spell( 128939 ,{ name = "Elusive Brew", priority = -10, duration = 30, color = colors.BLACK })
+Spell( 115308 ,{ name = "Elusive Brew", duration = 15, color = colors.BLACK })
 Cooldown( 115295, { name = "Guard", color = colors.GOLD })
 Cooldown( 121253, { name = "Keg Smash", color = colors.CURSE })
 Spell( 115798 ,{ name = "Weakened Blows", short = "WeakBlows", specmask = 0x00F, priority = -20, anySource = true, singleTarget = true, color = {149/255, 121/255, 214/255}, duration = 30 })
