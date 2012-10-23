@@ -120,6 +120,7 @@ function TimerBar.Resize(self, width, height)
     self.icon:GetParent():SetHeight(height)
     self.shine:GetParent():SetWidth(height*1.8)
     self.shine:GetParent():SetHeight(height*1.8)
+    self.status:SetSize(width/2,height)
     self.bar:SetWidth(width-height-1)
     self.bar:SetHeight(height)
     self.spellText:SetWidth(self.bar:GetWidth()*0.8)
@@ -128,15 +129,15 @@ end
 
 function TimerBar.SetPowerStatus(self, status)
     if status == "HIGH" then
-        -- self.arrow:SetTexCoord(0, 26/32, 0, 23/64)
-        self.arrow:SetVertexColor(1,1,1, 0.2)
-        self.arrow:Show()
+        -- self.status:SetTexCoord(0, 26/32, 0, 23/64)
+        self.status:SetVertexColor(1,1,1, 0.2)
+        self.status:Show()
     elseif status == "LOW" then
-        -- self.arrow:SetTexCoord(0, 26/32, 41/64, 1)
-        self.arrow:SetVertexColor(0,0,0, 0.5)
-        self.arrow:Show()
+        -- self.status:SetTexCoord(0, 26/32, 41/64, 1)
+        self.status:SetVertexColor(0,0,0, 0.5)
+        self.status:Show()
     else
-        self.arrow:Hide()
+        self.status:Hide()
     end
 end
 
@@ -227,7 +228,7 @@ NugRunning.ConstructTimerBar = function(width, height)
     -- status:SetPoint("BOTTOMLEFT", f.icon, "BOTTOMLEFT",-1,-1)
     -- status:SetVertexColor(0, 0.8, 0, 1)
     status:Hide()
-    f.arrow = status
+    f.status = status
     
     
     local at = ic:CreateTexture(nil,"OVERLAY")

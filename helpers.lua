@@ -1,6 +1,7 @@
 local _, helpers = ...
 
 NugRunningConfig = {}
+NugRunningConfig.nameplates = {}
 NugRunningConfig.anchors = {}
 NugRunningConfig.cooldowns = {}
 NugRunningConfig.activations = {}

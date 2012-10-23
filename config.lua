@@ -18,6 +18,11 @@ NugRunningConfig.nameFont = { font = "Fonts\\FRIZQT__.TTF", size = 10, alpha = 0
 NugRunningConfig.timeFont = { font = "Fonts\\FRIZQT__.TTF", size = 8, alpha = 1 }
 NugRunningConfig.stackFont = { font = "Fonts\\FRIZQT__.TTF", size = 10 }
 
+NugRunningConfig.nameplates.width = 70
+NugRunningConfig.nameplates.height = 7
+NugRunningConfig.nameplates.x_offset = 0
+NugRunningConfig.nameplates.y_offset = 0
+
 NugRunningConfig.colors = {}
 local colors = NugRunningConfig.colors
 colors["RED"] = { 0.8, 0, 0}
@@ -96,7 +101,7 @@ Spell( 30108 ,{ name = "", priority = 10, showpower = true, overlay = {0, 1.5, 0
 --Haunt
 Spell( 48181 ,{ name = "Haunt",duration = 12, priority = 8, ghost = true, nameplates = true, color = colors.TEAL }) --Haunt
 --Corruption (2nd is a Soulburn SoC Corruption) --87389
-Spell( {172, 87389} ,{ name = "", priority = 9, showpower = true, nameplates = true, recast_mark = 8, nameplates = true, ghost = true, color = colors.PINK, duration = 18 })
+Spell( 172 ,{ name = "", priority = 9, showpower = true, nameplates = true, recast_mark = 8, nameplates = true, ghost = true, color = colors.PINK, duration = 18 })
 --Agony
 Spell( 980 ,{ name = "", duration = 24, showpower = true, nameplates = true, recast_mark = 11, ghost = true, priority = 6, color = colors.WOO })
 Spell( 27243 ,{ name = "Seed of Corruption",duration = 18, nameplates = true,  color = colors.LRED, short = "SoC" })
@@ -357,6 +362,7 @@ Spell( 125195 ,{ name = "Tigereye Brew", priority = -10, color = colors.BLACK, d
 Spell( 116740 ,{ name = "Tigereye Brew", color = colors.BLACK, duration = 15 }) --activation
 
 Spell( 125359, { name = "Tiger Power", priority = -9, color = colors.PURPLE2, duration = 20 })
+Spell( 127722, { name = "Serpent's Zeal", priority = -8, color = colors.PINK, duration = 30 })
 
 Cooldown( 107428, { name = "Rising Sun Kick", short = "Rising Sun", color = colors.PURPLE })
 

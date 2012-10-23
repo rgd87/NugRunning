@@ -4,7 +4,7 @@ local next = next
 local table_remove = table.remove
 
 local makeicon = true
-
+local confignp = NugRunningConfig.nameplates
 local Nplates
 local plates = {}
 
@@ -92,8 +92,11 @@ local backdrop = {
 function NugRunningNameplates:CreateNameplateTimer(frame)
     local f = CreateFrame("StatusBar", nil, frame)
     f:SetStatusBarTexture([[Interface\AddOns\NugRunning\statusbar]], "OVERLAY")
-    f:SetWidth(70)
-    local h = 7
+    local w = confignp.width
+    local h = confignp.height
+    local xo = confignp.x_offset
+    local yo = confignp.y_offset
+    f:SetWidth(w)
     f:SetHeight(h)
 
     if makeicon then
@@ -120,7 +123,7 @@ function NugRunningNameplates:CreateNameplateTimer(frame)
     f:SetScript("OnUpdate", MiniOnUpdate)
 
     if not next(frame.timers) then
-        f:SetPoint("BOTTOM", frame, "TOP", 0,-7)
+        f:SetPoint("BOTTOM", frame, "TOP", 0+xo,-7+yo)
     else
         local prev = frame.timers[#frame.timers]
         f:SetPoint("BOTTOM", prev, "TOP", 0,1)
