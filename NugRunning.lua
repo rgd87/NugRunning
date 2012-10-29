@@ -342,42 +342,47 @@ function NugRunning.SPELL_UPDATE_COOLDOWN(self,event)
             timer = gettimer(active, opts.replaces, UnitGUID("player"), "COOLDOWN")
         end
         if duration then
-            if duration > 1.5 then
-                if not active[timer] or timer.isGhost then
-                    local newtimer = self:ActivateTimer(UnitGUID("player"),UnitGUID("player"), UnitName("player"), nil, spellID, opts.localname, opts, "COOLDOWN", duration + startTime - GetTime())
-                    if newtimer then
-                        newtimer.cd_startTime = startTime
-                        newtimer.cd_duration = duration
-                        opts.timer = newtimer
+            if duration <= 1.5 then
+                if timer and (active[timer] and opts.resetable) then
+                    local oldcdrem = timer.endTime - GetTime()
+                    if oldcdrem > duration or oldcdrem < 0 then
+                        if not timer.isGhost then
+                            free[timer] = true
+                            if timer.isGhost and not timer.shine:IsPlaying() then timer.shine:Play() end
+                            opts.timer = nil
+                        end
                     end
-                else
-                    if timer.cd_startTime < startTime or timer.cd_duration ~= duration then
-                        timer.cd_startTime = startTime
-                        timer.fixedoffset = timer.opts.fixedlen and duration - timer.opts.fixedlen or 0
-                        timer:SetTime(startTime +  timer.fixedoffset, startTime + duration)
-                    -- elseif timer.cd_duration ~= duration then
-                    end
+                end
+            else
+                    if not active[timer] or timer.isGhost then
+                        local mdur = opts.minduration
+                        if not mdur or duration > mdur then
+                            timer = self:ActivateTimer(UnitGUID("player"),UnitGUID("player"), UnitName("player"), nil, spellID, opts.localname, opts, "COOLDOWN", duration + startTime - GetTime())
+                        end
+                        if timer then
+                            timer.cd_startTime = startTime
+                            timer.cd_duration = duration
+                            opts.timer = timer
+                        end
+                    else
+                        if timer.cd_startTime < startTime or timer.cd_duration ~= duration then
+                            timer.cd_startTime = startTime
+                            timer.fixedoffset = timer.opts.fixedlen and duration - timer.opts.fixedlen or 0
+                            timer:SetTime(startTime +  timer.fixedoffset, startTime + duration)
+                        -- elseif timer.cd_duration ~= duration then
+                        end
 
-                    if opts.replaces then
-                        local name,_, texture = GetSpellInfo(spellID)
-                        timer:SetIcon(texture)
-                        timer:SetName(self:MakeName(opts, name) )
-                        if opts.color then timer:SetColor(unpack(opts.color)) end
+                        if opts.replaces then
+                            local name,_, texture = GetSpellInfo(spellID)
+                            timer:SetIcon(texture)
+                            timer:SetName(self:MakeName(opts, name) )
+                            if opts.color then timer:SetColor(unpack(opts.color)) end
+                        end
+                        opts.timer = timer
                     end
-                    opts.timer = timer
-                end
-                if charges then 
-                    opts.timer:SetCount(maxCharges-charges)
-                end
-            elseif timer and (active[timer] and opts.resetable) then
-                local oldcdrem = timer.endTime - GetTime()
-                if oldcdrem > duration or oldcdrem < 0 then
-                    if not timer.isGhost then
-                        free[timer] = true
-                        if timer.isGhost and not timer.shine:IsPlaying() then timer.shine:Play() end
-                        opts.timer = nil
+                    if charges and timer then 
+                        opts.timer:SetCount(maxCharges-charges)
                     end
-                end
             end
         end
 

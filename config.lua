@@ -397,6 +397,7 @@ if class == "DEATHKNIGHT" then
 Spell( 55095 ,{ name = "Frost Fever", color = colors.CHILL, priority = 10, singleTarget = true, duration = 30 })
 Spell( 55078 ,{ name = "Blood Plague", color = colors.PURPLE, priority = 9, singleTarget = true, duration = 30 })
 Spell( 43265 ,{ name = "Death and Decay", short = "DnD", color = colors.RED, duration = 10, target = "player" })
+-- Cooldown( 43265 ,{ name = "Death and Decay", color = colors.GOLD, minduration = 15 })
 
 Spell({114866, 130735, 130736}, { name = "Soul Reaper", color = colors.BLACK, duration = 5 })
 Spell( 73975 ,{ name = "Necrotic Strike", duration = 10, color = colors.WOO })
