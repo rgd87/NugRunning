@@ -101,10 +101,11 @@ Spell( 30108 ,{ name = "", priority = 10, showpower = true, overlay = {0, 1.5, 0
 --Haunt
 Spell( 48181 ,{ name = "Haunt",duration = 12, priority = 8, ghost = true, nameplates = true, color = colors.TEAL }) --Haunt
 --Corruption (2nd is a Soulburn SoC Corruption) --87389
-Spell( 172 ,{ name = "", priority = 9, showpower = true, nameplates = true, recast_mark = 8, nameplates = true, ghost = true, color = colors.PINK, duration = 18 })
+Spell( 172 ,{ name = "", priority = 9, showpower = true, recast_mark = 8, nameplates = true, ghost = true, color = colors.PINK, duration = 18 })
+Spell( 87389 ,{ name = "Corruption", group = "special", multiTarget = true, color = colors.WOO2, duration = 18 })
 --Agony
 Spell( 980 ,{ name = "", duration = 24, showpower = true, nameplates = true, recast_mark = 11, ghost = true, priority = 6, color = colors.WOO })
-Spell( 27243 ,{ name = "Seed of Corruption",duration = 18, nameplates = true,  color = colors.LRED, short = "SoC" })
+Spell( {27243, 114790} ,{ name = "Seed of Corruption",duration = 18, nameplates = true,  color = colors.LRED, short = "SoC" })
 
 Spell( 109466 ,{ name = "Curse of Enfeeblement",duration = 30, color = colors.CURSE, short = "CoEnf" })
 Spell( 18223 ,{ name = "Curse of Exhaustion", duration = 30, pvpduration = 8, color = colors.CURSE, short = "CoEx" })
