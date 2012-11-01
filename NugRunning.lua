@@ -176,7 +176,7 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
     NugRunning:RegisterEvent("UNIT_COMBO_POINTS")
     
     NugRunning:RegisterEvent("PLAYER_TARGET_CHANGED")
-    NugRunning:RegisterEvent("UNIT_AURA")
+    -- NugRunning:RegisterEvent("UNIT_AURA")
         
     if NRunDB.cooldownsEnabled then
         NugRunning:RegisterEvent("SPELL_UPDATE_COOLDOWN")
@@ -467,11 +467,6 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
     local now = GetTime()
     timer.fixedoffset = opts.fixedlen and time - opts.fixedlen or 0
 
-    nameText = NugRunning:MakeName(opts, spellName)
-
-    if opts.textfunc and type(opts.textfunc) == "function" then nameText = opts.textfunc(timer) end
-    if timer.SetName then timer:SetName(nameText) end
-
     amount = amount or 1
     if opts.charged then
         timer:ToInfinite()
@@ -493,6 +488,15 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
         else opts.color = NugRunningConfig.colors.DEFAULT_BUFF end
     end
     timer:SetColor(unpack(opts.color))
+
+    
+    if opts.textfunc and type(opts.textfunc) == "function" then
+        nameText = opts.textfunc(timer)
+    else
+        nameText = NugRunning:MakeName(opts, spellName)
+    end
+    if timer.SetName then timer:SetName(nameText) end
+
     if timer.glow:IsPlaying() then timer.glow:Stop() end
     timer:Show()
     if not timer.animIn:IsPlaying() and not from_unitaura then timer.animIn:Play() end
@@ -638,10 +642,26 @@ end
 -- UNIT_AURA Duration Queue
 ------------------------------
 -- to get precise duration value from unitID, if it's available, after combat log event
+-- 5.0 changes: UnitAura now returns correct info at the time of CLEU SPELL_AURA_APPLIED event
+--              So, spells are no longer queued.
 
 local debuffUnits = {"target","mouseover","arena1","arena2","arena3","arena4","arena5","focus"}
 local buffUnits = {"player","target","mouseover"}
-local queue = {}
+-- local queue = {}
+-- function NugRunning.QueueAura(spellID, dstGUID, auraType, timer )
+--     local unit
+--     local auraUnits = (auraType == "DEBUFF") and debuffUnits or buffUnits
+--     for _,unitID in ipairs(auraUnits) do
+--         if dstGUID == UnitGUID(unitID) then
+--             unit = unitID
+--             break
+--         end
+--     end
+--     if not unit then return nil end
+--     queue[unit] = queue[unit] or {}
+--     queue[unit][spellID] = timer
+--     return GetTime()
+-- end
 function NugRunning.QueueAura(spellID, dstGUID, auraType, timer )
     local unit
     local auraUnits = (auraType == "DEBUFF") and debuffUnits or buffUnits
@@ -652,18 +672,21 @@ function NugRunning.QueueAura(spellID, dstGUID, auraType, timer )
         end
     end
     if not unit then return nil end
-    queue[unit] = queue[unit] or {}
-    queue[unit][spellID] = timer
-    return GetTime()
+
+    return NugRunning:GetUnitAuraData(unit, timer, spellID)
+    -- queue[unit] = queue[unit] or {}
+    -- queue[unit][spellID] = timer
+    -- return GetTime()
 end
-function NugRunning.UNIT_AURA (self,event,unit)
-    if not queue[unit] then return end
-    for spellID, timer in pairs(queue[unit]) do
-        local timer_spellID = timer.spellID
+-- function NugRunning.UNIT_AURA() end
+-- function NugRunning.UNIT_AURA (self,event,unit)
+function NugRunning.GetUnitAuraData(self, unit, timer, spellID)
+    -- if not queue[unit] then return end
+    -- for spellID, timer in pairs(queue[unit]) do
         for auraIndex=1,100 do
-            local name, _,_, count, _, duration, expirationTime, caster, _,_, aura_spellID = UnitAura(unit, auraIndex, timer.filter)
+            local name, _,_, count, _, duration, expirationTime, caster, _,_, aura_spellID, _, _, absorb = UnitAura(unit, auraIndex, timer.filter)
             if aura_spellID then
-                if aura_spellID == timer_spellID and (caster == "player" or timer.opts.anySource) then
+                if aura_spellID == spellID and (caster == "player" or timer.opts.anySource) then
                     if timer.opts.charged then
                         timer:SetCharge(count)
                     elseif not timer.opts.timeless then
@@ -671,15 +694,19 @@ function NugRunning.UNIT_AURA (self,event,unit)
                         timer:SetTime(expirationTime - duration + timer.fixedoffset,expirationTime)
                         timer:SetCount(count)
                     end
-                    queue[unit][spellID] = nil
+                    if type(absorb) == "number" and absorb > 0 then
+                        timer.absorb = absorb
+                    else timer.absorb = nil
+                    end
+                    -- queue[unit][spellID] = nil
                     break
                 end
-            elseif timer.queued and timer.queued + 0.4 < GetTime() then
-                queue[unit][spellID] = nil
+            -- elseif timer.queued and timer.queued + 0.4 < GetTime() then
+                -- queue[unit][spellID] = nil
             end
         end
-    end
-    if not next(queue[unit]) then queue[unit] = nil end
+    -- end
+    -- if not next(queue[unit]) then queue[unit] = nil end
 end
 
 
@@ -725,10 +752,11 @@ function NugRunning.GhostExpire(self)
 end
 function NugRunning.GhostFunc(self,time)
     self._elapsed = self._elapsed + time
-    if self._elapsed < 3 then return end
+    if self._elapsed < self.ghost_duration then return end
     if leaveGhost and (
             UnitAffectingCombat("player")
             and (self.dstGUID == UnitGUID("target") or self.dstGUID == playerGUID)
+            and not self.ghost_noleave
             ) then return end
 
     NugRunning.GhostExpire(self)
@@ -738,6 +766,14 @@ local TimerBecomeGhost = function(self)
     self.isGhost = true
     self:SetPowerStatus(nil)
     self:ToGhost()
+    local opts = self.opts
+    if type(opts.ghost) == "number" then
+        self.ghost_duration = opts.ghost
+        self.ghost_noleave = true
+    else
+        self.ghost_duration = 3
+        self.ghost_noleave = nil
+    end
     self._elapsed = 0
     self:SetScript("OnUpdate", NugRunning.GhostFunc)
 end

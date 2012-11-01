@@ -140,7 +140,7 @@ end
 if class == "PRIEST" then
 -- BUFFS
 Spell( 139 ,{ name = "Renew", shinerefresh = true, color = colors.LGREEN, duration = 12 })
-Spell( 17 ,{ name = "Power Word: Shield", shinerefresh = true, duration = 15, color = colors.LRED, short = "PW:S" })
+Spell( 17 ,{ name = "Power Word: Shield", shinerefresh = true, duration = 15, color = colors.LRED, textfunc = function(timer) return timer.absorb end })
 Spell( 41635 ,{ name = "Prayer of Mending", shinerefresh = true, duration = 30, color = colors.RED, textfunc = function(timer) return timer.dstName end })
 Spell( 47788 ,{ name = "Guardian Spirit", shine = true, duration = 10, color = colors.LBLUE, short = "Guardian" })
 Spell( 33206 ,{ name = "Pain Suppression",shine = true, duration = 8, color = colors.LBLUE })
@@ -272,9 +272,8 @@ end
 if class == "WARRIOR" then
 Spell( 6673 ,{ name = "Battle Shout", target = "player", glowtime = 10, priority = -10, color = colors.DPURPLE, duration = 120 })
 Spell( 469 ,{ name = "Commanding Shout", target = "player", priority = -10, glowtime = 10, short = "CommShout", color = colors.DPURPLE, duration = 120 })
-Spell( 132404 ,{ name = "Shield Block", color = colors.WOO2, duration = 6, priority = 4,
-    with_cooldown = { id = 2565, name = "Shield Block", priority = 4, color = colors.WOO2DARK }    })
-Spell( 112048 ,{ name = "Shield Barrier", color = colors.WOO, duration = 6 })
+Spell( 132404 ,{ name = "Shield Block", color = colors.WOO2, duration = 6, priority = 4, })
+Spell( 112048 ,{ name = "Shield Barrier", ghost = 1.3, color = colors.WOO, priority = 4, duration = 6, textfunc = function(timer) return timer.absorb end })
 -- Spell( 85730 ,{ name = "Deadly Calm", duration = 10 })
 Spell( 12328 ,{ name = "Sweeping Strikes", priority = 6, color = colors.LRED, short = "Sweeping", duration = 10 })
 -- Spell( 115767 ,{ name = "Deep Wounds", color = colors.DRED, duration = 15, singleTarget = true })
@@ -291,9 +290,9 @@ Spell( 1715 ,{ name = "Hamstring", ghost = true, color = colors.PURPLE, duration
 Spell( 355 ,{ name = "Taunt", duration = 3 })
 Spell( 113746 ,{ name = "Weakened Armor", specmask = 0xF00, short = "WeakArmor", priority = -10, anySource = true, singleTarget = true, color = colors.BROWN, duration = 30 })
 Spell( 1160 ,{ name = "Demoralizing Shout", short = "DemoShout", shine = true, color = colors.BLACK, duration = 30, multiTarget = true })
-Spell( 115798 ,{ name = "Weakened Blows", specmask = 0xF00, short = "WeakBlows", priority = -20, anySource = true, singleTarget = true, color = {149/255, 121/255, 214/255}, duration = 30 })
+Spell( 115798 ,{ name = "Weakened Blows", ghost = 3, specmask = 0xF00, short = "WeakBlows", priority = -20, anySource = true, singleTarget = true, color = {149/255, 121/255, 214/255}, duration = 30 })
 Spell( 122510 ,{ name = "Ultimatum", shine = true, color = colors.TEAL, duration = 10 })
-Cooldown( 6572, { name = "Revenge", priority = 5, color = colors.WOO, resetable = true, fixedlen = 9, ghost = true })
+Cooldown( 6572, { name = "Revenge", priority = 5, color = colors.PURPLE, resetable = true, fixedlen = 9, ghost = true })
 -- Activation( 6572, { name = "RevengeActivation", for_cd = true })
 
 Spell( 55694, { name = "Enraged Regeneration", short = "Regen", color = colors.LGREEN, duration = 5 })
@@ -345,7 +344,7 @@ Cooldown( 23922, { name = "Shield Slam", overlay = {3, 4.5}, short = "", priorit
 --Activation( 23922, { name = "Slam!", shine = true, timeless = true, color = colors.CURSE, duration = 0.1 })
 
 -- Cooldown( 78, { name = "Heroic Strike", short = "Heroic", fixedlen = 6, ghost = true })
-Cooldown( 6343, { name = "Thunder Clap", specmask = 0xF00, color = colors.LBLUE, fixedlen = 9, priority = 6 })
+Cooldown( 6343, { name = "Thunder Clap", specmask = 0xF00, color = colors.LBLUE, fixedlen = 9, priority = -8 })
 
 
 
