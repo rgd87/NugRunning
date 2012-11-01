@@ -567,7 +567,11 @@ function NugRunning.RemoveDose(self,srcGUID,dstGUID, spellID, spellName, timerTy
         and timer.timerType == timerType
         and timer.srcGUID == srcGUID
         then
-            timer:SetCount(amount)
+            if timer.opts.charged then
+                timer:SetCharge(amount)
+            else
+                timer:SetCount(amount)
+            end
             timer.count = amount
         end
     end

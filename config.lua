@@ -70,10 +70,17 @@ Spell( 111400 ,{ name = "Burning Rush",duration = 20, timeless = true, color = c
 Spell( 348 ,{ name = "", overlay = {0, 1.5, 0.2}, recast_mark = 6.5, showpower = true, duration = 15, nameplates = true, priority = 10, ghost = true, color = colors.RED })
 
 Spell( 34936 ,{ name = "Backlash", duration = 8, shine = true, color = colors.CURSE })
--- Spell( 117828 ,{ name = "Backdraft", duration = 15, shine = true, color = colors.WOO, charged = true, maxcharge = 3 })
-Spell( 80240 ,{ name = "Havoc", nameplates = true, duration = 15, color = colors.WOO, target = "player" })
 
-Spell( 108683 ,{ name = "Fire and Brimstone", short = "FnB", timeless = true, color = colors.ORANGE })
+local c1 = colors.DPURPLE
+local c2 = colors.PURPLE2
+local backlash_stackcolor = { c1, c1, c2,c2,c2,c2}
+Spell( 117828 ,{ name = "Backdraft", duration = 15, shine = true, priority = -4, shinerefresh = true, stackcolor = backlash_stackcolor }) --, charged = true, maxcharge = 3
+
+
+Spell( 104232 ,{ name = "Rain of Fire", duration = 8, priority = -5, shine = true, color = colors.PURPLE, timeless = true, target = "player" })
+Spell( 80240 ,{ name = "Havoc", nameplates = true, duration = 15, color = colors.LRED, target = "player" })
+
+Spell( 108683 ,{ name = "Fire and Brimstone", short = "FnB", timeless = true, color = colors.CURSE })
 Cooldown( 17962, { name = "Conflagrate", ghost = true, priority = 5, color = colors.PINK })
 
 Spell( 122355,{ name = "Molten Core",duration = 30, shine = true, color = colors.PURPLE })
@@ -130,7 +137,6 @@ Spell( 104045 ,{ name = "Sleep", duration = 20, pvpduration = 8 })
 Spell( 710 ,{ name = "Banish", nameplates = true, duration = 30 })
 end
    
-
 if class == "PRIEST" then
 -- BUFFS
 Spell( 139 ,{ name = "Renew", shinerefresh = true, color = colors.LGREEN, duration = 12 })
