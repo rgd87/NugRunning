@@ -42,6 +42,7 @@ colors["GREEN"] = {0.3, 0.9, 0.3}
 colors["DGREEN"] = { 0, 0.35, 0 }
 colors["PURPLE"] = { 187/255, 75/255, 128/255 }
 colors["PURPLE2"] = { 188/255, 37/255, 186/255 }
+colors["PURPLE3"] = { 64/255, 48/255, 109/255 }
 colors["DPURPLE"] = {74/255, 14/255, 85/255}
 colors["FROZEN"] = { 65/255, 110/255, 1 }
 colors["CHILL"] = { 0.6, 0.6, 1}
@@ -272,8 +273,8 @@ end
 if class == "WARRIOR" then
 Spell( 6673 ,{ name = "Battle Shout", target = "player", glowtime = 10, priority = -10, color = colors.DPURPLE, duration = 120 })
 Spell( 469 ,{ name = "Commanding Shout", target = "player", priority = -10, glowtime = 10, short = "CommShout", color = colors.DPURPLE, duration = 120 })
-Spell( 132404 ,{ name = "Shield Block", color = colors.WOO2, duration = 6, priority = 4, })
-Spell( 112048 ,{ name = "Shield Barrier", ghost = 1.3, color = colors.WOO, priority = 4, duration = 6, textfunc = function(timer) return timer.absorb end })
+Spell( 132404 ,{ name = "Shield Block", color = colors.WOO2, group = "shields", duration = 6, priority = 4, })
+Spell( 112048 ,{ name = "Shield Barrier", ghost = 1.3, group = "shields", color = colors.WOO, priority = 4, duration = 6, textfunc = function(timer) return timer.absorb end })
 -- Spell( 85730 ,{ name = "Deadly Calm", duration = 10 })
 Spell( 12328 ,{ name = "Sweeping Strikes", priority = 6, color = colors.LRED, short = "Sweeping", duration = 10 })
 -- Spell( 115767 ,{ name = "Deep Wounds", color = colors.DRED, duration = 15, singleTarget = true })
@@ -288,7 +289,7 @@ Spell( 1715 ,{ name = "Hamstring", ghost = true, color = colors.PURPLE, duration
 
 -- Spell( 12809 ,{ name = "Concussion Blow", color = { 1, 0.3, 0.6 }, duration = 5 })
 Spell( 355 ,{ name = "Taunt", duration = 3 })
-Spell( 113746 ,{ name = "Weakened Armor", specmask = 0xF00, short = "WeakArmor", priority = -10, anySource = true, singleTarget = true, color = colors.BROWN, duration = 30 })
+-- Spell( 113746 ,{ name = "Weakened Armor", specmask = 0xF00, short = "WeakArmor", priority = -10, anySource = true, singleTarget = true, color = colors.BROWN, duration = 30 })
 Spell( 1160 ,{ name = "Demoralizing Shout", short = "DemoShout", shine = true, color = colors.BLACK, duration = 30, multiTarget = true })
 Spell( 115798 ,{ name = "Weakened Blows", ghost = 3, specmask = 0xF00, short = "WeakBlows", priority = -20, anySource = true, singleTarget = true, color = {149/255, 121/255, 214/255}, duration = 30 })
 Spell( 122510 ,{ name = "Ultimatum", shine = true, color = colors.TEAL, duration = 10 })
@@ -297,11 +298,11 @@ Cooldown( 6572, { name = "Revenge", priority = 5, color = colors.PURPLE, resetab
 
 Spell( 55694, { name = "Enraged Regeneration", short = "Regen", color = colors.LGREEN, duration = 5 })
 Spell( 132168 ,{ name = "Shockwave", color = colors.CURSE, shine = true, duration = 4, multiTarget = true, })
-Cooldown( 46968 ,{ name = "Shockwave",  priority = 2, color = colors.DBLUE })
+Cooldown( 46968 ,{ name = "Shockwave", fixedlen = 9, ghost = 2, priority = 2, color = colors.WOO2 })
 --can't use with_cooldown on shockwave, because without effect applied first it's not working.
 --but shockwave still needs to be used on cooldown
 --old enrage Spell( 85288, { name = "Enraged", shine = true, showid = 14202, color = colors.RED, duration = 10 })
-Spell( 12880 ,{ name = "Enrage", color = colors.DRED, specmask = 0x0FF, priority = 1, shine = true, shinerefresh = true, duration =6 })
+Spell( 12880 ,{ name = "Enrage", color = colors.DPURPLE, group = "buffs", specmask = 0x0FF, priority = -10, shine = true, shinerefresh = true, duration =6 })
 
 Spell( 12323 ,{ name = "Piercing Howl", multiTarget = true, duration = 15 })
 Spell( 107566 ,{ name = "Staggering Shout", duration = 5 })
@@ -315,8 +316,8 @@ Spell( 64382, { name = "Shattering Throw", short = "Shattering", color = colors.
 EventTimer({ spellID = 114207, event = "SPELL_CAST_SUCCESS", group = "buffs", name = "Skull Banner", duration = 10, color = colors.RED })
 EventTimer({ spellID = 114203, event = "SPELL_CAST_SUCCESS", name = "Demoralizing Banner", short = "DemoBanner", duration = 15, color = colors.BLACK })
 -- Cooldown( 107570, { name = "Storm Bolt", color = colors.TEAL2 })
-Spell( 12292, { name = "Bloodbath", priority = -8, group = "buffs", color = colors.PURPLE2, duration = 12,
-    with_cooldown = { id = 12292, name = "Bloodbath", priority = -8, glowtime = 5, color = colors.DRED }    })
+Spell( 12292, { name = "Bloodbath", priority = -8, group = "buffs", color = colors.PURPLE2, duration = 12, })
+    --with_cooldown = { id = 12292, name = "Bloodbath", priority = -8, glowtime = 5, color = colors.DRED }    })
 
 --Spell( 56112 ,{ name = "Furious Attacks", duration = 10 })
 --Activation( 5308, { name = "Execute", shine = true, timeless = true, color = colors.CURSE, duration = 0.1 })
