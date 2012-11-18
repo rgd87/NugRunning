@@ -276,12 +276,12 @@ Spell( 469 ,{ name = "Commanding Shout", target = "player", priority = -10, glow
 Spell( 132404 ,{ name = "Shield Block", color = colors.WOO2, group = "shields", duration = 6, priority = 4, })
 Spell( 112048 ,{ name = "Shield Barrier", ghost = 1.3, group = "shields", color = colors.WOO, priority = 4, duration = 6, textfunc = function(timer) return timer.absorb end })
 -- Spell( 85730 ,{ name = "Deadly Calm", duration = 10 })
-Spell( 12328 ,{ name = "Sweeping Strikes", priority = 6, color = colors.LRED, short = "Sweeping", duration = 10 })
+Spell( 12328 ,{ name = "Sweeping Strikes", priority = 6, ghost = 1, color = colors.BLACK, short = "Sweeping", duration = 10 })
 -- Spell( 115767 ,{ name = "Deep Wounds", color = colors.DRED, duration = 15, singleTarget = true })
 
 Spell( 20511 ,{ name = "Intimidating Shout", short = "Fear", duration = 8, multiTarget = true })
 
-Spell( 86346 ,{ name = "Colossus Smash", shine = true, color = colors.PURPLE2, duration = 6 }) --debuff
+Spell( 86346 ,{ name = "Colossus Smash", shine = true, priority = -100500, color = colors.PURPLE2, duration = 6 }) --debuff
 Cooldown( 86346 ,{ name = "Colossus Smash", priority = 8, ghost = true, color = colors.WOO, resetable = true, duration = 20 })
 
 Spell( 676  ,{ name = "Disarm", color = colors.BROWN, duration = 10 })
@@ -298,7 +298,7 @@ Cooldown( 6572, { name = "Revenge", priority = 5, color = colors.PURPLE, resetab
 
 Spell( 55694, { name = "Enraged Regeneration", short = "Regen", color = colors.LGREEN, duration = 5 })
 Spell( 132168 ,{ name = "Shockwave", color = colors.CURSE, shine = true, duration = 4, multiTarget = true, })
-Cooldown( 46968 ,{ name = "Shockwave", fixedlen = 9, ghost = 2, priority = 2, color = colors.WOO2 })
+Cooldown( 46968 ,{ name = "Shockwave", overlay = {0, 1.5}, fixedlen = 9, ghost = 2, priority = 2, color = colors.WOO2 })
 --can't use with_cooldown on shockwave, because without effect applied first it's not working.
 --but shockwave still needs to be used on cooldown
 --old enrage Spell( 85288, { name = "Enraged", shine = true, showid = 14202, color = colors.RED, duration = 10 })
@@ -323,6 +323,11 @@ Spell( 12292, { name = "Bloodbath", priority = -8, group = "buffs", color = colo
 --Activation( 5308, { name = "Execute", shine = true, timeless = true, color = colors.CURSE, duration = 0.1 })
 
 Cooldown( 12294, { name = "Mortal Strike", overlay = {3, 4.5}, priority = 10, short = "", check_known = true, recast_mark = 1.5, fixedlen = 9, ghost = true,  color = colors.CURSE })
+-- these popups are for visual confirmation that cast went in
+EventTimer({ spellID = 1464, event = "SPELL_CAST_SUCCESS", priority = 12, name = "Slam", duration = 0.5, color = colors.PINK })
+EventTimer({ spellID = 1680, event = "SPELL_CAST_SUCCESS", priority = 12, name = "Whirlwind", duration = 0.5, color = colors.PINK })
+EventTimer({ spellID = 5308, event = "SPELL_CAST_SUCCESS", priority = 12, name = "Execute", duration = 0.5, color = colors.PINK })
+-- EventTimer({ spellID = 100130, event = "SPELL_CAST_SUCCESS", priority = 12, name = "Wild Strike", duration = 0.5, color = colors.PINK })
 
 -- special timer
 Spell( 7384, { name = "Overpower", short = "", overlay = {0,-4.5, 0.15}, priority = 9, shine = true, color = colors.RED, recast_mark = -4.5, duration = 9})
@@ -339,13 +344,15 @@ Spell( 131116 ,{ name = "Raging Blow", priority = 9, fixedlen = 9, shine = true,
 
 
 -- Cooldown( 1680, { name = "Whirlwind", color = colors.LBLUE })
-Spell( 12975, { name = "Last Stand", color = colors.BLACK, duration = 20 })
-Spell( 871, { name = "Shield Wall", color = colors.WOO2, duration = 12 })
+Spell( 12975, { name = "Last Stand", color = colors.BLACK, duration = 20, group = "buffs" })
+Spell( 118038, { name = "Die by the Sword", short = "DbtS", color = colors.BLACK, duration = 8, group = "buffs" })
+Spell( 871, { name = "Shield Wall", color = colors.WOO2, duration = 12, group = "buffs" })
 Cooldown( 23922, { name = "Shield Slam", overlay = {3, 4.5}, short = "", priority = 10, check_known = true, fixedlen = 9, recast_mark = 1.5, ghost = true,  color = colors.CURSE, resetable = true })
 --Activation( 23922, { name = "Slam!", shine = true, timeless = true, color = colors.CURSE, duration = 0.1 })
 
 -- Cooldown( 78, { name = "Heroic Strike", short = "Heroic", fixedlen = 6, ghost = true })
 Cooldown( 6343, { name = "Thunder Clap", specmask = 0xF00, color = colors.LBLUE, fixedlen = 9, priority = -8 })
+EventTimer({ spellID = 6343, event = "SPELL_CAST_SUCCESS", name = "Deep Wounds", specmask = 0x00F, color = colors.DRED, multiTarget = true, priority = -15, duration = 15 })
 
 
 

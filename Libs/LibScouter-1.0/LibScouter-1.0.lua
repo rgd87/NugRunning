@@ -44,6 +44,7 @@ if      class == "WARLOCK" then
             haste = 0.695, -- That's a scaling factors relative to spell damage or attack power (not Intellect)
             crit = 0.475,  -- They're calculated from stat weights on wowhead, which are complete bullshit very often
             mastery = 0.75,-- So... now you know.
+            main = 0.8,--How spellpower or attack power compares to main stat (int, str, agi)
             buffs = {},
         },
         [2] = { --Demonology
@@ -51,6 +52,7 @@ if      class == "WARLOCK" then
             haste = 0.5,
             crit = 0.5,
             mastery = 0.54,
+            main = 0.8,
             buffs = {},
         },
         [3] = { --Destruction
@@ -58,6 +60,7 @@ if      class == "WARLOCK" then
             haste = 0.57,
             crit = 0.53,
             mastery = 0.50,
+            main = 0.8,
             buffs = {},
         },
     }
@@ -68,6 +71,7 @@ elseif  class == "WARRIOR" then
             haste = 0.673,
             crit = 1.142,
             mastery = 0.897,
+            main = 0.5,
             buffs = {},
         },
         [2] = { --Fury
@@ -75,6 +79,7 @@ elseif  class == "WARRIOR" then
             haste = 0.51,
             crit = 1.55,
             mastery = 0.72,
+            main = 0.5,
             buffs = {},
         },
         [3] = { --Protection
@@ -82,6 +87,7 @@ elseif  class == "WARRIOR" then
             haste = 0.1,
             crit = 0.5,
             mastery = 0.1,
+            main = 0.5,
             buffs = {},
         },
     }
@@ -92,6 +98,7 @@ elseif  class == "PRIEST" then
             haste = 0.62,
             crit = 0.74,
             mastery = 0.68,
+            main = 0.8,
             buffs = {},
         },
         [2] = { --Holy
@@ -99,6 +106,7 @@ elseif  class == "PRIEST" then
             haste = 0.76,
             crit = 0.50,
             mastery = 0.63,
+            main = 0.8,
             buffs = {},
         },
         [3] = { --Shadow
@@ -106,6 +114,7 @@ elseif  class == "PRIEST" then
             haste = 0.76,
             crit = 0.60,
             mastery = 0.50,
+            main = 0.8,
             buffs = {},
         },
     }
@@ -164,6 +173,7 @@ local GetCrit = lib.GetBaseSpellCrit
 local GetMastery = lib.GetBaseMastery
 local GetMul = lib.GetDamageMultiplier
 local weightCrit, weightHaste, weightMastery = .6, .6, .6
+local mainStatRatio = 0.5
 
 
 function lib:SetupForSpec(spec)
@@ -183,6 +193,7 @@ function lib:SetupForSpec(spec)
     weightCrit = spec.crit
     weightHaste = spec.haste
     weightMastery = spec.mastery
+    mainStatRatio = spec.main
 end
 
 local function GetHasteScaling()
@@ -202,7 +213,7 @@ function lib:GetPowerLevel()
     local mastery = GetMasteryScaling()
     local mul = GetMul()
     -- print("base", base, "haste", haste, "crit", crit, "mastery", mastery)
-    return math.floor(base*haste*crit*mastery*mul)
+    return math.floor(base*haste*crit*mastery*mul*mainStatRatio)
 end
 
 local previousPowerLevel
