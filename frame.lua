@@ -127,17 +127,34 @@ function TimerBar.Resize(self, width, height)
     self.spellText:SetHeight(height/2+1)
 end
 
-function TimerBar.SetPowerStatus(self, status)
+-- function TimerBar.SetPowerStatus(self, status)
+--     if status == "HIGH" then
+--         -- self.status:SetTexCoord(0, 26/32, 0, 23/64)
+--         self.status:SetVertexColor(1,1,1, 0.2)
+--         self.status:Show()
+--     elseif status == "LOW" then
+--         -- self.status:SetTexCoord(0, 26/32, 41/64, 1)
+--         self.status:SetVertexColor(0,0,0, 0.5)
+--         self.status:Show()
+--     else
+--         self.status:Hide()
+--     end
+-- end
+
+function TimerBar.SetPowerStatus(self, status, powerdiff)
     if status == "HIGH" then
-        -- self.status:SetTexCoord(0, 26/32, 0, 23/64)
-        self.status:SetVertexColor(1,1,1, 0.2)
+        self.status:SetTextColor(.5,1,.5)
+        self.status:SetText("+"..powerdiff)
         self.status:Show()
+        self.status.bg:Show()
     elseif status == "LOW" then
-        -- self.status:SetTexCoord(0, 26/32, 41/64, 1)
-        self.status:SetVertexColor(0,0,0, 0.5)
+        self.status:SetTextColor(1,.1,.1)
+        self.status:SetText(powerdiff)
         self.status:Show()
+        self.status.bg:Show()
     else
         self.status:Hide()
+        self.status.bg:Hide()
     end
 end
 
@@ -218,17 +235,30 @@ NugRunning.ConstructTimerBar = function(width, height)
     -- arrow:SetVertexColor(1,0.3,0.3)
     -- arrow:SetPoint("RIGHT", f.bar, "RIGHT",-30,1)
     -- arrow:Hide()
-    local status = f.bar:CreateTexture(nil, "ARTWORK", nil, 5)
-    status:SetTexture("Interface\\AddOns\\NugRunning\\white")
-    -- status:SetPoint("TOPRIGHT", f.icon, "TOPLEFT", -2,0)
-    -- status:SetPoint("BOTTOMLEFT", f.icon, "BOTTOMLEFT",-5,0)
-    status:SetSize(width/2,height)
-    status:SetPoint("TOPLEFT", f.bar, "TOPLEFT",0,0)
-    -- status:SetPoint("TOPRIGHT", f.icon, "BOTTOMLEFT", 5,5)
-    -- status:SetPoint("BOTTOMLEFT", f.icon, "BOTTOMLEFT",-1,-1)
-    -- status:SetVertexColor(0, 0.8, 0, 1)
-    status:Hide()
-    f.status = status
+
+    -- local status = f.bar:CreateTexture(nil, "ARTWORK", nil, 5)
+    -- status:SetTexture("Interface\\AddOns\\NugRunning\\white")
+    -- -- status:SetPoint("TOPRIGHT", f.icon, "TOPLEFT", -2,0)
+    -- -- status:SetPoint("BOTTOMLEFT", f.icon, "BOTTOMLEFT",-5,0)
+    -- status:SetSize(width/2,height)
+    -- status:SetPoint("TOPLEFT", f.bar, "TOPLEFT",0,0)
+    -- -- status:SetPoint("TOPRIGHT", f.icon, "BOTTOMLEFT", 5,5)
+    -- -- status:SetPoint("BOTTOMLEFT", f.icon, "BOTTOMLEFT",-1,-1)
+    -- -- status:SetVertexColor(0, 0.8, 0, 1)
+    -- status:Hide()
+
+    -- local status = CreateFrame("Frame", nil, f.bar)
+    local powertext = f.bar:CreateFontString()
+    powertext:SetFont(NugRunningConfig.stackFont.font,
+                      NugRunningConfig.stackFont.size-2)
+    powertext:SetPoint("BOTTOMLEFT", f.bar, "BOTTOMLEFT",13,0)
+
+    local sbg = f.bar:CreateTexture(nil, "ARTWORK", nil, 5)
+    sbg:SetTexture("Interface\\Tooltips\\UI-Tooltip-Background")
+    sbg:SetVertexColor(0,0,0, .6)
+    sbg:SetAllPoints(powertext)
+    powertext.bg = sbg
+    f.status = powertext
     
     
     local at = ic:CreateTexture(nil,"OVERLAY")

@@ -14,9 +14,9 @@ local GetCP = helpers.GetCP
 local _,class = UnitClass("player")
 
 NugRunningConfig.texture = "Interface\\AddOns\\NugRunning\\statusbar"
-NugRunningConfig.nameFont = { font = "Fonts\\FRIZQT__.TTF", size = 10, alpha = 0.5 }
-NugRunningConfig.timeFont = { font = "Fonts\\FRIZQT__.TTF", size = 8, alpha = 1 }
-NugRunningConfig.stackFont = { font = "Fonts\\FRIZQT__.TTF", size = 10 }
+NugRunningConfig.nameFont = { font = "Interface\\AddOns\\NugRunning\\Calibri.ttf", size = 10, alpha = 0.5 }
+NugRunningConfig.timeFont = { font = "Interface\\AddOns\\NugRunning\\Calibri.ttf", size = 8, alpha = 1 }
+NugRunningConfig.stackFont = { font = "Interface\\AddOns\\NugRunning\\Calibri.ttf", size = 10 }
 
 NugRunningConfig.nameplates.width = 70
 NugRunningConfig.nameplates.height = 7
