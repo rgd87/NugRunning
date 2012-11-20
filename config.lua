@@ -103,16 +103,18 @@ Spell( 86211 ,{ name = "Soul Swap", duration = 20, shine = true, color = colors.
 Spell( 103103 ,{ name = "Malefic Grasp", showpower = true, priority = 14, duration = 15, color = colors.CURSE, target = "target" })
 Spell( 1120 ,{ name = "Drain Soul", priority = 14, showpower = true, duration = 15, color = colors.CURSE })
 
+--Haunt, recast mark is for execute phase. 3s is cast time + travel time from 30+yd range
+local normalize_dots_to = nil--26
+local haunt_overlay = {0,8, 0.15}
+Spell( 48181 ,{ name = "",duration = 12, priority = 8, recast_mark = 3, ghost = true, nameplates = true, color = colors.TEAL }) --Haunt
+-- 8s second overlay is for haunt duration
 --Unstable Affliction
-Spell( 30108 ,{ name = "", priority = 10, showpower = true, overlay = {0, 1.5, 0.2}, nameplates = true, duration = 15, ghost = true, recast_mark = 6.5, color = colors.RED })
-
---Haunt
-Spell( 48181 ,{ name = "Haunt",duration = 12, priority = 8, ghost = true, nameplates = true, color = colors.TEAL }) --Haunt
+Spell( 30108 ,{ name = "", priority = 10, showpower = true, overlay = {0,9.5, 0.15}, fixedlen = normalize_dots_to, nameplates = true, duration = 15, ghost = true, recast_mark = 6.5, color = colors.RED })
 --Corruption (2nd is a Soulburn SoC Corruption) --87389
-Spell( 172 ,{ name = "", priority = 9, showpower = true, recast_mark = 8, nameplates = true, ghost = true, color = colors.PINK, duration = 18 })
+Spell( 172 ,{ name = "", priority = 9, overlay = haunt_overlay, showpower = true, fixedlen = normalize_dots_to, recast_mark = 8, nameplates = true, ghost = true, color = colors.PINK, duration = 18 })
 Spell( 87389 ,{ name = "Corruption", group = "special", multiTarget = true, color = colors.WOO2, duration = 18 })
 --Agony
-Spell( 980 ,{ name = "", duration = 24, showpower = true, nameplates = true, recast_mark = 11, ghost = true, priority = 6, color = colors.WOO })
+Spell( 980 ,{ name = "", duration = 24, overlay = haunt_overlay, showpower = true, fixedlen = normalize_dots_to, nameplates = true, recast_mark = 11, ghost = true, priority = 6, color = colors.WOO })
 Spell( {27243, 114790} ,{ name = "Seed of Corruption",duration = 18, nameplates = true,  color = colors.LRED, short = "SoC" })
 
 Spell( 109466 ,{ name = "Curse of Enfeeblement",duration = 30, color = colors.CURSE, short = "CoEnf" })
