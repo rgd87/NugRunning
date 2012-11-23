@@ -23,6 +23,18 @@ NugRunningConfig.nameplates.height = 7
 NugRunningConfig.nameplates.x_offset = 0
 NugRunningConfig.nameplates.y_offset = 0
 
+NugRunningConfig.anchors = {
+    main = {
+        { name = "player", gap = 10, alpha = 1 },
+        { name = "target", gap = 10, alpha = 1},
+        { name = "buffs", gap = 25, alpha = 1},
+        { name = "offtargets", gap = 6, alpha = .7},
+    },
+    secondary = {
+        { name = "procs", gap = 10, alpha = .8},
+    },
+}
+
 NugRunningConfig.colors = {}
 local colors = NugRunningConfig.colors
 colors["RED"] = { 0.8, 0, 0}
@@ -59,6 +71,10 @@ local _, race = UnitRace("player")
 if race == "Troll" then Spell( 26297 ,{ name = "Berserking", duration = 10 }) end --Troll Racial
 if race == "Orc" then Spell({ 33702,33697,20572 },{ name = "Blood Fury", duration = 15 }) end --Orc Racial
 
+-- Spell( 96230 ,{ name = "Spring", group = "procs", duration = 1 })
+-- Spell( 127923 ,{ name = "Trinket1", group = "procs", duration = 1 })
+-- Spell( 126476 ,{ name = "Trinket2", group = "procs", duration = 1 })
+-- Spell({ 104510, 104509, 104423} ,{ name = "Windsong", group = "procs", duration = 1 })
 
 Spell({2825, 32182, 80353} ,{ name = "Bloodlust", duration = 40, priority = -100, color = colors.DRED, shine = true, anySource = true, target = "player" })
 
@@ -112,7 +128,7 @@ Spell( 48181 ,{ name = "",duration = 12, priority = 8, recast_mark = 3, ghost = 
 Spell( 30108 ,{ name = "", priority = 10, showpower = true, overlay = {0,9.5, 0.15}, fixedlen = normalize_dots_to, nameplates = true, duration = 15, ghost = true, recast_mark = 6.5, color = colors.RED })
 --Corruption (2nd is a Soulburn SoC Corruption) --87389
 Spell( 172 ,{ name = "", priority = 9, overlay = haunt_overlay, showpower = true, fixedlen = normalize_dots_to, recast_mark = 8, nameplates = true, ghost = true, color = colors.PINK, duration = 18 })
-Spell( 87389 ,{ name = "Corruption", group = "special", multiTarget = true, color = colors.WOO2, duration = 18 })
+Spell( 87389 ,{ name = "Corruption", multiTarget = true, color = colors.WOO2, duration = 18 })
 --Agony
 Spell( 980 ,{ name = "", duration = 24, overlay = haunt_overlay, showpower = true, fixedlen = normalize_dots_to, nameplates = true, recast_mark = 11, ghost = true, priority = 6, color = colors.WOO })
 Spell( {27243, 114790} ,{ name = "Seed of Corruption",duration = 18, nameplates = true,  color = colors.LRED, short = "SoC" })
@@ -275,8 +291,8 @@ end
 if class == "WARRIOR" then
 Spell( 6673 ,{ name = "Battle Shout", target = "player", glowtime = 10, priority = -10, color = colors.DPURPLE, duration = 120 })
 Spell( 469 ,{ name = "Commanding Shout", target = "player", priority = -10, glowtime = 10, short = "CommShout", color = colors.DPURPLE, duration = 120 })
-Spell( 132404 ,{ name = "Shield Block", color = colors.WOO2, group = "shields", duration = 6, priority = 4, })
-Spell( 112048 ,{ name = "Shield Barrier", ghost = 1.3, group = "shields", color = colors.WOO, priority = 4, duration = 6, textfunc = function(timer) return timer.absorb end })
+Spell( 132404 ,{ name = "Shield Block", color = colors.WOO2, group = "buffs", priority = - 9, duration = 6, priority = 4, })
+Spell( 112048 ,{ name = "Shield Barrier", ghost = 1.3, group = "buffs", priority = -8, color = colors.WOO, priority = 4, duration = 6, textfunc = function(timer) return timer.absorb end })
 -- Spell( 85730 ,{ name = "Deadly Calm", duration = 10 })
 Spell( 12328 ,{ name = "Sweeping Strikes", priority = 6, ghost = 1, color = colors.BLACK, short = "Sweeping", duration = 10 })
 -- Spell( 115767 ,{ name = "Deep Wounds", color = colors.DRED, duration = 15, singleTarget = true })
@@ -329,6 +345,7 @@ Cooldown( 12294, { name = "Mortal Strike", overlay = {3, 4.5}, priority = 10, sh
 EventTimer({ spellID = 1464, event = "SPELL_CAST_SUCCESS", priority = 12, name = "Slam", duration = 0.5, color = colors.PINK })
 EventTimer({ spellID = 1680, event = "SPELL_CAST_SUCCESS", priority = 12, name = "Whirlwind", duration = 0.5, color = colors.PINK })
 EventTimer({ spellID = 5308, event = "SPELL_CAST_SUCCESS", priority = 12, name = "Execute", duration = 0.5, color = colors.PINK })
+EventTimer({ spellID = 20243, event = "SPELL_CAST_SUCCESS", priority = 12, name = "Devastate", duration = 0.5, color = colors.PINK })
 -- EventTimer({ spellID = 100130, event = "SPELL_CAST_SUCCESS", priority = 12, name = "Wild Strike", duration = 0.5, color = colors.PINK })
 
 -- special timer

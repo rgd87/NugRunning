@@ -89,31 +89,31 @@ NugRunning.helpers = helpers
 
 
 local defaults = {
-    anchor = {
-        point = "CENTER",
-        parent = "UIParent",
-        to = "CENTER",
-        x = 0,
-        y = 0,
-    },
-    anchor2 = {
-        point = "CENTER",
-        parent = "UIParent",
-        to = "CENTER",
-        x = 0,
-        y = 0,
+    anchors = {
+        main = {
+            point = "CENTER",
+            parent = "UIParent",
+            to = "CENTER",
+            x = 0,
+            y = 0,
+        },
+        secondary = {
+            point = "CENTER",
+            parent = "UIParent",
+            to = "CENTER",
+            x = -200,
+            y = 0,
+        },
     },
     growth = "up",
     width = 150,
     height = 20,
-    nonTargetOpacity = 0.7,
     cooldownsEnabled = true,
     spellTextEnabled = true,
     shortTextEnabled = true,
     swapTarget = true,
     localNames = false,
     totems = true,
-    separate = false,
     leaveGhost = false,
     nameplates = false,
     dotpower = true,
@@ -160,6 +160,18 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
         NRunDB = NRunDB_Global
     end
 
+    --migration
+    if not NRunDB.anchors then
+        NRunDB.anchors = {}
+        if NRunDB.anchor then
+            NRunDB.anchors.main = NRunDB.anchor
+            NRunDB.anchor = nil
+        end
+        if NRunDB.anchor2 then
+            NRunDB.anchors.secondary = NRunDB.anchor2
+            NRunDB.anchor2 = nil
+        end
+    end
     SetupDefaults(NRunDB, defaults)
 
     leaveGhost = NRunDB.leaveGhost
@@ -200,19 +212,11 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
 
     if next(NugRunningConfig.event_timers) then check_event_timers = true end
     playerGUID = UnitGUID("player")
-        
-    NugRunning.anchor = NugRunning.CreateAnchor(NRunDB.anchor)
-    local pos = NRunDB.anchor
-    -- local pos = { point = "CENTER", parent = "UIParent", to = "CENTER", x = 0, y = 0 }
-    NugRunning.anchor:SetPoint(pos.point, pos.parent, pos.to, pos.x, pos.y)
 
-    if NRunDB.separate then
-        if not NRunDB.anchor2 then
-            NRunDB.anchor2 = {point = "CENTER", parent = "UIParent", to = "CENTER", x = 0, y = 0}
-        end
-        NugRunning.anchor2 = NugRunning.CreateAnchor(NRunDB.anchor2)
-        local pos2 = NRunDB.anchor2
-        NugRunning.anchor2:SetPoint(pos2.point, pos2.parent, pos2.to, pos2.x, pos2.y)
+    NugRunning.anchors = {}
+    for name, opts in pairs(NugRunningConfig.anchors) do
+        local anchor = NugRunning:CreateAnchor(name, opts)
+        NugRunning.anchors[name] = anchor
     end
 
     NugRunning:SetupArrange()
@@ -831,132 +835,118 @@ end
 ------------------------------
 -- Timer sorting & anchoring
 ------------------------------
-local prevGUID
-local xOffset = 0
-local yOffset = 4
-local point
-local to
-local ySign
-local nonTargetOpacity
-local doswap
-local anchor2
-function NugRunning.SetupArrange(self)
-    point = ( NRunDB.growth == "down" and "TOPLEFT" ) or "BOTTOMLEFT"
-    to = ( NRunDB.growth == "down" and "BOTTOMLEFT" ) or "TOPLEFT"
-    ySign = ( NRunDB.growth == "down" and -1 ) or 1
-    nonTargetOpacity = NRunDB.nonTargetOpacity
-    doswap = NRunDB.swapTarget
-    anchor2 = NugRunning.anchor2
-end
-local playerTimers = {}
-local targetTimers = {}
-local sorted = {}
-local sortfunc = function(a,b)
-    if a.priority == b.priority then
-        return a.endTime > b.endTime
-    else
-        return a.priority < b.priority
+do
+    local xOffset = 0
+    local yOffset = 4
+    local point
+    local to
+    local ySign
+    local nonTargetOpacity
+    local doswap
+    local anchors
+    function NugRunning.SetupArrange(self)
+        point = ( NRunDB.growth == "down" and "TOPLEFT" ) or "BOTTOMLEFT"
+        to = ( NRunDB.growth == "down" and "BOTTOMLEFT" ) or "TOPLEFT"
+        ySign = ( NRunDB.growth == "down" and -1 ) or 1
+        nonTargetOpacity = NRunDB.nonTargetOpacity
+        doswap = NRunDB.swapTarget
+        anchors = NugRunning.anchors
     end
-end
-local arrangePending
-local arrangeInProgress
-function NugRunning.ArrangeTimers(self)
-    if arrangeInProgress then arrangePending = true; return end
-    arrangePending = false
-    arrangeInProgress = true
+    -- local playerTimers = {}
+    -- local targetTimers = {}
+    -- local sorted = {}
+    local groups = { player = {}, target = {} }
+    local guid_groups = {}
+    local sortfunc = function(a,b)
+        if a.priority == b.priority then
+            return a.endTime > b.endTime
+        else
+            return a.priority < b.priority
+        end
+    end
 
-    table_wipe(playerTimers)
-    table_wipe(targetTimers)
-    table_wipe(sorted)
+    function NugRunning.ArrangeTimers(self)
+        for g,tbl in pairs(groups) do
+            table_wipe(tbl)
+        end
+        table_wipe(guid_groups)
+        local playerTimers = groups.player
+        local targetTimers = groups.target
 
-    local targetGUID = UnitGUID("target")
-    for timer in pairs(active) do
-        if timer.opts.group then
-            sorted[timer.opts.group] = sorted[timer.opts.group] or {}
-            table.insert(sorted[timer.opts.group],timer)
-        elseif doswap and timer.dstGUID == targetGUID then table.insert(targetTimers,timer)
-        elseif timer.dstGUID == playerGUID then table.insert(playerTimers,timer)
-        elseif timer.dstGUID == nil then
-            if timer.timerType == "BUFF" then
-                table.insert(playerTimers,timer)
+        local targetGUID = UnitGUID("target")
+        for timer in pairs(active) do
+            local custom_group = timer.opts.group
+            if custom_group then
+                groups[custom_group] = groups[custom_group] or {}
+                table.insert(groups[custom_group],timer)
+            elseif doswap and timer.dstGUID == targetGUID then table.insert(targetTimers,timer)
+            elseif timer.dstGUID == playerGUID then table.insert(playerTimers,timer)
+            elseif timer.dstGUID == nil then
+                if timer.timerType == "BUFF" then
+                    table.insert(playerTimers,timer)
+                else
+                    table.insert(targetTimers,timer)
+                end
             else
-                table.insert(targetTimers,timer)
+                guid_groups[timer.dstGUID] = guid_groups[timer.dstGUID] or {}
+                table.insert(guid_groups[timer.dstGUID],timer)
             end
-        else
-            sorted[timer.dstGUID] = sorted[timer.dstGUID] or {}
-            table.insert(sorted[timer.dstGUID],timer)
         end
-    end
-    
-    table.sort(playerTimers,sortfunc)
-    table.sort(targetTimers,sortfunc)
-    for group,tbl in pairs(sorted) do
-        table.sort(tbl,sortfunc)
-    end
-
-    local prev
-    local gap = 0
-    for i,timer in ipairs(playerTimers) do
-        timer:SetAlpha(1)
-        timer:SetPoint(point,prev or self.anchor, ( prev and to ) or "TOPRIGHT", xOffset, (yOffset+gap)*ySign)
-        prev = timer
-        prevGUID = timer.dstGUID
-        gap = 0
-    end
-    gap = prev and 10 or 0
-    local separated
-    for i,timer in ipairs(targetTimers) do
-        timer:SetAlpha(1)
-        if i == 1 and anchor2 then
-            timer:SetPoint(point,anchor2, "TOPRIGHT",  xOffset, yOffset*ySign)
-            separated = true
-        else
-            timer:SetPoint(point,prev or self.anchor,( prev and to ) or "TOPRIGHT", xOffset, (yOffset+gap)*ySign)
+        
+        for g,tbl in pairs(groups) do
+            table.sort(tbl,sortfunc)
+        end
+        for g,tbl in pairs(guid_groups) do
+            table.sort(tbl,sortfunc)
         end
 
-        prev = timer
-        prevGUID = timer.dstGUID
-        gap = 0
-    end
-    gap = prev and 25 or 0    
-
-    for target in pairs(sorted) do
-            for i,timer in ipairs(sorted[target]) do
-                local newalpha = (timer.dstGUID == targetGUID) and 1 or nonTargetOpacity
-                if timer.timerType == "DEBUFF" then
-                    timer:SetAlpha(newalpha)
+        for name, anchor in pairs(NugRunning.anchors) do
+            local aopts = anchor.opts
+            local prev
+            local gap = 0
+            for _, gopts in pairs(aopts) do
+                local gname = gopts.name
+                local alpha = gopts.alpha
+                if gname == "offtargets" then
+                    for guid, group_timers in pairs(guid_groups) do
+                        for i,timer in ipairs(group_timers) do
+                            local noswap_alpha = guid == targetGUID and 1 or alpha
+                            timer:SetAlpha(noswap_alpha)
+                            timer:SetPoint(point, prev or anchor, prev and to  or "TOPRIGHT", xOffset, (yOffset+gap)*ySign)
+                            prev = timer
+                            gap = 0
+                        end
+                        gap = gopts.gap
+                    end
+                    break -- offtargets should always be the last group for anchor
                 else
-                    timer:SetAlpha(1)
+                    local group_timers = groups[gname]
+                    if group_timers then
+                    for i,timer in ipairs(group_timers) do
+                        timer:SetAlpha(alpha)
+                        timer:SetPoint(point, prev or anchor, prev and to  or "TOPRIGHT", xOffset, (yOffset+gap)*ySign)
+                        prev = timer
+                        gap = 0
+                    end
+                    end
+                    gap = prev and gopts.gap or 0
                 end
-                if not separated and anchor2 and i == 1 then
-                    timer:SetPoint(point,anchor2, "TOPRIGHT",  xOffset, yOffset*ySign)
-                    separated = true
-                else
-                    timer:SetPoint(point,prev or self.anchor,( prev and to ) or "TOPRIGHT", xOffset, (yOffset+gap)*ySign)
-                end
-                prev = timer
-                prevGUID = timer.dstGUID
-                gap = 0
             end
-            gap = 6
-    end
+        end
 
-    if nameplates then
-        nameplates:Update(targetTimers, sorted)
+        if nameplates then
+            nameplates:Update(targetTimers, guid_groups)
+        end
     end
-    
-    arrangeInProgress = false
-    if arrangePending then NugRunning:ArrangeTimers() end
-end
-function NugRunning.GetTimersByDstGUID(self, guid) -- for nameplate updates on target
-    local guidTimers = {}
-    for timer in pairs(active) do
-        if timer.dstGUID == guid then table.insert(guidTimers, timer) end
+    function NugRunning.GetTimersByDstGUID(self, guid) -- for nameplate updates on target
+        local guidTimers = {}
+        for timer in pairs(active) do
+            if timer.dstGUID == guid then table.insert(guidTimers, timer) end
+        end
+        table.sort(guidTimers,sortfunc)
+        return guidTimers
     end
-    table.sort(guidTimers,sortfunc)
-    return guidTimers
 end
-
 
 function NugRunning.PLAYER_TARGET_CHANGED(self)
     self:ArrangeTimers()
@@ -1033,18 +1023,26 @@ function NugRunning.Unlock(self)
             ySign = 1
         end
         timer:ClearAllPoints()
-        timer:SetPoint(point,prev or NugRunning.anchor,( prev and to ) or "TOPRIGHT", xOffset,yOffset * ySign)
+        timer:SetPoint(point,prev or NugRunning.anchors.main, prev and to or "TOPRIGHT", xOffset,yOffset * ySign)
         prev = timer
     end
     NugRunning.unlocked = true
 end
 
+
+local function capturesTable()
+    
+end
+
+
 local ParseOpts = function(str)
-    local fields = {}
-    for opt,args in string.gmatch(str,"(%w*)%s*=%s*([%w%,%-%_%.%:%\\%']+)") do
-        fields[opt:lower()] = tonumber(args) or args
+    local t = {}
+    local capture = function(k,v)
+        t[k:lower()] = tonumber(v) or v
+        return ""
     end
-    return fields
+    str:gsub("(%w+)%s*=%s*%[%[(.-)%]%]", capture):gsub("(%w+)%s*=%s*(%S+)", capture)
+    return t
 end
 function NugRunning.SlashCmd(msg)
     k,v = string.match(msg, "([%w%+%-%=]+) ?(.*)")
@@ -1058,7 +1056,6 @@ function NugRunning.SlashCmd(msg)
       |cff00ff00/nrun spelltext|r : toggle spell text on bars
       |cff00ff00/nrun shorttext|r : toggle using short names
       |cff00ff00/nrun swaptarget|r : static order of target debuffs
-      |cff00ff00/nrun separate|r : move target timers to second anchor
       |cff00ff00/nrun totems|r : static order of target debuffs
       |cff00ff00/nrun nameplates|r : turn on nameplates
       |cff00ff00/nrun dotpower|r : turn off dotpower feature
@@ -1068,8 +1065,9 @@ function NugRunning.SlashCmd(msg)
       |cff00ff00/nrun setpos|r point=CENTER parent=UIParent to=CENTER x=0 y=0]]
     )end
     if k == "unlock" then
-        NugRunning.anchor:Show()
-        if NugRunning.anchor2 then NugRunning.anchor2:Show() end
+        for name, anchor in pairs(NugRunning.anchors) do
+            anchor:Show()
+        end
         NugRunning:Unlock()
     end
     if k == "lock" then
@@ -1099,10 +1097,6 @@ function NugRunning.SlashCmd(msg)
         else NRunDB_Global.charspec[user] = true
         end
         print ("NRun: "..(NRunDB_Global.charspec[user] and "Enabled" or "Disabled").." character specific options for this toon. Will take effect after ui reload")
-    end
-    if k == "separate" then
-        NRunDB.separate = not NRunDB.separate
-        print ("NRun: "..(NRunDB.separate and "Enabled" or "Disabled").." target and player timers separation. Will take effect after ui reload")
     end
     if k == "cooldowns" then
         if NRunDB.cooldownsEnabled then
@@ -1191,7 +1185,7 @@ function NugRunning.SlashCmd(msg)
     end
 end
 
-function NugRunning.CreateAnchor(opts)
+function NugRunning:CreateAnchor(name, opts)
     local f = CreateFrame("Frame",nil,UIParent)
     f:SetHeight(20)
     f:SetWidth(20)
@@ -1210,12 +1204,16 @@ function NugRunning.CreateAnchor(opts)
     t:SetVertexColor(1, 0, 0)
     t:SetAllPoints(f)
     
-    f.anchor_table = opts
+    if not NRunDB.anchors[name] then
+        NRunDB.anchors[name] = { point = "CENTER", parent ="UIParent", to = "CENTER", x = 0, y = 0}
+    end
+    f.db_tbl = NRunDB.anchors[name]
+    f.opts = opts
     f:SetScript("OnMouseDown",function(self)
-            self:StartMoving()
-        end)
+        self:StartMoving()
+    end)
     f:SetScript("OnMouseUp",function(self)
-            local opts = self.anchor_table
+            local opts = self.db_tbl
             self:StopMovingOrSizing();
             local point,_,to,x,y = self:GetPoint(1)
             opts.point = point
@@ -1224,6 +1222,9 @@ function NugRunning.CreateAnchor(opts)
             opts.x = x
             opts.y = y
     end)
+
+    local pos = f.db_tbl
+    f:SetPoint(pos.point, pos.parent, pos.to, pos.x, pos.y)
     return f
 end
 
