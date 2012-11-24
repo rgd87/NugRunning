@@ -841,14 +841,12 @@ do
     local point
     local to
     local ySign
-    local nonTargetOpacity
     local doswap
     local anchors
     function NugRunning.SetupArrange(self)
         point = ( NRunDB.growth == "down" and "TOPLEFT" ) or "BOTTOMLEFT"
         to = ( NRunDB.growth == "down" and "BOTTOMLEFT" ) or "TOPLEFT"
         ySign = ( NRunDB.growth == "down" and -1 ) or 1
-        nonTargetOpacity = NRunDB.nonTargetOpacity
         doswap = NRunDB.swapTarget
         anchors = NugRunning.anchors
     end
@@ -1061,7 +1059,7 @@ function NugRunning.SlashCmd(msg)
       |cff00ff00/nrun dotpower|r : turn off dotpower feature
       |cff00ff00/nrun localnames|r: toggle localized spell names
       |cff00ff00/nrun leaveghost|r: don't hide target/player ghosts in combat
-      |cff00ff00/nrun set|r width=120 height=20 fontscale=1.1 growth=up/down nontargetopacity=0.7: W & H of timers
+      |cff00ff00/nrun set|r width=120 height=20 fontscale=1.1 growth=up/down
       |cff00ff00/nrun setpos|r point=CENTER parent=UIParent to=CENTER x=0 y=0]]
     )end
     if k == "unlock" then
@@ -1145,8 +1143,6 @@ function NugRunning.SlashCmd(msg)
         NRunDB.width = p["width"] or NRunDB.width
         NRunDB.height = p["height"] or NRunDB.height
         NRunDB.growth = p["growth"] or NRunDB.growth
-        -- NRunDB.fontscale = p["fontscale"] or NRunDB.fontscale
-        NRunDB.nonTargetOpacity = p["nontargetopacity"] or NRunDB.nonTargetOpacity
         for i,timer in ipairs(alltimers) do
             timer:Resize(NRunDB.width, NRunDB.height)
             

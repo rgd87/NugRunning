@@ -16,7 +16,7 @@ local _,class = UnitClass("player")
 NugRunningConfig.texture = "Interface\\AddOns\\NugRunning\\statusbar"
 NugRunningConfig.nameFont = { font = "Interface\\AddOns\\NugRunning\\Calibri.ttf", size = 10, alpha = 0.5 }
 NugRunningConfig.timeFont = { font = "Interface\\AddOns\\NugRunning\\Calibri.ttf", size = 8, alpha = 1 }
-NugRunningConfig.stackFont = { font = "Interface\\AddOns\\NugRunning\\Calibri.ttf", size = 10 }
+NugRunningConfig.stackFont = { font = "Interface\\AddOns\\NugRunning\\Calibri.ttf", size = 12 }
 
 NugRunningConfig.nameplates.width = 70
 NugRunningConfig.nameplates.height = 7
@@ -293,7 +293,7 @@ Spell( 6673 ,{ name = "Battle Shout", target = "player", glowtime = 10, priority
 Spell( 469 ,{ name = "Commanding Shout", target = "player", priority = -10, glowtime = 10, short = "CommShout", color = colors.DPURPLE, duration = 120 })
 Spell( 132404 ,{ name = "Shield Block", color = colors.WOO2, group = "buffs", priority = - 9, duration = 6, priority = 4, })
 Spell( 112048 ,{ name = "Shield Barrier", ghost = 1.3, group = "buffs", priority = -8, color = colors.WOO, priority = 4, duration = 6, textfunc = function(timer) return timer.absorb end })
--- Spell( 85730 ,{ name = "Deadly Calm", duration = 10 })
+Spell( 85730 ,{ name = "Deadly Calm", group = "buffs", duration = 10 })
 Spell( 12328 ,{ name = "Sweeping Strikes", priority = 6, ghost = 1, color = colors.BLACK, short = "Sweeping", duration = 10 })
 -- Spell( 115767 ,{ name = "Deep Wounds", color = colors.DRED, duration = 15, singleTarget = true })
 
@@ -320,7 +320,7 @@ Cooldown( 46968 ,{ name = "Shockwave", overlay = {0, 1.5}, fixedlen = 9, ghost =
 --can't use with_cooldown on shockwave, because without effect applied first it's not working.
 --but shockwave still needs to be used on cooldown
 --old enrage Spell( 85288, { name = "Enraged", shine = true, showid = 14202, color = colors.RED, duration = 10 })
-Spell( 12880 ,{ name = "Enrage", color = colors.DPURPLE, group = "buffs", specmask = 0x0FF, priority = -10, shine = true, shinerefresh = true, duration =6 })
+Spell( 12880 ,{ name = "Enrage", color = colors.DPURPLE, group = "buffs", specmask = 0x0FF, priority = -7, shine = true, shinerefresh = true, duration =6 })
 
 Spell( 12323 ,{ name = "Piercing Howl", multiTarget = true, duration = 15 })
 Spell( 107566 ,{ name = "Staggering Shout", duration = 5 })
@@ -346,7 +346,7 @@ EventTimer({ spellID = 1464, event = "SPELL_CAST_SUCCESS", priority = 12, name =
 EventTimer({ spellID = 1680, event = "SPELL_CAST_SUCCESS", priority = 12, name = "Whirlwind", duration = 0.5, color = colors.PINK })
 EventTimer({ spellID = 5308, event = "SPELL_CAST_SUCCESS", priority = 12, name = "Execute", duration = 0.5, color = colors.PINK })
 EventTimer({ spellID = 20243, event = "SPELL_CAST_SUCCESS", priority = 12, name = "Devastate", duration = 0.5, color = colors.PINK })
--- EventTimer({ spellID = 100130, event = "SPELL_CAST_SUCCESS", priority = 12, name = "Wild Strike", duration = 0.5, color = colors.PINK })
+EventTimer({ spellID = 100130, event = "SPELL_CAST_SUCCESS", priority = 12, name = "Wild Strike", duration = 0.9, color = colors.PINK })
 
 -- special timer
 Spell( 7384, { name = "Overpower", short = "", overlay = {0,-4.5, 0.15}, priority = 9, shine = true, color = colors.RED, recast_mark = -4.5, duration = 9})
@@ -356,7 +356,10 @@ Spell( 125831 ,{ name = "Taste for Blood", glowtime = 5, shinerefresh = true, sh
 Cooldown( 23881, { name = "Bloodthirst", overlay = {3, 4.5}, short = "", priority = 10, check_known = true, ghost = true, recast_mark = 1.5, fixedlen = 6,  color = colors.CURSE })
 Spell( 46916 ,{ name = "Bloodsurge", shine = true, priority = 8, color = colors.TEAL, duration = 10 })
 
-Spell( 131116 ,{ name = "Raging Blow", priority = 9, fixedlen = 9, shine = true, color = colors.RED, duration = 12 })
+Spell( 131116 ,{ name = "Raging Blow", priority = 9, fixedlen = 9, shine = true, shinerefresh = true, duration = 12, stackcolor = {
+                                                                                                [1] = colors.RED,
+                                                                                                [2] = {1,0,0},
+                                                                                            } })
 --Cooldown( 85288, { name = "Raging Blow", ghost = true,  color = colors.WOO })
 --Activation( 85288, { name = "Enraged", for_cd = true })
 -- it's enrage timer config
