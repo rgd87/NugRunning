@@ -104,7 +104,7 @@ end
 
 helpers.EventTimer = function( opts )
     if not opts.event then print(string.format("nrun: missing combat log event (#%s)", opts.spellID)); return end
-    if not opts.duration then print(string.format("nrun: duration is required for event timers(#%s)", opts.spellID)); return end
+    if not opts.duration and not opts.action then print(string.format("nrun: duration is required for event timers(#%s)", opts.spellID)); return end
     if not opts.name then opts.name = "" end
     if not NugRunningConfig.event_timers[opts.event] then NugRunningConfig.event_timers[opts.event] = {} end
     table.insert(NugRunningConfig.event_timers[opts.event], opts)

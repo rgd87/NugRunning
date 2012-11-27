@@ -249,13 +249,14 @@ NugRunning.ConstructTimerBar = function(width, height)
 
     -- local status = CreateFrame("Frame", nil, f.bar)
     local powertext = f.bar:CreateFontString()
-    powertext:SetFont(NugRunningConfig.stackFont.font,
-                      NugRunningConfig.stackFont.size-2)
+    powertext:SetFont(NugRunningConfig.dotpowerFont.font,
+                      NugRunningConfig.dotpowerFont.size,
+                      NugRunningConfig.dotpowerFont.flags)
     powertext:SetPoint("BOTTOMLEFT", f.bar, "BOTTOMLEFT",13,0)
 
     local sbg = f.bar:CreateTexture(nil, "ARTWORK", nil, 5)
     sbg:SetTexture("Interface\\Tooltips\\UI-Tooltip-Background")
-    sbg:SetVertexColor(0,0,0, .6)
+    sbg:SetVertexColor(0,0,0, NugRunningConfig.dotpowerFont.alpha)
     sbg:SetAllPoints(powertext)
     powertext.bg = sbg
     f.status = powertext

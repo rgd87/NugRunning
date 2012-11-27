@@ -277,7 +277,11 @@ function NugRunning.COMBAT_LOG_EVENT_UNFILTERED( self, event, timestamp, eventTy
             for i, opts in ipairs(evs) do
                 if isSrcPlayer or opts.anySource then
                     if spellID == opts.spellID then
-                        return self:ActivateTimer(playerGUID, playerGUID, dstName, nil, spellID, spellName, opts, "EVENT", opts.duration)
+                        if opts.action then
+                            opts.action(active, srcGUID, dstGUID, spellID)
+                        else
+                            return self:ActivateTimer(playerGUID, playerGUID, dstName, nil, spellID, spellName, opts, "EVENT", opts.duration)
+                        end
                     end
                 end
             end

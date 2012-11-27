@@ -17,6 +17,7 @@ NugRunningConfig.texture = "Interface\\AddOns\\NugRunning\\statusbar"
 NugRunningConfig.nameFont = { font = "Interface\\AddOns\\NugRunning\\Calibri.ttf", size = 10, alpha = 0.5 }
 NugRunningConfig.timeFont = { font = "Interface\\AddOns\\NugRunning\\Calibri.ttf", size = 8, alpha = 1 }
 NugRunningConfig.stackFont = { font = "Interface\\AddOns\\NugRunning\\Calibri.ttf", size = 12 }
+NugRunningConfig.dotpowerFont = { font = "Interface\\AddOns\\NugRunning\\Calibri.ttf", size = 8, alpha = .6 }
 
 NugRunningConfig.nameplates.width = 70
 NugRunningConfig.nameplates.height = 7
@@ -42,6 +43,7 @@ colors["LRED"] = { 1,0.4,0.4}
 colors["DRED"] = { 0.55,0,0}
 colors["CURSE"] = { 0.6, 0, 1 }
 colors["PINK"] = { 1, 0.3, 0.6 }
+colors["PINKIERED"] = { 206/255, 4/256, 56/256 }
 colors["TEAL"] = { 0.32, 0.52, 0.82 }
 colors["TEAL2"] = {38/255, 221/255, 163/255}
 colors["ORANGE"] = { 1, 124/255, 33/255 }
@@ -122,16 +124,32 @@ Spell( 1120 ,{ name = "Drain Soul", priority = 14, showpower = true, duration = 
 --Haunt, recast mark is for execute phase. 3s is cast time + travel time from 30+yd range
 local normalize_dots_to = nil--26
 local haunt_overlay = {0,8, 0.15}
-Spell( 48181 ,{ name = "",duration = 12, priority = 8, recast_mark = 3, ghost = true, nameplates = true, color = colors.TEAL }) --Haunt
+--Haunt
+Spell( 48181 ,{ name = "",duration = 12, priority = 8, recast_mark = 3, ghost = true, nameplates = true, color = colors.TEAL })
 -- 8s second overlay is for haunt duration
 --Unstable Affliction
-Spell( 30108 ,{ name = "", priority = 10, showpower = true, overlay = {0,9.5, 0.15}, fixedlen = normalize_dots_to, nameplates = true, duration = 15, ghost = true, recast_mark = 6.5, color = colors.RED })
+Spell( 30108 ,{ name = "", priority = 10, showpower = true, overlay = {0,9, 0.15}, fixedlen = normalize_dots_to, nameplates = true, duration = 15, ghost = true, recast_mark = 6.5, color = colors.RED })
 --Corruption (2nd is a Soulburn SoC Corruption) --87389
 Spell( 172 ,{ name = "", priority = 9, overlay = haunt_overlay, showpower = true, fixedlen = normalize_dots_to, recast_mark = 8, nameplates = true, ghost = true, color = colors.PINK, duration = 18 })
 Spell( 87389 ,{ name = "Corruption", multiTarget = true, color = colors.WOO2, duration = 18 })
 --Agony
 Spell( 980 ,{ name = "", duration = 24, overlay = haunt_overlay, showpower = true, fixedlen = normalize_dots_to, nameplates = true, recast_mark = 11, ghost = true, priority = 6, color = colors.WOO })
 Spell( {27243, 114790} ,{ name = "Seed of Corruption",duration = 18, nameplates = true,  color = colors.LRED, short = "SoC" })
+
+EventTimer({ spellID = 77799, event = "SPELL_DAMAGE",
+    action = function(active, srcGUID, dstGUID, spellID)
+        for timer in pairs(active) do
+            if timer.dstGUID == dstGUID 
+                and (timer.spellID == 172 or timer.spellID == 30108 )
+            then
+                local self = NugRunning
+                local plevel = self:GetPowerLevel()
+                timer.powerLevel = plevel
+                self:UpdateTimerPower(timer, plevel)
+            end
+        end
+    end})
+
 
 Spell( 109466 ,{ name = "Curse of Enfeeblement",duration = 30, color = colors.CURSE, short = "CoEnf" })
 Spell( 18223 ,{ name = "Curse of Exhaustion", duration = 30, pvpduration = 8, color = colors.CURSE, short = "CoEx" })
@@ -334,7 +352,7 @@ Spell( 64382, { name = "Shattering Throw", short = "Shattering", color = colors.
 EventTimer({ spellID = 114207, event = "SPELL_CAST_SUCCESS", group = "buffs", name = "Skull Banner", duration = 10, color = colors.RED })
 EventTimer({ spellID = 114203, event = "SPELL_CAST_SUCCESS", name = "Demoralizing Banner", short = "DemoBanner", duration = 15, color = colors.BLACK })
 -- Cooldown( 107570, { name = "Storm Bolt", color = colors.TEAL2 })
-Spell( 12292, { name = "Bloodbath", priority = -8, group = "buffs", color = colors.PURPLE2, duration = 12, })
+Spell( 12292, { name = "Bloodbath", priority = -8, group = "buffs", color = colors.PINKIERED, duration = 12, })
     --with_cooldown = { id = 12292, name = "Bloodbath", priority = -8, glowtime = 5, color = colors.DRED }    })
 
 --Spell( 56112 ,{ name = "Furious Attacks", duration = 10 })
