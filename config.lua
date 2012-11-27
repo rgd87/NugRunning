@@ -136,13 +136,44 @@ Spell( 87389 ,{ name = "Corruption", multiTarget = true, color = colors.WOO2, du
 Spell( 980 ,{ name = "", duration = 24, overlay = haunt_overlay, showpower = true, fixedlen = normalize_dots_to, nameplates = true, recast_mark = 11, ghost = true, priority = 6, color = colors.WOO })
 Spell( {27243, 114790} ,{ name = "Seed of Corruption",duration = 18, nameplates = true,  color = colors.LRED, short = "SoC" })
 
+--felfire and touch of chaos refresh dotpower
 EventTimer({ spellID = 77799, event = "SPELL_DAMAGE",
     action = function(active, srcGUID, dstGUID, spellID)
         for timer in pairs(active) do
             if timer.dstGUID == dstGUID 
-                and (timer.spellID == 172 or timer.spellID == 30108 )
+                and (timer.spellID == 172 or timer.spellID == 30108 or timer.spellID == 348 ) --corr, ua, immo
             then
                 local self = NugRunning
+                local plevel = self:GetPowerLevel()
+                timer.powerLevel = plevel
+                self:UpdateTimerPower(timer, plevel)
+            end
+        end
+    end})
+
+EventTimer({ spellID = 103964, event = "SPELL_DAMAGE",
+    action = function(active, srcGUID, dstGUID, spellID)
+        for timer in pairs(active) do
+            if timer.dstGUID == dstGUID and timer.spellID == 172 then
+                local self = NugRunning
+                local plevel = self:GetPowerLevel()
+                timer.powerLevel = plevel
+                self:UpdateTimerPower(timer, plevel)
+            end
+        end
+    end})
+
+
+--void ray
+EventTimer({ spellID = 115422, event = "SPELL_DAMAGE",
+    action = function(active, srcGUID, dstGUID, spellID)
+        for timer in pairs(active) do
+            if timer.dstGUID == dstGUID and timer.spellID == 172 then
+                local self = NugRunning
+                timer.endTime = timer.endTime + 4
+                if timer.endTime - timer.startTime > 27 then
+                    timer.endTime = timer.startTime + 27
+                end
                 local plevel = self:GetPowerLevel()
                 timer.powerLevel = plevel
                 self:UpdateTimerPower(timer, plevel)
