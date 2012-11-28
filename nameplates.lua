@@ -33,10 +33,19 @@ local function HookFrames(...)
         if  not plates[frame] and
             fname and string.find(fname, "NamePlate")
         then
-            local hp, cb = frame:GetChildren()
-            local threat, hpborder, overlay, oldname, oldlevel, bossicon, raidicon, elite = frame:GetRegions()
-            local _, cbborder, cbshield, cbicon = cb:GetRegions()
-            frame.name = oldname
+            -- local hp, cb = frame:GetChildren()
+            -- local threat, hpborder, overlay, oldname, oldlevel, bossicon, raidicon, elite = frame:GetRegions()
+            -- local _, cbborder, cbshield, cbicon = cb:GetRegions()
+            
+            -- 5.1 format
+            local f = frame --nameplateframe
+            f.barFrame, f.nameFrame = f:GetChildren()
+            -- f.barFrame.threat, f.barFrame.border, f.barFrame.highlight, f.barFrame.level, f.barFrame.boss, f.barFrame.raid, f.barFrame.dragon = f.barFrame:GetRegions()
+            f.nameFrame.name = f.nameFrame:GetRegions()
+            -- f.barFrame.healthbar, f.barFrame.castbar = f.barFrame:GetChildren()
+            -- f.barFrame.healthbar.texture =  f.barFrame.healthbar:GetRegions()
+            -- f.barFrame.castbar.texture, f.barFrame.castbar.border, f.barFrame.castbar.shield, f.barFrame.castbar.icon =  f.barFrame.castbar:GetRegions()
+            frame.name = f.nameFrame.name
             frame.timers = {}
             -- frame.healthBar = healthBar
             -- frame.castBar = castBar

@@ -206,12 +206,12 @@ local function GetMasteryScaling()
     return 1 + (GetMastery()/100 * weightMastery)
 end
 
-function lib:GetPowerLevel()
+function lib:GetPowerLevel(nomul)
     local base = GetPower()
     local haste = GetHasteScaling()
     local crit = GetCritScaling()
     local mastery = GetMasteryScaling()
-    local mul = GetMul()
+    local mul = nomul and 1 or GetMul()
     -- print("base", base, "haste", haste, "crit", crit, "mastery", mastery)
     return math.floor(base*haste*crit*mastery*mul*mainStatRatio)
 end

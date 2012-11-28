@@ -955,7 +955,7 @@ function NugRunning.PLAYER_TARGET_CHANGED(self)
 end
 
 function NugRunning:GetPowerLevel()
-    return Scouter and Scouter:GetPowerLevel() or 0
+    return Scouter and Scouter:GetPowerLevel(true) or 0
 end
 function NugRunning:UpdateTimerPower(timer, plevel)
     local treshold = 1500
@@ -967,7 +967,8 @@ function NugRunning:UpdateTimerPower(timer, plevel)
         timer:SetPowerStatus(nil)
     end
 end
-function NugRunning.POWER_LEVEL_CHANGED(event, plevel)
+function NugRunning.POWER_LEVEL_CHANGED(event, plevelfull)
+    local plevel = NugRunning:GetPowerLevel() -- without damage multipliers
     for timer in pairs(active) do
         if timer.opts.showpower and timer.powerLevel and not timer.isGhost then
             -- timer:SetName(timer.powerLevel)

@@ -402,7 +402,10 @@ Spell( 7384, { name = "Overpower", short = "", overlay = {0,-4.5, 0.15}, priorit
 --Activation( 7384, { name = "Overpower", short = "", shine = true, color = colors.RED, recast_mark = 4.5, duration = 9})
 Spell( 125831 ,{ name = "Taste for Blood", glowtime = 5, shinerefresh = true, shine = true, color = colors.TEAL, duration = 15 }) -- Taste for blood
 
-Cooldown( 23881, { name = "Bloodthirst", overlay = {3, 4.5}, short = "", priority = 10, check_known = true, ghost = true, recast_mark = 1.5, fixedlen = 6,  color = colors.CURSE })
+-- 1s mark for bloodsurged wild strike gcd
+-- 1.5s mark for 2nd gcd
+-- 3s mark for 1st gcd
+Cooldown( 23881, { name = "Bloodthirst", overlay = {1, 3}, short = "", priority = 10, check_known = true, ghost = true, recast_mark = 1.5, fixedlen = 6,  color = colors.CURSE })
 Spell( 46916 ,{ name = "Bloodsurge", shine = true, priority = 8, color = colors.TEAL, duration = 10 })
 
 Spell( 131116 ,{ name = "Raging Blow", priority = 9, fixedlen = 9, shine = true, shinerefresh = true, duration = 12, stackcolor = {
