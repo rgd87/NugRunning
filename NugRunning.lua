@@ -80,6 +80,9 @@ local bit_band = bit.band
 local UnitAura = UnitAura
 local UnitGUID = UnitGUID
 local table_wipe = table.wipe
+local AFFILIATION_MINE = COMBATLOG_OBJECT_AFFILIATION_MINE
+local AFFILIATION_RAID = COMBATLOG_OBJECT_AFFILIATION_RAID
+local AFFILIATION_OUTSIDER = COMBATLOG_OBJECT_AFFILIATION_OUTSIDER
 
 NugRunning.active = active
 NugRunning.free = free
@@ -251,13 +254,13 @@ function NugRunning.COMBAT_LOG_EVENT_UNFILTERED( self, event, timestamp, eventTy
                 spellID, spellName, spellSchool, auraType, amount)
 
     if NugRunningConfig[spellID] then
-        local isSrcPlayer = (bit_band(srcFlags, COMBATLOG_OBJECT_AFFILIATION_MINE) == COMBATLOG_OBJECT_AFFILIATION_MINE)
+        local affilationStatus = (bit_band(srcFlags, AFFILIATION_MINE) == AFFILIATION_MINE)
         local opts = NugRunningConfig[spellID]
-        if not isSrcPlayer and opts.anySource then
-            isSrcPlayer = true
+        if not affilationStatus and opts.affilation then
+            affilationStatus = (bit_band(srcFlags, opts.affilation) == opts.affilation)
         end
         if opts.target and dstGUID ~= UnitGUID(opts.target) then return end
-        if isSrcPlayer then
+        if affilationStatus then
             if eventType == "SPELL_AURA_REFRESH" or eventType == "SPELL_AURA_APPLIED_DOSE" then
                 return self:RefreshTimer(srcGUID, dstGUID, dstName, dstFlags, spellID, spellName, opts, auraType, nil, amount)
             elseif eventType == "SPELL_AURA_APPLIED" then
@@ -272,10 +275,10 @@ function NugRunning.COMBAT_LOG_EVENT_UNFILTERED( self, event, timestamp, eventTy
 
     if check_event_timers then
         if NugRunningConfig.event_timers[eventType] then
-            local isSrcPlayer = (bit_band(srcFlags, COMBATLOG_OBJECT_AFFILIATION_MINE) == COMBATLOG_OBJECT_AFFILIATION_MINE)
+            local affilationStatus = (bit_band(srcFlags, AFFILIATION_MINE) == AFFILIATION_MINE)
             local evs = NugRunningConfig.event_timers[eventType]
             for i, opts in ipairs(evs) do
-                if isSrcPlayer or opts.anySource then
+                if affilationStatus or (opts.affilation and bit_band(srcFlags, opts.affilation) == opts.affilation ) then
                     if spellID == opts.spellID then
                         if opts.action then
                             opts.action(active, srcGUID, dstGUID, spellID)
@@ -694,7 +697,7 @@ function NugRunning.GetUnitAuraData(self, unit, timer, spellID)
         for auraIndex=1,100 do
             local name, _,_, count, _, duration, expirationTime, caster, _,_, aura_spellID, _, _, absorb = UnitAura(unit, auraIndex, timer.filter)
             if aura_spellID then
-                if aura_spellID == spellID and (caster == "player" or timer.opts.anySource) then
+                if aura_spellID == spellID and (caster == "player" or timer.opts.affilation) then
                     if timer.opts.charged then
                         timer:SetCharge(count)
                     elseif not timer.opts.timeless then
@@ -1074,7 +1077,9 @@ function NugRunning.SlashCmd(msg)
         NugRunning:Unlock()
     end
     if k == "lock" then
-        NugRunning.anchor:Hide()
+        for name, anchor in pairs(NugRunning.anchors) do
+            anchor:Hide()
+        end
         for _,timer in ipairs(alltimers) do
             if not active[timer] then
                 timer:Hide()
@@ -1171,15 +1176,17 @@ function NugRunning.SlashCmd(msg)
         NugRunning.anchor:SetPoint(pos.point, pos.parent, pos.to, pos.x, pos.y)
     end
     if k == "debug" then
-        NugRunning.debug = CreateFrame("Frame")
+        if not NugRunning.debug then
+            NugRunning.debug = CreateFrame("Frame")
+            NugRunning.debug:SetScript("OnEvent",function( self, event, timestamp, eventType, hideCaster, 
+                                                            srcGUID, srcName, srcFlags, srcFlags2,
+                                                            dstGUID, dstName, dstFlags, dstFlags2,
+                                                            spellID, spellName, spellSchool, auraType, amount)
+                local isSrcPlayer = (bit_band(srcFlags, COMBATLOG_OBJECT_AFFILIATION_MINE) == COMBATLOG_OBJECT_AFFILIATION_MINE)
+                if isSrcPlayer then print (spellID, spellName, eventType, srcGUID,"->",dstGUID, amount) end
+            end)
+        end
         NugRunning.debug:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
-        NugRunning.debug:SetScript("OnEvent",function( self, event, timestamp, eventType, hideCaster, 
-                                                        srcGUID, srcName, srcFlags, srcFlags2,
-                                                        dstGUID, dstName, dstFlags, dstFlags2,
-                                                        spellID, spellName, spellSchool, auraType, amount)
-            local isSrcPlayer = (bit_band(srcFlags, COMBATLOG_OBJECT_AFFILIATION_MINE) == COMBATLOG_OBJECT_AFFILIATION_MINE)
-            if isSrcPlayer then print (spellID, spellName, eventType, srcGUID,"->",dstGUID, amount) end
-        end)
     end
     if k == "nodebug" then
         NugRunning.debug:UnregisterAllEvents()
@@ -1230,101 +1237,110 @@ function NugRunning:CreateAnchor(name, opts)
 end
 
 
--- It updates timers with UnitAura data on UNIT_AURA and PLAYER_TARGET_CHANGED events
--- At this point this piece already became very important,
--- and also i can abandon hope that blizzard will fix combat log refresh someday.
-local filters = { harmful, helpful }
-local targetTimers = {}
+do
+    -- It updates timers with UnitAura data on UNIT_AURA and PLAYER_TARGET_CHANGED events
+    -- At this point this piece already became very important,
+    -- and also i can abandon hope that blizzard will fix combat log refresh someday.
+    local filters = { harmful, helpful }
+    local targetTimers = {}
 
-local h = CreateFrame("Frame")
-local hUnits = {
-    ["player"] = 0,
-    ["target"] = 1,
-    ["focus"] = 2,
-    ["mouseover"] = 2,
-    ["boss1"] = 2,
-    ["boss2"] = 2,
-    ["arena1"] = 2,
-    ["arena2"] = 2,
-    ["arena3"] = 2,
-    ["arena4"] = 2,
-    ["arena5"] = 2,
-}
-local last_taget_update = 0
-function NugRunning.OnAuraEvent(self, event, unit)
-    if event == "UNIT_AURA" then
-        local up = hUnits[unit]
-        if not up then return end
-        local unitGUID = UnitGUID(unit)
-        if up == 2 and UnitGUID("target") == unitGUID then return end
+    local h = CreateFrame("Frame")
+    local hUnits = {
+        ["player"] = 0,
+        ["target"] = 1,
+        ["focus"] = 2,
+        ["mouseover"] = 2,
+        ["boss1"] = 2,
+        ["boss2"] = 2,
+        ["arena1"] = 2,
+        ["arena2"] = 2,
+        ["arena3"] = 2,
+        ["arena4"] = 2,
+        ["arena5"] = 2,
+    }
 
-        local now = GetTime()
-        if up == 1 then --throttle target updates
-            if now - last_taget_update < 200 then return end
-        end
+    local function UnitAffilationCheck(unit, affilation)
+        if not affilation then return unit == "player" end
+        if not unit then return affilation == AFFILIATION_OUTSIDER end
+        if string.find(unit, "raid") then return affilation == AFFILIATION_RAID end
+    end
 
+    local last_taget_update = 0
+    function NugRunning.OnAuraEvent(self, event, unit)
+        if event == "UNIT_AURA" then
+            local up = hUnits[unit]
+            if not up then return end
+            local unitGUID = UnitGUID(unit)
+            if up == 2 and UnitGUID("target") == unitGUID then return end
 
-        for timer in pairs(active) do 
-            if  timer.dstGUID == unitGUID and
-                (timer.timerType == "BUFF" or timer.timerType == "DEBUFF")
-            then
-                    local name, _,_, count, _, duration, expirationTime, caster, _,_, aura_spellID = UnitAura(unit, GetSpellInfo(timer.spellID), nil, timer.filter)
-                    if  (caster == "player" or timer.opts.anySource) and timer.spellID == aura_spellID then
-                        if (now + duration - expirationTime < 0.1) then
-                            NugRunning:RefreshTimer(playerGUID,unitGUID,UnitName(unit),nil, timer.spellID, timer.spellName, timer.opts, timer.timerType, duration, count, true)
-                        elseif count and timer.count ~= count then
-                            NugRunning:RemoveDose(playerGUID, unitGUID, aura_spellID, timer.spellName, timer.timerType, count)
-                        end
-                    end
+            local now = GetTime()
+            if up == 1 then --throttle target updates
+                if now - last_taget_update < 200 then return end
             end
-        end
-    elseif event == "PLAYER_TARGET_CHANGED" then
-        -- updating timers from target unit when possible
-        local targetGUID = UnitGUID("target")
-        if not targetGUID then return end
-        table_wipe(targetTimers)
-        for timer in pairs(active) do
-            if timer.dstGUID == targetGUID then
-                if (timer.srcGUID == playerGUID or timer.opts.anySource) then
-                    table.insert(targetTimers, timer)
-                end
-            else
-                if timer.opts.singleTarget then
-                    free[timer] = true
+
+
+            for timer in pairs(active) do 
+                if  timer.dstGUID == unitGUID and
+                    (timer.timerType == "BUFF" or timer.timerType == "DEBUFF")
+                then
+                        local name, _,_, count, _, duration, expirationTime, caster, _,_, aura_spellID = UnitAura(unit, GetSpellInfo(timer.spellID), nil, timer.filter)
+                        if UnitAffilationCheck(unit, timer.opts.affilation) and timer.spellID == aura_spellID then
+                            if (now + duration - expirationTime < 0.1) then
+                                NugRunning:RefreshTimer(playerGUID,unitGUID,UnitName(unit),nil, timer.spellID, timer.spellName, timer.opts, timer.timerType, duration, count, true)
+                            elseif count and timer.count ~= count then
+                                NugRunning:RemoveDose(playerGUID, unitGUID, aura_spellID, timer.spellName, timer.timerType, count)
+                            end
+                        end
                 end
             end
-        end
-        
-        for _, filter in ipairs(filters) do
-            for i=1,100 do
-                local name, _,_, count, _, duration, expirationTime, caster, _,_, aura_spellID = UnitAura("target", i, filter)
-                if not name then break end
+        elseif event == "PLAYER_TARGET_CHANGED" then
+            -- updating timers from target unit when possible
+            local targetGUID = UnitGUID("target")
+            if not targetGUID then return end
+            table_wipe(targetTimers)
+            for timer in pairs(active) do
+                if timer.dstGUID == targetGUID then
+                    -- if (timer.srcGUID == playerGUID or timer.opts.affilation) then
+                        table.insert(targetTimers, timer)
+                    -- end
+                else
+                    if timer.opts.singleTarget then
+                        free[timer] = true
+                    end
+                end
+            end
+            
+            for _, filter in ipairs(filters) do
+                for i=1,100 do
+                    local name, _,_, count, _, duration, expirationTime, caster, _,_, aura_spellID = UnitAura("target", i, filter)
+                    if not name then break end
 
-                local opts = config[aura_spellID]
-                if opts and (caster == "player" or opts.anySource) then
-                    if opts.target and opts.target ~= "target" then return end
-                    local found, timerType
-                    -- searching in generated earlier table of player->target timers for matching spell
-                    for _, timer in ipairs(targetTimers) do
-                        if  timer.spellID == aura_spellID then
-                            found = true
-                            timerType = timer.timerType
-                            break
+                    local opts = config[aura_spellID]
+                    if opts and UnitAffilationCheck(unit, opts.affilation) then
+                        if opts.target and opts.target ~= "target" then return end
+                        local found, timerType
+                        -- searching in generated earlier table of player->target timers for matching spell
+                        for _, timer in ipairs(targetTimers) do
+                            if  timer.spellID == aura_spellID then
+                                found = true
+                                timerType = timer.timerType
+                                break
+                            end
                         end
+                        local newtimer
+                        if found then
+                            newtimer = NugRunning:RefreshTimer(playerGUID, targetGUID, UnitName("target"), nil, aura_spellID, name, config[aura_spellID], timerType, duration, count, true)
+                        else
+                            timerType = filter == "HELPFUL" and "BUFF" or "DEBUFF"
+                            newtimer = NugRunning:ActivateTimer(playerGUID, targetGUID, UnitName("target"), nil, aura_spellID, name, config[aura_spellID], timerType, duration, count, true)
+                        end
+                        if newtimer then newtimer:SetTime( expirationTime - duration + newtimer.fixedoffset, expirationTime) end
                     end
-                    local newtimer
-                    if found then
-                        newtimer = NugRunning:RefreshTimer(playerGUID, targetGUID, UnitName("target"), nil, aura_spellID, name, config[aura_spellID], timerType, duration, count, true)
-                    else
-                        timerType = filter == "HELPFUL" and "BUFF" or "DEBUFF"
-                        newtimer = NugRunning:ActivateTimer(playerGUID, targetGUID, UnitName("target"), nil, aura_spellID, name, config[aura_spellID], timerType, duration, count, true)
-                    end
-                    if newtimer then newtimer:SetTime( expirationTime - duration + newtimer.fixedoffset, expirationTime) end
                 end
             end
         end
     end
+    h:SetScript("OnEvent", NugRunning.OnAuraEvent)
+    h:RegisterEvent("UNIT_AURA")
+    h:RegisterEvent("PLAYER_TARGET_CHANGED")
 end
-h:SetScript("OnEvent", NugRunning.OnAuraEvent)
-h:RegisterEvent("UNIT_AURA")
-h:RegisterEvent("PLAYER_TARGET_CHANGED")

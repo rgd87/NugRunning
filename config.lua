@@ -73,11 +73,6 @@ local _, race = UnitRace("player")
 if race == "Troll" then Spell( 26297 ,{ name = "Berserking", duration = 10 }) end --Troll Racial
 if race == "Orc" then Spell({ 33702,33697,20572 },{ name = "Blood Fury", duration = 15 }) end --Orc Racial
 
--- Spell( 96230 ,{ name = "Spring", group = "procs", duration = 1 })
--- Spell( 127923 ,{ name = "Trinket1", group = "procs", duration = 1 })
--- Spell( 126476 ,{ name = "Trinket2", group = "procs", duration = 1 })
--- Spell({ 104510, 104509, 104423} ,{ name = "Windsong", group = "procs", duration = 1 })
-
 Spell({2825, 32182, 80353} ,{ name = "Bloodlust", duration = 40, priority = -100, color = colors.DRED, shine = true, anySource = true, target = "player" })
 
 if class == "WARLOCK" then
@@ -112,9 +107,9 @@ Cooldown( 105174, { name = "Hand of Gul'dan",  ghost = true, shinerefresh = true
 -- Spell( 47960 ,{ name = "Shadowflame", duration = 6, multiTarget = true })
 
 Spell( 104773,{ name = "Unending Resolve",duration = 12, color = colors.WOO2 })
-Spell( 113860 ,{ name = "Dark Soul: Misery",duration = 20, short = "DarkSoul", color = colors.CURSE })
-Spell( 113861 ,{ name = "Dark Soul: Knowledge",duration = 20, short = "DarkSoul", color = colors.CURSE })
-Spell( 113858 ,{ name = "Dark Soul: Instability",duration = 20, short = "DarkSoul", color = colors.CURSE })
+Spell( 113860 ,{ name = "Dark Soul: Misery",duration = 20, short = "DarkSoul", color = colors.PINKIERED })
+Spell( 113861 ,{ name = "Dark Soul: Knowledge",duration = 20, short = "DarkSoul", color = colors.PINKIERED })
+Spell( 113858 ,{ name = "Dark Soul: Instability",duration = 20, short = "DarkSoul", color = colors.PINKIERED })
 
 Spell( 86211 ,{ name = "Soul Swap", duration = 20, shine = true, color = colors.BLACK })
 -- Spell( 17941 ,{ name = "Nightfall", duration = 10, shine = true, color = colors.CURSE })
@@ -380,8 +375,8 @@ Spell( 132169, { name = "Storm Bolt", color = colors.TEAL2, duration = 3})
 Spell( 114192, { name = "Mocking Banner", color = colors.PURPLE2, duration = 20})
 Spell( 1719, { name = "Recklessness", color = colors.LRED, group = "buffs", duration = 20})
 Spell( 64382, { name = "Shattering Throw", short = "Shattering", color = colors.TEAL, group = "buffs", duration = 10})
-EventTimer({ spellID = 114207, event = "SPELL_CAST_SUCCESS", group = "buffs", name = "Skull Banner", duration = 10, color = colors.RED })
-EventTimer({ spellID = 114203, event = "SPELL_CAST_SUCCESS", name = "Demoralizing Banner", short = "DemoBanner", duration = 15, color = colors.BLACK })
+EventTimer({ spellID = 114207, event = "SPELL_CAST_SUCCESS", group = "buffs", affilation = "raid", name = "Skull Banner", duration = 10, color = colors.RED })
+EventTimer({ spellID = 114203, event = "SPELL_CAST_SUCCESS", name = "Demoralizing Banner", affilation = "raid", short = "DemoBanner", duration = 15, color = colors.BLACK })
 -- Cooldown( 107570, { name = "Storm Bolt", color = colors.TEAL2 })
 Spell( 12292, { name = "Bloodbath", priority = -8, group = "buffs", color = colors.PINKIERED, duration = 12, })
     --with_cooldown = { id = 12292, name = "Bloodbath", priority = -8, glowtime = 5, color = colors.DRED }    })
