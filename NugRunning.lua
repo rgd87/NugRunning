@@ -695,7 +695,7 @@ function NugRunning.GetUnitAuraData(self, unit, timer, spellID)
     -- if not queue[unit] then return end
     -- for spellID, timer in pairs(queue[unit]) do
         for auraIndex=1,100 do
-            local name, _,_, count, _, duration, expirationTime, caster, _,_, aura_spellID, _, _, absorb = UnitAura(unit, auraIndex, timer.filter)
+            local name, _,_, count, _, duration, expirationTime, caster, _,_, aura_spellID, _, _, _, absorb = UnitAura(unit, auraIndex, timer.filter)
             if aura_spellID then
                 if aura_spellID == spellID and (caster == "player" or timer.opts.affilation) then
                     if timer.opts.charged then
@@ -1284,7 +1284,7 @@ do
                     (timer.timerType == "BUFF" or timer.timerType == "DEBUFF")
                 then
                         local name, _,_, count, _, duration, expirationTime, caster, _,_, aura_spellID = UnitAura(unit, GetSpellInfo(timer.spellID), nil, timer.filter)
-                        if UnitAffilationCheck(unit, timer.opts.affilation) and timer.spellID == aura_spellID then
+                        if UnitAffilationCheck(caster, timer.opts.affilation) and timer.spellID == aura_spellID then
                             if (now + duration - expirationTime < 0.1) then
                                 NugRunning:RefreshTimer(playerGUID,unitGUID,UnitName(unit),nil, timer.spellID, timer.spellName, timer.opts, timer.timerType, duration, count, true)
                             elseif count and timer.count ~= count then
@@ -1316,7 +1316,7 @@ do
                     if not name then break end
 
                     local opts = config[aura_spellID]
-                    if opts and UnitAffilationCheck(unit, opts.affilation) then
+                    if opts and UnitAffilationCheck(caster, opts.affilation) then
                         if opts.target and opts.target ~= "target" then return end
                         local found, timerType
                         -- searching in generated earlier table of player->target timers for matching spell
