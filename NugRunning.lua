@@ -478,6 +478,12 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
     local now = GetTime()
     timer.fixedoffset = opts.fixedlen and time - opts.fixedlen or 0
 
+    if not opts.color then
+        if timerType == "DEBUFF" then opts.color = NugRunningConfig.colors.DEFAULT_DEBUFF
+        else opts.color = NugRunningConfig.colors.DEFAULT_BUFF end
+    end
+    timer:SetColor(unpack(opts.color))
+
     amount = amount or 1
     if opts.charged then
         timer:ToInfinite()
@@ -493,13 +499,6 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
         timer:SetCount(amount)
     end
     timer.count = amount
-    
-    if not opts.color then
-        if timerType == "DEBUFF" then opts.color = NugRunningConfig.colors.DEFAULT_DEBUFF
-        else opts.color = NugRunningConfig.colors.DEFAULT_BUFF end
-    end
-    timer:SetColor(unpack(opts.color))
-
     
     if opts.textfunc and type(opts.textfunc) == "function" then
         nameText = opts.textfunc(timer)
