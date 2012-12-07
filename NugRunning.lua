@@ -465,13 +465,13 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
     else
         time = NugRunning.SetDefaultDuration(dstFlags, opts, timer)
         if timerType == "BUFF" or timerType == "DEBUFF" then
-            if timerType == "BUFF"
-                then timer.filter = "HELPFUL"
-                else timer.filter = "HARMFUL"
-            end
             local _guid = multiTargetGUID or dstGUID
             NugRunning.QueueAura(spellID, _guid, timerType, timer)
         end
+    end
+    if timerType == "BUFF"
+        then timer.filter = "HELPFUL"
+        else timer.filter = "HARMFUL"
     end
 
     timer.priority = opts.priority or 0
@@ -1261,8 +1261,10 @@ do
 
     local function UnitAffilationCheck(unit, affilation)
         if not affilation then return unit == "player" end
+        if unit == "player" then return true end
         if not unit then return affilation == AFFILIATION_OUTSIDER end
         if string.find(unit, "raid") then return affilation == AFFILIATION_RAID end
+        if string.find(unit, "party") then return affilation == AFFILIATION_RAID end
     end
 
     local last_taget_update = 0
