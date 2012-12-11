@@ -73,7 +73,7 @@ local _, race = UnitRace("player")
 if race == "Troll" then Spell( 26297 ,{ name = "Berserking", duration = 10 }) end --Troll Racial
 if race == "Orc" then Spell({ 33702,33697,20572 },{ name = "Blood Fury", duration = 15 }) end --Orc Racial
 
-Spell({2825, 32182, 80353} ,{ name = "Bloodlust", duration = 40, priority = -100, color = colors.DRED, shine = true, affilation = "raid", target = "player" })
+Spell({2825, 32182, 80353} ,{ name = "Bloodlust", duration = 40, priority = -100, color = colors.DRED, shine = true, affiliation = "raid", target = "player" })
 
 if class == "WARLOCK" then
 Spell( 74434 ,{ name = "Soulburn",duration = 20, color = colors.CURSE })
@@ -179,7 +179,7 @@ EventTimer({ spellID = 115422, event = "SPELL_DAMAGE",
 
 Spell( 109466 ,{ name = "Curse of Enfeeblement",duration = 30, color = colors.CURSE, short = "CoEnf" })
 Spell( 18223 ,{ name = "Curse of Exhaustion", duration = 30, pvpduration = 8, color = colors.CURSE, short = "CoEx" })
-Spell( {1490, 104225},{ name = "Curse of Elements",duration = 300, affilation = "any", singleTarget = true, glowtime = 15, color = colors.CURSE, pvpduration = 120, short = "CoE" })
+Spell( {1490, 104225},{ name = "Curse of Elements",duration = 300, affiliation = "any", singleTarget = true, glowtime = 15, color = colors.CURSE, pvpduration = 120, short = "CoE" })
 --aoe version
 -- Spell( 104225 ,{ name = "Curse of Elements",duration = 300, glowtime = 15, color = colors.CURSE, pvpduration = 120, short = "CoE", multiTarget = true })
 Spell( 60478 ,{ name = "Doomguard", duration = 60 })
@@ -351,7 +351,8 @@ Spell( 1715 ,{ name = "Hamstring", ghost = true, color = colors.PURPLE, duration
 
 -- Spell( 12809 ,{ name = "Concussion Blow", color = { 1, 0.3, 0.6 }, duration = 5 })
 Spell( 355 ,{ name = "Taunt", duration = 3 })
--- Spell( 113746 ,{ name = "Weakened Armor", specmask = 0xF00, short = "WeakArmor", priority = -10, affilation = "any", singleTarget = true, color = colors.BROWN, duration = 30 })
+-- Spell( 113746 ,{ name = "Weakened Armor", specmask = 0xF00, short = "WeakArmor", priority = -10, affiliation = "any", singleTarget = true, color = colors.BROWN, duration = 30 })
+-- Demo shout also applies self-buff (id 125565), but it doesn't appear in combat log
 Spell( 1160 ,{ name = "Demoralizing Shout", short = "DemoShout", shine = true, group = "buffs", color = colors.BLACK, duration = 30, multiTarget = true })
 Spell( 115798 ,{ name = "Weakened Blows", ghost = 3, specmask = 0xF00, short = "WeakBlows", priority = -20, anySource = true, singleTarget = true, color = {149/255, 121/255, 214/255}, duration = 30 })
 Spell( 122510 ,{ name = "Ultimatum", shine = true, color = colors.TEAL, duration = 10 })
@@ -372,11 +373,12 @@ Spell( 105771, { name = "Warbringer", duration = 3 })
 Spell( 107574, { name = "Avatar", shine = true, group = "buffs",  color = colors.TEAL, duration = 30 })
 Spell( 132169, { name = "Storm Bolt", color = colors.TEAL2, duration = 3})
 
+--banners are totems actually
 Spell( 114192, { name = "Mocking Banner", color = colors.PURPLE2, duration = 20})
+EventTimer({ spellID = 114207, event = "SPELL_CAST_SUCCESS", group = "buffs", affiliation = "raid", name = "Skull Banner", duration = 10, color = colors.RED })
+EventTimer({ spellID = 114203, event = "SPELL_CAST_SUCCESS", group = "buffs", name = "Demoralizing Banner", affiliation = "raid", short = "DemoBanner", duration = 15, color = colors.BLACK })
 Spell( 1719, { name = "Recklessness", color = colors.LRED, group = "buffs", duration = 20})
 Spell( 64382, { name = "Shattering Throw", short = "Shattering", color = colors.TEAL, group = "buffs", duration = 10})
-EventTimer({ spellID = 114207, event = "SPELL_CAST_SUCCESS", group = "buffs", affilation = "raid", name = "Skull Banner", duration = 10, color = colors.RED })
-EventTimer({ spellID = 114203, event = "SPELL_CAST_SUCCESS", group = "buffs", name = "Demoralizing Banner", affilation = "raid", short = "DemoBanner", duration = 15, color = colors.BLACK })
 -- Cooldown( 107570, { name = "Storm Bolt", color = colors.TEAL2 })
 Spell( 12292, { name = "Bloodbath", priority = -8, group = "buffs", color = colors.PINKIERED, duration = 12, })
     --with_cooldown = { id = 12292, name = "Bloodbath", priority = -8, glowtime = 5, color = colors.DRED }    })
@@ -414,14 +416,14 @@ Spell( 131116 ,{ name = "Raging Blow", priority = 9, fixedlen = 9, shine = true,
 
 -- Cooldown( 1680, { name = "Whirlwind", color = colors.LBLUE })
 Spell( 12975, { name = "Last Stand", color = colors.BLACK, duration = 20, group = "buffs" })
-Spell( 97463, { name = "Rallying Cry", color = colors.BLACK, duration = 10, group = "buffs" })
+Spell( 97463, { name = "Rallying Cry", color = colors.BLACK, target = "player", duration = 10, group = "buffs" })
 Spell( 118038, { name = "Die by the Sword", short = "DbtS", color = colors.BLACK, duration = 8, group = "buffs" })
 Spell( 871, { name = "Shield Wall", color = colors.WOO2, duration = 12, group = "buffs" })
 Cooldown( 23922, { name = "Shield Slam", overlay = {3, 4.5}, short = "", priority = 10, check_known = true, fixedlen = 9, recast_mark = 1.5, ghost = true,  color = colors.CURSE, resetable = true })
 --Activation( 23922, { name = "Slam!", shine = true, timeless = true, color = colors.CURSE, duration = 0.1 })
 
 -- Cooldown( 78, { name = "Heroic Strike", short = "Heroic", fixedlen = 6, ghost = true })
-Cooldown( 6343, { name = "Thunder Clap", specmask = 0xF00, color = colors.LBLUE, fixedlen = 9, priority = -8 })
+Cooldown( 6343, { name = "Thunder Clap", ghost = 0.5, short = "", scale = 0.6, specmask = 0xF00, overlay = {0, 1.5}, color = colors.PINKIERED, fixedlen = 9, priority = 9.5 })
 EventTimer({ spellID = 6343, event = "SPELL_CAST_SUCCESS", name = "Deep Wounds", specmask = 0x00F, color = colors.DRED, multiTarget = true, priority = -15, duration = 15 })
 
 
@@ -470,7 +472,7 @@ Spell( 128939 ,{ name = "Elusive Brew", priority = -10, duration = 30, color = c
 Spell( 115308 ,{ name = "Elusive Brew", duration = 15, color = colors.BLACK })
 Cooldown( 115295, { name = "Guard", color = colors.GOLD })
 Cooldown( 121253, { name = "Keg Smash", color = colors.CURSE })
-Spell( 115798 ,{ name = "Weakened Blows", short = "WeakBlows", specmask = 0x00F, priority = -20, affilation = "any", singleTarget = true, color = {149/255, 121/255, 214/255}, duration = 30 })
+Spell( 115798 ,{ name = "Weakened Blows", short = "WeakBlows", specmask = 0x00F, priority = -20, affiliation = "any", singleTarget = true, color = {149/255, 121/255, 214/255}, duration = 30 })
 
 Spell( 124081 ,{ name = "Zen Sphere", duration = 16, color = { 1, 0.2, 1} })
 Spell( 119381 ,{ name = "Leg Sweep", duration = 5, color = colors.RED, multiTarget = true })
@@ -613,7 +615,7 @@ Spell( 105593 ,{ name = "Fist of Justice", duration = 6, short = "FoJ", color = 
 -- Spell( 85696 ,{ name = "Zealotry",duration = 20 })
 Spell( 2812 ,{ name = "Denounce", duration = 4, color = colors.GREEN })
 
-Spell( 115798 ,{ name = "Weakened Blows", specmask = 0x0F0, short = "WeakBlows", priority = -20, affilation = "any", singleTarget = true, color = {149/255, 121/255, 214/255}, duration = 30 })
+Spell( 115798 ,{ name = "Weakened Blows", specmask = 0x0F0, short = "WeakBlows", priority = -20, affiliation = "any", singleTarget = true, color = {149/255, 121/255, 214/255}, duration = 30 })
 
 Cooldown( 35395 ,{ name = "Crusader Strike", ghost = true, short = "Crusader", priority = 2, fixedlen = 6, color = colors.CURSE, recast_mark = 1.5 })
 Cooldown( 20271 ,{ name = "Judgment", ghost = true, fixedlen = 6, priority = 1, color = colors.RED })
@@ -646,7 +648,7 @@ end
 
 if class == "DRUID" then
 Spell( 339 ,{ name = "Entangling Roots",duration = 30 })
--- Spell( 113746 ,{ name = "Weakened Armor", short = "WeakArmor", priority = -10, affilation = "any", singleTarget = true, color = colors.BROWN, duration = 30 })
+-- Spell( 113746 ,{ name = "Weakened Armor", short = "WeakArmor", priority = -10, affiliation = "any", singleTarget = true, color = colors.BROWN, duration = 30 })
 
 Spell( 48391 ,{ name = "Owlkin Frenzy", duration = 10 })
 -- Spell( 48517 ,{ name = "Solar Eclipse", timeless = true, duration = 0.1, short = "Solar", color = colors.ORANGE }) -- Wrath boost
@@ -675,7 +677,7 @@ Spell( 1850 ,{ name = "Dash", duration = 15 })
 -- Spell( 81022 ,{ name = "Stampede", duration = 8 })
 --bear
 Spell( 132402 ,{ name = "Savage Defense", duration = 6, color = colors.WOO2 })
-Spell( 115798 ,{ name = "Weakened Blows", specmask = 0x0F00, short = "WeakBlows", priority = -20, affilation = "any", singleTarget = true, color = {149/255, 121/255, 214/255}, duration = 30 })
+Spell( 115798 ,{ name = "Weakened Blows", specmask = 0x0F00, short = "WeakBlows", priority = -20, affiliation = "any", singleTarget = true, color = {149/255, 121/255, 214/255}, duration = 30 })
 Spell( 106922 ,{ name = "Might of the Ursoc", duration = 20, color = colors.BLACK })
 Spell( 99 ,{ name = "Disorienting Roar", short = "Disorient", duration = 3, multiTarget = true })
 Spell( 6795 ,{ name = "Taunt", duration = 3 })

@@ -8,7 +8,7 @@ NugRunningConfig.activations = {}
 NugRunningConfig.event_timers = {}
 NugRunningConfig.totems = {}
 local AFFILIATION_MINE = COMBATLOG_OBJECT_AFFILIATION_MINE
-local AFFILIATION_RAID = COMBATLOG_OBJECT_AFFILIATION_RAID
+local AFFILIATION_PARTY_OR_RAID = COMBATLOG_OBJECT_AFFILIATION_RAID + COMBATLOG_OBJECT_AFFILIATION_PARTY
 local AFFILIATION_OUTSIDER = COMBATLOG_OBJECT_AFFILIATION_OUTSIDER
 
 helpers.Talent = function (spellID)
@@ -56,9 +56,9 @@ end
 
 helpers.Spell = function(id, opts)
     if opts.singleTarget then opts.target = "target" end
-    if opts.anySource then opts.affilation = AFFILIATION_RAID end
-    if opts.affilation == "raid" then opts.affilation = AFFILIATION_RAID end
-    if opts.affilation == "any" then opts.affilation = AFFILIATION_OUTSIDER end
+    if opts.anySource then opts.affiliation = AFFILIATION_PARTY_OR_RAID end
+    if opts.affiliation == "raid" then opts.affiliation = AFFILIATION_PARTY_OR_RAID end
+    if opts.affiliation == "any" then opts.affiliation = AFFILIATION_OUTSIDER end
     if type(id) == "table" then
         -- opts.idgroup = {}
         for _, i in ipairs(id) do
@@ -112,9 +112,9 @@ helpers.EventTimer = function( opts )
     if not opts.event then print(string.format("nrun: missing combat log event (#%s)", opts.spellID)); return end
     if not opts.duration and not opts.action then print(string.format("nrun: duration is required for event timers(#%s)", opts.spellID)); return end
     if not opts.name then opts.name = "" end
-    if opts.anySource then opts.affilation = AFFILIATION_RAID end
-    if opts.affilation == "raid" then opts.affilation = AFFILIATION_RAID end
-    if opts.affilation == "any" then opts.affilation = AFFILIATION_OUTSIDER end
+    if opts.anySource then opts.affiliation = AFFILIATION_PARTY_OR_RAID end
+    if opts.affiliation == "raid" then opts.affiliation = AFFILIATION_PARTY_OR_RAID end
+    if opts.affiliation == "any" then opts.affiliation = AFFILIATION_OUTSIDER end
     if not NugRunningConfig.event_timers[opts.event] then NugRunningConfig.event_timers[opts.event] = {} end
     table.insert(NugRunningConfig.event_timers[opts.event], opts)
 end

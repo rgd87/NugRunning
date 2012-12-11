@@ -113,18 +113,45 @@ function TimerBar.Update(self, beforeEnd)
     self.timeText:SetFormattedText(self:FormatTime(beforeEnd))
 end
 
-function TimerBar.Resize(self, width, height)
+
+function TimerBar.Resize1(self, width, height)
     self:SetWidth(width)
     self:SetHeight(height)
+    self.mark:SetHeight(height*0.9)
+    self.status:SetSize(width/2,height)
+    self.bar:SetWidth(width - self._height - 1)
+    self.bar:SetHeight(height)
+    self.spellText:SetWidth(self.bar:GetWidth()*0.8)
+    self.spellText:SetHeight(height/2+1)
+end
+
+function TimerBar.VScale(self, scale)
+    if scale > 1 then scale = 1 end
+    if not self._scale and scale == 1 then return end -- already at full size
+
+    self._scale = scale
+    local height = self._height * scale
+    local width = self._width
+    self:Resize1(width, height)
+
+    local x = 0.8 * (1-scale) * 0.5
+    self.icon:SetTexCoord(.1, .9, .1+x, .9-x)
+    self.icon:GetParent():SetHeight(height)
+    self.shine:GetParent():SetHeight(height*1.8)
+
+    if scale == 1 then self._scale = nil end
+end
+
+function TimerBar.Resize(self, width, height)
+    self._width = width
+    self._height = height
+
+    self:Resize1(width, height)
+
     self.icon:GetParent():SetWidth(height)
     self.icon:GetParent():SetHeight(height)
     self.shine:GetParent():SetWidth(height*1.8)
     self.shine:GetParent():SetHeight(height*1.8)
-    self.status:SetSize(width/2,height)
-    self.bar:SetWidth(width-height-1)
-    self.bar:SetHeight(height)
-    self.spellText:SetWidth(self.bar:GetWidth()*0.8)
-    self.spellText:SetHeight(height/2+1)
 end
 
 -- function TimerBar.SetPowerStatus(self, status)

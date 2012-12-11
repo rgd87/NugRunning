@@ -80,8 +80,9 @@ local bit_band = bit.band
 local UnitAura = UnitAura
 local UnitGUID = UnitGUID
 local table_wipe = table.wipe
+local COMBATLOG_OBJECT_AFFILIATION_MASK = COMBATLOG_OBJECT_AFFILIATION_MASK
 local AFFILIATION_MINE = COMBATLOG_OBJECT_AFFILIATION_MINE
-local AFFILIATION_RAID = COMBATLOG_OBJECT_AFFILIATION_RAID
+local AFFILIATION_PARTY_OR_RAID = COMBATLOG_OBJECT_AFFILIATION_RAID + COMBATLOG_OBJECT_AFFILIATION_PARTY
 local AFFILIATION_OUTSIDER = COMBATLOG_OBJECT_AFFILIATION_OUTSIDER
 
 NugRunning.active = active
@@ -254,13 +255,13 @@ function NugRunning.COMBAT_LOG_EVENT_UNFILTERED( self, event, timestamp, eventTy
                 spellID, spellName, spellSchool, auraType, amount)
 
     if NugRunningConfig[spellID] then
-        local affilationStatus = (bit_band(srcFlags, AFFILIATION_MINE) == AFFILIATION_MINE)
+        local affiliationStatus = (bit_band(srcFlags, AFFILIATION_MINE) == AFFILIATION_MINE)
         local opts = NugRunningConfig[spellID]
-        if not affilationStatus and opts.affilation then
-            affilationStatus = (bit_band(srcFlags, opts.affilation) == opts.affilation)
+        if not affiliationStatus and opts.affiliation then
+            affiliationStatus = (bit_band(srcFlags, COMBATLOG_OBJECT_AFFILIATION_MASK) <= opts.affiliation)
         end
         if opts.target and dstGUID ~= UnitGUID(opts.target) then return end
-        if affilationStatus then
+        if affiliationStatus then
             if eventType == "SPELL_AURA_REFRESH" or eventType == "SPELL_AURA_APPLIED_DOSE" then
                 return self:RefreshTimer(srcGUID, dstGUID, dstName, dstFlags, spellID, spellName, opts, auraType, nil, amount)
             elseif eventType == "SPELL_AURA_APPLIED" then
@@ -275,10 +276,10 @@ function NugRunning.COMBAT_LOG_EVENT_UNFILTERED( self, event, timestamp, eventTy
 
     if check_event_timers then
         if NugRunningConfig.event_timers[eventType] then
-            local affilationStatus = (bit_band(srcFlags, AFFILIATION_MINE) == AFFILIATION_MINE)
+            local affiliationStatus = (bit_band(srcFlags, AFFILIATION_MINE) == AFFILIATION_MINE)
             local evs = NugRunningConfig.event_timers[eventType]
             for i, opts in ipairs(evs) do
-                if affilationStatus or (opts.affilation and bit_band(srcFlags, opts.affilation) == opts.affilation ) then
+                if affiliationStatus or (opts.affiliation and bit_band(srcFlags, COMBATLOG_OBJECT_AFFILIATION_MASK) <= opts.affiliation ) then
                     if spellID == opts.spellID then
                         if opts.action then
                             opts.action(active, srcGUID, dstGUID, spellID)
@@ -472,6 +473,15 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
     if timerType == "BUFF"
         then timer.filter = "HELPFUL"
         else timer.filter = "HARMFUL"
+    end
+
+    if timer.VScale then
+        local scale = opts.scale
+        if scale then
+            timer:VScale(scale)
+        else
+            timer:VScale(1)
+        end
     end
 
     timer.priority = opts.priority or 0
@@ -696,7 +706,7 @@ function NugRunning.GetUnitAuraData(self, unit, timer, spellID)
         for auraIndex=1,100 do
             local name, _,_, count, _, duration, expirationTime, caster, _,_, aura_spellID, _, _, _, absorb = UnitAura(unit, auraIndex, timer.filter)
             if aura_spellID then
-                if aura_spellID == spellID and (caster == "player" or timer.opts.affilation) then
+                if aura_spellID == spellID and (caster == "player" or timer.opts.affiliation) then
                     if timer.opts.charged then
                         timer:SetCharge(count)
                     elseif not timer.opts.timeless then
@@ -812,8 +822,11 @@ end]======]
 function NugRunning.CreateTimer(self)
     local w = NugRunningConfig.width or NRunDB.width
     local h = NugRunningConfig.height or NRunDB.height
+
     local f = NugRunning.ConstructTimerBar(w,h)
     f._elapsed = 0
+    f._width = w
+    f._height = h 
 
     f.prototype = NugRunning[f.prototype or "TimerBar"]
 
@@ -1182,7 +1195,7 @@ function NugRunning.SlashCmd(msg)
                                                             dstGUID, dstName, dstFlags, dstFlags2,
                                                             spellID, spellName, spellSchool, auraType, amount)
                 local isSrcPlayer = (bit_band(srcFlags, COMBATLOG_OBJECT_AFFILIATION_MINE) == COMBATLOG_OBJECT_AFFILIATION_MINE)
-                if isSrcPlayer then print (spellID, spellName, eventType, srcGUID,"->",dstGUID, amount) end
+                if isSrcPlayer then print (spellID, spellName, eventType, srcFlags, srcGUID,"->",dstGUID, amount) end
             end)
         end
         NugRunning.debug:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
@@ -1231,6 +1244,9 @@ function NugRunning:CreateAnchor(name, opts)
     end)
 
     local pos = f.db_tbl
+    if not _G[pos.parent] then
+        pos = { point = "CENTER", parent = "UIParent", to = "CENTER", x = 0, y = 0}
+    end
     f:SetPoint(pos.point, pos.parent, pos.to, pos.x, pos.y)
     return f
 end
@@ -1258,12 +1274,12 @@ do
         ["arena5"] = 2,
     }
 
-    local function UnitAffilationCheck(unit, affilation)
-        if not affilation then return unit == "player" end
+    local function UnitAffiliationCheck(unit, affiliation)
+        if not affiliation then return unit == "player" end
         if unit == "player" then return true end
-        if not unit then return affilation == AFFILIATION_OUTSIDER end
-        if string.find(unit, "raid") then return affilation == AFFILIATION_RAID end
-        if string.find(unit, "party") then return affilation == AFFILIATION_RAID end
+        if not unit then return affiliation == AFFILIATION_OUTSIDER end
+        if string.find(unit, "raid") then return affiliation == AFFILIATION_PARTY_OR_RAID end
+        if string.find(unit, "party") then return affiliation == AFFILIATION_PARTY_OR_RAID end
     end
 
     local last_taget_update = 0
@@ -1285,7 +1301,7 @@ do
                     (timer.timerType == "BUFF" or timer.timerType == "DEBUFF")
                 then
                         local name, _,_, count, _, duration, expirationTime, caster, _,_, aura_spellID = UnitAura(unit, GetSpellInfo(timer.spellID), nil, timer.filter)
-                        if UnitAffilationCheck(caster, timer.opts.affilation) and timer.spellID == aura_spellID then
+                        if UnitAffiliationCheck(caster, timer.opts.affiliation) and timer.spellID == aura_spellID then
                             if (now + duration - expirationTime < 0.1) then
                                 NugRunning:RefreshTimer(playerGUID,unitGUID,UnitName(unit),nil, timer.spellID, timer.spellName, timer.opts, timer.timerType, duration, count, true)
                             elseif count and timer.count ~= count then
@@ -1301,7 +1317,7 @@ do
             table_wipe(targetTimers)
             for timer in pairs(active) do
                 if timer.dstGUID == targetGUID then
-                    -- if (timer.srcGUID == playerGUID or timer.opts.affilation) then
+                    -- if (timer.srcGUID == playerGUID or timer.opts.affiliation) then
                         table.insert(targetTimers, timer)
                     -- end
                 else
@@ -1317,7 +1333,7 @@ do
                     if not name then break end
 
                     local opts = config[aura_spellID]
-                    if opts and UnitAffilationCheck(caster, opts.affilation) then
+                    if opts and UnitAffiliationCheck(caster, opts.affiliation) then
                         if opts.target and opts.target ~= "target" then return end
                         local found, timerType
                         -- searching in generated earlier table of player->target timers for matching spell
