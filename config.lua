@@ -179,7 +179,7 @@ EventTimer({ spellID = 115422, event = "SPELL_DAMAGE",
 
 Spell( 109466 ,{ name = "Curse of Enfeeblement",duration = 30, color = colors.CURSE, short = "CoEnf" })
 Spell( 18223 ,{ name = "Curse of Exhaustion", duration = 30, pvpduration = 8, color = colors.CURSE, short = "CoEx" })
-Spell( {1490, 104225},{ name = "Curse of Elements",duration = 300, affiliation = "any", singleTarget = true, glowtime = 15, color = colors.CURSE, pvpduration = 120, short = "CoE" })
+Spell( {1490, 104225},{ name = "Curse of Elements", duration = 300, affiliation = "any", singleTarget = true, glowtime = 15, color = colors.CURSE, pvpduration = 120, short = "CoE" })
 --aoe version
 -- Spell( 104225 ,{ name = "Curse of Elements",duration = 300, glowtime = 15, color = colors.CURSE, pvpduration = 120, short = "CoE", multiTarget = true })
 Spell( 60478 ,{ name = "Doomguard", duration = 60 })
@@ -355,8 +355,8 @@ Spell( 355 ,{ name = "Taunt", duration = 3 })
 -- Demo shout also applies self-buff (id 125565), but it doesn't appear in combat log
 Spell( 1160 ,{ name = "Demoralizing Shout", short = "DemoShout", shine = true, group = "buffs", color = colors.BLACK, duration = 30, multiTarget = true })
 Spell( 115798 ,{ name = "Weakened Blows", ghost = 3, specmask = 0xF00, short = "WeakBlows", priority = -20, anySource = true, singleTarget = true, color = {149/255, 121/255, 214/255}, duration = 30 })
-Spell( 122510 ,{ name = "Ultimatum", shine = true, color = colors.TEAL, duration = 10 })
-Cooldown( 6572, { name = "Revenge", priority = 5, color = colors.PURPLE, resetable = true, fixedlen = 9, ghost = true })
+Spell( 122510 ,{ name = "Ultimatum", shine = true, color = colors.TEAL, glowtime = 10, duration = 10, priority = 11, scale = .7 })
+Cooldown( 6572, { name = "Revenge", priority = 5, color = colors.RED, resetable = true, fixedlen = 9, ghost = true })
 -- Activation( 6572, { name = "RevengeActivation", for_cd = true })
 
 Spell( 55694, { name = "Enraged Regeneration", short = "Regen", color = colors.LGREEN, duration = 5 })
