@@ -465,6 +465,7 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
     if override then time = override
     else
         time = NugRunning.SetDefaultDuration(dstFlags, opts, timer)
+        -- print( "DEFAULT TIME", spellName, time, timerType)
         if timerType == "BUFF" or timerType == "DEBUFF" then
             local _guid = multiTargetGUID or dstGUID
             NugRunning.QueueAura(spellID, _guid, timerType, timer)
@@ -548,7 +549,9 @@ function NugRunning.RefreshTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID,
     local time
     if override then time = override
     else
-        time = NugRunning.SetDefaultDuration(dstFlags, opts, timer)
+        if dstGUID then
+            time = NugRunning.SetDefaultDuration(dstFlags, opts, timer)
+        end
         if timerType == "BUFF" or timerType == "DEBUFF" then
             if not dstGUID then
                 if timer.queued and GetTime() < timer.queued + 0.9 then
@@ -667,46 +670,50 @@ end
 
 local debuffUnits = {"target","mouseover","arena1","arena2","arena3","arena4","arena5","focus"}
 local buffUnits = {"player","target","mouseover"}
--- local queue = {}
--- function NugRunning.QueueAura(spellID, dstGUID, auraType, timer )
---     local unit
---     local auraUnits = (auraType == "DEBUFF") and debuffUnits or buffUnits
---     for _,unitID in ipairs(auraUnits) do
---         if dstGUID == UnitGUID(unitID) then
---             unit = unitID
---             break
---         end
---     end
---     if not unit then return nil end
---     queue[unit] = queue[unit] or {}
---     queue[unit][spellID] = timer
---     return GetTime()
--- end
-function NugRunning.QueueAura(spellID, dstGUID, auraType, timer )
-    local unit
-    local auraUnits = (auraType == "DEBUFF") and debuffUnits or buffUnits
-    for _,unitID in ipairs(auraUnits) do
-        if dstGUID == UnitGUID(unitID) then
-            unit = unitID
-            break
+
+do
+    local queue = setmetatable({}, { __mode = "k" })
+    NugRunning.queueFrame = CreateFrame("Frame")
+    NugRunning.queueFrame:RegisterEvent("UNIT_AURA")
+    NugRunning.queueFrame:SetScript('OnEvent', function(qframe, event, unit)
+        if not queue[unit] then return end
+        for spellID, timer in pairs(queue[unit]) do
+            if NugRunning:GetUnitAuraData(unit, timer, spellID) then
+                queue[unit][spellID] = nil
+                timer._queued = nil
+            elseif timer._queued and timer._queued + 0.4 < GetTime() then
+                queue[unit][spellID] = nil
+                timer._queued = nil
+            end
+        end
+
+        if not next(queue[unit]) then queue[unit] = nil end
+    end)
+    function NugRunning.QueueAura(spellID, dstGUID, auraType, timer )
+        local unit
+        local auraUnits = (auraType == "DEBUFF") and debuffUnits or buffUnits
+        for _,unitID in ipairs(auraUnits) do
+            if dstGUID == UnitGUID(unitID) then
+                unit = unitID
+                break
+            end
+        end
+        if not unit then return nil end
+
+        if not NugRunning:GetUnitAuraData(unit, timer, spellID) then
+            -- print("queueing", select(1,GetSpellInfo(spellID)))
+            queue[unit] = queue[unit] or {}
+            queue[unit][spellID] = timer
+            timer._queued = GetTime()
         end
     end
-    if not unit then return nil end
-
-    return NugRunning:GetUnitAuraData(unit, timer, spellID)
-    -- queue[unit] = queue[unit] or {}
-    -- queue[unit][spellID] = timer
-    -- return GetTime()
 end
--- function NugRunning.UNIT_AURA() end
--- function NugRunning.UNIT_AURA (self,event,unit)
+
 function NugRunning.GetUnitAuraData(self, unit, timer, spellID)
-    -- if not queue[unit] then return end
-    -- for spellID, timer in pairs(queue[unit]) do
         for auraIndex=1,100 do
             local name, _,_, count, _, duration, expirationTime, caster, _,_, aura_spellID, _, _, _, absorb = UnitAura(unit, auraIndex, timer.filter)
             if aura_spellID then
-                if aura_spellID == spellID and (caster == "player" or timer.opts.affiliation) then
+                if aura_spellID == spellID and NugRunning.UnitAffiliationCheck(caster, timer.opts.affiliation) then
                     if timer.opts.charged then
                         timer:SetCharge(count)
                     elseif not timer.opts.timeless then
@@ -714,19 +721,21 @@ function NugRunning.GetUnitAuraData(self, unit, timer, spellID)
                         timer:SetTime(expirationTime - duration + timer.fixedoffset,expirationTime)
                         timer:SetCount(count)
                     end
-                    if type(absorb) == "number" and absorb > 0 then
-                        timer.absorb = absorb
-                    else timer.absorb = nil
+                    if type(absorb) == "number" and absorb > 0
+                        then timer.absorb = absorb
+                        else timer.absorb = nil
                     end
-                    -- queue[unit][spellID] = nil
-                    break
+
+                    local name = GetSpellInfo(spellID)
+                    -- print("GOT DATA!>>  ", name, duration)
+
+                    return true
+                    -- break
                 end
-            -- elseif timer.queued and timer.queued + 0.4 < GetTime() then
-                -- queue[unit][spellID] = nil
+            else
+                return nil
             end
         end
-    -- end
-    -- if not next(queue[unit]) then queue[unit] = nil end
 end
 
 
@@ -1099,6 +1108,24 @@ function NugRunning.SlashCmd(msg)
         end
         NugRunning.unlocked = nil
     end
+    if k == "listauras" then
+        local unit = v
+        local h = false
+        for i=1, 100 do
+            local name, _,_,_,_,_,_,_,_,_, spellID = UnitAura(unit, i, "HELPFUL")
+            if not name then break end
+            if not h then print("BUFFS:"); h = true; end
+            print(string.format("    %s (id: %d)", name, spellID))
+        end
+        h = false
+        for i=1, 100 do
+            local name, _,_,_,_,_,_,_,_,_, spellID = UnitAura(unit, i, "HARMFUL")
+            if not name then break end
+            if not h then print("DEBUFFS:"); h = true; end
+            print(string.format("    %s (id: %d)", name, spellID))
+        end
+
+    end
     if k == "reset" then
         NRunDB.anchor.point = "CENTER"
         NRunDB.anchor.parent = "UIParent"
@@ -1125,6 +1152,7 @@ function NugRunning.SlashCmd(msg)
             NugRunning:RegisterEvent("SPELL_UPDATE_COOLDOWN")
         end
         NRunDB.cooldownsEnabled = not NRunDB.cooldownsEnabled
+        print("NRun cooldowns "..(NRunDB.cooldownsEnabled and "enabled" or "disabled"))
     end
     if k == "spelltext" then
         NRunDB.spellTextEnabled = not NRunDB.spellTextEnabled
@@ -1278,9 +1306,11 @@ do
         if not affiliation then return unit == "player" end
         if unit == "player" then return true end
         if not unit then return affiliation == AFFILIATION_OUTSIDER end
+        if affiliation == AFFILIATION_OUTSIDER then return true end
         if string.find(unit, "raid") then return affiliation == AFFILIATION_PARTY_OR_RAID end
         if string.find(unit, "party") then return affiliation == AFFILIATION_PARTY_OR_RAID end
     end
+    NugRunning.UnitAffiliationCheck = UnitAffiliationCheck
 
     local last_taget_update = 0
     function NugRunning.OnAuraEvent(self, event, unit)

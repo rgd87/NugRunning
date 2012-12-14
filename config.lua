@@ -123,9 +123,9 @@ local haunt_overlay = {0,8, 0.15}
 Spell( 48181 ,{ name = "",duration = 12, priority = 8, recast_mark = 3, ghost = true, nameplates = true, color = colors.TEAL })
 -- 8s second overlay is for haunt duration
 --Unstable Affliction
-Spell( 30108 ,{ name = "", priority = 10, showpower = true, overlay = {0,9, 0.15}, fixedlen = normalize_dots_to, nameplates = true, duration = 15, ghost = true, recast_mark = 6.5, color = colors.RED })
+Spell( 30108 ,{ name = "", duration = 15, priority = 10, showpower = true, overlay = {0,9, 0.15}, fixedlen = normalize_dots_to, nameplates = true, ghost = true, recast_mark = 6.5, color = colors.RED })
 --Corruption (2nd is a Soulburn SoC Corruption) --87389
-Spell( 172 ,{ name = "", priority = 9, overlay = haunt_overlay, showpower = true, fixedlen = normalize_dots_to, recast_mark = 8, nameplates = true, ghost = true, color = colors.PINK, duration = 18 })
+Spell( 172 ,{ name = "", duration = 18, priority = 9, overlay = haunt_overlay, showpower = true, fixedlen = normalize_dots_to, recast_mark = 8, nameplates = true, ghost = true, color = colors.PINK })
 Spell( 87389 ,{ name = "Corruption", multiTarget = true, color = colors.WOO2, duration = 18 })
 --Agony
 Spell( 980 ,{ name = "", duration = 24, overlay = haunt_overlay, showpower = true, fixedlen = normalize_dots_to, nameplates = true, recast_mark = 11, ghost = true, priority = 6, color = colors.WOO })
@@ -175,7 +175,6 @@ EventTimer({ spellID = 115422, event = "SPELL_DAMAGE",
             end
         end
     end})
-
 
 Spell( 109466 ,{ name = "Curse of Enfeeblement",duration = 30, color = colors.CURSE, short = "CoEnf" })
 Spell( 18223 ,{ name = "Curse of Exhaustion", duration = 30, pvpduration = 8, color = colors.CURSE, short = "CoEx" })
@@ -356,7 +355,7 @@ Spell( 355 ,{ name = "Taunt", duration = 3 })
 Spell( 1160 ,{ name = "Demoralizing Shout", short = "DemoShout", shine = true, group = "buffs", color = colors.BLACK, duration = 30, multiTarget = true })
 Spell( 115798 ,{ name = "Weakened Blows", ghost = 3, specmask = 0xF00, short = "WeakBlows", priority = -20, anySource = true, singleTarget = true, color = {149/255, 121/255, 214/255}, duration = 30 })
 Spell( 122510 ,{ name = "Ultimatum", shine = true, color = colors.TEAL, glowtime = 10, duration = 10, priority = 11, scale = .7 })
-Cooldown( 6572, { name = "Revenge", priority = 5, color = colors.RED, resetable = true, fixedlen = 9, ghost = true })
+Cooldown( 6572, { name = "Revenge", priority = 5, color = colors.PURPLE, resetable = true, fixedlen = 9, ghost = true })
 -- Activation( 6572, { name = "RevengeActivation", for_cd = true })
 
 Spell( 55694, { name = "Enraged Regeneration", short = "Regen", color = colors.LGREEN, duration = 5 })

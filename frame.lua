@@ -309,7 +309,12 @@ NugRunning.ConstructTimerBar = function(width, height)
     sa2:SetSmoothing("OUT")
     sa2:SetOrder(2)
     
+    sag:SetScript("OnFinished",function(self)
+        self:GetParent():SetAlpha(0)
+    end)
+
     f.shine = sag
+    f.shine.tex = at
     
     
     local aag = f:CreateAnimationGroup()
