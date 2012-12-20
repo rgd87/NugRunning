@@ -377,7 +377,8 @@ function NugRunning.SPELL_UPDATE_COOLDOWN(self,event)
                             opts.timer = timer
                         end
                     else
-                        if timer.cd_startTime < startTime or timer.cd_duration ~= duration then
+                        -- print("1", spellID, startTime, duration)
+                        if timer.cd_startTime ~= startTime or timer.cd_duration ~= duration then
                             timer.cd_startTime = startTime
                             timer.fixedoffset = timer.opts.fixedlen and duration - timer.opts.fixedlen or 0
                             timer:SetTime(startTime +  timer.fixedoffset, startTime + duration)

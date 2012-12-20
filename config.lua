@@ -212,19 +212,21 @@ Spell( 89485 ,{ name = "Inner Focus", shine = true, color = colors.LBLUE, timele
 -- Spell( 15271 ,{ name = "Spirit Tap",duration = 15 })
 Spell( 589 ,{ name = "Shadow Word: Pain",duration = 18, overlay = {0,1.5, 0.2}, ghost = true, nameplates = true, priority = 9, color = colors.PURPLE, refreshed =true, short = "SW:Pain" })
 
-EventTimer({ event = "SPELL_SUMMON", spellID = 123040, name = "Mindbender", duration = 15, priority = -10, color = colors.BLACK })
-EventTimer({ event = "SPELL_SUMMON", spellID = 34433, name = "Shadowfiend", duration = 12, priority = -10, color = colors.BLACK })
+EventTimer({ event = "SPELL_SUMMON", spellID = 123040, name = "Mindbender", group = "buffs", duration = 15, priority = -10, color = colors.BLACK })
+EventTimer({ event = "SPELL_SUMMON", spellID = 34433, name = "Shadowfiend", group = "buffs", duration = 12, priority = -10, color = colors.BLACK })
 
 Spell( 34914 ,{ name = "Vampiric Touch", overlay = {0, 1.5, 0.2}, recast_mark = 2.8, ghost = true, nameplates = true,  priority = 10, duration = 15, color = colors.RED, short = "VampTouch", hasted = true })
 Spell( 2944 ,{ name = "Devouring Plague",duration = 6, priority = 8, nameplates = true, color = colors.WOO, short = "Plague" })
 Spell( 47585 ,{ name = "Dispersion",duration = 6, color = colors.PURPLE })
 -- Spell( 15286 ,{ name = "Vampiric Embrace",duration = 15, color = colors.CURSE, short = "VampEmbrace" })
 
---~ Spell( 47753 ,{ name = "Divine Aegis", duration = 12 })
-Spell( 59889,{ name = "Borrowed Time", duration = 6 })
+Spell( 123254, { name = "Twist of Fate",duration = 10, group = "buffs", priority = -10, color = colors.CURSE, specmask = 0x0FF })
+Spell( 81700, { name = "Archangel",duration = 18, group = "buffs", priority = -9, color = colors.PINKIERED })
+-- Spell( 47753 ,{ name = "Divine Aegis", duration = 12 })
+Spell( 59889,{ name = "Borrowed Time", duration = 6, group = "buffs" })
 -- DEBUFFS
-Spell( 109964 ,{ name = "Spirit Shell", duration = 15, color = colors.PURPLE2 })
-Spell( 114908 ,{ name = "Spirit Shell", duration = 15, color = colors.PURPLE2 }) --shield effect
+Spell( 109964 ,{ name = "Spirit Shell", duration = 15, priority = -20, color = colors.PURPLE2 })
+-- Spell( 114908 ,{ name = "Spirit Shell", duration = 15, color = colors.PURPLE2 }) --shield effect
 
 Spell( 87160 ,{ name = "Surge of Darkness", duration = 10, color = colors.LRED })
 Spell( 87160 ,{ name = "Surge of Darkness", duration = 10, color = colors.LRED })
@@ -243,7 +245,7 @@ Spell( 8122 ,{ name = "Psychic Scream",duration = 8, multiTarget = true })
 -- Spell( 64044 ,{ name = "Psychic Horror",duration = 1, multiTarget = true })
 
 --Rapture
-EventTimer({ event = "SPELL_ENERGIZE", spellID = 47755, name = "Rapture", color = colors.BLACK, duration = 12 })
+EventTimer({ event = "SPELL_ENERGIZE", spellID = 47755, priority = -10, name = "Rapture", color = colors.DPURPLE, duration = 12 })
 Spell( 15407, { name = "Mind Flay",  color = colors.CURSE, priority = 11, duration = 3 })
 
 --Old Shadow Orbs
@@ -258,11 +260,12 @@ EventTimer({ event = "SPELL_CAST_SUCCESS", spellID = 62618, name = "PW:Barrier",
 -- Spell( 81208 ,{ name = "Chakra: Serenity", short = "Serenity", color = colors.WOO, shine = true, timeless = true, duration = 9999 })
 -- Spell( 81206 ,{ name = "Chakra: Sanctuary", color = colors.WOO2, short = "Sanctuary", shine = true, timeless = true, duration = 9999 })
 -- Spell( 81209 ,{ name = "Chakra: Chastise", short = "Chastise", color = colors.RED, shine = true, timeless = true, duration = 9999 })
-Spell( 88625 ,{ name = "Holy Word: Chastise", color = colors.LRED, short = "HW: Chastise", duration = 3 })
+-- Spell( 88625 ,{ name = "Holy Word: Chastise", color = colors.LRED, short = "HW: Chastise", duration = 3 })
+Cooldown( 88625 ,{ name = "Holy Word: Chastise", color = colors.CURSE, short = "Chastise", resetable = true })
 
-Cooldown( 47540 ,{ name = "Penance", color = colors.CURSE })
-Cooldown( 14914 ,{ name = "", recast_mark = 3, overlay = {0,3}, color = colors.PINK })
-Spell( 81661 ,{ name = "Evangelism",duration = 15, color = colors.ORANGE, stackcolor = {
+Cooldown( 47540 ,{ name = "Penance", priority = 15, color = colors.CURSE })
+Cooldown( 14914 ,{ name = "", overlay = {0,3}, priority = 14, color = colors.PINK }) --holy fire
+Spell( 81661 ,{ name = "Evangelism",duration = 15, group = "buffs", priority = 10, color = colors.ORANGE, stackcolor = {
                                 [1] = {0.7,0,0},
                                 [2] = {1,0.6,0.2},
                                 [3] = {1,1,0.4},

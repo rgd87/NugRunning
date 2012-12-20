@@ -137,6 +137,8 @@ function TimerBar.VScale(self, scale)
     self.icon:SetTexCoord(.1, .9, .1+x, .9-x)
     self.icon:GetParent():SetHeight(height)
     self.shine:GetParent():SetHeight(height*1.8)
+    self.shine:Stop()
+    self.shine.tex:SetAlpha(0)
 
     if scale == 1 then self._scale = nil end
 end
