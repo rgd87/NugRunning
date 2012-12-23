@@ -522,6 +522,7 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
     if timer.glow:IsPlaying() then timer.glow:Stop() end
     timer:Show()
     if not timer.animIn:IsPlaying() and not from_unitaura then timer.animIn:Play() end
+    timer.shine.tex:SetAlpha(0)
     if opts.shine and not timer.shine:IsPlaying() then timer.shine:Play() end
     
     self:ArrangeTimers()

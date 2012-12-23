@@ -266,11 +266,11 @@ Cooldown( 88625 ,{ name = "Holy Word: Chastise", color = colors.CURSE, short = "
 Cooldown( 47540 ,{ name = "Penance", priority = 15, color = colors.CURSE })
 Cooldown( 14914 ,{ name = "", overlay = {0,3}, priority = 14, color = colors.PINK }) --holy fire
 Spell( 81661 ,{ name = "Evangelism",duration = 15, group = "buffs", priority = 10, color = colors.ORANGE, stackcolor = {
-                                [1] = {0.7,0,0},
-                                [2] = {1,0.6,0.2},
-                                [3] = {1,1,0.4},
-                                [4] = {0.8,1,0.5},
-                                [5] = {0.7,1,0.2},
+                                [1] = colors.DRED,
+                                [2] = colors.DRED,
+                                [3] = colors.DRED,
+                                [4] = colors.RED,
+                                [5] = {1,0,0},
                             } })
 --Spell( 81700 ,{ name = "Archangel",duration = 18, color = colors.CURSE })
 
