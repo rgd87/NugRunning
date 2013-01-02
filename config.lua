@@ -87,8 +87,8 @@ Spell( 34936 ,{ name = "Backlash", duration = 8, shine = true, color = colors.CU
 
 local c1 = colors.DPURPLE
 local c2 = colors.PURPLE2
-local backlash_stackcolor = { c1, c1, c2,c2,c2,c2}
-Spell( 117828 ,{ name = "Backdraft", duration = 15, shine = true, priority = -4, shinerefresh = true, stackcolor = backlash_stackcolor }) --, charged = true, maxcharge = 3
+local backdraft_stackcolor = { c1, c1, c2,c2,c2,c2}
+Spell( 117828 ,{ name = "Backdraft", duration = 15, shine = true, priority = -4, shinerefresh = true, stackcolor = backdraft_stackcolor }) --, charged = true, maxcharge = 3
 
 
 Spell( 104232 ,{ name = "Rain of Fire", duration = 8, priority = -5, shine = true, color = colors.PURPLE, timeless = true, target = "player" })

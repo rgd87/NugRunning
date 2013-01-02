@@ -64,16 +64,18 @@ NugRunningNameplates:SetScript('OnUpdate', function(self, elapsed)
     if UnitExists("target") then
         local targetGUID = UnitGUID("target")
         for frame in pairs(plates) do
-            if frame:IsShown() and frame:GetAlpha() == 1 and
-                (UnitName("target") == frame.name:GetText()) and
-                targetGUID ~= oldTargetGUID then
-                    guidmap[targetGUID] =  frame
-                    frame.guid = targetGUID
-                    oldTargetGUID = targetGUID
-                    local guidTimers = NugRunning:GetTimersByDstGUID(targetGUID)
-                    NugRunningNameplates:UpdateNPTimers(frame, guidTimers)
-                    return
-                    -- frame.name:SetText(targetGUID)
+            if frame:IsShown() then
+                if frame:GetAlpha() == 1 and
+                    (UnitName("target") == frame.name:GetText()) and
+                    targetGUID ~= oldTargetGUID then
+                        guidmap[targetGUID] =  frame
+                        frame.guid = targetGUID
+                        oldTargetGUID = targetGUID
+                        local guidTimers = NugRunning:GetTimersByDstGUID(targetGUID)
+                        NugRunningNameplates:UpdateNPTimers(frame, guidTimers)
+                        return
+                        -- frame.name:SetText(targetGUID)
+                end
             end
         end
     else
@@ -192,6 +194,30 @@ function NugRunningNameplates:UpdateNPTimers(np, nrunTimers)
     end
 end
 
+
+NugRunningNameplates:SetScript("OnEvent", function(self, event, ...)
+    return self[event](self, event, ...)
+end)
+
+-- function NugRunningNameplates:ADDON_LOADED(event, name)
+function NugRunningNameplates:PLAYER_ENTERING_WORLD(event)
+    if  TidyPlates and TidyPlates.PlateHandler and
+        TidyPlates.PlateHandler:HasScript("OnUpdate")
+    then
+        self:UnregisterEvent("PLAYER_ENTERING_WORLD")
+
+        local FrameSetAlpha = NugRunningNameplates.SetAlpha
+        TidyPlates.PlateHandler:HookScript("OnUpdate", function()
+            for frame in pairs(plates) do
+                for _,timer in ipairs(frame.timers) do
+                    FrameSetAlpha(timer, frame.alpha)
+                end
+            end
+        end)
+    end
+end
+
+NugRunningNameplates:RegisterEvent("PLAYER_ENTERING_WORLD")
 
 
 
