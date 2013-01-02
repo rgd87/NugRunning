@@ -66,8 +66,11 @@ colors["WOO2"] = {80/255, 83/255, 150/255}
 colors["WOO2DARK"] = {30/255, 30/255, 65/255}
 colors["BROWN"] = { 192/255, 77/255, 48/255}
 colors["DBROWN"] = { 118/255, 69/255, 50/255}
+colors["MISSED"] = { .15, .15, .15}
 colors["DEFAULT_DEBUFF"] = { 0.8, 0.1, 0.7}
 colors["DEFAULT_BUFF"] = { 1, 0.4, 0.2}
+
+
 
 local _, race = UnitRace("player")
 if race == "Troll" then Spell( 26297 ,{ name = "Berserking", duration = 10 }) end --Troll Racial
@@ -113,7 +116,7 @@ Spell( 113858 ,{ name = "Dark Soul: Instability",duration = 20, short = "DarkSou
 
 Spell( 86211 ,{ name = "Soul Swap", duration = 20, shine = true, color = colors.BLACK })
 -- Spell( 17941 ,{ name = "Nightfall", duration = 10, shine = true, color = colors.CURSE })
-Spell( 103103 ,{ name = "Malefic Grasp", showpower = true, priority = 14, duration = 15, color = colors.CURSE, target = "target" })
+Spell( 103103 ,{ name = "Malefic Grasp", showpower = true, priority = 14, duration = 4, color = colors.CURSE, target = "target" })
 Spell( 1120 ,{ name = "Drain Soul", priority = 14, showpower = true, duration = 15, color = colors.CURSE })
 
 --Haunt, recast mark is for execute phase. 3s is cast time + travel time from 30+yd range

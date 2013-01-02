@@ -113,6 +113,7 @@ local defaults = {
     width = 150,
     height = 20,
     cooldownsEnabled = true,
+    missesEnabled = true,
     spellTextEnabled = true,
     shortTextEnabled = true,
     swapTarget = true,
@@ -257,6 +258,7 @@ function NugRunning.COMBAT_LOG_EVENT_UNFILTERED( self, event, timestamp, eventTy
     if NugRunningConfig[spellID] then
         local affiliationStatus = (bit_band(srcFlags, AFFILIATION_MINE) == AFFILIATION_MINE)
         local opts = NugRunningConfig[spellID]
+        -- if spellID == 104993 then print(eventType, spellName, srcFlags, srcGUID, dstGUID) end
         if not affiliationStatus and opts.affiliation then
             affiliationStatus = (bit_band(srcFlags, COMBATLOG_OBJECT_AFFILIATION_MASK) <= opts.affiliation)
         end
@@ -270,6 +272,10 @@ function NugRunning.COMBAT_LOG_EVENT_UNFILTERED( self, event, timestamp, eventTy
                 return self:DeactivateTimer(srcGUID, dstGUID, spellID, spellName, opts, auraType)
             elseif eventType == "SPELL_AURA_REMOVED_DOSE" then
                 return self:RemoveDose(srcGUID, dstGUID, spellID, spellName, auraType, amount)
+            elseif eventType == "SPELL_MISSED" then
+                if NRunDB.missesEnabled then
+                    return self:ActivateTimer(srcGUID, dstGUID, dstName, dstFlags, spellID, spellName, opts, "MISSED", auraType) -- auraType = missType in this case
+                end
             end
         end
     end
@@ -406,6 +412,10 @@ end
 local helpful = "HELPFUL"
 local harmful = "HARMFUL"
 function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID, spellName, opts, timerType, override, amount, from_unitaura)  -- duration override
+    if timerType == "MISSED" then
+        opts = { duration = 3, color = NugRunningConfig.colors.MISSED, scale = .8, priority = opts.priority or 100501, shine = true }
+    end
+
     if opts.specmask then
         local spec = GetSpecialization()
         if spec then
@@ -463,7 +473,9 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
     timer.opts = opts
         
     local time
-    if override then time = override
+    if timerType == "MISSED" then
+        time = opts.duration
+    elseif override then time = override
     else
         time = NugRunning.SetDefaultDuration(dstFlags, opts, timer)
         -- print( "DEFAULT TIME", spellName, time, timerType)
@@ -514,6 +526,8 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
     
     if opts.textfunc and type(opts.textfunc) == "function" then
         nameText = opts.textfunc(timer)
+    elseif timerType == "MISSED" then
+        nameText = override:sub(1,1)..override:sub(2):lower()
     else
         nameText = NugRunning:MakeName(opts, spellName)
     end
@@ -1081,6 +1095,7 @@ function NugRunning.SlashCmd(msg)
       |cff00ff00/nrun reset|r
       |cff00ff00/nrun clear|r
       |cff00ff00/nrun charopts|r : enable character specific settings
+      |cff00ff00/nrun misses|r : toggle showing cooldowns
       |cff00ff00/nrun cooldowns|r : toggle showing cooldowns
       |cff00ff00/nrun spelltext|r : toggle spell text on bars
       |cff00ff00/nrun shorttext|r : toggle using short names
@@ -1172,6 +1187,10 @@ function NugRunning.SlashCmd(msg)
     if k == "localnames" then
         NRunDB.localNames = not NRunDB.localNames
         print("NRun localized spell names "..(NRunDB.localNames and "enabled" or "disabled"))
+    end
+    if k == "misses" then
+        NRunDB.missesEnabled = not NRunDB.missesEnabled
+        print("NRun miss timers "..(NRunDB.missesEnabled and "enabled" or "disabled"))
     end
     if k == "swaptarget" then
         NRunDB.swapTarget = not NRunDB.swapTarget

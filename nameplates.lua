@@ -210,7 +210,7 @@ function NugRunningNameplates:PLAYER_ENTERING_WORLD(event)
         TidyPlates.PlateHandler:HookScript("OnUpdate", function()
             for frame in pairs(plates) do
                 for _,timer in ipairs(frame.timers) do
-                    FrameSetAlpha(timer, frame.alpha)
+                    FrameSetAlpha(timer, frame.alpha or 1)
                 end
             end
         end)
