@@ -258,7 +258,6 @@ function NugRunning.COMBAT_LOG_EVENT_UNFILTERED( self, event, timestamp, eventTy
     if NugRunningConfig[spellID] then
         local affiliationStatus = (bit_band(srcFlags, AFFILIATION_MINE) == AFFILIATION_MINE)
         local opts = NugRunningConfig[spellID]
-        -- if spellID == 104993 then print(eventType, spellName, srcFlags, srcGUID, dstGUID) end
         if not affiliationStatus and opts.affiliation then
             affiliationStatus = (bit_band(srcFlags, COMBATLOG_OBJECT_AFFILIATION_MASK) <= opts.affiliation)
         end
@@ -413,6 +412,7 @@ local helpful = "HELPFUL"
 local harmful = "HARMFUL"
 function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID, spellName, opts, timerType, override, amount, from_unitaura)  -- duration override
     if timerType == "MISSED" then
+        if override == "IMMUNE" then return end
         opts = { duration = 3, color = NugRunningConfig.colors.MISSED, scale = .8, priority = opts.priority or 100501, shine = true }
     end
 
@@ -1129,10 +1129,10 @@ function NugRunning.SlashCmd(msg)
         local unit = v
         local h = false
         for i=1, 100 do
-            local name, _,_,_,_,_,_,_,_,_, spellID = UnitAura(unit, i, "HELPFUL")
+            local name, _,_,_,_,duration,_,_,_,_, spellID = UnitAura(unit, i, "HELPFUL")
             if not name then break end
             if not h then print("BUFFS:"); h = true; end
-            print(string.format("    %s (id: %d)", name, spellID))
+            print(string.format("    %s (id: %d) Duration: %s", name, spellID, duration or "none" ))
         end
         h = false
         for i=1, 100 do

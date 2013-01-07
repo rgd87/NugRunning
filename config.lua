@@ -256,7 +256,7 @@ Spell( 15407, { name = "Mind Flay",  color = colors.CURSE, priority = 11, durati
 
 Cooldown( 8092, { name = "Mind Blast", recast_mark = 1.5, color = colors.CURSE, resetable = true, ghost = true })
 Cooldown( 32379, { name = "Shadow Word: Death", short = "SW:Death",  color = colors.PURPLE, resetable = true  })
-
+    
 EventTimer({ event = "SPELL_CAST_SUCCESS", spellID = 62618, name = "PW:Barrier", duration = 10, color = colors.GOLD })
 -- Spell( 81782 ,{ name = "Power Word: Barrier", short = "PW: Barrier", duration = 25, color = {1,0.7,0.5} }) -- duration actually used here, invisible aura applied
 
@@ -610,7 +610,7 @@ Spell( 10326 ,{ name = "Turn Evil",duration = 20, pvpduration = 8, color = color
 Spell( 105421 ,{ name = "Blinding Light",duration = 6, color = colors.DRED, multiTarget= true })
 
 
-Spell( 53563 ,{ name = "Beacon of Light", duration = 300, timeless = true, priority = -20, short = "Beacon",color = colors.RED })
+-- Spell( 53563 ,{ name = "Beacon of Light", duration = 300, timeless = true, priority = -20, short = "Beacon",color = colors.RED })
 Spell( 54428 ,{ name = "Divine Plea",duration = 15, short = "Plea" })
 -- Spell( 31842 ,{ name = "Divine Favor",duration = 20, short = "Favor" })
 Spell( 20066 ,{ name = "Repentance",duration = 60, pvpduration = 8, color = colors.LBLUE })
