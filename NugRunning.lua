@@ -164,6 +164,7 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
     else
         NRunDB = NRunDB_Global
     end
+    NugRunning.db = NRunDB
 
     --migration
     if not NRunDB.anchors then
@@ -1106,7 +1107,7 @@ function NugRunning.SlashCmd(msg)
       |cff00ff00/nrun localnames|r: toggle localized spell names
       |cff00ff00/nrun leaveghost|r: don't hide target/player ghosts in combat
       |cff00ff00/nrun set|r width=120 height=20 fontscale=1.1 growth=up/down
-      |cff00ff00/nrun setpos|r point=CENTER parent=UIParent to=CENTER x=0 y=0]]
+      |cff00ff00/nrun setpos|r anchor=main point=CENTER parent=UIParent to=CENTER x=0 y=0]]
     )end
     if k == "unlock" then
         for name, anchor in pairs(NugRunning.anchors) do
@@ -1144,13 +1145,15 @@ function NugRunning.SlashCmd(msg)
 
     end
     if k == "reset" then
-        NRunDB.anchor.point = "CENTER"
-        NRunDB.anchor.parent = "UIParent"
-        NRunDB.anchor.to = "CENTER"
-        NRunDB.anchor.x = 0
-        NRunDB.anchor.y = 0
-        local pos = NRunDB.anchor
-        NugRunning.anchor:SetPoint(pos.point, pos.parent, pos.to, pos.x, pos.y)
+        for name, anchor in pairs(NRunDB.anchors) do
+            anchor.point = "CENTER"
+            anchor.parent = "UIParent"
+            anchor.to = "CENTER"
+            anchor.x = 0
+            anchor.y = 0
+            local pos = anchor
+            NugRunning.anchors[name]:SetPoint(pos.point, pos.parent, pos.to, pos.x, pos.y)
+        end
     end
     if k == "clear" then
         NugRunning:ClearTimers(true)
@@ -1228,13 +1231,16 @@ function NugRunning.SlashCmd(msg)
     end
     if k == "setpos" then
         local p = ParseOpts(v)
-        NRunDB.anchor.point = p["point"] or NRunDB.anchor.point
-        NRunDB.anchor.parent = p["parent"] or NRunDB.anchor.parent
-        NRunDB.anchor.to = p["to"] or NRunDB.anchor.to
-        NRunDB.anchor.x = p["x"] or NRunDB.anchor.x
-        NRunDB.anchor.y = p["y"] or NRunDB.anchor.y
-        local pos = NRunDB.anchor
-        NugRunning.anchor:SetPoint(pos.point, pos.parent, pos.to, pos.x, pos.y)
+        local aname = p["anchor"]
+        local anchor = NRunDB.anchors[aname]
+        if not anchor then print(string.format("Anchor '%s' doesn't exist", aname)) end
+        anchor.point = p["point"] or anchor.point
+        anchor.parent = p["parent"] or anchor.parent
+        anchor.to = p["to"] or anchor.to
+        anchor.x = p["x"] or anchor.x
+        anchor.y = p["y"] or anchor.y
+        local pos = anchor
+        NugRunning.anchors[aname]:SetPoint(pos.point, pos.parent, pos.to, pos.x, pos.y)
     end
     if k == "debug" then
         if not NugRunning.debug then
