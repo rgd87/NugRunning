@@ -403,6 +403,7 @@ EventTimer({ spellID = 100130, event = "SPELL_CAST_SUCCESS", priority = 12, name
 Spell( 7384, { name = "Overpower", short = "", overlay = {0,-4.5, 0.15}, priority = 9, shine = true, color = colors.RED, recast_mark = -4.5, duration = 9})
 --Activation( 7384, { name = "Overpower", short = "", shine = true, color = colors.RED, recast_mark = 4.5, duration = 9})
 Spell( 125831 ,{ name = "Taste for Blood", glowtime = 5, shinerefresh = true, shine = true, color = colors.TEAL, duration = 15 }) -- Taste for blood
+Spell( 60503 ,{ name = "", shinerefresh = true, shine = true, color = colors.RED, duration = 12 }) -- Taste for blood
 
 -- 1s mark for bloodsurged wild strike gcd
 -- 1.5s mark for 2nd gcd
@@ -457,8 +458,8 @@ Spell( 127722, { name = "Serpent's Zeal", priority = -8, color = colors.PINK, du
 
 Cooldown( 107428, { name = "Rising Sun Kick", short = "Rising Sun", color = colors.PURPLE })
 
-Spell( 119611 ,{ name = "Renewing Mist", color = colors.LGREEN, duration = 18 })
-Spell( 115151 ,{ name = "Renewing Mist", color = colors.TEAL2 })
+Spell( 119611 ,{ name = "Renewing Mist", color = colors.LGREEN, target = "player", duration = 18 })
+-- Spell( 115151 ,{ name = "Renewing Mist", color = colors.TEAL2 })
 Spell( 115867 ,{ name = "Mana Tea", priority = -10, duration = 120, color = colors.BLACK })
 Cooldown( 123761 ,{ name = "Mana Tea", color = colors.CURSE })
 Spell( 116849 ,{ name = "Life Cocoon", color = colors.PURPLE, duration = 12 })
