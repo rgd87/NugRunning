@@ -5,64 +5,64 @@ local active = NugRunning.active
 local free = NugRunning.free
 local UnitGUID = UnitGUID
 
-if class == "WARRIOR" then
-    local overpower_id = 7384
-    local op_opts = NugRunningConfig[overpower_id]
-    NugRunningConfig[overpower_id] = nil
+-- if class == "WARRIOR" then
+--     local overpower_id = 7384
+--     local op_opts = NugRunningConfig[overpower_id]
+--     NugRunningConfig[overpower_id] = nil
 
-    local op_timer
-    local op_frame = CreateFrame("Frame")
-    local old = false
-    --[[op_frame.CheckFury = function(self)
-        if IsSpellKnown(23881) then -- Bloodthirst, Raging Blow becomes known only after event is fired
-            self:RegisterEvent("UNIT_AURA")
-        else
-            self:UnregisterEvent("UNIT_AURA")
-            if enrage_timer then
-                active[enrage_timer] = nil
-                enrage_timer:Hide()
-                NugRunning:ArrangeTimers()
-            end
-        end
-    end]]
+--     local op_timer
+--     local op_frame = CreateFrame("Frame")
+--     local old = false
+--     --[[op_frame.CheckFury = function(self)
+--         if IsSpellKnown(23881) then -- Bloodthirst, Raging Blow becomes known only after event is fired
+--             self:RegisterEvent("UNIT_AURA")
+--         else
+--             self:UnregisterEvent("UNIT_AURA")
+--             if enrage_timer then
+--                 active[enrage_timer] = nil
+--                 enrage_timer:Hide()
+--                 NugRunning:ArrangeTimers()
+--             end
+--         end
+--     end]]
 
-    op_frame:SetScript("OnEvent",function(self, event, unit, spellName, rank, lineID, spellID)
-        -- if event == "ACTIVE_TALENT_GROUP_CHANGED" or event == "PLAYER_TALENT_UPDATE" then
-        --    return self:CheckFury()
-        --end
-        if event == "UNIT_SPELLCAST_SUCCEEDED" then
-            if unit ~= "player" then return end
-            if spellID == 12294 then -- Mortal Strike
-                 if op_timer and active[op_timer] then
-                    NugRunning:RefreshTimer(UnitGUID("player"), UnitGUID("player"),
-                                         UnitName("plyer"), nil,
-                                         overpower_id, GetSpellInfo(overpower_id), op_opts, "BUFF" )
-                end
-            end
-        else -- SPELL_UPDATE_USABLE
-            local new = IsUsableSpell(overpower_id)
-            if new ~= old then
-                old = new
-                if new then
-                        op_timer = NugRunning:ActivateTimer(UnitGUID("player"), UnitGUID("player"),
-                                         UnitName("plyer"), nil,
-                                         overpower_id, GetSpellInfo(overpower_id), op_opts, "BUFF")
-                else
-                    NugRunning:DeactivateTimer(UnitGUID("player"), UnitGUID("player"), overpower_id,  GetSpellInfo(overpower_id), op_opts, "BUFF")
-                end
-            end
-        end
-    end)
+--     op_frame:SetScript("OnEvent",function(self, event, unit, spellName, rank, lineID, spellID)
+--         -- if event == "ACTIVE_TALENT_GROUP_CHANGED" or event == "PLAYER_TALENT_UPDATE" then
+--         --    return self:CheckFury()
+--         --end
+--         if event == "UNIT_SPELLCAST_SUCCEEDED" then
+--             if unit ~= "player" then return end
+--             if spellID == 12294 then -- Mortal Strike
+--                  if op_timer and active[op_timer] then
+--                     NugRunning:RefreshTimer(UnitGUID("player"), UnitGUID("player"),
+--                                          UnitName("plyer"), nil,
+--                                          overpower_id, GetSpellInfo(overpower_id), op_opts, "BUFF" )
+--                 end
+--             end
+--         else -- SPELL_UPDATE_USABLE
+--             local new = IsUsableSpell(overpower_id)
+--             if new ~= old then
+--                 old = new
+--                 if new then
+--                         op_timer = NugRunning:ActivateTimer(UnitGUID("player"), UnitGUID("player"),
+--                                          UnitName("plyer"), nil,
+--                                          overpower_id, GetSpellInfo(overpower_id), op_opts, "BUFF")
+--                 else
+--                     NugRunning:DeactivateTimer(UnitGUID("player"), UnitGUID("player"), overpower_id,  GetSpellInfo(overpower_id), op_opts, "BUFF")
+--                 end
+--             end
+--         end
+--     end)
 
-    hooksecurefunc(NugRunning,"PLAYER_LOGIN",function(self,event)
-        --[[op_frame:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
-        op_frame:RegisterEvent("PLAYER_TALENT_UPDATE")
-        op_frame:CheckFury()]]
-        op_frame:RegisterEvent"SPELL_UPDATE_USABLE"
-        op_frame:RegisterEvent"UNIT_SPELLCAST_SUCCEEDED"
-    end)
+--     hooksecurefunc(NugRunning,"PLAYER_LOGIN",function(self,event)
+--         --[[op_frame:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
+--         op_frame:RegisterEvent("PLAYER_TALENT_UPDATE")
+--         op_frame:CheckFury()]]
+--         op_frame:RegisterEvent"SPELL_UPDATE_USABLE"
+--         op_frame:RegisterEvent"UNIT_SPELLCAST_SUCCEEDED"
+--     end)
 
-end
+-- end
 
 -- Enrage Timer
 --[[
