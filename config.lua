@@ -267,6 +267,7 @@ EventTimer({ event = "SPELL_CAST_SUCCESS", spellID = 62618, name = "PW:Barrier",
 Cooldown( 88625 ,{ name = "Holy Word: Chastise", color = colors.CURSE, short = "Chastise", resetable = true })
 
 Cooldown( 47540 ,{ name = "Penance", priority = 15, color = colors.CURSE })
+-- Spell( 14914 ,{ name = "Holy Fire", priority = 14.1, color = colors.PINK, ghost = 3, duration = 7 }) --holy fire
 Cooldown( 14914 ,{ name = "", overlay = {0,3}, priority = 14, color = colors.PINK }) --holy fire
 Spell( 81661 ,{ name = "Evangelism",duration = 15, group = "buffs", priority = 10, color = colors.ORANGE, stackcolor = {
                                 [1] = colors.DRED,
@@ -400,10 +401,10 @@ EventTimer({ spellID = 20243, event = "SPELL_CAST_SUCCESS", priority = 12, name 
 EventTimer({ spellID = 100130, event = "SPELL_CAST_SUCCESS", priority = 12, name = "Wild Strike", duration = 0.9, color = colors.PINK })
 
 -- special timer
-Spell( 7384, { name = "Overpower", short = "", overlay = {0,-4.5, 0.15}, priority = 9, shine = true, color = colors.RED, recast_mark = -4.5, duration = 9})
+-- Spell( 7384, { name = "Overpower", overlay = {0,-4.5, 0.15}, priority = 11, shine = true, shinerefresh = true, color = colors.PINKIERED, recast_mark = -4.5, duration = 9})
 --Activation( 7384, { name = "Overpower", short = "", shine = true, color = colors.RED, recast_mark = 4.5, duration = 9})
 -- Spell( 125831 ,{ name = "Taste for Blood", glowtime = 5, shinerefresh = true, shine = true, color = colors.TEAL, duration = 15 }) -- Taste for blood
-Spell( 60503 ,{ name = "", shinerefresh = true, shine = true, color = colors.RED, duration = 12 }) -- Taste for blood
+Spell( 60503 ,{ name = "Overpower", priority = 10.1, overlay = {0,7, 0.3}, fixenlen = 9, shinerefresh = true, shine = true, color = colors.PINKIERED, duration = 12 }) -- Taste for blood
 
 -- 1s mark for bloodsurged wild strike gcd
 -- 1.5s mark for 2nd gcd
