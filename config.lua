@@ -84,7 +84,7 @@ Spell( 111400 ,{ name = "Burning Rush",duration = 20, timeless = true, color = c
 --I can't know for sure what base debuff duration was because of haste,
 --so all values are just 1s less than 50% of base duration without haste to be safe
 --Immolate
-Spell( 348 ,{ name = "", overlay = {0, 1.5, 0.2}, recast_mark = 6.5, showpower = true, duration = 15, nameplates = true, priority = 10, ghost = true, color = colors.RED })
+Spell( {348, 108686},{ name = "", overlay = {0, 1.5, 0.2}, recast_mark = 6.5, showpower = true, duration = 15, nameplates = true, priority = 10, ghost = true, color = colors.RED })
 
 Spell( 34936 ,{ name = "Backlash", duration = 8, shine = true, color = colors.CURSE })
 
