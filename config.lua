@@ -94,7 +94,7 @@ local backdraft_stackcolor = { c1, c1, c2,c2,c2,c2}
 Spell( 117828 ,{ name = "Backdraft", duration = 15, shine = true, priority = -4, shinerefresh = true, stackcolor = backdraft_stackcolor }) --, charged = true, maxcharge = 3
 
 
-Spell( 104232 ,{ name = "Rain of Fire", duration = 8, priority = -5, shine = true, color = colors.PURPLE, timeless = true, target = "player" })
+Spell( 104232 ,{ name = "Rain of Fire", duration = 8, priority = -5, shine = true, color = colors.PURPLE, target = "player" })
 Spell( 80240 ,{ name = "Havoc", nameplates = true, duration = 15, color = colors.LRED, target = "player" })
 
 Spell( 108683 ,{ name = "Fire and Brimstone", short = "FnB", timeless = true, color = colors.CURSE })
