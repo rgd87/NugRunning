@@ -726,9 +726,7 @@ do
     end
 end
 
-function NugRunning.GetUnitAuraData(self, unit, timer, spellID)
-        for auraIndex=1,100 do
-            local name, _,_, count, _, duration, expirationTime, caster, _,_, aura_spellID, _, _, _, absorb = UnitAura(unit, auraIndex, timer.filter)
+function NugRunning.SetUnitAuraValues(self, timer, spellID, name, rank, icon, count, dispelType, duration, expirationTime, caster, isStealable, shouldConsolidate, aura_spellID, canApplyAura, isBossDebuff, value1, absorb, value3)
             if aura_spellID then
                 if aura_spellID == spellID and NugRunning.UnitAffiliationCheck(caster, timer.opts.affiliation) then
                     if timer.opts.charged then
@@ -749,9 +747,13 @@ function NugRunning.GetUnitAuraData(self, unit, timer, spellID)
                     return true
                     -- break
                 end
-            else
-                return nil
             end
+end
+
+function NugRunning.GetUnitAuraData(self, unit, timer, spellID)
+        for auraIndex=1,100 do
+            -- local name, _,_, count, _, duration, expirationTime, caster, _,_, aura_spellID, _, _, _, absorb = UnitAura(unit, auraIndex, timer.filter)
+            return NugRunning:SetUnitAuraValues(timer, spellID, UnitAura(unit, auraIndex, timer.filter))
         end
 end
 
@@ -1340,8 +1342,7 @@ do
     NugRunning.UnitAffiliationCheck = UnitAffiliationCheck
 
     local last_taget_update = 0
-    function NugRunning.OnAuraEvent(self, event, unit)
-        if event == "UNIT_AURA" then
+    local function UpdateUnitAuras(unit)
             local up = hUnits[unit]
             if not up then return end
             local unitGUID = UnitGUID(unit)
@@ -1352,21 +1353,30 @@ do
                 if now - last_taget_update < 200 then return end
             end
 
-
             for timer in pairs(active) do 
                 if  timer.dstGUID == unitGUID and
                     (timer.timerType == "BUFF" or timer.timerType == "DEBUFF")
                 then
-                        local name, _,_, count, _, duration, expirationTime, caster, _,_, aura_spellID = UnitAura(unit, GetSpellInfo(timer.spellID), nil, timer.filter)
-                        if UnitAffiliationCheck(caster, timer.opts.affiliation) and timer.spellID == aura_spellID then
-                            if (now + duration - expirationTime < 0.1) then
-                                NugRunning:RefreshTimer(playerGUID,unitGUID,UnitName(unit),nil, timer.spellID, timer.spellName, timer.opts, timer.timerType, duration, count, true)
-                            elseif count and timer.count ~= count then
-                                NugRunning:RemoveDose(playerGUID, unitGUID, aura_spellID, timer.spellName, timer.timerType, count)
-                            end
-                        end
+                        -- local name, _,_, count, _, duration, expirationTime, caster, _,_, aura_spellID = UnitAura(unit, GetSpellInfo(timer.spellID), nil, timer.filter)
+                        NugRunning:SetUnitAuraValues(timer, timer.spellID, UnitAura(unit, GetSpellInfo(timer.spellID), nil, timer.filter))
+                        -- if UnitAffiliationCheck(caster, timer.opts.affiliation) and timer.spellID == aura_spellID then
+                            -- NugRunning:RefreshTimer(playerGUID,unitGUID,UnitName(unit),nil, timer.spellID, timer.spellName, timer.opts, timer.timerType, duration, count, true)
+                            -- if (now + duration - expirationTime < 0.1) then
+                                
+                            -- else
+                            -- if count and timer.count ~= count then
+                                -- NugRunning:RemoveDose(playerGUID, unitGUID, aura_spellID, timer.spellName, timer.timerType, count)
+                            -- end
+                        -- end
                 end
             end
+    end
+
+    function NugRunning.OnAuraEvent(self, event, unit)
+        if event == "UNIT_AURA" then
+            return UpdateUnitAuras(unit)
+        elseif event == "UPDATE_MOUSEOVER_UNIT" then
+            return UnitExists("mouseover") and UpdateUnitAuras("mouseover")
         elseif event == "PLAYER_TARGET_CHANGED" then
             -- updating timers from target unit when possible
             local targetGUID = UnitGUID("target")
@@ -1416,5 +1426,16 @@ do
     end
     h:SetScript("OnEvent", NugRunning.OnAuraEvent)
     h:RegisterEvent("UNIT_AURA")
+    h:RegisterEvent("UPDATE_MOUSEOVER_UNIT")
     h:RegisterEvent("PLAYER_TARGET_CHANGED")
+
+
+    -- h._elapsed = 0
+    -- h:SetScript("OnUpdate", function(self, time)
+    --     self._elapsed = self._elapsed + time
+    --     if self._elapsed < 0.2 then return end
+    --     self._elapsed = 0
+
+    --     NugRunning.OnAuraEvent(nil, "UNIT_AURA", "mouseover")
+    -- end)
 end
