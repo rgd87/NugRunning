@@ -114,6 +114,7 @@ local defaults = {
     height = 20,
     cooldownsEnabled = true,
     missesEnabled = true,
+    targetTextEnabled = false,
     spellTextEnabled = true,
     shortTextEnabled = true,
     swapTarget = true,
@@ -394,7 +395,7 @@ function NugRunning.SPELL_UPDATE_COOLDOWN(self,event)
                         if opts.replaces then
                             local name,_, texture = GetSpellInfo(spellID)
                             timer:SetIcon(texture)
-                            timer:SetName(self:MakeName(opts, name) )
+                            timer:SetName(self:MakeName(opts, name, timer.dstName) )
                             if opts.color then timer:SetColor(unpack(opts.color)) end
                         end
                         opts.timer = timer
@@ -462,6 +463,12 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
     if not from_unitaura then
         local plevel = self:GetPowerLevel()
         timer.powerLevel = plevel
+        if opts.tick then
+            timer.tickPeriod = opts.tick > 0 and (opts.tick/(1+(UnitSpellHaste("player")/100))) or math.abs(opts.tick)
+            timer.mark.fullticks = nil
+        else
+            timer.tickPeriod = nil
+        end
         self:UpdateTimerPower(timer, plevel)
     end
     timer.srcGUID = srcGUID
@@ -530,7 +537,7 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
     elseif timerType == "MISSED" then
         nameText = override:sub(1,1)..override:sub(2):lower()
     else
-        nameText = NugRunning:MakeName(opts, spellName)
+        nameText = NugRunning:MakeName(opts, spellName, dstName)
     end
     if timer.SetName then timer:SetName(nameText) end
 
@@ -592,6 +599,12 @@ function NugRunning.RefreshTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID,
     if not noshine then
         local plevel = self:GetPowerLevel()
         timer.powerLevel = plevel
+        if opts.tick then
+            timer.tickPeriod = opts.tick > 0 and (opts.tick/(1+(UnitSpellHaste("player")/100))) or math.abs(opts.tick)
+            timer.mark.fullticks = nil
+        else
+            timer.tickPeriod = nil
+        end
         self:UpdateTimerPower(timer, plevel)
     end
 
@@ -664,8 +677,10 @@ function NugRunning.SetDefaultDuration(dstFlags, opts, timer )
     return ((type(opts.duration) == "function" and opts.duration(timer, opts)) or opts.duration)
 end
 
-function NugRunning.MakeName(self, opts, spellName)
-    if NRunDB.spellTextEnabled then
+function NugRunning.MakeName(self, opts, spellName, dstName)
+    if NRunDB.targetTextEnabled then
+        return dstName
+    elseif NRunDB.spellTextEnabled then
         if NRunDB.localNames then
             return spellName
         elseif NRunDB.shortTextEnabled and opts.short then
@@ -757,7 +772,8 @@ function NugRunning.GetUnitAuraData(self, unit, timer, spellID)
         end
 end
 
-
+local math_floor = math.floor
+local round = function(v) return math_floor(v+.1) end
 -----------------------------------
 -- Timer internal functionality
 -----------------------------------
@@ -789,6 +805,23 @@ function NugRunning.TimerFunc(self,time)
     local rm = opts.recast_mark
     if rm and beforeEnd < rm and beforeEnd > rm-0.1 then
         self.mark.shine:Play()
+    end
+
+    local tickPeriod = self.tickPeriod
+    if tickPeriod then
+        local fullticks = round(beforeEnd/tickPeriod)
+        if self.mark.fullticks ~= fullticks then
+            local closestTickTime = fullticks*tickPeriod
+            self:UpdateMark(closestTickTime)
+
+            if self.mark.fullticks and self.opts.tickshine then
+                self.mark.shine:Play()
+            else
+                self.mark.spark:CatchUp()
+            end
+
+            self.mark.fullticks = fullticks
+        end
     end
 end
 
@@ -1175,6 +1208,10 @@ function NugRunning.SlashCmd(msg)
         end
         NRunDB.cooldownsEnabled = not NRunDB.cooldownsEnabled
         print("NRun cooldowns "..(NRunDB.cooldownsEnabled and "enabled" or "disabled"))
+    end
+    if k == "targettext" then
+        NRunDB.targetTextEnabled = not NRunDB.targetTextEnabled
+        print("NRun target name text "..(NRunDB.targetTextEnabled and "enabled" or "disabled"))
     end
     if k == "spelltext" then
         NRunDB.spellTextEnabled = not NRunDB.spellTextEnabled

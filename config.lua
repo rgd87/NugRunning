@@ -84,7 +84,7 @@ Spell( 111400 ,{ name = "Burning Rush",duration = 20, timeless = true, color = c
 --I can't know for sure what base debuff duration was because of haste,
 --so all values are just 1s less than 50% of base duration without haste to be safe
 --Immolate
-Spell( {348, 108686},{ name = "", overlay = {0, 1.5, 0.2}, recast_mark = 6.5, showpower = true, duration = 15, nameplates = true, priority = 10, ghost = true, color = colors.RED })
+Spell( {348, 108686},{ name = "", tick = 3, overlay = {0, 6.5, 0.2}, showpower = true, duration = 15, nameplates = true, priority = 10, ghost = true, color = colors.RED })
 
 Spell( 34936 ,{ name = "Backlash", duration = 8, shine = true, color = colors.CURSE })
 
@@ -102,7 +102,7 @@ Cooldown( 17962, { name = "Conflagrate", ghost = true, priority = 5, color = col
 
 Spell( 122355,{ name = "Molten Core",duration = 30, shine = true, color = colors.PURPLE })
 --Doom
-Spell( 603 ,{ name = "", duration = 60, nameplates = true, showpower = true, recast_mark = 29, ghost = true, priority = 6, color = colors.WOO })
+Spell( 603 ,{ name = "", duration = 60, tick = 15, overlay = {0,29, 0.2}, nameplates = true, showpower = true, ghost = true, priority = 6, color = colors.WOO })
 -- REMOVED_DOSE event is not fired for molten core, so it's stuck at 3
 
 Cooldown( 105174, { name = "Hand of Gul'dan",  ghost = true, shinerefresh = true, color = colors.CURSE })
@@ -116,25 +116,29 @@ Spell( 113858 ,{ name = "Dark Soul: Instability",duration = 20, short = "DarkSou
 
 Spell( 86211 ,{ name = "Soul Swap", duration = 20, shine = true, color = colors.BLACK })
 -- Spell( 17941 ,{ name = "Nightfall", duration = 10, shine = true, color = colors.CURSE })
-Spell( 103103 ,{ name = "Malefic Grasp", showpower = true, priority = 14, duration = 4, color = colors.CURSE, target = "target" })
+Spell( 103103 ,{ name = "Malefic Grasp", tick = 1, overlay = {"tick", "tickend"}, showpower = true, priority = 14, duration = 4, color = colors.CURSE, target = "target" })
 Spell( 1120 ,{ name = "Drain Soul", priority = 14, showpower = true, duration = 15, color = colors.CURSE })
 
 --Haunt, recast mark is for execute phase. 3s is cast time + travel time from 30+yd range
 local normalize_dots_to = nil--26
-local haunt_overlay = {0,8, 0.15}
+-- local haunt_overlay = {0,8, 0.15}
 --Haunt
 Spell( 48181 ,{ name = "",duration = 12, priority = 8, recast_mark = 3, ghost = true, nameplates = true, color = colors.TEAL })
 -- 8s second overlay is for haunt duration
 --Unstable Affliction
-Spell( 30108 ,{ name = "", duration = 15, priority = 10, showpower = true, overlay = {0,9, 0.15}, fixedlen = normalize_dots_to, nameplates = true, ghost = true, recast_mark = 6.5, color = colors.RED })
+Spell( 30108 ,{ name = "", duration = 15, tick = 3, priority = 10, showpower = true, overlay = {0,6.5, 0.2}, fixedlen = normalize_dots_to, nameplates = true, ghost = true, color = colors.RED })
 --Corruption (2nd is a Soulburn SoC Corruption) --87389
-Spell( 172 ,{ name = "", duration = 18, priority = 9, overlay = haunt_overlay, showpower = true, fixedlen = normalize_dots_to, recast_mark = 8, nameplates = true, ghost = true, color = colors.PINK })
+Spell( 172 ,{ name = "", duration = 18, tick = 3, priority = 9, overlay = {0,8, 0.2}, showpower = true, fixedlen = normalize_dots_to, nameplates = true, ghost = true, color = colors.PINK })
 Spell( 87389 ,{ name = "Corruption", multiTarget = true, color = colors.WOO2, duration = 18 })
 --Agony
-Spell( 980 ,{ name = "", duration = 24, overlay = haunt_overlay, showpower = true, fixedlen = normalize_dots_to, nameplates = true, recast_mark = 11, ghost = true, priority = 6, color = colors.WOO })
+Spell( 980 ,{ name = "", duration = 24, tick = 3, overlay = {0, 11, 0.2}, showpower = true, fixedlen = normalize_dots_to, nameplates = true, ghost = true, priority = 6, color = colors.WOO })
 Spell( {27243, 114790} ,{ name = "Seed of Corruption",duration = 18, nameplates = true,  color = colors.LRED, short = "SoC" })
 
---felfire and touch of chaos refresh dotpower
+
+local patchname, buildnumber = GetBuildInfo() --TOC is wrong on ptr
+local patch50400 = tonumber(buildnumber) >= 17124
+
+if not patch50400 then
 EventTimer({ spellID = 77799, event = "SPELL_DAMAGE",
     action = function(active, srcGUID, dstGUID, spellID)
         for timer in pairs(active) do
@@ -148,7 +152,9 @@ EventTimer({ spellID = 77799, event = "SPELL_DAMAGE",
             end
         end
     end})
+end
 
+--touch of chaos refresh dotpower
 EventTimer({ spellID = 103964, event = "SPELL_DAMAGE",
     action = function(active, srcGUID, dstGUID, spellID)
         for timer in pairs(active) do
@@ -162,6 +168,7 @@ EventTimer({ spellID = 103964, event = "SPELL_DAMAGE",
     end})
 
 
+if not patch50400 then
 --void ray
 EventTimer({ spellID = 115422, event = "SPELL_DAMAGE",
     action = function(active, srcGUID, dstGUID, spellID)
@@ -178,6 +185,7 @@ EventTimer({ spellID = 115422, event = "SPELL_DAMAGE",
             end
         end
     end})
+end
 
 Spell( 109466 ,{ name = "Curse of Enfeeblement",duration = 30, color = colors.CURSE, short = "CoEnf" })
 Spell( 18223 ,{ name = "Curse of Exhaustion", duration = 30, pvpduration = 8, color = colors.CURSE, short = "CoEx" })
@@ -213,12 +221,12 @@ Spell( 586 ,{ name = "Fade",duration = 10 })
 Spell( 89485 ,{ name = "Inner Focus", shine = true, color = colors.LBLUE, timeless = true, duration = 0.1 })
 -- Spell( 49694,59000 ,{ name = "Improved Spirit Tap",duration = 8 })
 -- Spell( 15271 ,{ name = "Spirit Tap",duration = 15 })
-Spell( 589 ,{ name = "Shadow Word: Pain",duration = 18, overlay = {0,1.5, 0.2}, ghost = true, nameplates = true, priority = 9, color = colors.PURPLE, refreshed =true, short = "SW:Pain" })
+Spell( 589 ,{ name = "Shadow Word: Pain", tick = 3, tickshine = true, overlay = { "tick", "end", 0.3}, duration = 18, ghost = true, nameplates = true, priority = 9, color = colors.PURPLE, short = "SW:Pain" })
 
 EventTimer({ event = "SPELL_SUMMON", spellID = 123040, name = "Mindbender", group = "buffs", duration = 15, priority = -10, color = colors.BLACK })
 EventTimer({ event = "SPELL_SUMMON", spellID = 34433, name = "Shadowfiend", group = "buffs", duration = 12, priority = -10, color = colors.BLACK })
 
-Spell( 34914 ,{ name = "Vampiric Touch", overlay = {0, 1.5, 0.2}, recast_mark = 2.8, ghost = true, nameplates = true,  priority = 10, duration = 15, color = colors.RED, short = "VampTouch", hasted = true })
+Spell( 34914 ,{ name = "Vampiric Touch", tick = 3, tickshine = true, overlay = { "tick", "end", 0.3}, ghost = true, nameplates = true,  priority = 10, duration = 15, color = colors.RED, short = "VampTouch", hasted = true })
 Spell( 2944 ,{ name = "Devouring Plague",duration = 6, priority = 8, nameplates = true, color = colors.WOO, short = "Plague" })
 Spell( 47585 ,{ name = "Dispersion",duration = 6, color = colors.PURPLE })
 -- Spell( 15286 ,{ name = "Vampiric Embrace",duration = 15, color = colors.CURSE, short = "VampEmbrace" })
@@ -392,7 +400,7 @@ Spell( 12292, { name = "Bloodbath", priority = -8, group = "buffs", color = colo
 --Spell( 56112 ,{ name = "Furious Attacks", duration = 10 })
 --Activation( 5308, { name = "Execute", shine = true, timeless = true, color = colors.CURSE, duration = 0.1 })
 
-Cooldown( 12294, { name = "Mortal Strike", overlay = {0, 1.5}, priority = 10, short = "", check_known = true, recast_mark = 1, fixedlen = 9, ghost = true,  color = colors.CURSE })
+Cooldown( 12294, { name = "Mortal Strike", tick = -1.5, tickshine = true, overlay = {"tick", "end"}, priority = 10, short = "", check_known = true, fixedlen = 9, ghost = true,  color = colors.CURSE })
 -- these popups are for visual confirmation that cast went in
 EventTimer({ spellID = 1464, event = "SPELL_CAST_SUCCESS", priority = 12, name = "Slam", duration = 0.5, color = colors.PINK })
 EventTimer({ spellID = 1680, event = "SPELL_CAST_SUCCESS", priority = 12, name = "Whirlwind", duration = 0.5, color = colors.PINK })
@@ -409,7 +417,7 @@ Spell( 60503 ,{ name = "Overpower", priority = 10.1, overlay = {0,7, 0.3}, fixen
 -- 1s mark for bloodsurged wild strike gcd
 -- 1.5s mark for 2nd gcd
 -- 3s mark for 1st gcd
-Cooldown( 23881, { name = "Bloodthirst", overlay = {1, 3}, short = "", priority = 10, check_known = true, ghost = true, recast_mark = 1.5, fixedlen = 6,  color = colors.CURSE })
+Cooldown( 23881, { name = "Bloodthirst", tick = -1.5, tickshine = true, overlay = {"tick", "end"}, short = "", priority = 10, check_known = true, ghost = true, fixedlen = 6,  color = colors.CURSE })
 Spell( 46916 ,{ name = "Bloodsurge", shine = true, priority = 8, color = colors.TEAL, duration = 10 })
 
 Spell( 131116 ,{ name = "Raging Blow", priority = 9, fixedlen = 9, shine = true, shinerefresh = true, duration = 12, stackcolor = {
@@ -426,7 +434,7 @@ Spell( 12975, { name = "Last Stand", color = colors.BLACK, duration = 20, group 
 Spell( 97463, { name = "Rallying Cry", color = colors.BLACK, target = "player", duration = 10, group = "buffs" })
 Spell( 118038, { name = "Die by the Sword", short = "DbtS", color = colors.BLACK, duration = 8, group = "buffs" })
 Spell( 871, { name = "Shield Wall", color = colors.WOO2, duration = 12, group = "buffs" })
-Cooldown( 23922, { name = "Shield Slam", overlay = {3, 4.5}, short = "", priority = 10, check_known = true, fixedlen = 9, recast_mark = 1.5, ghost = true,  color = colors.CURSE, resetable = true })
+Cooldown( 23922, { name = "Shield Slam", tick = -1.5, tickshine = true, overlay = {"tick", "end"}, short = "", priority = 10, check_known = true, fixedlen = 9, ghost = true,  color = colors.CURSE, resetable = true })
 --Activation( 23922, { name = "Slam!", shine = true, timeless = true, color = colors.CURSE, duration = 0.1 })
 
 -- Cooldown( 78, { name = "Heroic Strike", short = "Heroic", fixedlen = 6, ghost = true })

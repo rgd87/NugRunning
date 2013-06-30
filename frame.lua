@@ -35,16 +35,59 @@ end
 local function getbarpos(timer, time)
     local duration = timer.endTime - timer.startTime
     if time >= 0 then
-        return time / duration * timer.bar:GetWidth()
+        return time / duration * timer.bar:GetWidth(), time / duration
     else
-        return (duration+time) / duration * timer.bar:GetWidth()
+        return (duration+time) / duration * timer.bar:GetWidth(), (duration+time) / duration
     end
 end
-function TimerBar.UpdateMark(self)
-    local rm = self.opts.recast_mark
-    if rm then
+
+function TimerBar.MoveMark(self, time)
+    local pos, percent = getbarpos(self, time)
+    self.mark:SetPoint("CENTER",self.bar,"LEFT",pos,0)
+    if percent < 0.02 then
+        self.mark:Hide()
+        self.mark.texture:Hide()
+    else
+        self.mark:Show()
+        self.mark.texture:Show()
+    end
+end
+
+local function clear_overlay_point(p, self, ticktime)
+    if type(p) == "string" then
+        if p == "tick" then
+            return ticktime
+        elseif p == "tickend" then
+            if not ticktime then return nil end
+            return min(ticktime+self.tickPeriod, self.endTime-self.startTime)
+        elseif p == "end" then
+            return self.endTime-self.startTime
+        end
+    else return p end
+end
+
+function TimerBar.UpdateMark(self, time) -- time - usually closest tick time
+    if self.opts.tick then
+        -- local tick_settings = self.opts.tick
+        -- local tickPeriod, overlayType, doGlow = type(tick_settings) == "table"
+                                                        -- and unpack(tick_settings)
+                                                        -- or  tick_settings
+        if time then
+            if time > 0 then
+                local pos = getbarpos(self, time)
+                self.mark:SetPoint("CENTER",self.bar,"LEFT",pos,0)
+                self.mark:Show()
+                self.mark.texture:Show()
+            else
+                self.mark:Hide()
+                self.mark.texture:Hide()
+            end
+        end
+    elseif self.opts.recast_mark then
+        local rm = self.opts.recast_mark
         local pos = getbarpos(self, rm)
         self.mark:SetPoint("CENTER",self.bar,"LEFT",pos,0)
+        self.mark.spark:CatchUp()
         self.mark:Show()
         self.mark.texture:Show()
     else
@@ -54,10 +97,14 @@ function TimerBar.UpdateMark(self)
 
     local overlay = self.opts.overlay
     if overlay then
-        local pos1 = getbarpos(self, overlay[1])
-        local pos2 = getbarpos(self, overlay[2])
+        local t1 = clear_overlay_point(overlay[1], self, time)
+        local t2 = clear_overlay_point(overlay[2], self, time)
+        if not t1 or not t2 then
+            return -- skip when point contains "tick" or "tickend", but it's not tick update call
+        end
+        local pos1 = getbarpos(self, t1)
+        local pos2 = getbarpos(self, t2)
         local alpha = overlay[3] or 0.2
-        -- print(pos1, pos2)
         if pos2 > pos1 then
             self.overlay:SetPoint("TOPLEFT", self.bar, "TOPLEFT", pos1, 0)
             self.overlay:SetPoint("BOTTOMRIGHT", self.bar, "BOTTOMLEFT", pos2, 0)
@@ -211,7 +258,7 @@ NugRunning.ConstructTimerBar = function(width, height)
     ict:SetAllPoints(ic)
     f.icon = ict
     
-    f.stacktext = ic:CreateFontString(nil, "OVERLAY");
+    f.stacktext = ic:CreateFontString(nil, "OVERLAY")--, "GameFontNormal");
     f.stacktext:SetFont(NugRunningConfig.stackFont.font,
                         NugRunningConfig.stackFont.size,
                         NugRunningConfig.stackFont.flags or "OUTLINE")
@@ -232,14 +279,14 @@ NugRunning.ConstructTimerBar = function(width, height)
 	f.bar.bg:SetAllPoints(f.bar)
 	f.bar.bg:SetTexture("Interface\\AddOns\\NugRunning\\statusbar")
     
-    f.timeText = f.bar:CreateFontString();
+    f.timeText = f.bar:CreateFontString(nil, "ARTWORK")--, "GameFontNormalSmall");
     f.timeText:SetFont(NugRunningConfig.timeFont.font, NugRunningConfig.timeFont.size, NugRunningConfig.timeFont.flags)
     f.timeText:SetJustifyH("RIGHT")
     f.timeText:SetAlpha(NugRunningConfig.timeFont.alpha or 1)
     f.timeText:SetVertexColor(1,1,1)
     f.timeText:SetPoint("RIGHT", f.bar, "RIGHT",-6,0)
     
-    f.spellText = f.bar:CreateFontString();
+    f.spellText = f.bar:CreateFontString(nil, "ARTWORK")--, "GameFontNormal");
     f.spellText:SetFont(NugRunningConfig.nameFont.font, NugRunningConfig.nameFont.size, NugRunningConfig.nameFont.flags)
     f.spellText:SetWidth(f.bar:GetWidth()*0.8)
     f.spellText:SetHeight(height/2+1)
@@ -347,6 +394,7 @@ NugRunning.ConstructTimerBar = function(width, height)
     m:SetHeight(f:GetHeight()*0.9)
     m:SetFrameLevel(4)
     m:SetAlpha(0.6)
+    m:SetPoint("CENTER",f.bar,"LEFT",10,0)
     
     local texture = m:CreateTexture(nil, "OVERLAY")
     texture:SetTexture("Interface\\AddOns\\NugRunning\\mark")
@@ -354,13 +402,19 @@ NugRunning.ConstructTimerBar = function(width, height)
     texture:SetAllPoints(m)
     m.texture = texture
     
-    local spark = m:CreateTexture(nil, "OVERLAY")
+    local spark = f.bar:CreateTexture(nil, "OVERLAY", nil, 2)
     spark:SetTexture("Interface\\CastingBar\\UI-CastingBar-Spark")
     spark:SetAlpha(0)
     spark:SetWidth(20)
     spark:SetHeight(m:GetWidth()*4)
-    spark:SetPoint("CENTER",m)
+    -- spark:SetPoint("CENTER",m)
     spark:SetBlendMode('ADD')
+    spark.mark = m
+    spark.CatchUp = function(self)
+        local markpoint = 
+        self:SetPoint(self.mark:GetPoint())
+    end
+    spark:CatchUp()
     m.spark = spark
     
     local ag = spark:CreateAnimationGroup()
@@ -372,6 +426,10 @@ NugRunning.ConstructTimerBar = function(width, height)
     a2:SetChange(-1)
     a2:SetDuration(0.4)
     a2:SetOrder(2)
+
+    ag:SetScript("OnFinished", function(self)
+        self:GetParent():CatchUp()
+    end)
     
     m.shine = ag
 
