@@ -330,7 +330,7 @@ Spell( 81661 ,{ name = "Evangelism",duration = 15, group = "buffs", priority = 1
     })
     helpers.RegisterSetBonusCallback("Shadow_T15", 2,
         function()
-            scanner = scaner or CreateFrame("Frame", nil, UIParent)
+            scanner = scanner or CreateFrame("Frame", nil, UIParent)
             scanner:SetScript("OnUpdate", scannerOnUpdate)
         end, 
         function()

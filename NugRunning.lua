@@ -1133,6 +1133,7 @@ function NugRunning.SlashCmd(msg)
       |cff00ff00/nrun charopts|r : enable character specific settings
       |cff00ff00/nrun misses|r : toggle showing cooldowns
       |cff00ff00/nrun cooldowns|r : toggle showing cooldowns
+      |cff00ff00/nrun targettext|r : toggle taget name text on bars
       |cff00ff00/nrun spelltext|r : toggle spell text on bars
       |cff00ff00/nrun shorttext|r : toggle using short names
       |cff00ff00/nrun swaptarget|r : static order of target debuffs
