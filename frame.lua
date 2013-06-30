@@ -67,7 +67,7 @@ local function clear_overlay_point(p, self, ticktime)
 end
 
 function TimerBar.UpdateMark(self, time) -- time - usually closest tick time
-    if self.opts.tick then
+    if self.tickPeriod then
         if time then
             if time > 0 then
                 local pos = getbarpos(self, time)

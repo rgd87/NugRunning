@@ -123,6 +123,7 @@ local defaults = {
     leaveGhost = false,
     nameplates = false,
     dotpower = true,
+    dotticks = true,
 }
 
 local function SetupDefaults(t, defaults)
@@ -463,7 +464,7 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
     if not from_unitaura then
         local plevel = self:GetPowerLevel()
         timer.powerLevel = plevel
-        if opts.tick then
+        if opts.tick and NRunDB.dotticks then
             timer.tickPeriod = opts.tick > 0 and (opts.tick/(1+(UnitSpellHaste("player")/100))) or math.abs(opts.tick)
             timer.mark.fullticks = nil
         else
@@ -599,7 +600,7 @@ function NugRunning.RefreshTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID,
     if not noshine then
         local plevel = self:GetPowerLevel()
         timer.powerLevel = plevel
-        if opts.tick then
+        if opts.tick and NRunDB.dotticks then
             timer.tickPeriod = opts.tick > 0 and (opts.tick/(1+(UnitSpellHaste("player")/100))) or math.abs(opts.tick)
             timer.mark.fullticks = nil
         else
@@ -1139,6 +1140,7 @@ function NugRunning.SlashCmd(msg)
       |cff00ff00/nrun swaptarget|r : static order of target debuffs
       |cff00ff00/nrun totems|r : static order of target debuffs
       |cff00ff00/nrun nameplates|r : turn on nameplates
+      |cff00ff00/nrun dotticks|r : turn off dot ticks
       |cff00ff00/nrun dotpower|r : turn off dotpower feature
       |cff00ff00/nrun localnames|r: toggle localized spell names
       |cff00ff00/nrun leaveghost|r: don't hide target/player ghosts in combat
@@ -1248,9 +1250,13 @@ function NugRunning.SlashCmd(msg)
         NRunDB.nameplates = not NRunDB.nameplates
         print("Nameplates turned "..(NRunDB.nameplates and "on" or "off")..". Will take effect after /reload")
     end
+    if k == "dotticks" then
+        NRunDB.dotticks = not NRunDB.dotticks
+        print("Dot ticks turned "..(NRunDB.dotticks and "on" or "off")..". Will take effect after /reload")
+    end
     if k == "dotpower" then
         NRunDB.dotpower = not NRunDB.dotpower
-        print("Nameplates turned "..(NRunDB.dotpower and "on" or "off")..". Will take effect after /reload")
+        print("Dotpower turned "..(NRunDB.dotpower and "on" or "off")..". Will take effect after /reload")
     end
     if k == "set" then
         local p = ParseOpts(v)
