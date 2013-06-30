@@ -4,6 +4,7 @@
 -----------------------------------------------------------------------------------
 local _, helpers = ...
 local Spell = helpers.Spell
+local ModSpell = helpers.ModSpell
 local Cooldown = helpers.Cooldown
 local Activation = helpers.Activation
 local EventTimer = helpers.EventTimer
@@ -77,6 +78,25 @@ if race == "Troll" then Spell( 26297 ,{ name = "Berserking", duration = 10 }) en
 if race == "Orc" then Spell({ 33702,33697,20572 },{ name = "Blood Fury", duration = 15 }) end --Orc Racial
 
 Spell({2825, 32182, 80353} ,{ name = "Bloodlust", duration = 40, priority = -100, color = colors.DRED, shine = true, affiliation = "raid", target = "player" })
+
+local CASTER_POTIONS = function(specmask)
+        Spell( 105702 ,{ name = "Potion", specmask = specmask, group = "procs", color = colors.GREEN, duration = 25 }) -- Intellect
+        Spell( 137592 ,{ name = "Tempus Repit", specmask = specmask, affiliation = "any", color = colors.ORANGE, target= "player", group = "procs", duration = 10 })
+        Spell( 104993 ,{ name = "Jade Spirit", specmask = specmask, affiliation = "any", color = colors.LGREEN, target= "player", group = "procs", duration = 10 })
+        -- jade spirit is proccing in a strange way, not from player guid
+        Spell( 96230 ,{ name = "Springs", specmask = specmask, color = colors.LGREEN, group = "procs", duration = 10 })
+        Spell( 127923 ,{ name = "Trinket1", specmask = specmask, group = "procs", duration = 10 })
+        -- Spell( 126476 ,{ name = "Trinket2", group = "procs", duration = 1 })
+        -- Spell( 136082 ,{ name = "Static Charge", group = "procs", duration = 15 })
+        Spell( 126659 ,{ name = "Haste", specmask = specmask, group = "procs", duration = 20 }) -- Sha of Fear trinket
+        Spell( 138703 ,{ name = "Haste", specmask = specmask, group = "procs", duration = 10 }) -- 522 Valor trinker
+        Spell( 128985 ,{ name = "Relic of Yu'lon", specmask = specmask, color = colors.LGREEN, group = "procs", duration = 15 })
+        Spell( 104510 ,{ name = "WS: Mastery", specmask = specmask, group = "procs", duration = 10 })
+        Spell( 104509 ,{ name = "WS: Crit", specmask = specmask, group = "procs", duration = 10 })
+        Spell( 104423 ,{ name = "WS: Haste", specmask = specmask, group = "procs", duration = 10 })
+end
+
+
 
 if class == "WARLOCK" then
 Spell( 74434 ,{ name = "Soulburn",duration = 20, color = colors.CURSE })
@@ -208,6 +228,21 @@ Spell( 5782 ,{ name = "Fear", duration = 20, nameplates = true, pvpduration = 8 
 Spell( 118699 ,{ name = "Blood Fear", duration = 20, pvpduration = 8 })
 Spell( 104045 ,{ name = "Sleep", duration = 20, pvpduration = 8 })
 Spell( 710 ,{ name = "Banish", nameplates = true, duration = 30 })
+
+
+--item procs etc
+
+        CASTER_POTIONS()
+
+        
+        ModSpell( 60478, { color = colors.WOO, group = "procs" }) -- Doomguard
+        ModSpell( 113860, { group = "procs" }) -- Dark Soul for each spec
+        ModSpell( 113861, { group = "procs" })
+        ModSpell( 113858, { group = "procs" })
+        ModSpell( 2825, { group = "procs" }) -- Bloodlust
+
+
+
 end
    
 if class == "PRIEST" then
@@ -257,7 +292,7 @@ Spell( 8122 ,{ name = "Psychic Scream",duration = 8, multiTarget = true })
 
 --Rapture
 EventTimer({ event = "SPELL_ENERGIZE", spellID = 47755, priority = -10, name = "Rapture", color = colors.DPURPLE, duration = 12 })
-Spell( 15407, { name = "Mind Flay",  color = colors.CURSE, priority = 11, duration = 3 })
+Spell( 15407, { name = "Mind Flay", tick = 1, overlay = {"tick", "tickend"}, color = colors.CURSE, priority = 11, duration = 3 })
 
 --Old Shadow Orbs
 -- Spell( 77487 ,{ name = "",duration = 60, charged = true, maxcharge = 3, shine = true, shinerefresh = true, priority = -3, color = colors.WOO })
@@ -284,9 +319,15 @@ Spell( 81661 ,{ name = "Evangelism",duration = 15, group = "buffs", priority = 1
                                 [4] = colors.RED,
                                 [5] = {1,0,0},
                             } })
+
+        CASTER_POTIONS(0xF00)
+
 --Spell( 81700 ,{ name = "Archangel",duration = 18, color = colors.CURSE })
 
 --Spell({ 63731,63735 } ,{ name = "Serendipity",duration = 20, color = {0.4,0.4,0.9} })
+
+
+
 
     local targettable = {
        "target",
@@ -337,8 +378,6 @@ Spell( 81661 ,{ name = "Evangelism",duration = 15, group = "buffs", priority = 1
             scanner:SetScript("OnUpdate", nil)
         end
     )
-
-
 
 end
 
