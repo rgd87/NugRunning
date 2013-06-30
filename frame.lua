@@ -274,7 +274,7 @@ NugRunning.ConstructTimerBar = function(width, height)
     
     f.bar.bg = f.bar:CreateTexture(nil, "BORDER")
 	f.bar.bg:SetAllPoints(f.bar)
-	f.bar.bg:SetTexture("Interface\\AddOns\\NugRunning\\statusbar")
+	f.bar.bg:SetTexture(texture)
     
     f.timeText = f.bar:CreateFontString(nil, "ARTWORK", "GameFontNormalSmall");
     f.timeText:SetTextColor(1,1,1)
