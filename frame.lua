@@ -68,10 +68,6 @@ end
 
 function TimerBar.UpdateMark(self, time) -- time - usually closest tick time
     if self.opts.tick then
-        -- local tick_settings = self.opts.tick
-        -- local tickPeriod, overlayType, doGlow = type(tick_settings) == "table"
-                                                        -- and unpack(tick_settings)
-                                                        -- or  tick_settings
         if time then
             if time > 0 then
                 local pos = getbarpos(self, time)
@@ -258,7 +254,8 @@ NugRunning.ConstructTimerBar = function(width, height)
     ict:SetAllPoints(ic)
     f.icon = ict
     
-    f.stacktext = ic:CreateFontString(nil, "OVERLAY")--, "GameFontNormal");
+    f.stacktext = ic:CreateFontString(nil, "OVERLAY", "GameFontNormal");
+    f.stacktext:SetTextColor(1,1,1)
     f.stacktext:SetFont(NugRunningConfig.stackFont.font,
                         NugRunningConfig.stackFont.size,
                         NugRunningConfig.stackFont.flags or "OUTLINE")
@@ -279,14 +276,16 @@ NugRunning.ConstructTimerBar = function(width, height)
 	f.bar.bg:SetAllPoints(f.bar)
 	f.bar.bg:SetTexture("Interface\\AddOns\\NugRunning\\statusbar")
     
-    f.timeText = f.bar:CreateFontString(nil, "ARTWORK")--, "GameFontNormalSmall");
+    f.timeText = f.bar:CreateFontString(nil, "ARTWORK", "GameFontNormalSmall");
+    f.timeText:SetTextColor(1,1,1)
     f.timeText:SetFont(NugRunningConfig.timeFont.font, NugRunningConfig.timeFont.size, NugRunningConfig.timeFont.flags)
     f.timeText:SetJustifyH("RIGHT")
     f.timeText:SetAlpha(NugRunningConfig.timeFont.alpha or 1)
     f.timeText:SetVertexColor(1,1,1)
     f.timeText:SetPoint("RIGHT", f.bar, "RIGHT",-6,0)
     
-    f.spellText = f.bar:CreateFontString(nil, "ARTWORK")--, "GameFontNormal");
+    f.spellText = f.bar:CreateFontString(nil, "ARTWORK", "GameFontNormal");
+    f.spellText:SetTextColor(1,1,1)
     f.spellText:SetFont(NugRunningConfig.nameFont.font, NugRunningConfig.nameFont.size, NugRunningConfig.nameFont.flags)
     f.spellText:SetWidth(f.bar:GetWidth()*0.8)
     f.spellText:SetHeight(height/2+1)
