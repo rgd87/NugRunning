@@ -1408,6 +1408,7 @@ do
                 end
             end
     end
+    NugRunning.UpdateUnitAuras = UpdateUnitAuras
 
     function NugRunning.OnAuraEvent(self, event, unit)
         if event == "UNIT_AURA" then

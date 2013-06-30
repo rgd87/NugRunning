@@ -288,14 +288,54 @@ Spell( 81661 ,{ name = "Evangelism",duration = 15, group = "buffs", priority = 1
 
 --Spell({ 63731,63735 } ,{ name = "Serendipity",duration = 20, color = {0.4,0.4,0.9} })
 
-    helpers.TrackItemSet("Shadow_A15", { 100421, 100417, 100423, 100419, 100415})
-    helpers.RegisterSetBonusCallback("Shadow_A15", 2,
-        function() print("2 pieces equipped!") end, 
-        function() print("2 pieces UNequipped!") end
-    )
-    helpers.RegisterSetBonusCallback("Shadow_A15", 4,
-        function() print("4 pieces equipped!") end, 
-        function() print("4 pieces UNequipped!") end
+    local targettable = {
+       "target",
+       "focus",
+       "mouseover",
+       "boss1",
+       "boss2",
+       "boss3",
+       "boss4",
+       "boss5",
+       "arena1",
+       "arena2",
+       "arena3",
+       "arena4",
+       "arena5",
+    }
+
+    local scanner
+    local _elapsed = 0
+    local function scannerOnUpdate(self, time)
+        _elapsed = _elapsed + time
+        if _elapsed < 0.1 then return end
+        _elapsed = 0
+
+        print("asdkal;sd")
+        for _, unitID in ipairs(targettable) do
+            if UnitExists(unitID) then
+               if not UnitIsUnit(unitID, "target") then
+                    NugRunning.UpdateUnitAuras(unitID)
+               else
+                    NugRunning.UpdateUnitAuras("target")
+               end
+            end
+         end
+    end
+
+    helpers.TrackItemSet("Shadow_T15", {
+        96674, 96675, 96676, 96677, 96678, --heroic
+        95300, 95301, 95302, 95303, 95304, --normal
+        95930, 95931, 95932, 95933, 95934, --lfr
+    })
+    helpers.RegisterSetBonusCallback("Shadow_T15", 2,
+        function()
+            scanner = scaner or CreateFrame("Frame", nil, UIParent)
+            scanner:SetScript("OnUpdate", scannerOnUpdate)
+        end, 
+        function()
+            scanner:SetScript("OnUpdate", nil)
+        end
     )
 
 
