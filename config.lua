@@ -287,6 +287,19 @@ Spell( 81661 ,{ name = "Evangelism",duration = 15, group = "buffs", priority = 1
 --Spell( 81700 ,{ name = "Archangel",duration = 18, color = colors.CURSE })
 
 --Spell({ 63731,63735 } ,{ name = "Serendipity",duration = 20, color = {0.4,0.4,0.9} })
+
+    helpers.TrackItemSet("Shadow_A15", { 100421, 100417, 100423, 100419, 100415})
+    helpers.RegisterSetBonusCallback("Shadow_A15", 2,
+        function() print("2 pieces equipped!") end, 
+        function() print("2 pieces UNequipped!") end
+    )
+    helpers.RegisterSetBonusCallback("Shadow_A15", 4,
+        function() print("4 pieces equipped!") end, 
+        function() print("4 pieces UNequipped!") end
+    )
+
+
+
 end
 
 

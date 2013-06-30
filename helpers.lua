@@ -141,3 +141,82 @@ helpers.RemoveAll = function()
     NugRunningConfig.activations = {}
     NugRunningConfig.event_timers = {}
 end
+
+
+
+
+
+local ItemSetsRegistered = {}
+
+local function TrackItemSet(tiername, itemArray)
+    ItemSetsRegistered[tiername] = ItemSetsRegistered[tiername] or {}
+    if not ItemSetsRegistered[tiername].tiems then
+        ItemSetsRegistered[tiername].items = {}
+        ItemSetsRegistered[tiername].callbacks = {}
+        local bitems = ItemSetsRegistered[tiername].items
+        for _, itemID in ipairs(itemArray) do
+            bitems[itemID] = true
+        end
+    end
+end
+
+local function RegisterSetBonusCallback(tiername, pieces, handle_on, handle_off)
+    local tier = ItemSetsRegistered[tiername]
+    if not tier then error(string.format("Itemset '%s' is not registered", tiername)) end
+    tier.callbacks[pieces] = {}
+    tier.callbacks[pieces].equipped = false
+    tier.callbacks[pieces].on = handle_on
+    tier.callbacks[pieces].off = handle_off
+end
+
+helpers.TrackItemSet = TrackItemSet
+helpers.RegisterSetBonusCallback = RegisterSetBonusCallback
+
+
+local tierSlots = {
+    (GetInventorySlotInfo("ChestSlot")),
+    (GetInventorySlotInfo("HeadSlot")),
+    (GetInventorySlotInfo("ShoulderSlot")),
+    (GetInventorySlotInfo("LegsSlot")),
+    (GetInventorySlotInfo("HandsSlot")),
+}
+
+local setwatcher = CreateFrame("Frame", nil, UIParent)
+setwatcher:SetScript("OnEvent", function(self, event, ...)
+    return self[event](self, event, ...)
+end)
+
+setwatcher:RegisterEvent("PLAYER_LOGIN")
+
+function setwatcher:PLAYER_LOGIN()
+    if next(ItemSetsRegistered) then
+        self:RegisterUnitEvent("UNIT_INVENTORY_CHANGED", "player")
+        self:UNIT_INVENTORY_CHANGED(nil, "player")
+    end
+end
+
+
+function setwatcher:UNIT_INVENTORY_CHANGED(event, unit)
+    for tiername, tier in pairs(ItemSetsRegistered) do
+        local tier_items = tier.items
+        local pieces_equipped = 0
+        for _, slot in ipairs(tierSlots) do
+            local itemID = GetInventoryItemID("player", slot)
+            if tier_items[itemID] then pieces_equipped = pieces_equipped + 1 end
+        end
+
+        for bp, bonus in pairs(tier.callbacks) do
+            if pieces_equipped >= bp then
+                if not bonus.equipped then
+                    if bonus.on then bonus.on() end
+                    bonus.equipped = true
+                end
+            else
+                if bonus.equipped then
+                    if bonus.off then bonus.off() end
+                    bonus.equipped = false
+                end
+            end
+        end
+    end
+end
