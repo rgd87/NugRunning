@@ -234,7 +234,8 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
         free[timer] = true
     end
 
-    if select(2, UnitClass("player")) == "WARLOCK" and NRunDB.dotpower then
+    local _,class = UnitClass("player")
+    if (class == "WARLOCK" or class == "PRIEST") and NRunDB.dotpower then
         Scouter = LibStub("LibScouter-1.0")
         Scouter.RegisterCallback(NugRunning, "POWER_LEVEL_CHANGED", NugRunning.POWER_LEVEL_CHANGED)
     end
