@@ -144,16 +144,26 @@ Spell( 48181 ,{ name = "",duration = 12, priority = 8, recast_mark = 3, ghost = 
 -- 8s second overlay is for haunt duration
 --Unstable Affliction
 Spell( 30108 ,{ name = "", duration = 15, tick = 3, priority = 10, showpower = true, overlay = {0,6.5, 0.2}, fixedlen = normalize_dots_to, nameplates = true, ghost = true, color = colors.RED })
---Corruption (2nd is a Soulburn SoC Corruption) --87389
-Spell( 172 ,{ name = "", duration = 18, tick = 3, priority = 9, overlay = {0,8, 0.2}, showpower = true, fixedlen = normalize_dots_to, nameplates = true, ghost = true, color = colors.PINK })
-Spell( 87389 ,{ name = "Corruption", multiTarget = true, color = colors.WOO2, duration = 18 })
+
 --Agony
 Spell( 980 ,{ name = "", duration = 24, tick = 3, overlay = {0, 11, 0.2}, showpower = true, fixedlen = normalize_dots_to, nameplates = true, ghost = true, priority = 6, color = colors.WOO })
-Spell( {27243, 114790} ,{ name = "Seed of Corruption",duration = 18, nameplates = true,  color = colors.LRED, short = "SoC" })
 
-
+--Corruption (2nd is a Soulburn SoC Corruption) --87389
 local patchname, buildnumber = GetBuildInfo() --TOC is wrong on ptr
 local patch50400 = tonumber(buildnumber) >= 17124
+
+-- 172 - original id, 146739 - ptr 5.4 for both soc corruption and normal
+if patch50400 then
+    Spell( 146739 ,{ name = "", duration = 18, tick = 3, priority = 9, overlay = {0,8, 0.2}, showpower = true, fixedlen = normalize_dots_to, nameplates = true, ghost = true, color = colors.PINK })
+else
+    Spell( 172 ,{ name = "", duration = 18, tick = 3, priority = 9, overlay = {0,8, 0.2}, showpower = true, fixedlen = normalize_dots_to, nameplates = true, ghost = true, color = colors.PINK })
+    Spell( 87389 ,{ name = "Corruption", multiTarget = true, color = colors.WOO2, duration = 18 })
+end
+
+
+
+Spell( {27243, 114790} ,{ name = "Seed of Corruption",duration = 18, nameplates = true,  color = colors.LRED, short = "SoC" })
+
 
 if not patch50400 then
 EventTimer({ spellID = 77799, event = "SPELL_DAMAGE",
