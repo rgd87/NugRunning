@@ -134,7 +134,7 @@ Spell( 113858 ,{ name = "Dark Soul: Instability",duration = 20, short = "DarkSou
 Spell( 86211 ,{ name = "Soul Swap", duration = 20, shine = true, color = colors.BLACK })
 -- Spell( 17941 ,{ name = "Nightfall", duration = 10, shine = true, color = colors.CURSE })
 Spell( 103103 ,{ name = "Malefic Grasp", tick = 1, overlay = {"tick", "tickend"}, showpower = true, priority = 14, duration = 4, color = colors.CURSE, target = "target" })
-Spell( 1120 ,{ name = "Drain Soul", priority = 14, showpower = true, duration = 15, color = colors.CURSE })
+Spell( 1120 ,{ name = "Drain Soul", short = "", tick = 2, overlay = {"tick", "end"}, tickshine = true, target = "target", priority = 14, showpower = true, duration = 15, color = colors.CURSE })
 
 --Haunt, recast mark is for execute phase. 3s is cast time + travel time from 30+yd range
 local normalize_dots_to = nil--26
