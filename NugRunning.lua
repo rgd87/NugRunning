@@ -1015,7 +1015,7 @@ do
         end
 
         if nameplates then
-            nameplates:Update(targetTimers, guid_groups)
+            nameplates:Update(targetTimers, guid_groups, doswap)
         end
     end
     function NugRunning.GetTimersByDstGUID(self, guid) -- for nameplate updates on target

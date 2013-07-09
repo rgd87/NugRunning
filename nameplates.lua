@@ -143,10 +143,12 @@ function NugRunningNameplates:CreateNameplateTimer(frame)
     return f
 end
 
-function NugRunningNameplates:Update(targetTimers, guidTimers)
-    local tGUID = UnitGUID("target")
-    if tGUID then
-        guidTimers[tGUID] = targetTimers
+function NugRunningNameplates:Update(targetTimers, guidTimers, targetSwapping)
+    if targetSwapping then
+        local tGUID = UnitGUID("target")
+        if tGUID then
+            guidTimers[tGUID] = targetTimers
+        end
     end
     for guid, np in pairs(guidmap) do
         local nrunTimers = guidTimers[guid]
