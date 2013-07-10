@@ -6,7 +6,7 @@ local _, helpers = ...
 NugRunning = CreateFrame("Frame","NugRunning")
 
 NugRunning:SetScript("OnEvent", function(self, event, ...)
-	return self[event](self, event, ...)
+    return self[event](self, event, ...)
 end)
 
 local NRunDB
@@ -481,6 +481,7 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
     timer.timerType = timerType
     timer:SetIcon(select(3,GetSpellInfo(spellID)))
     timer.opts = opts
+    timer.onupdate = opts.onupdate
         
     local time
     if timerType == "MISSED" then
@@ -825,6 +826,9 @@ function NugRunning.TimerFunc(self,time)
             self.mark.fullticks = fullticks
         end
     end
+
+    local timer_onupdate = self.onupdate
+    if timer_onupdate then timer_onupdate(self) end
 end
 
 function NugRunning.GhostExpire(self)
@@ -993,6 +997,7 @@ do
                             local noswap_alpha = guid == targetGUID and 1 or alpha
                             timer:SetAlpha(noswap_alpha)
                             timer:SetPoint(point, prev or anchor, prev and to  or "TOPRIGHT", xOffset, (yOffset+gap)*ySign)
+                            if timer.onupdate then timer:onupdate() end
                             prev = timer
                             gap = 0
                         end
@@ -1005,6 +1010,7 @@ do
                     for i,timer in ipairs(group_timers) do
                         timer:SetAlpha(alpha)
                         timer:SetPoint(point, prev or anchor, prev and to  or "TOPRIGHT", xOffset, (yOffset+gap)*ySign)
+                        if timer.onupdate then timer:onupdate()end
                         prev = timer
                         gap = 0
                     end

@@ -493,7 +493,7 @@ EventTimer({ spellID = 100130, event = "SPELL_CAST_SUCCESS", priority = 12, name
 -- Spell( 7384, { name = "Overpower", overlay = {0,-4.5, 0.15}, priority = 11, shine = true, shinerefresh = true, color = colors.PINKIERED, recast_mark = -4.5, duration = 9})
 --Activation( 7384, { name = "Overpower", short = "", shine = true, color = colors.RED, recast_mark = 4.5, duration = 9})
 -- Spell( 125831 ,{ name = "Taste for Blood", glowtime = 5, shinerefresh = true, shine = true, color = colors.TEAL, duration = 15 }) -- Taste for blood
-Spell( 60503 ,{ name = "Overpower", priority = 10.1, overlay = {0,7, 0.3}, fixenlen = 9, shinerefresh = true, shine = true, color = colors.PINKIERED, duration = 12 }) -- Taste for blood
+Spell( 60503 ,{ name = "Overpower", priority = 9, overlay = {0,7, 0.3}, fixenlen = 9, shinerefresh = true, shine = true, color = colors.PINKIERED, duration = 12 }) -- Taste for blood
 
 -- 1s mark for bloodsurged wild strike gcd
 -- 1.5s mark for 2nd gcd
@@ -504,7 +504,21 @@ Spell( 46916 ,{ name = "Bloodsurge", shine = true, priority = 8, color = colors.
 Spell( 131116 ,{ name = "Raging Blow", priority = 9, fixedlen = 9, shine = true, shinerefresh = true, duration = 12, stackcolor = {
                                                                                                 [1] = colors.RED,
                                                                                                 [2] = {1,0,0},
-                                                                                            } })
+                                                                                            },
+                                                                                onupdate = function(self)
+                                                                                    local now = GetTime()
+                                                                                    local colcd = 0
+                                                                                        local start, duration = GetSpellCooldown(86346)
+                                                                                        if duration > 1.5 then
+                                                                                            colcd = (start+duration) - GetTime()
+                                                                                        end
+                                                                                    local _, _, _, rbstacks = UnitBuff("player",  GetSpellInfo(131116))
+                                                                                    if colcd > 3 and colcd < 14 and rbstacks == 2 then
+                                                                                        self:SetAlpha(1)
+                                                                                    else
+                                                                                        self:SetAlpha(0.3)
+                                                                                    end
+                                                                                end })
 --Cooldown( 85288, { name = "Raging Blow", ghost = true,  color = colors.WOO })
 --Activation( 85288, { name = "Enraged", for_cd = true })
 -- it's enrage timer config
