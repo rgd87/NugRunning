@@ -505,20 +505,23 @@ Spell( 131116 ,{ name = "Raging Blow", priority = 9, fixedlen = 9, shine = true,
                                                                                                 [1] = colors.RED,
                                                                                                 [2] = {1,0,0},
                                                                                             },
-                                                                                onupdate = function(self)
-                                                                                    local now = GetTime()
-                                                                                    local colcd = 0
-                                                                                        local start, duration = GetSpellCooldown(86346)
-                                                                                        if duration > 1.5 then
-                                                                                            colcd = (start+duration) - GetTime()
-                                                                                        end
-                                                                                    local _, _, _, rbstacks = UnitBuff("player",  GetSpellInfo(131116))
-                                                                                    if colcd > 3 and colcd < 14 and rbstacks == 2 then
-                                                                                        self:SetAlpha(1)
-                                                                                    else
-                                                                                        self:SetAlpha(0.3)
-                                                                                    end
-                                                                                end })
+                                                                            -- onupdate = function(self)
+                                                                            --     local now = GetTime()
+                                                                            --     local colcd = 0
+                                                                            --         local start, duration = GetSpellCooldown(86346)
+                                                                            --         if duration > 1.5 then
+                                                                            --             colcd = (start+duration) - now
+                                                                            --         end
+                                                                            --     local _, _, _, rbstacks = UnitBuff("player",  GetSpellInfo(131116))
+                                                                            --     if colcd > 3 and colcd < 14 and rbstacks == 2 then
+                                                                            --         -- self:SetAlpha(1)
+                                                                            --         if not self.glow:IsPlaying() then self.glow:Play() end
+                                                                            --     else
+                                                                            --         -- self:SetAlpha(0.3)
+                                                                            --         if self.glow:IsPlaying() then self.glow:Stop() end
+                                                                            --     end
+                                                                            -- end
+                                                                                })
 --Cooldown( 85288, { name = "Raging Blow", ghost = true,  color = colors.WOO })
 --Activation( 85288, { name = "Enraged", for_cd = true })
 -- it's enrage timer config

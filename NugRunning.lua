@@ -801,7 +801,8 @@ function NugRunning.TimerFunc(self,time)
 
     self:Update(beforeEnd)
 
-    if opts.glowtime and beforeEnd < opts.glowtime then
+    local glowtime = opts.glowtime
+    if glowtime and beforeEnd < glowtime then
         if self.glow and not self.glow:IsPlaying() then self.glow:Play() end
     end
 
