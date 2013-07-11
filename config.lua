@@ -731,7 +731,7 @@ Spell( 2812 ,{ name = "Denounce", duration = 4, color = colors.GREEN })
 Spell( 115798 ,{ name = "Weakened Blows", specmask = 0x0F0, short = "WeakBlows", priority = -20, affiliation = "any", singleTarget = true, color = {149/255, 121/255, 214/255}, duration = 30 })
 
 Cooldown( 35395 ,{ name = "Crusader Strike", ghost = true, short = "Crusader", priority = 2, fixedlen = 6, color = colors.CURSE, recast_mark = 1.5 })
-Cooldown( 20271 ,{ name = "Judgment", ghost = true, fixedlen = 6, priority = 1, color = colors.RED })
+Cooldown( 20271 ,{ name = "Judgement", ghost = true, fixedlen = 6, priority = 1, color = colors.RED })
 Cooldown( 24275 ,{ name = "Hammer of Wrath", short = "HWrath", color = colors.TEAL })
 Cooldown( 119072, { name = "Holy Wrath", color = colors.BROWN })
 Cooldown( 26573 ,{ name = "Consecration", color = colors.LBLUE })

@@ -479,7 +479,7 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
     if multiTargetGUID then timer.targets[multiTargetGUID] = true end
     timer.spellID = spellID
     timer.timerType = timerType
-    timer:SetIcon(select(3,GetSpellInfo(spellID)))
+    timer:SetIcon(select(3,GetSpellInfo(opts.showid or spellID)))
     timer.opts = opts
     timer.onupdate = opts.onupdate
         
