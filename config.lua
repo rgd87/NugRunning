@@ -149,11 +149,10 @@ Spell( 30108 ,{ name = "", duration = 15, tick = 3, priority = 10, showpower = t
 Spell( 980 ,{ name = "", duration = 24, tick = 3, overlay = {0, 11, 0.2}, showpower = true, fixedlen = normalize_dots_to, nameplates = true, ghost = true, priority = 6, color = colors.WOO })
 
 --Corruption (2nd is a Soulburn SoC Corruption) --87389
-local patchname, buildnumber = GetBuildInfo() --TOC is wrong on ptr
-local patch50400 = tonumber(buildnumber) >= 17124
+local patch50400 = select(4,GetBuildInfo()) >= 50400
 
 -- 172 - original id, 146739 - ptr 5.4 for both soc corruption and normal
-if GetSpellInfo(146739) then
+if patch50400 then
     Spell( 146739 ,{ name = "", duration = 18, tick = 3, priority = 9, overlay = {0,8, 0.2}, showpower = true, fixedlen = normalize_dots_to, nameplates = true, ghost = true, color = colors.PINK })
 else
     Spell( 172 ,{ name = "", duration = 18, tick = 3, priority = 9, overlay = {0,8, 0.2}, showpower = true, fixedlen = normalize_dots_to, nameplates = true, ghost = true, color = colors.PINK })
