@@ -153,7 +153,7 @@ local patchname, buildnumber = GetBuildInfo() --TOC is wrong on ptr
 local patch50400 = tonumber(buildnumber) >= 17124
 
 -- 172 - original id, 146739 - ptr 5.4 for both soc corruption and normal
-if patch50400 then
+if GetSpellInfo(146739) then
     Spell( 146739 ,{ name = "", duration = 18, tick = 3, priority = 9, overlay = {0,8, 0.2}, showpower = true, fixedlen = normalize_dots_to, nameplates = true, ghost = true, color = colors.PINK })
 else
     Spell( 172 ,{ name = "", duration = 18, tick = 3, priority = 9, overlay = {0,8, 0.2}, showpower = true, fixedlen = normalize_dots_to, nameplates = true, ghost = true, color = colors.PINK })
