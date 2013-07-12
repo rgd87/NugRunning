@@ -341,7 +341,6 @@ Spell( 81661 ,{ name = "Evangelism",duration = 15, group = "buffs", priority = 1
         if _elapsed < 0.1 then return end
         _elapsed = 0
 
-        print("asdkal;sd")
         for _, unitID in ipairs(targettable) do
             if UnitExists(unitID) then
                if not UnitIsUnit(unitID, "target") then
