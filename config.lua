@@ -239,7 +239,7 @@ end
 if class == "PRIEST" then
 -- BUFFS
 Spell( 139 ,{ name = "Renew", shinerefresh = true, color = colors.LGREEN, duration = 12 })
-Spell( 17 ,{ name = "Power Word: Shield", shinerefresh = true, duration = 15, color = colors.LRED, textfunc = function(timer) return timer.absorb end })
+Spell( 17 ,{ name = "Power Word: Shield", short = "PW:Shield", shinerefresh = true, duration = 15, color = colors.LRED })
 Spell( 41635 ,{ name = "Prayer of Mending", shinerefresh = true, duration = 30, color = colors.RED, textfunc = function(timer) return timer.dstName end })
 Spell( 47788 ,{ name = "Guardian Spirit", shine = true, duration = 10, color = colors.LBLUE, short = "Guardian" })
 Spell( 33206 ,{ name = "Pain Suppression",shine = true, duration = 8, color = colors.LBLUE })
@@ -283,7 +283,7 @@ Spell( 8122 ,{ name = "Psychic Scream",duration = 8, multiTarget = true })
 
 --Rapture
 EventTimer({ event = "SPELL_ENERGIZE", spellID = 47755, priority = -10, name = "Rapture", color = colors.DPURPLE, duration = 12 })
-Spell( 15407, { name = "Mind Flay", short = "", tick = 1, overlay = {"tick", "tickend"}, color = colors.CURSE, priority = 11, duration = 3 })
+Spell( {15407, 129197}, { name = "Mind Flay", short = "", tick = 1, overlay = {"tick", "tickend"}, color = colors.CURSE, priority = 11, duration = 3 })
 
 --Old Shadow Orbs
 -- Spell( 77487 ,{ name = "",duration = 60, charged = true, maxcharge = 3, shine = true, shinerefresh = true, priority = -3, color = colors.WOO })
@@ -370,6 +370,7 @@ end
 
 
 if class == "ROGUE" then
+Spell( 1966 ,{ name = "Feint", duration = 5, priority = -1, shine = true, shinerefresh = true, color = colors.LBLUE })
 Spell( 2983 ,{ name = "Sprint", shine = true, duration = 8 })
 Spell( 5277 ,{ name = "Evasion", color = colors.PINK, duration = 15 })
 Spell( 31224 ,{ name = "Cloak of Shadows", color = colors.CURSE, duration = 5, short = "CloS" })
@@ -429,7 +430,7 @@ if class == "WARRIOR" then
 Spell( 6673 ,{ name = "Battle Shout", target = "player", glowtime = 10, priority = -10, color = colors.DPURPLE, duration = 120 })
 Spell( 469 ,{ name = "Commanding Shout", target = "player", priority = -10, glowtime = 10, short = "CommShout", color = colors.DPURPLE, duration = 120 })
 Spell( 132404 ,{ name = "Shield Block", color = colors.WOO2, group = "buffs", priority = - 9, duration = 6, priority = 4, })
-Spell( 112048 ,{ name = "Shield Barrier", ghost = 1.3, group = "buffs", priority = -8, color = colors.WOO, priority = 4, duration = 6, textfunc = function(timer) return timer.absorb end })
+Spell( 112048 ,{ name = "Shield Barrier", ghost = 1.3, group = "buffs", priority = -8, color = colors.WOO, priority = 4, duration = 6 })
 -- Spell( 85730 ,{ name = "Deadly Calm", group = "buffs", duration = 10 })
 Spell( 12328 ,{ name = "Sweeping Strikes", priority = 6, ghost = 1, color = colors.BLACK, short = "Sweeping", duration = 10 })
 -- Spell( 115767 ,{ name = "Deep Wounds", color = colors.DRED, duration = 15, singleTarget = true })
