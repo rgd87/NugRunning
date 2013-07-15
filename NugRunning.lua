@@ -681,7 +681,7 @@ function NugRunning.SetDefaultDuration(dstFlags, opts, timer )
 end
 
 function NugRunning.MakeName(self, opts, spellName, dstName)
-    if NRunDB.targetTextEnabled then
+    if NRunDB.targetTextEnabled and dstName ~= UnitName("player") then
         return dstName
     elseif NRunDB.spellTextEnabled then
         if NRunDB.localNames then
