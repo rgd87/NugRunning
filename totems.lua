@@ -23,7 +23,10 @@ NugRunning.InitTotems = function(self)
         timer:Show()
     end
 
-    NugRunning.PLAYER_TOTEM_UPDATE = function (self, event) 
+    NugRunning.totems = CreateFrame("Frame",nil, NugRunning)
+
+    -- NugRunning.totems.PLAYER_TOTEM_UPDATE = function (self, event) 
+    NugRunning.totems:SetScript("OnEvent", function(self,event)
         for id, opts in ipairs(totems) do
             local haveTotem, name, startTime, duration, icon = GetTotemInfo(id)
             if haveTotem then
@@ -34,7 +37,8 @@ NugRunning.InitTotems = function(self)
             end
         end
         NugRunning:ArrangeTimers()
-    end
+    end)
+    -- end
     
     -- reserving timers for totems
     for id, opts in ipairs(totems) do
@@ -44,6 +48,7 @@ NugRunning.InitTotems = function(self)
         opts.timer.opts = opts
         opts.timer.priority = opts.priority or 0
     end
-    NugRunning:RegisterEvent("PLAYER_TOTEM_UPDATE")
+    NugRunning.totems:RegisterEvent("PLAYER_TOTEM_UPDATE")
+    NugRunning.totems:RegisterEvent("PLAYER_ENTERING_WORLD")
 
 end
