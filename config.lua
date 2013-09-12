@@ -146,7 +146,7 @@ Spell( 48181 ,{ name = "",duration = 12, priority = 8, recast_mark = 3, ghost = 
 Spell( 30108 ,{ name = "", duration = 15, tick = 3, priority = 10, showpower = true, overlay = {0,6.5, 0.2}, fixedlen = normalize_dots_to, nameplates = true, ghost = true, color = colors.RED })
 
 --Agony
-Spell( 980 ,{ name = "", duration = 24, tick = 3, overlay = {0, 11, 0.2}, showpower = true, fixedlen = normalize_dots_to, nameplates = true, ghost = true, priority = 6, color = colors.WOO })
+Spell( 980 ,{ name = "", duration = 24, tick = 3, overlay = {0, 11, 0.2}, showpower = true, fixedlen = normalize_dots_to, nameplates = true, _ignore_applied_dose = true, ghost = true, priority = 6, color = colors.WOO })
 
 --Corruption (2nd is a Soulburn SoC Corruption) --87389
 local patch50400 = select(4,GetBuildInfo()) >= 50400
@@ -162,6 +162,17 @@ end
 
 
 Spell( {27243, 114790} ,{ name = "Seed of Corruption",duration = 18, nameplates = true,  color = colors.LRED, short = "SoC" })
+
+
+EventTimer({ spellID = 86121, event = "SPELL_CAST_SUCCESS",
+    action = function(active, srcGUID, dstGUID, spellID )
+        NugRunning:SoulSwapStore(active, srcGUID, dstGUID, spellID )
+    end})
+
+EventTimer({ spellID = 86213, event = "SPELL_CAST_SUCCESS",
+    action = function(active, srcGUID, dstGUID, spellID )
+        NugRunning:SoulSwapUsed(active, srcGUID, dstGUID, spellID )
+    end})
 
 
 if not patch50400 then

@@ -85,6 +85,12 @@ local AFFILIATION_MINE = COMBATLOG_OBJECT_AFFILIATION_MINE
 local AFFILIATION_PARTY_OR_RAID = COMBATLOG_OBJECT_AFFILIATION_RAID + COMBATLOG_OBJECT_AFFILIATION_PARTY
 local AFFILIATION_OUTSIDER = COMBATLOG_OBJECT_AFFILIATION_OUTSIDER
 
+
+local ssSnapshot = {}
+local ssPending = {}
+local ssPendingTarget
+local ssPendingTimestamp = GetTime()
+
 NugRunning.active = active
 NugRunning.free = free
 NugRunning.timers = alltimers
@@ -267,8 +273,10 @@ function NugRunning.COMBAT_LOG_EVENT_UNFILTERED( self, event, timestamp, eventTy
         end
         if opts.target and dstGUID ~= UnitGUID(opts.target) then return end
         if affiliationStatus then
-            if eventType == "SPELL_AURA_REFRESH" or eventType == "SPELL_AURA_APPLIED_DOSE" then
+            if eventType == "SPELL_AURA_REFRESH" then
                 return self:RefreshTimer(srcGUID, dstGUID, dstName, dstFlags, spellID, spellName, opts, auraType, nil, amount)
+            elseif eventType == "SPELL_AURA_APPLIED_DOSE" then
+                return self:RefreshTimer(srcGUID, dstGUID, dstName, dstFlags, spellID, spellName, opts, auraType, nil, amount, opts._ignore_applied_dose)
             elseif eventType == "SPELL_AURA_APPLIED" then
                 return self:ActivateTimer(srcGUID, dstGUID, dstName, dstFlags, spellID, spellName, opts, auraType)
             elseif eventType == "SPELL_AURA_REMOVED" then
@@ -464,7 +472,12 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
     end
     if not from_unitaura then
         local plevel = self:GetPowerLevel()
-        timer.powerLevel = plevel
+        if ssPendingTimestamp > GetTime() - 0.3 and ssPendingTarget == dstGUID and ssPending[spellID] then
+            timer.powerLevel = ssPending[spellID]
+            ssPending[spellID] = nil
+        else
+            timer.powerLevel = plevel
+        end
         if opts.tick and NRunDB.dotticks then
             timer.tickPeriod = opts.tick > 0 and (opts.tick/(1+(UnitSpellHaste("player")/100))) or math.abs(opts.tick)
             timer.mark.fullticks = nil
@@ -601,7 +614,12 @@ function NugRunning.RefreshTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID,
 
     if not noshine then
         local plevel = self:GetPowerLevel()
-        timer.powerLevel = plevel
+        if ssPendingTimestamp > GetTime() - 0.3 and ssPendingTarget == dstGUID and ssPending[spellID] then
+            timer.powerLevel = ssPending[spellID]
+            ssPending[spellID] = nil
+        else
+            timer.powerLevel = plevel
+        end
         if opts.tick and NRunDB.dotticks then
             timer.tickPeriod = opts.tick > 0 and (opts.tick/(1+(UnitSpellHaste("player")/100))) or math.abs(opts.tick)
             timer.mark.fullticks = nil
@@ -1492,3 +1510,25 @@ do
     --     NugRunning.OnAuraEvent(nil, "UNIT_AURA", "mouseover")
     -- end)
 end
+
+
+function NugRunning:SoulSwapStore(active, srcGUID, dstGUID, spellID )
+    table_wipe(ssSnapshot)
+    for timer in pairs(active) do
+        if timer.dstGUID == dstGUID then
+            if timer.opts.showpower and timer.powerLevel and not timer.isGhost then
+                ssSnapshot[timer.spellID] = timer.powerLevel
+            end
+        end
+    end
+end
+
+function NugRunning:SoulSwapUsed(active, srcGUID, dstGUID, spellID )
+    for spellID, powerLevel in pairs(ssSnapshot) do
+        ssPending[spellID] = powerLevel
+    end
+    table_wipe(ssSnapshot)
+    ssPendingTimestamp = GetTime()
+    ssPendingTarget = dstGUID
+end
+
