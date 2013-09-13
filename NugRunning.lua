@@ -91,6 +91,8 @@ local ssPending = {}
 local ssPendingTarget
 local ssPendingTimestamp = GetTime()
 
+local lastCastSpellID
+
 NugRunning.active = active
 NugRunning.free = free
 NugRunning.timers = alltimers
@@ -287,6 +289,8 @@ function NugRunning.COMBAT_LOG_EVENT_UNFILTERED( self, event, timestamp, eventTy
                 if NRunDB.missesEnabled then
                     return self:ActivateTimer(srcGUID, dstGUID, dstName, dstFlags, spellID, spellName, opts, "MISSED", auraType) -- auraType = missType in this case
                 end
+            elseif eventType == "SPELL_CAST_SUCCESS" then
+                lastCastSpellID = spellID
             end
         end
     end
@@ -471,19 +475,22 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
         opts.init_done = true
     end
     if not from_unitaura then
-        local plevel = self:GetPowerLevel()
-        if ssPendingTimestamp > GetTime() - 0.3 and ssPendingTarget == dstGUID and ssPending[spellID] then
-            timer.powerLevel = ssPending[spellID]
-            ssPending[spellID] = nil
-        else
-            timer.powerLevel = plevel
-        end
         if opts.tick and NRunDB.dotticks then
             timer.tickPeriod = opts.tick > 0 and (opts.tick/(1+(UnitSpellHaste("player")/100))) or math.abs(opts.tick)
             timer.mark.fullticks = nil
         else
             timer.tickPeriod = nil
         end
+
+        local plevel = self:GetPowerLevel()
+        if ssPendingTimestamp > GetTime() - 0.3 and ssPendingTarget == dstGUID and ssPending[spellID] then
+            timer.powerLevel = ssPending[spellID].powerLevel
+            timer.tickPeriod = ssPending[spellID].tickPeriod
+            ssPending[spellID] = nil
+        else
+            timer.powerLevel = plevel
+        end
+        
         self:UpdateTimerPower(timer, plevel)
     end
     timer.srcGUID = srcGUID
@@ -613,18 +620,20 @@ function NugRunning.RefreshTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID,
     timer.count = amount
 
     if not noshine then
-        local plevel = self:GetPowerLevel()
-        if ssPendingTimestamp > GetTime() - 0.3 and ssPendingTarget == dstGUID and ssPending[spellID] then
-            timer.powerLevel = ssPending[spellID]
-            ssPending[spellID] = nil
-        else
-            timer.powerLevel = plevel
-        end
         if opts.tick and NRunDB.dotticks then
             timer.tickPeriod = opts.tick > 0 and (opts.tick/(1+(UnitSpellHaste("player")/100))) or math.abs(opts.tick)
             timer.mark.fullticks = nil
         else
             timer.tickPeriod = nil
+        end
+
+        local plevel = self:GetPowerLevel()
+        if ssPendingTimestamp > GetTime() - 0.3 and ssPendingTarget == dstGUID and ssPending[spellID] then
+            timer.powerLevel = ssPending[spellID].powerLevel
+            timer.tickPeriod = ssPending[spellID].tickPeriod
+            ssPending[spellID] = nil
+        else
+            timer.powerLevel = plevel
         end
         self:UpdateTimerPower(timer, plevel)
     end
@@ -769,8 +778,28 @@ function NugRunning.SetUnitAuraValues(self, timer, spellID, name, rank, icon, co
                         timer:SetCharge(count)
                     elseif not timer.opts.timeless then
                         timer.fixedoffset = timer.opts.fixedlen and duration - timer.opts.fixedlen or 0
+                        local oldExpTime = timer.endTime
                         timer:SetTime(expirationTime - duration + timer.fixedoffset,expirationTime)
                         timer:SetCount(count)
+                        if oldExpTime and oldExpTime + 3 < expirationTime then
+                            -- if opts.tick and NRunDB.dotticks then
+                            --     timer.tickPeriod = opts.tick > 0 and (opts.tick/(1+(UnitSpellHaste("player")/100))) or math.abs(opts.tick)
+                            --     timer.mark.fullticks = nil
+                            -- else
+                            --     timer.tickPeriod = nil
+                            -- end
+
+                            local plevel = self:GetPowerLevel()
+                            if ssPendingTimestamp > GetTime() - 0.3 and ssPendingTarget == dstGUID and ssPending[spellID] then
+                                timer.powerLevel = ssPending[spellID].powerLevel
+                                timer.tickPeriod = ssPending[spellID].tickPeriod
+                                ssPending[spellID] = nil
+                            else
+                                timer.powerLevel = plevel
+                            end
+
+                            self:UpdateTimerPower(timer, plevel)
+                        end
                     end
                     if type(absorb) == "number" and absorb > 0
                         then timer.absorb = absorb
@@ -1419,9 +1448,9 @@ do
             if up == 2 and UnitGUID("target") == unitGUID then return end
 
             local now = GetTime()
-            if up == 1 then --throttle target updates
-                if now - last_taget_update < 200 then return end
-            end
+            -- if up == 1 then --throttle target updates
+                -- if now - last_taget_update < 200 then return end
+            -- end
 
             for timer in pairs(active) do 
                 if  timer.dstGUID == unitGUID and
@@ -1517,15 +1546,16 @@ function NugRunning:SoulSwapStore(active, srcGUID, dstGUID, spellID )
     for timer in pairs(active) do
         if timer.dstGUID == dstGUID then
             if timer.opts.showpower and timer.powerLevel and not timer.isGhost then
-                ssSnapshot[timer.spellID] = timer.powerLevel
+                ssSnapshot[timer.spellID].powerLevel = timer.powerLevel
+                ssSnapshot[timer.spellID].tickPeriod= timer.tickPeriod
             end
         end
     end
 end
 
 function NugRunning:SoulSwapUsed(active, srcGUID, dstGUID, spellID )
-    for spellID, powerLevel in pairs(ssSnapshot) do
-        ssPending[spellID] = powerLevel
+    for spellID, tbl in pairs(ssSnapshot) do
+        ssPending[spellID] = tbl
     end
     table_wipe(ssSnapshot)
     ssPendingTimestamp = GetTime()
