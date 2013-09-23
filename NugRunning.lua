@@ -1546,6 +1546,7 @@ function NugRunning:SoulSwapStore(active, srcGUID, dstGUID, spellID )
     for timer in pairs(active) do
         if timer.dstGUID == dstGUID then
             if timer.opts.showpower and timer.powerLevel and not timer.isGhost then
+                ssSnapshot[timer.spellID] = {}
                 ssSnapshot[timer.spellID].powerLevel = timer.powerLevel
                 ssSnapshot[timer.spellID].tickPeriod= timer.tickPeriod
             end

@@ -503,7 +503,7 @@ EventTimer({ spellID = 100130, event = "SPELL_CAST_SUCCESS", priority = 12, name
 -- Spell( 7384, { name = "Overpower", overlay = {0,-4.5, 0.15}, priority = 11, shine = true, shinerefresh = true, color = colors.PINKIERED, recast_mark = -4.5, duration = 9})
 --Activation( 7384, { name = "Overpower", short = "", shine = true, color = colors.RED, recast_mark = 4.5, duration = 9})
 -- Spell( 125831 ,{ name = "Taste for Blood", glowtime = 5, shinerefresh = true, shine = true, color = colors.TEAL, duration = 15 }) -- Taste for blood
-Spell( 60503 ,{ name = "Overpower", priority = 9, overlay = {0,7, 0.3}, fixenlen = 9, shinerefresh = true, shine = true, color = colors.PINKIERED, duration = 12 }) -- Taste for blood
+Spell( 60503 ,{ name = "Overpower", priority = 9, overlay = {0,7, 0.3}, fixedlen = 9, shinerefresh = true, shine = true, color = colors.PINKIERED, duration = 12 }) -- Taste for blood
 
 -- 1s mark for bloodsurged wild strike gcd
 -- 1.5s mark for 2nd gcd
@@ -558,7 +558,7 @@ end
 
 if class == "MONK" then
 -- Spell( 120086, { name = "Fists of Fury", color = colors.BLUE, duration = 4 })
-Spell( 120954, { name = "Fortifying Brew", color = colors.WOO2, duration = 20 })
+Spell( 120954, { name = "Fortifying Brew", color = colors.BLACK, duration = 20 })
 Spell( 117368, { name = "Grapple Weapon", short = "Disarm", color = colors.BROWN, duration = 10 })
 Spell( 115078, { name = "Paralysis", color = colors.PURPLE, duration = 30, pvpduration = 8 })
 Spell( 115546 ,{ name = "Provoke", short = "Taunt", duration = 3 })
@@ -587,15 +587,16 @@ Spell( 118674 ,{ name = "Vital Mists", color = colors.BLACK, duration = 30 })
 NugRunningConfig.totems[1] = { name = "Statue", color = colors.DPURPLE, priority = - 100, hideName = true }
 
 
+Spell( 123725 ,{ name = "Breath of Fire",  priority = 11, short = "", ghost = 0.5, tick = 2, shine = true, overlay = {"tick", "end"}, color = colors.RED, multiTarget = true, duration = 8 })
 Spell( 115213 ,{ name = "Avert Harm", duration = 15 })
-Spell( 115307 ,{ name = "Shuffle", color = colors.RED, duration = 6 })
-Spell( 116330 ,{ name = "Dizzying Haze", color = colors.PURPLE, duration = 15, multiTarget = true })
-Spell( 123727 ,{ name = "Dizzying Haze", color = colors.PURPLE, duration = 15, multiTarget = true }) -- from Keg Smash
+Spell( 115307 ,{ name = "Shuffle", priority = 8, recast_mark = 6, overlay = {6, 12, 0.15}, fixedlen = 18, shine = true, shinerefresh = true, color = colors.WOO2, duration = 6 })
+-- Spell( 116330 ,{ name = "Dizzying Haze", color = colors.PURPLE, duration = 15, multiTarget = true })
+-- Spell( 123727 ,{ name = "Dizzying Haze", color = colors.PURPLE, duration = 15, multiTarget = true }) -- from Keg Smash
 Spell( 128939 ,{ name = "Elusive Brew", priority = -10, duration = 30, color = colors.BLACK })
-Spell( 115308 ,{ name = "Elusive Brew", duration = 15, color = colors.BLACK })
-Cooldown( 115295, { name = "Guard", color = colors.GOLD })
-Cooldown( 121253, { name = "Keg Smash", color = colors.CURSE })
-Spell( 115798 ,{ name = "Weakened Blows", short = "WeakBlows", specmask = 0x00F, priority = -20, affiliation = "any", singleTarget = true, color = {149/255, 121/255, 214/255}, duration = 30 })
+Spell( 115308 ,{ name = "Elusive Brew", duration = 15, shine = true, color = colors.BROWN })
+Spell( 115295, { name = "Guard", priority = 7, shine = true, color = colors.WOO, duration = 30 })
+Cooldown( 121253, { name = "Keg Smash", ghost = true, priority = 10, color = colors.CURSE })
+-- Spell( 115798 ,{ name = "Weakened Blows", short = "WeakBlows", specmask = 0x00F, priority = -20, affiliation = "any", singleTarget = true, color = {149/255, 121/255, 214/255}, duration = 30 })
 
 Spell( 124081 ,{ name = "Zen Sphere", duration = 16, color = { 1, 0.2, 1} })
 Spell( 119381 ,{ name = "Leg Sweep", duration = 5, color = colors.RED, multiTarget = true })
