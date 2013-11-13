@@ -276,18 +276,18 @@ function NugRunning.COMBAT_LOG_EVENT_UNFILTERED( self, event, timestamp, eventTy
         if opts.target and dstGUID ~= UnitGUID(opts.target) then return end
         if affiliationStatus then
             if eventType == "SPELL_AURA_REFRESH" then
-                return self:RefreshTimer(srcGUID, dstGUID, dstName, dstFlags, spellID, spellName, opts, auraType, nil, amount)
+                self:RefreshTimer(srcGUID, dstGUID, dstName, dstFlags, spellID, spellName, opts, auraType, nil, amount)
             elseif eventType == "SPELL_AURA_APPLIED_DOSE" then
-                return self:RefreshTimer(srcGUID, dstGUID, dstName, dstFlags, spellID, spellName, opts, auraType, nil, amount, opts._ignore_applied_dose)
+                self:RefreshTimer(srcGUID, dstGUID, dstName, dstFlags, spellID, spellName, opts, auraType, nil, amount, opts._ignore_applied_dose)
             elseif eventType == "SPELL_AURA_APPLIED" then
-                return self:ActivateTimer(srcGUID, dstGUID, dstName, dstFlags, spellID, spellName, opts, auraType)
+                self:ActivateTimer(srcGUID, dstGUID, dstName, dstFlags, spellID, spellName, opts, auraType)
             elseif eventType == "SPELL_AURA_REMOVED" then
-                return self:DeactivateTimer(srcGUID, dstGUID, spellID, spellName, opts, auraType)
+                self:DeactivateTimer(srcGUID, dstGUID, spellID, spellName, opts, auraType)
             elseif eventType == "SPELL_AURA_REMOVED_DOSE" then
-                return self:RemoveDose(srcGUID, dstGUID, spellID, spellName, auraType, amount)
+                self:RemoveDose(srcGUID, dstGUID, spellID, spellName, auraType, amount)
             elseif eventType == "SPELL_MISSED" then
                 if NRunDB.missesEnabled then
-                    return self:ActivateTimer(srcGUID, dstGUID, dstName, dstFlags, spellID, spellName, opts, "MISSED", auraType) -- auraType = missType in this case
+                    self:ActivateTimer(srcGUID, dstGUID, dstName, dstFlags, spellID, spellName, opts, "MISSED", auraType) -- auraType = missType in this case
                 end
             elseif eventType == "SPELL_CAST_SUCCESS" then
                 lastCastSpellID = spellID
@@ -305,7 +305,8 @@ function NugRunning.COMBAT_LOG_EVENT_UNFILTERED( self, event, timestamp, eventTy
                         if opts.action then
                             opts.action(active, srcGUID, dstGUID, spellID)
                         else
-                            return self:ActivateTimer(playerGUID, playerGUID, dstName, nil, spellID, spellName, opts, "EVENT", opts.duration)
+                            self:ActivateTimer(playerGUID, playerGUID, dstName, nil, spellID, spellName, opts, "EVENT", opts.duration)
+                            break
                         end
                     end
                 end

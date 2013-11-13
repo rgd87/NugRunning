@@ -55,6 +55,7 @@ helpers.Anchor = function(name, opts)
 end
 
 helpers.Spell = function(id, opts)
+    if not opts then NugRunningConfig[id] = opts end
     if opts.singleTarget then opts.target = "target" end
     if opts.anySource then opts.affiliation = AFFILIATION_PARTY_OR_RAID end
     if opts.affiliation == "raid" then opts.affiliation = AFFILIATION_PARTY_OR_RAID end
