@@ -43,7 +43,7 @@ end
 
 function TimerBar.MoveMark(self, time)
     local pos, percent = getbarpos(self, time)
-    self.mark:SetPoint("CENTER",self.bar,"LEFT",pos,0)
+    self.mark:SetPoint("LEFT",self.bar,"LEFT",pos,0)
     if percent < 0.02 then
         self.mark:Hide()
         self.mark.texture:Hide()
@@ -71,7 +71,7 @@ function TimerBar.UpdateMark(self, time) -- time - usually closest tick time
         if time then
             if time > 0 then
                 local pos = getbarpos(self, time)
-                self.mark:SetPoint("CENTER",self.bar,"LEFT",pos,0)
+                self.mark:SetPoint("LEFT",self.bar,"LEFT",pos,0)
                 self.mark:Show()
                 self.mark.texture:Show()
             else
@@ -82,7 +82,7 @@ function TimerBar.UpdateMark(self, time) -- time - usually closest tick time
     elseif self.opts.recast_mark then
         local rm = self.opts.recast_mark
         local pos = getbarpos(self, rm)
-        self.mark:SetPoint("CENTER",self.bar,"LEFT",pos,0)
+        self.mark:SetPoint("LEFT",self.bar,"LEFT",pos,0)
         self.mark.spark:CatchUp()
         self.mark:Show()
         self.mark.texture:Show()
@@ -389,15 +389,15 @@ NugRunning.ConstructTimerBar = function(width, height)
          
     local m = CreateFrame("Frame",nil,self)
     m:SetParent(f)
-    m:SetWidth(16)
+    m:SetWidth(2)
     m:SetHeight(f:GetHeight()*0.9)
     m:SetFrameLevel(4)
     m:SetAlpha(0.6)
-    m:SetPoint("CENTER",f.bar,"LEFT",10,0)
+    m:SetPoint("LEFT",f.bar,"LEFT",10,0)
     
     local texture = m:CreateTexture(nil, "OVERLAY")
-    texture:SetTexture("Interface\\AddOns\\NugRunning\\mark")
-    texture:SetVertexColor(1,1,1,0.3)
+    texture:SetTexture("Interface\\Tooltips\\UI-Tooltip-Background")
+    texture:SetVertexColor(1,1,1,0.8)
     texture:SetAllPoints(m)
     m.texture = texture
     
@@ -405,13 +405,13 @@ NugRunning.ConstructTimerBar = function(width, height)
     spark:SetTexture("Interface\\CastingBar\\UI-CastingBar-Spark")
     spark:SetAlpha(0)
     spark:SetWidth(20)
-    spark:SetHeight(m:GetWidth()*4)
+    spark:SetHeight(16*4)
     -- spark:SetPoint("CENTER",m)
     spark:SetBlendMode('ADD')
     spark.mark = m
     spark.CatchUp = function(self)
-        local markpoint = 
-        self:SetPoint(self.mark:GetPoint())
+        local p1, f, p2, x, y = self.mark:GetPoint()
+        self:SetPoint(p1, f, p2, x-9, y-1)
     end
     spark:CatchUp()
     m.spark = spark
