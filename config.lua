@@ -60,6 +60,7 @@ colors["PURPLE"] = { 187/255, 75/255, 128/255 }
 colors["PURPLE2"] = { 188/255, 37/255, 186/255 }
 colors["PURPLE3"] = { 64/255, 48/255, 109/255 }
 colors["DPURPLE"] = {74/255, 14/255, 85/255}
+colors["CHIM"] = {199/255, 130/255, 255/255}
 colors["FROZEN"] = { 65/255, 110/255, 1 }
 colors["CHILL"] = { 0.6, 0.6, 1}
 colors["BLACK"] = {0.35,0.35,0.35}
@@ -847,6 +848,9 @@ Spell( 19263 ,{ name = "Deterrence", duration = 5, color = colors.LBLUE })
 -- Spell( 82926 ,{ name = "Aimed Shot!", duration = 10, shine = true, color = colors.WOO2 }) --removed
 Spell( 34720 ,{ name = "Thrill of the Hunt", duration = 15, shine = true, color = colors.TEAL, priority = -5 })
 
+
+
+Spell( 118455 ,{ name = "Beast Cleave", duration = 4, target = "pet", priority = -6, color = colors.TEAL2 })
 Spell( 19615 ,{ name = "Frenzy", duration = 10, target = "player", priority = -10, stackcolor = {
                                 [1] = colors.DRED,
                                 [2] = colors.DRED,
@@ -877,18 +881,22 @@ Spell( 3355 ,{ name = "Freezing Trap", duration = 10, pvpduration = 8, color = c
 Spell( 3045 ,{ name = "Rapid Fire", duration = 15, color = colors.CURSE })
 
 Cooldown( 34026 ,{ name = "Kill Command", color = colors.CURSE, ghost = true, tick = -1.5, tickshine = true, overlay = {"tick", "end"}, short = "", priority = 10, })
-Cooldown( 53209 ,{ name = "Chimera Shot", color = colors.RED, ghost = true })
-Cooldown( 53301 ,{ name = "Explosive Shot", color = colors.RED })
-Cooldown( 3674 ,{ name = "Black Arrow", color = colors.CURSE })
+
+Cooldown( 53209 ,{ name = "Chimera Shot", color = { 1, 0.2, 1}, ghost = true, short = "", priority = 10, })
+Cooldown( 53351 ,{ name = "Kill Shot", color = colors.PINKIERED, ghost = true, priority = 9, resetable = true })
+
+Cooldown( 53301 ,{ name = "Explosive Shot", color = colors.PINKIERED, ghost = true, tick = -1.5, tickshine = true, overlay = {"tick", "end"}, short = "", priority = 10, })
+Cooldown( 3674 ,{ name = "Black Arrow", color = colors.CURSE, ghost = true, priority = 9 })
+
 
 Spell( 128405 ,{ name = "Narrow Escape", duration = 8, color = colors.BROWN, multiTarget = true })
 Spell( 117526 ,{ name = "Binding Shot", duration = 5, pvpduration = 3, color = colors.RED, multiTarget = true })
-Cooldown( 120679 ,{ name = "Dire Beast", recast_mark = 15, overlay = {0,15, 0.3}, color = colors.BROWN })
+Cooldown( 120679 ,{ name = "Dire Beast", recast_mark = 15, priority = 6, ghost = true, overlay = {0,15, 0.3}, color = colors.BROWN })
 Cooldown( 82726 ,{ name = "Fervor", color = colors.DBLUE })
 
 Cooldown( 130392 ,{ name = "Blink Strike", color = colors.WOO2 })
 Cooldown( 109259 ,{ name = "Powershot", color = colors.WOO })
-Cooldown( 117050 ,{ name = "Glaive Toss", color = colors.WOO, ghost = true, priority = 2 })
+Cooldown( 117050 ,{ name = "Glaive Toss", color = colors.WOO, ghost = true, priority = 7 })
 Cooldown( 120360 ,{ name = "Barrage", color = colors.WOO })
 
 end
