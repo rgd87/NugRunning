@@ -421,7 +421,7 @@ Spell( 32645 ,{ name = "Envenom", color = { 0, 0.65, 0}, duration = function() r
 Spell( 79140 ,{ name = "Vendetta", shine = true, color = colors.CURSE, duration = 20 })
 Spell( 121153 ,{ name = "Blindside", shine = true, color = colors.TEAL, duration = 10 })
 
-Spell( 108212,{ name = "Burst of Speed", short = "Burst", shine = true, duration = 4 })
+Spell( 137573,{ name = "Burst of Speed", short = "Burst", shine = true, duration = 4 })
 Spell( 14183 ,{ name = "Premeditation",duration = 20, color = colors.CURSE })                    
 Spell( 74002 ,{ name = "Combat Insight", shine = true, shinerefresh = true, duration = 10, color = colors.CURSE })
 
@@ -847,12 +847,18 @@ Spell( 19263 ,{ name = "Deterrence", duration = 5, color = colors.LBLUE })
 -- Spell( 82926 ,{ name = "Aimed Shot!", duration = 10, shine = true, color = colors.WOO2 }) --removed
 Spell( 34720 ,{ name = "Thrill of the Hunt", duration = 15, shine = true, color = colors.TEAL, priority = -5 })
 
-Spell( 19615 ,{ name = "Frenzy", duration = 10, target = "player", color = colors.CURSE })
+Spell( 19615 ,{ name = "Frenzy", duration = 10, target = "player", priority = -10, stackcolor = {
+                                [1] = colors.DRED,
+                                [2] = colors.DRED,
+                                [3] = colors.DRED,
+                                [4] = colors.RED,
+                                [5] = {1,0,0},
+                            }})
 -- Spell( 82654 ,{ name = "Widow Venom", duration = 30, color = { 0.1, 0.75, 0.1} })--removed
 
 Spell( 56453 ,{ name = "Lock and Load", duration = 12, color = colors.LRED })
-Spell( 19574 ,{ name = "Bestial Wrath", duration = 18, color = colors.LRED })
-Spell( 82692 ,{ name = "Focus Fire", duration = 20, color = colors.GOLD })
+Spell( 19574 ,{ name = "Bestial Wrath", duration = 10, priority = -9, color = colors.LRED, target = "player" })
+Spell( 82692 ,{ name = "Focus Fire", duration = 20, priority = -9.9, color = colors.PINKIERED })
 
 
 Spell( 136 ,{ name = "Mend Pet", duration = 10, color = colors.LGREEN })
@@ -870,8 +876,8 @@ Spell( 3355 ,{ name = "Freezing Trap", duration = 10, pvpduration = 8, color = c
 
 Spell( 3045 ,{ name = "Rapid Fire", duration = 15, color = colors.CURSE })
 
-Cooldown( 34026 ,{ name = "Kill Command", color = colors.LRED })
-Cooldown( 53209 ,{ name = "Chimera Shot", color = colors.RED })
+Cooldown( 34026 ,{ name = "Kill Command", color = colors.CURSE, ghost = true, tick = 1.5, tickshine = true, overlay = {"tick", "end"}, short = "", priority = 10, })
+Cooldown( 53209 ,{ name = "Chimera Shot", color = colors.RED, ghost = true })
 Cooldown( 53301 ,{ name = "Explosive Shot", color = colors.RED })
 Cooldown( 3674 ,{ name = "Black Arrow", color = colors.CURSE })
 
@@ -880,10 +886,10 @@ Spell( 117526 ,{ name = "Binding Shot", duration = 5, pvpduration = 3, color = c
 Cooldown( 120679 ,{ name = "Dire Beast", recast_mark = 15, overlay = {0,15, 0.3}, color = colors.BROWN })
 Cooldown( 82726 ,{ name = "Fervor", color = colors.DBLUE })
 
-Cooldown( 130392 ,{ name = "Blink Strike", color = colors.WOO })
-Cooldown( 109259 ,{ name = "Powershot", color = colors.BLACK })
-Cooldown( 117050 ,{ name = "Glaive Toss", color = colors.BLACK })
-Cooldown( 120360 ,{ name = "Barrage", color = colors.BLACK })
+Cooldown( 130392 ,{ name = "Blink Strike", color = colors.WOO2 })
+Cooldown( 109259 ,{ name = "Powershot", color = colors.WOO })
+Cooldown( 117050 ,{ name = "Glaive Toss", color = colors.WOO, ghost = true, priority = 2 })
+Cooldown( 120360 ,{ name = "Barrage", color = colors.WOO })
 
 end
 
