@@ -876,7 +876,7 @@ Spell( 3355 ,{ name = "Freezing Trap", duration = 10, pvpduration = 8, color = c
 
 Spell( 3045 ,{ name = "Rapid Fire", duration = 15, color = colors.CURSE })
 
-Cooldown( 34026 ,{ name = "Kill Command", color = colors.CURSE, ghost = true, tick = 1.5, tickshine = true, overlay = {"tick", "end"}, short = "", priority = 10, })
+Cooldown( 34026 ,{ name = "Kill Command", color = colors.CURSE, ghost = true, tick = -1.5, tickshine = true, overlay = {"tick", "end"}, short = "", priority = 10, })
 Cooldown( 53209 ,{ name = "Chimera Shot", color = colors.RED, ghost = true })
 Cooldown( 53301 ,{ name = "Explosive Shot", color = colors.RED })
 Cooldown( 3674 ,{ name = "Black Arrow", color = colors.CURSE })
