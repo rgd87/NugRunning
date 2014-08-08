@@ -21,6 +21,15 @@ function TimerBar.SetCount(self,amount)
     if self.opts.stackcolor then
         self:SetColor(unpack(self.opts.stackcolor[amount]))
     end
+    if self.opts.glowstack then
+        if self.glow then
+            if amount >= self.opts.glowstack then
+                if not self.glow:IsPlaying() then self.glow:Play() end
+            else
+                self.glow:Stop()
+            end
+        end
+    end
     self.stacktext:SetText(amount)
     if amount > 1 then self.stacktext:Show()
     else self.stacktext:Hide() end

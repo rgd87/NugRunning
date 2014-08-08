@@ -455,9 +455,6 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
         cd_opts.timer = nil
     end
 
-    -- if timer.opts.idgroup then
-    --     spellID = timer.opts.idgroup[1]
-    -- end
     local timer = gettimer(active, opts,dstGUID,timerType) -- finding timer by opts table id
     if timer then
         -- spellID = timer.spellID -- swapping current id for existing timer id in case they're different
@@ -867,6 +864,7 @@ function NugRunning.TimerFunc(self,time)
             self:UpdateMark(closestTickTime)
 
             if self.mark.fullticks and self.opts.tickshine then
+                -- print(beforeEnd, self.tickPeriod, self.endTime - self.startTime)
                 self.mark.shine:Play()
             else
                 self.mark.spark:CatchUp()
