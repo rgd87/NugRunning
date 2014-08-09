@@ -49,6 +49,7 @@ colors["PINKIERED"] = { 206/255, 4/256, 56/256 }
 colors["TEAL"] = { 0.32, 0.52, 0.82 }
 colors["TEAL2"] = {38/255, 221/255, 163/255}
 colors["ORANGE"] = { 1, 124/255, 33/255 }
+colors["ORANGE2"] = { 1, 66/255, 0 }
 colors["FIRE"] = {1,80/255,0}
 colors["LBLUE"] = {149/255, 121/255, 214/255}
 colors["DBLUE"] = { 50/255, 34/255, 151/255 }
@@ -58,6 +59,7 @@ colors["GREEN"] = {0.3, 0.9, 0.3}
 colors["DGREEN"] = { 0, 0.35, 0 }
 colors["PURPLE"] = { 187/255, 75/255, 128/255 }
 colors["PURPLE2"] = { 188/255, 37/255, 186/255 }
+colors["REJUV"] = { 1, 0.2, 1}
 colors["PURPLE3"] = { 64/255, 48/255, 109/255 }
 colors["DPURPLE"] = {74/255, 14/255, 85/255}
 colors["CHIM"] = {199/255, 130/255, 255/255}
@@ -816,12 +818,23 @@ Spell( 339 ,{ name = "Entangling Roots",duration = 30 })
 -- Spell( 48518 ,{ name = "Lunar Eclipse", timeless = true, duration = 0.1, short = "Lunar", color = colors.LBLUE }) -- Starfire boost
 Spell( 78675,{ name = "Solar Beam", duration = 10, color = colors.GOLD, target = "player" })
 Spell( 33786 ,{ name = "Cyclone", duration = 6 })
-DotSpell( 8921 ,{ name = "Moonfire",duration = 40, ghost = true, color = colors.PURPLE })
-DotSpell( 93402 ,{ name = "Sunfire",duration = 24, ghost = true, color = colors.ORANGE })
-Spell( 93400 ,{ name = "Shooting Stars", shine = true, duration = 12, color = colors.CURSE })
-Cooldown( 78674 ,{ name = "Starsurge", resetable = true, ghost = true, color = colors.CURSE })
-Spell( 152221 ,{ name = "Stellar Flar",duration = 20, ghost = true, color = colors.CHIM })
+DotSpell( 164812 ,{ name = "Moonfire",duration = 40, priority = 10, ghost = true, color = colors.PURPLE })
+Spell( 171743 ,{ name = "Lunar Peak", duration = 5, priority = 9.1, scale = .7, color = colors.REJUV, glowtime = 5})
+Spell( 164547 ,{ name = "Lunar Empowerment", duration = 30, priority = 9, color = colors.REJUV})
+Spell( 171744 ,{ name = "Solar Peak", duration = 5, priority = 8.1, scale = .7, color = colors.ORANGE2, glowtime = 5})
+Spell( 164545 ,{ name = "Solar Empowerment", duration = 30, priority = 8, color = colors.ORANGE2})
+DotSpell( 164815 ,{ name = "Sunfire",duration = 24, priority = 9, ghost = true, color = colors.ORANGE })
+-- Spell( 93400 ,{ name = "Shooting Stars", shine = true, duration = 12, color = colors.CURSE })
+Spell( 48505 ,{ name = "Starfall", shine = true, duration = 10, color = colors.WOO2 })
+Cooldown( 78674 ,{ name = "Starsurge", resetable = true, priority = 6, ghost = true, color = colors.CURSE })
+Spell( 152221 ,{ name = "Stellar Flare",duration = 20, priority = 8, ghost = true, color = colors.CHIM })
+Spell( 112071 ,{ name = "Celestial Alignment",duration = 15, group = "buffs", color = colors.LBLUE, priority = -20 })
 
+
+
+DotSpell( 155625 ,{ name = "Moonfire",duration = 14, ghost = true, color = colors.PURPLE }) --cat's moonfire2
+Spell( 158792 ,{ name = "Pulverize",duration = 10, ghost = true, color = colors.WOO2 })
+Spell( 155835 ,{ name = "Bristling Fur",duration = 3, color = colors.WOO2 })
 
 Spell( {106951, 50334} ,{ name = "Berserk", duration = 15 })
 --cat
@@ -864,16 +877,14 @@ Spell( 102342 ,{ name = "Ironbark",duration = 12 })
 Spell( 61336 ,{ name = "Survival Instincts", color = colors.BLACK, duration = 12 })
 Spell( 124974 ,{ name = "Nature's Vigil", color = colors.TEAL2, duration = 30 })
 Spell( 132158 ,{ name = "Nature's Swiftness", timeless = true, duration = 0.1, color = colors.TEAL, short = "NS" })
-Spell( 774 ,{ name = "Rejuvenation",duration = 12, color = { 1, 0.2, 1} })
+Spell( 774 ,{ name = "Rejuvenation", duration = 18, color = colors.REJUV })
+Spell( 155777 ,{ name = "Germination", duration = 18, color = colors.PURPLE2 })
 Spell( 8936 ,{ name = "Regrowth",duration = 6, color = { 198/255, 233/255, 80/255} })
-Spell( 33763 ,{ name = "Lifebloom", shinerefresh = true, recast_mark = 3, duration = 10, init = function(self)self.duration = 7 + Talent(57865)*2 end, stackcolor = {
-                                                                            [1] = { 0, 0.8, 0},
-                                                                            [2] = { 0.2, 1, 0.2},
-                                                                            [3] = { 0.5, 1, 0.5},
-                                                                        }})
+Spell( 33763 ,{ name = "Lifebloom", shinerefresh = true, recast_mark = 3, duration = 15, color = { 0.5, 1, 0.5} })
 Spell( 48438 ,{ name = "Wild Growth", duration = 7, multiTarget = true, color = colors.LGREEN })
 Spell(100977,{ name = "Harmony", color = colors.BLACK, recast_mark = 2.5, duration = 10 })
--- Spell( 16870 ,{ name = "Clearcasting",  duration = 15 })
+Spell( 16870 ,{ name = "Clearcasting",  duration = 15 })
+Spell( 155631,{ name = "Clearcasting",  duration = 5, color = colors.CHIM })
 end
 
 if class == "HUNTER" then
