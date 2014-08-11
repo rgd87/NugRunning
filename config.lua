@@ -967,6 +967,8 @@ Cooldown( 109259 ,{ name = "Powershot", color = colors.WOO })
 Cooldown( 117050 ,{ name = "Glaive Toss", color = colors.WOO, ghost = true, priority = 7 })
 Cooldown( 120360 ,{ name = "Barrage", color = colors.WOO })
 
+-- helpers.Cast(77767, {name = "Cobra Shot", tick = .5, overlay = {"tick", "end"}, fixedlen = 8, color = colors.GREEN, priority = 15 })
+
 end
 
 if class == "SHAMAN" then

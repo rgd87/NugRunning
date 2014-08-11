@@ -241,6 +241,8 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
         local timer = NugRunning:CreateTimer()
         free[timer] = true
     end
+    --remove timer from the pool and change it to castbar
+    NugRunning:CreateCastbarTimer(table.remove(NugRunning.timers))
 
     local _,class = UnitClass("player")
     if (class == "WARLOCK" or class == "PRIEST") and NRunDB.dotpower then
@@ -1566,3 +1568,116 @@ function NugRunning:SoulSwapUsed(active, srcGUID, dstGUID, spellID )
     ssPendingTarget = dstGUID
 end
 
+
+
+function NugRunning:CreateCastbarTimer(timer)
+    local f = timer
+    self.castbar = timer
+
+    f.stacktext:Hide()
+    -- f:SetScript("OnUpdate",TimerOnUpdate)
+    f.unit = "player"
+    f.dstGUID = UnitGUID("player")
+    f.srcGUID = UnitGUID("player")
+    f.dontfree = true
+    -- f.priority = 9001
+    f.opts = {}
+
+
+    f:RegisterEvent("UNIT_SPELLCAST_START")
+    f:RegisterEvent("UNIT_SPELLCAST_DELAYED")
+    -- f:RegisterEvent("PLAYER_TARGET_CHANGED")
+    f:RegisterEvent("UNIT_SPELLCAST_STOP")
+    f:RegisterEvent("UNIT_SPELLCAST_FAILED")
+    f:RegisterEvent("UNIT_SPELLCAST_INTERRUPTED")
+    f:RegisterEvent("UNIT_SPELLCAST_CHANNEL_START")
+    f:RegisterEvent("UNIT_SPELLCAST_CHANNEL_UPDATE")
+    f:RegisterEvent("UNIT_SPELLCAST_CHANNEL_STOP")
+
+    f:SetScript("OnEvent", function(self, event, ...)
+        -- print(event, ...)
+        return f[event](self, event, ...)
+    end)
+
+    f.UpdateCastingInfo = function(self,name, texture, startTimeInt, endTimeInt, opts)
+        local timer = self
+
+        self.opts = opts
+        self.priority = opts.priority or 0
+        -- timer.fixedoffset = opts.fixedlen and time - opts.fixedlen or 0
+
+        self:SetColor(unpack(opts.color or { 0.6, 0, 1 }))
+        self.icon:SetTexture(texture)
+        self.spellText:SetText(opts.name or opts.localname)
+
+        if opts.tick and NRunDB.dotticks then
+            timer.tickPeriod = opts.tick > 0 and (opts.tick/(1+(UnitSpellHaste("player")/100))) or math.abs(opts.tick)
+            timer.mark.fullticks = nil
+        else
+            timer.tickPeriod = nil
+        end
+
+        local startTime = startTimeInt /1000
+        local endTime = endTimeInt /1000
+        local duration = endTime - startTime
+        timer.fixedoffset = timer.opts.fixedlen and duration - timer.opts.fixedlen or 0
+        timer:SetTime(startTime +  timer.fixedoffset, startTime + duration)
+
+        -- self.startTime = startTime / 1000
+        -- self.endTime = endTime / 1000
+        -- self.bar:SetMinMaxValues(self.startTime,self.endTime)
+        -- local color = NRunCast.coloredSpells[name] or  { 0.6, 0, 1 }
+        -- local color = { 0.6, 0, 1 }
+        -- self.bar:SetStatusBarColor(unpack(color))
+        -- self.bar.bg:SetVertexColor(color[1]*.5,color[2]*.5,color[3]*.5)
+        self:Show()
+    end
+
+
+    function f.UNIT_SPELLCAST_START(self,event, unit, spellName, rank, castID, spellID)
+        if unit ~= self.unit then return end
+        if not config.casts[spellID] then return end
+        local opts = config.casts[spellID]
+
+        local name, subText, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible = UnitCastingInfo(unit)
+        self.inverted = false
+        self.castID = castID
+        self:UpdateCastingInfo(name,texture,startTime,endTime, opts)
+        NugRunning.active[self] = true
+        NugRunning:ArrangeTimers()
+    end
+    f.UNIT_SPELLCAST_DELAYED = f.UNIT_SPELLCAST_START
+    function f.UNIT_SPELLCAST_CHANNEL_START(self,event, unit, spellName, rank, castID, spellID)
+        if unit ~= self.unit then return end
+        if not config.casts[spellID] then return end
+        local opts = config.casts[spellID]
+
+        local name, subText, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible = UnitChannelInfo(unit)
+        self.inverted = true
+        self.castID = castID
+        self:UpdateCastingInfo(name,texture,startTime,endTime, opts)
+
+        NugRunning.active[self] = true
+        NugRunning:ArrangeTimers()
+    end
+    f.UNIT_SPELLCAST_CHANNEL_UPDATE = f.UNIT_SPELLCAST_CHANNEL_START
+    function f.UNIT_SPELLCAST_STOP(self,event, unit, spellName, rank, castID, spellID)
+        if unit ~= self.unit then return end
+        self:Hide()
+        NugRunning.active[self] = nil
+        NugRunning:ArrangeTimers()
+    end
+    function f.UNIT_SPELLCAST_FAILED(self, event, unit, spell, _,castID)
+        if unit ~= self.unit then return end
+        if self.castID == castID then self.UNIT_SPELLCAST_STOP(self, event, unit, spell) end
+    end
+    f.UNIT_SPELLCAST_INTERRUPTED = f.UNIT_SPELLCAST_STOP
+    f.UNIT_SPELLCAST_CHANNEL_STOP = f.UNIT_SPELLCAST_STOP
+
+
+    function f.PLAYER_TARGET_CHANGED(self)
+        local newguid = UnitGUID("target") or UnitGUID("player")
+        self.dstGUID = newguid
+        NugRunning:ArrangeTimers()
+    end
+end

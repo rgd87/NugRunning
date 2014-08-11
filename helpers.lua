@@ -7,6 +7,7 @@ NugRunningConfig.cooldowns = {}
 NugRunningConfig.activations = {}
 NugRunningConfig.event_timers = {}
 NugRunningConfig.totems = {}
+NugRunningConfig.casts = {}
 local AFFILIATION_MINE = COMBATLOG_OBJECT_AFFILIATION_MINE
 local AFFILIATION_PARTY_OR_RAID = COMBATLOG_OBJECT_AFFILIATION_RAID + COMBATLOG_OBJECT_AFFILIATION_PARTY
 local AFFILIATION_OUTSIDER = COMBATLOG_OBJECT_AFFILIATION_OUTSIDER
@@ -103,6 +104,16 @@ helpers.ModCooldown = function(id, mods)
     if type(id) == "table" then id = id[1] end
     apply_overrides(NugRunningConfig.cooldowns[id], mods)
 end
+
+
+helpers.Cast = function(id, opts)
+    if opts then 
+        opts.localname = GetSpellInfo(id)
+        if not opts.localname then print("nrun: misssing spell #"..id) return end
+    end
+    NugRunningConfig.casts[id] = opts
+end
+
 
 helpers.Activation = function(id, opts)
     if opts then
