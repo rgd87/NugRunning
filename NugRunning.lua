@@ -303,7 +303,7 @@ function NugRunning.COMBAT_LOG_EVENT_UNFILTERED( self, event, timestamp, eventTy
                 if affiliationStatus or (opts.affiliation and bit_band(srcFlags, COMBATLOG_OBJECT_AFFILIATION_MASK) <= opts.affiliation ) then
                     if spellID == opts.spellID then
                         if opts.action then
-                            opts.action(active, srcGUID, dstGUID, spellID)
+                            opts.action(active, srcGUID, dstGUID, spellID, auraType) --  auraType = damage amount for SPELL_DAMAGE
                         else
                             self:ActivateTimer(playerGUID, playerGUID, dstName, nil, spellID, spellName, opts, "EVENT", opts.duration)
                             break
@@ -1488,7 +1488,11 @@ do
                     -- end
                 else
                     if timer.opts.singleTarget then
+                        timer.isGhost = true
+                        timer.expiredGhost = true
                         free[timer] = true
+                        timer.isGhost = false
+                        timer.expiredGhost = false
                     end
                 end
             end

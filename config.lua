@@ -458,17 +458,18 @@ end
 if class == "WARRIOR" then
 -- Spell( 6673 ,{ name = "Battle Shout", target = "player", glowtime = 10, priority = -10, color = colors.DPURPLE, duration = 120 })
 -- Spell( 469 ,{ name = "Commanding Shout", target = "player", priority = -10, glowtime = 10, short = "CommShout", color = colors.DPURPLE, duration = 120 })
-Spell( 132404 ,{ name = "Shield Block", color = colors.WOO2, group = "buffs", priority = - 9, duration = 6, priority = 4, })
-Spell( 112048 ,{ name = "Shield Barrier", ghost = 1.3, group = "buffs", priority = -8, color = colors.WOO, priority = 4, duration = 6 })
+Spell( 132404 ,{ name = "Shield Block", color = colors.WOO2, shine = true, group = "buffs", priority = - 9, duration = 6 })
+Spell( 169667 ,{ name = "Shield Charge", shine = true, color = colors.WOO2, group = "buffs", priority = - 9, duration = 6 })
+Spell( 112048 ,{ name = "Shield Barrier", ghost = 1.3, group = "buffs", priority = -8, color = colors.WOO, duration = 6 })
 -- Spell( 85730 ,{ name = "Deadly Calm", group = "buffs", duration = 10 })
 Spell( 12328 ,{ name = "Sweeping Strikes", priority = 6, ghost = 1, color = colors.BLACK, short = "Sweeping", duration = 10 })
 -- Spell( 115767 ,{ name = "Deep Wounds", color = colors.DRED, duration = 15, singleTarget = true })
 
 -- Spell( 20511 ,{ name = "Intimidating Shout", short = "Fear", duration = 8, multiTarget = true }) --removed
 
-DotSpell( 94009 ,{ name = "Rend", color = colors.RED, duration = 18 })
+DotSpell( 772 ,{ name = "Rend", color = colors.RED, duration = 18, ghost = true })
 Spell( 167105 ,{ name = "Colossus Smash", shine = true, priority = -100500, color = colors.PURPLE2, duration = 6 }) --debuff
-Cooldown( 86346 ,{ name = "Colossus Smash", priority = 8, ghost = true, color = colors.WOO, resetable = true, duration = 20 })
+Cooldown( 167105 ,{ name = "Colossus Smash", priority = 8, ghost = true, color = colors.WOO, resetable = true, duration = 20 })
 
 -- Spell( 676  ,{ name = "Disarm", color = colors.BROWN, duration = 10 }) --removed
 Spell( 1715 ,{ name = "Hamstring", ghost = true, color = colors.PURPLE, duration = 15, pvpduration = 8 })
@@ -623,9 +624,9 @@ Spell( 157627 ,{ name = "Breath of the Serpent", duration = 10, color = colors.T
 end
 
 if class == "DEATHKNIGHT" then
-DotSpell( 55095 ,{ name = "Frost Fever", color = colors.CHILL, priority = 10, singleTarget = true, duration = 30 })
-DotSpell( 55078 ,{ name = "Blood Plague", color = colors.PURPLE, priority = 9, singleTarget = true, duration = 30 })
-DotSpell( 155159 ,{ name = "Necrotic Plague", color = colors.PURPLE, priority = 9, singleTarget = true, duration = 30 })
+DotSpell( 55095 ,{ name = "Frost Fever", ghost = true, color = colors.CHILL, priority = 10, singleTarget = true, duration = 30 })
+DotSpell( 55078 ,{ name = "Blood Plague", ghost = true, color = colors.PURPLE, priority = 9, singleTarget = true, duration = 30 })
+DotSpell( 155159 ,{ name = "Necrotic Plague", ghost = true, color = colors.PURPLE, priority = 9, singleTarget = true, duration = 30 })
 Spell( 43265 ,{ name = "Death and Decay", short = "DnD", color = colors.RED, duration = 10, target = "player" })
 Spell( 156004 ,{ name = "Defile", color = colors.RED, duration = 10 })
 -- Cooldown( 43265 ,{ name = "Death and Decay", color = colors.GOLD, minduration = 15 })
@@ -682,6 +683,7 @@ Spell( 36032 ,{ name = "Arcane Charge",duration = 10, color = colors.CURSE })
 Cooldown( 44425 ,{ name = "Arcane Barrage", color = colors.RED })
 Spell( 79683 ,{ name = "Arcane Missiles!", shine = true, duration = 20, color = colors.WOO })
 Spell( 55342 ,{ name = "Mirror Image",duration = 40 })
+Spell( 159916 ,{ name = "Amplify Magic",duration = 6, shine = true, group = "buffs" })
 Cooldown( 153626 ,{ name = "Arcane Orb", color = colors.CHIM, ghost = true })
 
 EventTimer({ event = "SPELL_SUMMON", spellID = 152087, name = "Prismatic Crystal", group = "buffs", priority = -20, duration = 10, color = colors.CHIM })
@@ -697,26 +699,42 @@ EventTimer({ event = "SPELL_SUMMON", spellID = 152087, name = "Prismatic Crystal
 -- Spell( 12536 ,{ name = "Clearcast",duration = 15, color = colors.BLACK })
 Spell( 31589 ,{ name = "Slow", duration = 15, pvpduration = 8 })
 --FIRE
-Spell( 48108 ,{ name = "Hot Streak",duration = 10, shine = true, color = colors.CURSE, short = "Pyro!" })
+
 Spell( 31661 ,{ name = "Dragon's Breath", duration = 5, color = colors.ORANGE, short = "Breath", multiTarget = true })
 Spell( 2120 ,{ name = "Flamestrike", duration = 8, color = colors.PURPLE, multiTarget = true })
-Cooldown( 84714, { name = "Frozen Orb", color = colors.WOO})
+
+Spell( 48107 ,{ name = "Heating Up", priority = 5.1, shine = true, glowtime = 10, duration = 10, color = colors.DPURPLE })
+Spell( 48108 ,{ name = "Pyroblast", priority = 5, duration = 15, shine = true, color = colors.REJUV })
+--Pyroblast
+DotSpell( 11366 ,{ name = "", ghost = true, duration = 18, priority = 8, color = colors.PURPLE, singleTarget = true })
+--Living Bomb
+DotSpell( 44457 ,{ name = "", ghost = true, color = colors.PINKIERED, priority = 9, duration = 12, singleTarget = true })
+Spell( 12654 ,{ name = "Ignite", shinerefresh = false, color = colors.DRED, priority = 1, duration = 5, singleTarget = true })
+Spell( 83853 ,{ name = "Combustion", color = colors.ORANGE2, priority = 1.1, duration = 10, singleTarget = true })
+Cooldown( 108853, { name = "Infeno Blast", color = colors.LRED, ghost = true })
 --Cooldown( 2136, { name = "Fire Blast", resetable = true, color = colors.LRED})
-Cooldown( 108853, { name = "Infeno Blast", color = colors.LRED})
 EventTimer({ spellID = 153561, event = "SPELL_CAST_SUCCESS", name = "Meteor", duration = 2.9, color = colors.FIRE })
+EventTimer({ spellID = 12654, event = "SPELL_PERIODIC_DAMAGE",
+    action = function(active, srcGUID, dstGUID, spellID, damage )
+        local ignite_timer = NugRunning.gettimer(active, spellID, dstGUID, "DEBUFF")
+        if ignite_timer then
+            ignite_timer:SetName(damage)
+        end
+    end})
 
 --FROST
 Spell( 12472 ,{ name = "Icy Veins",duration = 20 })
 Spell( 82691 ,{ name = "Ring of Frost", shine = true, color = colors.FROZEN, multiTarget = true, duration = 12, pvpduration = 8 }) -- it's not multi target, but... it can spam
-Spell( 122 ,{ name = "Frost Nova",duration = 8, short = "FrNova", color = colors.FROZEN, multiTarget = true })
+Spell( 122 ,{ name = "Frost Nova",duration = 8, color = colors.FROZEN, multiTarget = true })
 Spell( 33395 ,{ name = "Freeze",duration = 8, color = colors.FROZEN })
-Spell( 44544 ,{ name = "Fingers of Frost", shine = true, duration = 15, color = colors.FROZEN, short = "FoF" })
+Spell( 44544 ,{ name = "Fingers of Frost", shine = true, duration = 15, color = colors.FROZEN })
 Spell( 57761 ,{ name = "Brain Freeze", shine = true, duration = 15, color = colors.LRED })
 
 Spell( 45438 ,{ name = "Ice Block",duration = 10 })
 Spell( 44572 ,{ name = "Deep Freeze",duration = 5 })
 Spell( 120 ,{ name = "Cone of Cold", duration = 8, color = colors.CHILL, short = "CoC", multiTarget = true })
 Cooldown( 153595, { name = "Comet Storm", color = colors.PURPLE2})
+Cooldown( 84714, { name = "Frozen Orb", color = colors.WOO})
 
 --talents
 Spell( 157913,{ name = "Evanesce", duration = 3, color = colors.PINK })
@@ -732,17 +750,16 @@ Spell( 110960 ,{ name = "Greater Invisibility", duration = 20, color = colors.CU
 Spell( 116014, { name = "Rune of Power", timeless = true, duration = 1, color = colors.DPURPLE, priority = -50 })
 
 Spell( 112948 ,{ name = "Frost Bomb", duration = 12, color = colors.CURSE })
-Spell( 44457 ,{ name = "Living Bomb",duration = function(self, opts) 
-            local targetGUID = UnitGUID("target")
-            if self.dstGUID == targetGUID then return 12 end
-            local origin_timer = NugRunning.gettimer(NugRunning.active, 44457, targetGUID, "DEBUFF")
-            if origin_timer then
-                return origin_timer.endTime - GetTime()
-            else
-                return 12
-            end
-        end,
-        ghost = true, color = colors.RED, short = "Bomb" })
+-- duration = function(self, opts) 
+--             local targetGUID = UnitGUID("target")
+--             if self.dstGUID == targetGUID then return 12 end
+--             local origin_timer = NugRunning.gettimer(NugRunning.active, 44457, targetGUID, "DEBUFF")
+--             if origin_timer then
+--                 return origin_timer.endTime - GetTime()
+--             else
+--                 return 12
+--             end
+--         end,
 Spell( 114923 ,{ name = "Nether Tempest", duration = 12, color = colors.PURPLE })
 
 end
