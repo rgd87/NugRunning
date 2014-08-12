@@ -1572,6 +1572,7 @@ end
 
 function NugRunning:CreateCastbarTimer(timer)
     local f = timer
+    NugRunning.free[timer] = nil
     self.castbar = timer
 
     f.stacktext:Hide()
