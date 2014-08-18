@@ -194,12 +194,16 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
 
     NugRunning:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
         
-    NugRunning:RegisterEvent("PLAYER_TALENT_UPDATE") -- changing between dualspec
+    
     NugRunning:RegisterEvent("GLYPH_UPDATED")
     NugRunning:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
     NugRunning.ACTIVE_TALENT_GROUP_CHANGED = NugRunning.ReInitSpells
     NugRunning.GLYPH_UPDATED = NugRunning.ReInitSpells
-    NugRunning.PLAYER_TALENT_UPDATE = NugRunning.ReInitSpells
+    -- NugRunning:RegisterEvent("PLAYER_TALENT_UPDATE") 
+    -- NugRunning.PLAYER_TALENT_UPDATE = NugRunning.ReInitSpells
+    NugRunning.CHARACTER_POINTS_CHANGED = NugRunning.ReInitSpells
+    NugRunning:RegisterEvent("CHARACTER_POINTS_CHANGED")
+    NugRunning:ReInitSpells("SHIT")
     
     NugRunning:RegisterEvent("UNIT_COMBO_POINTS")
     
@@ -244,11 +248,11 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
     --remove timer from the pool and change it to castbar
     NugRunning:CreateCastbarTimer(table.remove(NugRunning.timers))
 
-    local _,class = UnitClass("player")
-    if (class == "WARLOCK" or class == "PRIEST") and NRunDB.dotpower then
-        Scouter = LibStub("LibScouter-1.0")
-        Scouter.RegisterCallback(NugRunning, "POWER_LEVEL_CHANGED", NugRunning.POWER_LEVEL_CHANGED)
-    end
+    -- local _,class = UnitClass("player")
+    -- if (class == "WARLOCK" or class == "PRIEST") and NRunDB.dotpower then
+    --     Scouter = LibStub("LibScouter-1.0")
+    --     Scouter.RegisterCallback(NugRunning, "POWER_LEVEL_CHANGED", NugRunning.POWER_LEVEL_CHANGED)
+    -- end
         
     SLASH_NUGRUNNING1= "/nugrunning"
     SLASH_NUGRUNNING2= "/nrun"
@@ -1119,8 +1123,23 @@ function NugRunning.UNIT_COMBO_POINTS(self,event,unit)
 end
 function NugRunning.ReInitSpells(self,event,arg1)
     for id,opts in pairs(NugRunningConfig) do
-        if type(opts) == "table" and opts.init_done then
+        if opts.init then
             opts:init()
+            opts.init_done = true
+        end
+    end
+    for event, timers in pairs(NugRunningConfig.event_timers) do
+        for _, opts in pairs(timers) do
+            if opts.init then
+                opts:init()
+                opts.init_done = true
+            end
+        end
+    end
+    for id,opts in pairs(NugRunningConfig.cooldowns) do
+        if opts.init then
+            opts:init()
+            opts.init_done = true
         end
     end
 end
