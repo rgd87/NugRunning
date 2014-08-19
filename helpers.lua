@@ -12,12 +12,6 @@ local AFFILIATION_MINE = COMBATLOG_OBJECT_AFFILIATION_MINE
 local AFFILIATION_PARTY_OR_RAID = COMBATLOG_OBJECT_AFFILIATION_RAID + COMBATLOG_OBJECT_AFFILIATION_PARTY
 local AFFILIATION_OUTSIDER = COMBATLOG_OBJECT_AFFILIATION_OUTSIDER
 
-local _GetSpellInfo = GetSpellInfo
-local GetSpellInfo = function(...)
-    local name = _GetSpellInfo(...)
-    if name == "" then return nil end
-    return _GetSpellInfo(...)
-end
 
 helpers.Talent = function (spellID)
     -- local spellName
