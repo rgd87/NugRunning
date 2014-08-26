@@ -203,7 +203,7 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
     -- NugRunning.PLAYER_TALENT_UPDATE = NugRunning.ReInitSpells
     NugRunning.CHARACTER_POINTS_CHANGED = NugRunning.ReInitSpells
     NugRunning:RegisterEvent("CHARACTER_POINTS_CHANGED")
-    NugRunning:ReInitSpells("SHIT")
+    NugRunning:ReInitSpells()
     
     NugRunning:RegisterEvent("UNIT_COMBO_POINTS")
     

@@ -8,6 +8,7 @@ local ModSpell = helpers.ModSpell
 local Cooldown = helpers.Cooldown
 local Activation = helpers.Activation
 local EventTimer = helpers.EventTimer
+local Cast = helpers.Cast
 local Anchor = helpers.Anchor
 local Talent = helpers.Talent
 local Glyph = helpers.Glyph
@@ -494,7 +495,7 @@ Cooldown( 6572, { name = "Revenge", priority = 5, color = colors.PURPLE, resetab
 
 Spell( 55694, { name = "Enraged Regeneration", short = "Regen", color = colors.LGREEN, duration = 5 })
 Spell( 132168 ,{ name = "Shockwave", color = colors.CURSE, shine = true, duration = 4, multiTarget = true, })
-Cooldown( 46968 ,{ name = "Shockwave", fixedlen = 9, ghost = 3, priority = 2, color = colors.WOO2DARK, color2 = colors.PINK3 })
+Cooldown( 46968 ,{ name = "Shockwave", fixedlen = 9, ghost = 3, priority = 2, color = colors.WOO2DARK, color2 = colors.PINK2 })
 --can't use with_cooldown on shockwave, because without effect applied first it's not working.
 --but shockwave still needs to be used on cooldown
 --old enrage Spell( 85288, { name = "Enraged", shine = true, showid = 14202, color = colors.RED, duration = 10 })
@@ -580,7 +581,7 @@ Spell( 871, { name = "Shield Wall", color = colors.WOO2, duration = 12, group = 
 Cooldown( 23922, { name = "Shield Slam", tick = 1.5, tickshine = true, overlay = {"tick", "end"}, short = "", priority = 10, check_known = true, fixedlen = 9, ghost = true,  color = colors.CURSE, resetable = true })
 
 -- Cooldown( 78, { name = "Heroic Strike", short = "Heroic", fixedlen = 6, ghost = true })
-Cooldown( 6343, { name = "Thunder Clap", ghost = 1.5, short = "", scale = 0.7, specmask = 0xF00, color = colors.PINKIERED, fixedlen = 9, priority = 9.5 })
+Cooldown( 6343, { name = "Thunder Clap", ghost = true, short = "", scale = 0.7,overlay = {0,"gcd",.3}, specmask = 0xF00, color = colors.PINKIERED, fixedlen = 9, priority = 9.5 })
 Spell( 32216, { name = "Victory Rush", group = "buffs", priority = -9, color = colors.PURPLE, duration = 20})
 
 Spell( 152277 ,{ name = "Ravager", color = colors.DRED, group = "buffs", duration = 10 })

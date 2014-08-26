@@ -72,6 +72,8 @@ local function clear_overlay_point(p, self, ticktime)
             return min(ticktime+self.tickPeriod, self.endTime-self.startTime)
         elseif p == "end" then
             return self.endTime-self.startTime
+        elseif p == "gcd" then
+            return (1.5/(1+(UnitSpellHaste("player")/100)))
         end
     else return p end
 end
@@ -90,7 +92,7 @@ function TimerBar.UpdateMark(self, time) -- time - usually closest tick time
             end
         end
     elseif self.opts.recast_mark then
-        local rm = self.opts.recast_mark
+        local rm = clear_overlay_point(self.opts.recast_mark, self, time)
         local pos = getbarpos(self, rm)
         self.mark:SetPoint("LEFT",self.bar,"LEFT",pos,0)
         self.mark.spark:CatchUp()
