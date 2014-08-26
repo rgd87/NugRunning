@@ -38,6 +38,7 @@ end
 function TimerBar.SetTime(self,s,e)
     self.startTime = s
     self.endTime = e
+    -- self._duration = e-s
     self.bar:SetMinMaxValues(s,e)
     self:UpdateMark()
 end
@@ -142,6 +143,7 @@ function TimerBar.ToGhost(self)
     self:SetColor(0.5,0,0)
     self.timeText:SetText("")
     self.bar:SetValue(0)
+    if self.glow:IsPlaying() then self.glow:Stop() end
     --self:SetAlpha(0.8)
 end
 do

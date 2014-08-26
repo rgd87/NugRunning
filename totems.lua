@@ -10,6 +10,15 @@ NugRunning.InitTotems = function(self)
     
     local UpdateTotem = function( id, opts, name, startTime, duration, icon )
         local timer = opts.timer
+
+        if duration == 0 then
+            timer:ToInfinite()
+            duration = 1
+            opts.timeless = true
+        else
+            opts.timeless = false
+        end
+
         timer:SetTime(startTime,startTime+duration)
         if not opts.hideName then
             opts.name = name
@@ -29,6 +38,7 @@ NugRunning.InitTotems = function(self)
     NugRunning.totems:SetScript("OnEvent", function(self,event)
         for id, opts in ipairs(totems) do
             local haveTotem, name, startTime, duration, icon = GetTotemInfo(id)
+            -- print(haveTotem, name, startTime, duration, icon)
             if haveTotem then
                 UpdateTotem(id, opts, name, startTime, duration, icon)
             else

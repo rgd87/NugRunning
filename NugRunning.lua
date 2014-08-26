@@ -212,6 +212,11 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
         
     if NRunDB.cooldownsEnabled then
         NugRunning:RegisterEvent("SPELL_UPDATE_COOLDOWN")
+        if C_Timer then
+        NugRunning.cooldownTicker = C_Timer.NewTicker(1, function()
+            NugRunning:SPELL_UPDATE_COOLDOWN("PERIODIC_COOLDOWN_UPDATE", true)
+        end)
+        end
     end
 
     if NRunDB.nameplates then
@@ -369,7 +374,10 @@ local function GetSpellCooldownCharges(spellID)
     return startTime, duration, enabled, charges, maxCharges
 end
 
-function NugRunning.SPELL_UPDATE_COOLDOWN(self,event)
+local lastCooldownUpdateTime = GetTime()
+function NugRunning.SPELL_UPDATE_COOLDOWN(self,event, periodic)
+    if periodic and GetTime() - lastCooldownUpdateTime < 0.9 then return end
+    -- print(GetTime(), event)
     for spellID,opts in pairs(NugRunningConfig.cooldowns) do
         if not opts.check_known or IsPlayerSpell(spellID) then -- Eh, no continue in Lua
 
@@ -396,12 +404,20 @@ function NugRunning.SPELL_UPDATE_COOLDOWN(self,event)
             else
                     if not active[timer] or timer.isGhost then
                         local mdur = opts.minduration
-                        if not mdur or duration > mdur then
-                            timer = self:ActivateTimer(UnitGUID("player"),UnitGUID("player"), UnitName("player"), nil, spellID, opts.localname, opts, "COOLDOWN", duration + startTime - GetTime())
+                        local time_remains = (duration + startTime) - GetTime()
+                        local mrem = opts.hide_until
+                        if (not mdur or duration > mdur) and (not mrem or time_remains < mrem) then
+                            timer = self:ActivateTimer(UnitGUID("player"),UnitGUID("player"), UnitName("player"), nil, spellID, opts.localname, opts, "COOLDOWN", time_remains)
+                        else
+                            if timer and timer.isGhost then
+                                NugRunning.GhostExpire(timer)
+                            end
                         end
                         if timer then
                             timer.cd_startTime = startTime
                             timer.cd_duration = duration
+                            timer.fixedoffset = timer.opts.fixedlen and duration - timer.opts.fixedlen or 0
+                            timer:SetTime(startTime +  timer.fixedoffset, startTime + duration)
                             opts.timer = timer
                         end
                     else
@@ -429,6 +445,7 @@ function NugRunning.SPELL_UPDATE_COOLDOWN(self,event)
 
         end
     end
+    lastCooldownUpdateTime = GetTime()
 end
 
 local helpful = "HELPFUL"
@@ -460,6 +477,7 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
         end
         cd_opts.timer = nil
     end
+
 
     local timer = gettimer(active, opts,dstGUID,timerType) -- finding timer by opts table id
     if timer then
@@ -581,6 +599,7 @@ end
 function NugRunning.RefreshTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID, spellName, opts, timerType, override, amount, noshine)
     local multiTargetGUID
     if opts.multiTarget then multiTargetGUID = dstGUID; dstGUID = nil; end
+
 
     local timer = gettimer(active, opts or spellID,dstGUID,timerType)
     if not timer then
@@ -821,9 +840,26 @@ end
 
 function NugRunning.GetUnitAuraData(self, unit, timer, spellID)
         for auraIndex=1,100 do
-            -- local name, _,_, count, _, duration, expirationTime, caster, _,_, aura_spellID, _, _, _, absorb = UnitAura(unit, auraIndex, timer.filter)
-            return NugRunning:SetUnitAuraValues(timer, spellID, UnitAura(unit, auraIndex, timer.filter))
+            local name, rank, icon, count, dispelType, duration, expirationTime, caster, isStealable, shouldConsolidate, aura_spellID, canApplyAura, isBossDebuff, value1, absorb, value3 = UnitAura(unit, auraIndex, timer.filter)
+            if spellID == aura_spellID then
+                return NugRunning:SetUnitAuraValues(timer, spellID, name, rank, icon, count, dispelType, duration, expirationTime, caster, isStealable, shouldConsolidate, aura_spellID, canApplyAura, isBossDebuff, value1, absorb, value3)
+            elseif name == nil then
+                return
+            end
         end
+end
+
+
+local function GetGradientColor(c1, c2, v)
+    if v > 1 then v = 1 end
+    -- colorA = [0, 0, 255] # blue
+-- colorB = [255, 0, 0] # red
+-- function get_gradient_color(val):
+-- # 'val' must be between 0 and 1
+    local r = c1[1] + v*(c2[1]-c1[1])
+    local g = c1[2] + v*(c2[2]-c1[2])
+    local b = c1[3] + v*(c2[3]-c1[3])
+    return r,g,b
 end
 
 local math_floor = math.floor
@@ -851,6 +887,11 @@ function NugRunning.TimerFunc(self,time)
     end
 
     self:Update(beforeEnd)
+
+    if opts.color2 then
+        local dur = endTime - self.startTime
+        self:SetColor(GetGradientColor(opts.color2, opts.color, beforeEnd/dur))
+    end
 
     local glowtime = opts.glowtime
     if glowtime and beforeEnd < glowtime then
@@ -887,6 +928,7 @@ end
 function NugRunning.GhostExpire(self)
     self:SetScript("OnUpdate", NugRunning.TimerFunc)
     self.expiredGhost = true
+    if self.glow:IsPlaying() then self.glow:Stop() end
     free[self] = true
     self.isGhost = nil
 end
@@ -913,6 +955,9 @@ local TimerBecomeGhost = function(self)
     else
         self.ghost_duration = 3
         self.ghost_noleave = nil
+    end
+    if opts.glowghost then
+        if not self.glow:IsPlaying() then self.glow:Play() end
     end
     self._elapsed = 0
     self:SetScript("OnUpdate", NugRunning.GhostFunc)
@@ -1281,8 +1326,12 @@ function NugRunning.SlashCmd(msg)
     if k == "cooldowns" then
         if NRunDB.cooldownsEnabled then
             NugRunning:UnregisterEvent("SPELL_UPDATE_COOLDOWN")
+            if NugRunning.cooldownTicker then NugRunning.cooldownTicker:Cancel() end
         else
             NugRunning:RegisterEvent("SPELL_UPDATE_COOLDOWN")
+            NugRunning.cooldownTicker = C_Timer.NewTicker(1, function()
+                NugRunning:SPELL_UPDATE_COOLDOWN("PERIODIC_COOLDOWN_UPDATE", true)
+            end)
         end
         NRunDB.cooldownsEnabled = not NRunDB.cooldownsEnabled
         print("NRun cooldowns "..(NRunDB.cooldownsEnabled and "enabled" or "disabled"))
