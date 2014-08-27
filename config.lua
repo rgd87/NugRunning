@@ -485,7 +485,7 @@ Cooldown( 86346 ,{ name = "Colossus Smash", priority = 8, ghost = true, color = 
 Spell( 1715 ,{ name = "Hamstring", ghost = true, color = colors.PURPLE, duration = 15, pvpduration = 8 })
 
 -- Spell( 12809 ,{ name = "Concussion Blow", color = { 1, 0.3, 0.6 }, duration = 5 })
-Spell( 355 ,{ name = "Taunt", duration = 3 })
+-- Spell( 355 ,{ name = "Taunt", duration = 3 })
 -- Spell( 113746 ,{ name = "Weakened Armor", specmask = 0xF00, short = "WeakArmor", priority = -10, affiliation = "any", singleTarget = true, color = colors.BROWN, duration = 30 })
 -- Demo shout also applies self-buff (id 125565), but it doesn't appear in combat log
 Spell( 1160 ,{ name = "Demoralizing Shout", short = "DemoShout", shine = true, group = "buffs", color = colors.BLACK, duration = 30, multiTarget = true })
@@ -820,22 +820,23 @@ Spell( 105593 ,{ name = "Fist of Justice", duration = 6, short = "FoJ", color = 
 -- Spell( 85696 ,{ name = "Zealotry",duration = 20 })
 Spell( 2812 ,{ name = "Denounce", duration = 4, color = colors.GREEN })
 
-Cooldown( 35395 ,{ name = "Crusader Strike", tick = 1.5, overlay = {"tick", "end"}, tickshine = true, ghost = true, short = "Crusader", priority = 10, fixedlen = 6, color = colors.CURSE })
-Cooldown( 20271 ,{ name = "Judgement", ghost = true, fixedlen = 6, priority = 8, color = colors.RED })
-Cooldown( 24275 ,{ name = "Hammer of Wrath", color = colors.TEAL2 , ghost = true, priority = 11 })
+Cooldown( 35395 ,{ name = "Crusader Strike", tick = 1.5, overlay = {"tick", "end"}, tickshine = true, ghost = true, short = "Crusader", priority = 10, fixedlen = 8, color = colors.CURSE })
+Cooldown( 20271 ,{ name = "Judgement", ghost = true, fixedlen = 8, priority = 8, color = colors.PURPLE })
+Cooldown( 26573 ,{ name = "Consecration", color = colors.PINKIERED, overlay = {0,"gcd",.3}, priority = 9, scale = .7, ghost = true, fixedlen = 8 })
+Cooldown( 24275 ,{ name = "Hammer of Wrath", color = colors.TEAL2, fixedlen = 8, ghost = true, priority = 11 })
 Cooldown( 119072, { name = "Holy Wrath", color = colors.BROWN, priority = 3, ghost = true })
-Cooldown( 26573 ,{ name = "Consecration", color = colors.PINKIERED, priority = 6, ghost = true })
-Cooldown( 31935 ,{ name = "Avenger's Shield", resetable = true, priority = 5, duration = 15, short = "AvShield", color = colors.PURPLE, ghost = true })
+Cooldown( 31935 ,{ name = "Avenger's Shield", resetable = true, fixedlen = 8, priority = 5, short = "AvShield", scale = .8, color = colors.PINK3, ghost = true })
 
-Spell( 114637 ,{ name = "Bastion of Glory", short = "Bastion", duration = 20, priority = -15, color = colors.DRED })
+Spell( 114637 ,{ name = "Bastion of Glory", short = "Bastion", duration = 20, priority = -15, scale = .7, color = colors.DRED, glowstack = 5 })
 -- Spell( 132403 ,{ name = "Shield of the Righteous", short = "SotR", duration = 3, priority = 10, color = colors.DPURPLE })
 
 --Spell( 94686 ,{ name = "Crusader", duration = 15 })
-Cooldown( 879 ,{ name = "Exorcism", shine = true, color = colors.PURPLE, resetable = true, ghost = true })
+Spell( 157048 ,{ name = "Final Verdict", duration = 30, color = colors.DPURPLE, timeless = true, priority = -7.5, scale = .6 })
+Cooldown( 879 ,{ name = "Exorcism", fixedlen = 8, shine = true, color = colors.PINKIERED, resetable = true, ghost = 6 })
 --Activation( 879 ,{ name = "Exorcism", shine = true, color = colors.ORANGE, duration = 15 })
 --Activation( 84963 ,{ name = "Hand of Light", shine = true, showid = 85256, short = "Light", color = colors.PINK, duration = 8 })
 
-Spell( 62124 ,{ name = "Taunt", duration = 3 })
+-- Spell( 62124 ,{ name = "Taunt", duration = 3 })
 -- Spell( 85416 ,{ name = "Reset", shine = true, timeless = true, duration = 0.1, color = colors.BLACK })
 --Activation( 31935 ,{ name = "Reset", shine = true, timeless = true, duration = 0.1, color = colors.BLACK })
 
