@@ -379,12 +379,13 @@ function NugRunning.SPELL_UPDATE_COOLDOWN(self,event, periodic)
     if periodic and GetTime() - lastCooldownUpdateTime < 0.9 then return end
     -- print(GetTime(), event)
     for spellID,opts in pairs(NugRunningConfig.cooldowns) do
-        if not opts.check_known or IsPlayerSpell(spellID) then -- Eh, no continue in Lua
+        if not opts.check_known or IsPlayerSpell(spellID) then
 
-        local startTime, duration, enabled, charges, maxCharges = GetSpellCooldownCharges(spellID) 
+        local startTime, duration, enabled, charges, maxCharges = GetSpellCooldownCharges(spellID)
 
         local timer
-        if opts.timer and (opts.timer.spellID == spellID) then
+        local old_timer = opts.timer
+        if old_timer and (old_timer.spellID == spellID and old_timer.timerType == "COOLDOWN") then
             timer = opts.timer
         elseif opts.replaces then
             timer = gettimer(active, opts.replaces, UnitGUID("player"), "COOLDOWN")

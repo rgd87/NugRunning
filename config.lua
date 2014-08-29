@@ -478,8 +478,9 @@ Spell( 12328 ,{ name = "Sweeping Strikes", priority = 6, ghost = 1, color = colo
 
 DotSpell( 772 ,{ name = "Rend", color = colors.RED, duration = 18, ghost = true })
 Spell( {167105, 86346} ,{ name = "Colossus Smash", shine = true, priority = -100500, color = colors.PURPLE2, duration = 6 }) --debuff
-Cooldown( 167105 ,{ name = "Colossus Smash", priority = 8, ghost = true, color = colors.WOO, resetable = true, duration = 20 })
-Cooldown( 86346 ,{ name = "Colossus Smash", priority = 8, ghost = true, color = colors.WOO, resetable = true, duration = 20 })
+--different versions of spell for arms and fury
+Cooldown( 167105,{ name = "Colossus Smash", priority = 9.5, overlay = {0,"gcd",.3}, scale = .7, check_known = true, ghost = true, color = colors.WOO, resetable = true, duration = 20 })
+Cooldown( 86346 ,{ name = "Colossus Smash", priority = 9.5, overlay = {0,"gcd",.3}, scale = .7, check_known = true, ghost = true, color = colors.WOO, resetable = true, duration = 20 })
 
 -- Spell( 676  ,{ name = "Disarm", color = colors.BROWN, duration = 10 }) --removed
 Spell( 1715 ,{ name = "Hamstring", ghost = true, color = colors.PURPLE, duration = 15, pvpduration = 8 })
@@ -488,7 +489,7 @@ Spell( 1715 ,{ name = "Hamstring", ghost = true, color = colors.PURPLE, duration
 -- Spell( 355 ,{ name = "Taunt", duration = 3 })
 -- Spell( 113746 ,{ name = "Weakened Armor", specmask = 0xF00, short = "WeakArmor", priority = -10, affiliation = "any", singleTarget = true, color = colors.BROWN, duration = 30 })
 -- Demo shout also applies self-buff (id 125565), but it doesn't appear in combat log
-Spell( 1160 ,{ name = "Demoralizing Shout", short = "DemoShout", shine = true, group = "buffs", color = colors.BLACK, duration = 30, multiTarget = true })
+Spell( 1160 ,{ name = "Demoralizing Shout", short = "DemoShout", shine = true, group = "buffs", color = colors.BLACK, duration = 10, multiTarget = true })
 Spell( 122510 ,{ name = "Ultimatum", shine = true, color = colors.TEAL, glowtime = 10, duration = 10, priority = 11, scale = .7 })
 Cooldown( 6572, { name = "Revenge", priority = 5, color = colors.PURPLE, resetable = true, fixedlen = 9, ghost = true })
 -- Activation( 6572, { name = "RevengeActivation", for_cd = true })
@@ -496,6 +497,8 @@ Cooldown( 6572, { name = "Revenge", priority = 5, color = colors.PURPLE, resetab
 Spell( 55694, { name = "Enraged Regeneration", short = "Regen", color = colors.LGREEN, duration = 5 })
 Spell( 132168 ,{ name = "Shockwave", color = colors.CURSE, shine = true, duration = 4, multiTarget = true, })
 Cooldown( 46968 ,{ name = "Shockwave", fixedlen = 9, ghost = 3, priority = 2, color = colors.WOO2DARK, color2 = colors.PINK2 })
+Cooldown( 107570 ,{ name = "Storm Bolt", fixedlen = 9, ghost = 3, priority = 2, color = colors.WOO2DARK, color2 = colors.PINK2 })
+Cooldown( 118000 ,{ name = "Dragon Roar", fixedlen = 9, ghost = 3, priority = 2, color = colors.WOO2DARK, color2 = colors.PINK2, hide_until = 15 })
 --can't use with_cooldown on shockwave, because without effect applied first it's not working.
 --but shockwave still needs to be used on cooldown
 --old enrage Spell( 85288, { name = "Enraged", shine = true, showid = 14202, color = colors.RED, duration = 10 })
@@ -583,10 +586,11 @@ Cooldown( 23922, { name = "Shield Slam", tick = 1.5, tickshine = true, overlay =
 -- Cooldown( 78, { name = "Heroic Strike", short = "Heroic", fixedlen = 6, ghost = true })
 Cooldown( 6343, { name = "Thunder Clap", ghost = true, short = "", scale = 0.7,overlay = {0,"gcd",.3}, specmask = 0xF00, color = colors.PINKIERED, fixedlen = 9, priority = 9.5 })
 Spell( 32216, { name = "Victory Rush", group = "buffs", priority = -9, color = colors.PURPLE, duration = 20})
+Cooldown( 103840, { name = "Impending Victory", priority = -4, color = colors.PURPLE, ghost = true })
 
 Spell( 152277 ,{ name = "Ravager", color = colors.DRED, group = "buffs", duration = 10 })
 -- Spell( 156288 ,{ name = "Ignite Weapon", color = colors.BROWN, priority = 3, duration = 10, ghost = true, shine = true })
-Cooldown( 176289 ,{ name = "Siegebreaker", shine = true, glowtime = 3, color = colors.BROWN, hide_until = 10 })
+Cooldown( 176289 ,{ name = "Siegebreaker", shine = true, fixedlen = 9, ghost = true, color = colors.BROWN, hide_until = 15 })
 
 end
 
@@ -827,6 +831,7 @@ Cooldown( 24275 ,{ name = "Hammer of Wrath", color = colors.TEAL2, fixedlen = 8,
 Cooldown( 119072, { name = "Holy Wrath", color = colors.BROWN, priority = 3, ghost = true })
 Cooldown( 31935 ,{ name = "Avenger's Shield", resetable = true, fixedlen = 8, priority = 5, short = "AvShield", scale = .8, color = colors.PINK3, ghost = true })
 
+Spell( 132403 ,{ name = "Shield of the Righteous", short = "Shield", group = "buffs", duration = 3, priority = -15, scale = .7, color = colors.PINK3 })
 Spell( 114637 ,{ name = "Bastion of Glory", short = "Bastion", duration = 20, priority = -15, scale = .7, color = colors.DRED, glowstack = 5 })
 -- Spell( 132403 ,{ name = "Shield of the Righteous", short = "SotR", duration = 3, priority = 10, color = colors.DPURPLE })
 
