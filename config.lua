@@ -821,6 +821,13 @@ Spell( 114039 ,{ name = "Hand of Purity",duration = 6, short = "Purity", color =
 Spell( 1044 ,{ name = "Hand of Freedom",duration = 6, short = "Freedom", color = colors.BROWN })
 Spell( 10326 ,{ name = "Turn Evil",duration = 20, pvpduration = 8, color = colors.LGREEN })
 
+--empowered seals
+Spell( 156987 ,{ name = "Justice", scale = .7, group = "buffs", priority = -881, duration = 20, color = colors.DEFAULT_BUFF })
+Spell( 156988 ,{ name = "Insight", scale = .7, group = "buffs", priority = -881, duration = 20, color = colors.LGREEN })
+Spell( 156989 ,{ name = "Righteousness", scale = .7, group = "buffs", priority = -881, duration = 20, color = colors.PURPLE2 })
+Spell( 156990 ,{ name = "Truth", scale = .7, group = "buffs", priority = -881, duration = 20, color = colors.LRED })
+
+Spell( 152262 ,{ name = "Seraphim", color = colors.PINKIERED, shine = true, shinerefresh = true, group = "buffs", priority = -10, duration = 15 })
 
 -- Spell( 53563 ,{ name = "Beacon of Light", duration = 300, timeless = true, priority = -20, short = "Beacon",color = colors.RED })
 -- Spell( 31842 ,{ name = "Divine Favor",duration = 20, short = "Favor" })
@@ -868,9 +875,6 @@ Spell( 105809 ,{ name = "Holy Avenger", color = colors.GOLD, group = "buffs",  d
 Spell( 90174 ,{ name = "Divine Purpose", shine = true, short = "DPurpose", color = colors.PINK, duration = 8 })
 Cooldown( 114165 ,{ name = "Holy Prism", color = colors.BLACK })
 Spell( {114916, 114917} ,{ name = "Execution Sentence", ghost = true, short = "Execution", color = colors.WOO2, duration = 10 })
-
-Spell( 152262 ,{ name = "Seraphim", color = colors.PINKIERED, shine = true, shinerefresh = true, group = "buffs", priority = -10, duration = 15 })
-
 end
 
 if class == "DRUID" then
