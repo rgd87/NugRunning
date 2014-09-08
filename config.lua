@@ -444,12 +444,16 @@ Spell( 137573,{ name = "Burst of Speed", short = "Burst", shine = true, duration
 Spell( 14183 ,{ name = "Premeditation",duration = 20, color = colors.CURSE })                    
 Spell( 74002 ,{ name = "Combat Insight", shine = true, shinerefresh = true, duration = 10, color = colors.CURSE })
 
-Spell( 84745 ,{ name = "Shallow Insight", short = "1x Insight", shine = true, color = colors.CURSE, duration = 15 })
-Spell( 84746 ,{ name = "Moderate Insight", short = "2x Insight", shine = true, color = colors.CURSE, duration = 15 })
-Spell( 84747 ,{ name = "Deep Insight", short = "3x Insight", shine = true, color = colors.CURSE, duration = 15 })
+Spell( 84745 ,{ name = "Shallow Insight", short = "1x Insight", shine = true, color = colors.CURSE, group = "buffs", duration = 15 })
+Spell( 84746 ,{ name = "Moderate Insight", short = "2x Insight", shine = true, color = colors.CURSE, group = "buffs", duration = 15 })
+Spell( 84747 ,{ name = "Deep Insight", short = "3x Insight", shine = true, color = colors.CURSE, group = "buffs", duration = 15 })
 Spell( 13750 ,{ name = "Adrenaline Rush",duration = 15, color = colors.LRED })
-Spell( 13877 ,{ name = "Blade Flurry",duration = 15, color = colors.LRED })
+Spell( 13877 ,{ name = "Blade Flurry",duration = 15, color = colors.LRED, timeless = true })
 
+DotSpell( 84617 ,{ name = "Revealing Strike", duration = 24, color = colors.WOO })
+Spell( 51690 ,{ name = "Killing Spree", duration = 3, shine = true, color = colors.RED  })
+Spell( 51690 ,{ name = "Internal Bleeding", duration = 12, color = colors.DRED  })
+Cooldown( 152150 ,{ name = "Death from Above", color = colors.DBROWN  })
 
 Spell( 51713 ,{ name = "Shadow Dance",duration = 8, color = colors.BLACK })
 -- Spell( 89775 ,{ name = "Hemo",duration = 60, color = colors.CURSE })
@@ -461,6 +465,7 @@ Spell( 114018,{ name = "Shroud of Concealment", short = "Shroud", color = colors
 Spell( 152151,{ name = "Shadow Reflection", recast_mark = 8, overlay = { 0, 8}, short = "Reflection", color = colors.CURSE, duration = 16 })
 
 EventTimer({ event = "SPELL_CAST_SUCCESS", spellID = 1725, name = "Distract", color = colors.PURPLE, duration = 10 })
+EventTimer({ event = "SPELL_CAST_SUCCESS", spellID = 76577, name = "Smoke Bomb", color = colors.BLACK, duration = 5 })
 end
 
 if class == "WARRIOR" then
@@ -647,11 +652,13 @@ Spell( 152173 ,{ name = "Serenity", duration = 10, color = colors.TEAL2, group =
 Spell( 157627 ,{ name = "Breath of the Serpent", duration = 10, color = colors.TEAL2, shine = true, affiliation = "any" })
 
 Cooldown( 121253, { name = "Keg Smash", tick = 1, overlay = {"tick", "end", .35}, ghost = true, priority = 10, color = colors.CURSE })
-Spell( 115307 ,{ name = "Shuffle", short = "", ghost = 4, glowghost = true, priority = 7, overlay = {6, 12, 0.2}, fixedlen = 12, shine = true, shinerefresh = true, color = colors.TEAL3, scale = .75, duration = 6 })
+Spell( 115307 ,{ name = "Shuffle", short = "", ghost = 4, glowghost = true, priority = 7, fixedlen = 12, shine = true, shinerefresh = true, color = colors.TEAL3, scale = .75, duration = 6 })
 Spell( 119392 ,{ name = "Charging Ox Wave", duration = 3, color = colors.CURSE, multiTarget = true, shine = true })
 Cooldown( 119392 ,{ name = "Charging Ox Wave", ghost = true, priority = 2, color = colors.WOO2DARK, color2 = colors.PINK3 })
 DotSpell( 123725 ,{ name = "Breath of Fire",  priority = 11, short = "", ghost = true, shine = true, color = colors.RED, multiTarget = true, duration = 8 })
 Cooldown( 116847, { name = "Rushing Jade Wind", short = "", overlay = {0,1, 0.3}, scale = .7, fixedlen = 8, color = colors.PINKIERED, ghost = true, priority = 8 })
+
+-- Cooldown( 115072, { name = "Expel Harm", color = colors.LGREEN, resetable = true, ghost = true })
 
 EventTimer({ spellID = 108557, event = "SPELL_CAST_SUCCESS", priority = 12, name = "Jab", duration = 0.5, color = colors.PINK3 })
 EventTimer({ spellID = 100784, event = "SPELL_CAST_SUCCESS", priority = 12, name = "Blackout Kick", duration = 0.5, color = colors.REJUV })

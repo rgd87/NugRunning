@@ -853,10 +853,6 @@ end
 
 local function GetGradientColor(c1, c2, v)
     if v > 1 then v = 1 end
-    -- colorA = [0, 0, 255] # blue
--- colorB = [255, 0, 0] # red
--- function get_gradient_color(val):
--- # 'val' must be between 0 and 1
     local r = c1[1] + v*(c2[1]-c1[1])
     local g = c1[2] + v*(c2[2]-c1[2])
     local b = c1[3] + v*(c2[3]-c1[3])
@@ -1204,10 +1200,14 @@ end
 
 function NugRunning.Unlock(self)
     local prev
-    for i,timer in ipairs(alltimers) do
+    local i = 0
+    for timer in pairs(free) do
+        i = i+1
         if i > 7 then break end
         local fakeopts = {}
-        if not timer.opts then timer.opts = fakeopts; timer.startTime = GetTime(); timer.endTime = GetTime()+130-(i*10); end
+        if not timer.opts then timer.opts = fakeopts end
+        timer.startTime = GetTime();
+        timer.endTime = GetTime()+130-(i*10);
         timer:SetIcon("Interface\\Icons\\inv_misc_questionmark")
         timer:SetName("Test timer")
         timer:SetColor(0.4, 0.4, 0.4)
