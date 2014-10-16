@@ -54,6 +54,7 @@ colors["PINKIERED"] = { 206/255, 4/256, 56/256 }
 colors["TEAL"] = { 0.32, 0.52, 0.82 }
 colors["TEAL2"] = {38/255, 221/255, 163/255}
 colors["TEAL3"] = {52/255, 172/255, 114/255}
+colors["DTEAL"] = {15/255, 78/255, 60/255}
 colors["ORANGE"] = { 1, 124/255, 33/255 }
 colors["ORANGE2"] = { 1, 66/255, 0 }
 colors["FIRE"] = {1,80/255,0}
@@ -288,7 +289,7 @@ EventTimer({ event = "SPELL_SUMMON", spellID = 123040, name = "Mindbender", grou
 EventTimer({ event = "SPELL_SUMMON", spellID = 34433, name = "Shadowfiend", group = "buffs", duration = 12, priority = -10, color = colors.BLACK })
 
 DotSpell( 34914 ,{ name = "Vampiric Touch", short = "", ghost = true, nameplates = true,  priority = 10, duration = 15, color = colors.RED,  })
-Spell( 2944 ,{ name = "Devouring Plague",duration = 6, priority = 8, nameplates = true, color = colors.WOO, short = "Plague" })
+Spell( 158831 ,{ name = "Devouring Plague",duration = 6, priority = 8, nameplates = true, color = colors.WOO, short = "Plague" })
 DotSpell( 155361 ,{ name = "Void Entropy", duration = 60, priority = 7, nameplates = true, color = colors.CURSE })
 Spell( 47585 ,{ name = "Dispersion",duration = 6, color = colors.PURPLE })
 -- Spell( 15286 ,{ name = "Vampiric Embrace",duration = 15, color = colors.CURSE, short = "VampEmbrace" })
@@ -579,9 +580,10 @@ Spell( 125195 ,{ name = "Tigereye Brew", priority = -10, shinerefresh = true, co
 Spell( 116740 ,{ name = "Tigereye Brew", color = colors.PINKIERED, priority = -10, group = "buffs", duration = 15, target = "player" }) --activation
 
 Spell( 125359, { name = "Tiger Power", priority = 5, glowghost = true, color = colors.DPURPLE, color2 = colors.PURPLE, scale = .7, target = "player", ghost = 7, duration = 20 })
-Spell( 127722, { name = "Serpent's Zeal", priority = -8, color = colors.PINK, duration = 30 })
+Spell( 127722, { name = "Serpent's Zeal", scale = .7, priority = 4.9, color2 = colors.PINK, color = colors.WOO2DARK, duration = 30 })
 
 Cooldown( 107428, { name = "Rising Sun Kick",tick = 1, overlay = {"tick", "end", .35}, short = "Rising Sun", color = colors.CURSE, priority = 10, ghost = true })
+Spell( 130320, { name = "Rising Sun Kick", short = "Rising Sun", color = colors.RED, ghost = true, duration = 15, singleTarget = true })
 
 Cooldown( 115098, { name = "Chi Wave", color = { 29/255, 134/255, 83/255 }, fixedlen = 8, color2 = colors.LGREEN, priority = 6, ghost = true })
 
@@ -595,13 +597,19 @@ Cooldown( 113656, { name = "Fists of Fury", fixedlen = 8, scale = .75, color = c
 
 Spell( 119611 ,{ name = "Renewing Mist", color = colors.LGREEN, target = "player", duration = 18 })
 -- Spell( 115151 ,{ name = "Renewing Mist", color = colors.TEAL2 })
-Spell( 115867 ,{ name = "Mana Tea", priority = -10, duration = 120, color = colors.BLACK })
+Spell( 115867 ,{ name = "Mana Tea", priority = -10, duration = 120, color = colors.DBROWN })
 Cooldown( 123761 ,{ name = "Mana Tea", color = colors.CURSE })
 Spell( 116849 ,{ name = "Life Cocoon", color = colors.PURPLE, duration = 12 })
 
-Cooldown( 116680 ,{ name = "Thunder Focus Tea", color = colors.CURSE, overlay = {0, 15}, recast_mark = 15 })
--- Spell( 116680 ,{ name = "Thunder Focus Tea", color = colors.CURSE, duration = 30 })
-Spell( 118674 ,{ name = "Vital Mists", color = colors.BLACK, duration = 30 })
+-- Cooldown( 116680 ,{ name = "Thunder Focus Tea", color = colors.CURSE, overlay = {0, 15}, recast_mark = 15 })
+Spell( 116680 ,{ name = "Thunder Focus Tea", color = colors.CURSE, duration = 30 })
+Spell( 118674 ,{ name = "Vital Mists", color = colors.TEAL2, duration = 30, stackcolor = {
+                                [1] = colors.DTEAL,
+                                [2] = colors.DTEAL,
+                                [3] = colors.DTEAL,
+                                [4] = colors.DTEAL,
+                                [5] = colors.TEAL2,
+                            } })
 NugRunningConfig.totems[1] = { name = "", color = colors.DPURPLE, priority = - 100, hideName = true }
 NugRunningConfig.totems[2] = { name = "", color = colors.WOO2DARK, priority = - 100, hideName = true }
 -- Spell( 138130 ,{ name = "Clone", color = colors.RED, duration = 100, timeless = true, singleTarget = true })
@@ -881,7 +889,6 @@ Spell( 1850 ,{ name = "Dash", duration = 15 })
 --bear
 Spell( 132402 ,{ name = "Savage Defense", duration = 6, color = colors.WOO, priority = -8 })
 Spell( 22812 ,{ name = "Barkskin",duration = 12, color = colors.WOO2, priority = -9 })
-Spell( 106922 ,{ name = "Might of the Ursoc", duration = 20, color = colors.BLACK })
 Spell( 99 ,{ name = "Disorienting Roar", short = "Disorient", duration = 3, multiTarget = true })
 -- Spell( 6795 ,{ name = "Taunt", duration = 3 })
 Spell( 33745 ,{ name = "Lacerate", duration = 15, color = colors.RED })
