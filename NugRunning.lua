@@ -1165,7 +1165,7 @@ function NugRunning.UNIT_COMBO_POINTS(self,event,unit)
 end
 function NugRunning.ReInitSpells(self,event,arg1)
     for id,opts in pairs(NugRunningConfig) do
-        if opts.init then
+        if type(opts) == "table" and opts.init then
             opts:init()
             opts.init_done = true
         end
