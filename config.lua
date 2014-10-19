@@ -92,6 +92,7 @@ local DotSpell = function(id, opts)
     end
     return Spell(id,opts)
 end
+helpers.DotSpell = DotSpell
 
 local _, race = UnitRace("player")
 if race == "Troll" then Spell( 26297 ,{ name = "Berserking", duration = 10 }) end --Troll Racial
