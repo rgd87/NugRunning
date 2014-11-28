@@ -130,6 +130,9 @@ function TimerBar.SetMinMaxCharge(self, min, max)
 end
 function TimerBar.SetCharge(self,val)
     self.bar:SetValue(val)
+    if self.opts.stackcolor then
+        self:SetColor(unpack(self.opts.stackcolor[val]))
+    end
 end
 
 
