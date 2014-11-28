@@ -824,6 +824,9 @@ function NugRunning.SetUnitAuraValues(self, timer, spellID, name, rank, icon, co
 
                             self:UpdateTimerPower(timer, plevel)
                         end
+                        timer:SetCount(count)
+                    else
+                        timer:SetCount(count)
                     end
                     if type(absorb) == "number" and absorb > 0
                         then timer.absorb = absorb
@@ -831,10 +834,8 @@ function NugRunning.SetUnitAuraValues(self, timer, spellID, name, rank, icon, co
                     end
 
                     local name = GetSpellInfo(spellID)
-                    -- print("GOT DATA!>>  ", name, duration)
 
                     return true
-                    -- break
                 end
             end
 end
@@ -1522,21 +1523,32 @@ do
                 -- if now - last_taget_update < 200 then return end
             -- end
 
-            for timer in pairs(active) do 
-                if  timer.dstGUID == unitGUID and
-                    (timer.timerType == "BUFF" or timer.timerType == "DEBUFF")
-                then
-                        -- local name, _,_, count, _, duration, expirationTime, caster, _,_, aura_spellID = UnitAura(unit, GetSpellInfo(timer.spellID), nil, timer.filter)
-                        NugRunning:SetUnitAuraValues(timer, timer.spellID, UnitAura(unit, GetSpellInfo(timer.spellID), nil, timer.filter))
-                        -- if UnitAffiliationCheck(caster, timer.opts.affiliation) and timer.spellID == aura_spellID then
-                            -- NugRunning:RefreshTimer(playerGUID,unitGUID,UnitName(unit),nil, timer.spellID, timer.spellName, timer.opts, timer.timerType, duration, count, true)
-                            -- if (now + duration - expirationTime < 0.1) then
-                                
-                            -- else
-                            -- if count and timer.count ~= count then
-                                -- NugRunning:RemoveDose(playerGUID, unitGUID, aura_spellID, timer.spellName, timer.timerType, count)
-                            -- end
-                        -- end
+            -- for timer in pairs(active) do 
+            --     if  timer.dstGUID == unitGUID and
+            --         (timer.timerType == "BUFF" or timer.timerType == "DEBUFF")
+            --     then
+            --             NugRunning:SetUnitAuraValues(timer, timer.spellID, UnitAura(unit, GetSpellInfo(timer.spellID), nil, timer.filter))
+            --     end
+            -- end
+
+            for _, filter in ipairs(filters) do
+                local timerType = filter == "HELPFUL" and "BUFF" or "DEBUFF"
+                for i=1,200 do
+                    local name, _,_, count, _, duration, expirationTime, caster, _,_, aura_spellID = UnitAura(unit, i, filter)
+                    if not name then break end
+
+                    local opts = config[aura_spellID]
+                    if opts and UnitAffiliationCheck(caster, opts.affiliation) then
+
+                        local timer
+                        timer = gettimer(active, aura_spellID, unitGUID, timerType)
+                        if timer then
+                            NugRunning:SetUnitAuraValues(timer, timer.spellID, UnitAura(unit, GetSpellInfo(timer.spellID), nil, timer.filter))
+                        else
+                            timer = NugRunning:ActivateTimer(playerGUID, unitGUID, UnitName(unit), nil, aura_spellID, name, opts, timerType, duration, count, true)
+                            timer:SetTime( expirationTime - duration + newtimer.fixedoffset, expirationTime)
+                        end
+                    end
                 end
             end
     end

@@ -439,6 +439,7 @@ if class == "WARRIOR" then
 -- Spell( 469 ,{ name = "Commanding Shout", target = "player", priority = -10, glowtime = 10, short = "CommShout", color = colors.DPURPLE, duration = 120 })
 Spell( 132404 ,{ name = "Shield Block", color = colors.WOO2, shine = true, group = "buffs", priority = - 9, duration = 6 })
 Spell( 169667 ,{ name = "Shield Charge", shine = true, color = colors.PURPLE2, group = "buffs", priority = - 9, duration = 6 })
+Cooldown( 2565 ,{ name = "", priority = 9.9, fixedlen = 9, scale = .5, ghost = true, color = colors.DPURPLE, }) -- shield block cd
 Cooldown( 156321 ,{ name = "", priority = 9.9, fixedlen = 9, scale = .5, ghost = true, color = colors.DPURPLE, }) -- shield charge cd
 Spell( 112048 ,{ name = "Shield Barrier", ghost = 1.3, group = "buffs", priority = -8, color = colors.WOO, duration = 6 })
 -- Spell( 85730 ,{ name = "Deadly Calm", group = "buffs", duration = 10 })
@@ -706,13 +707,13 @@ Cooldown( 153626 ,{ name = "Arcane Orb", color = colors.CHIM, ghost = true })
 
 EventTimer({ event = "SPELL_SUMMON", spellID = 152087, name = "Prismatic Crystal", group = "buffs", priority = -20, duration = 10, color = colors.CHIM })
 -- not shown in combat log
--- Spell( 116267 ,{ name = "Incanter's Flow",duration = 100500, timeless = true, short = "Absorb", stackcolor = {
-                                                                        --     [1] = { .3, 0, 0},
-                                                                        --     [2] = { .4, 0, 0},
-                                                                        --     [3] = { .6, 0, 0},
-                                                                        --     [4] = { .8, 0, 0},
-                                                                        --     [5] = { 1, 0, 0},
-                                                                        -- }})
+Spell( 116267 ,{ name = "Incanter's Flow",duration = 100500, singleTarget = true, timeless = true, charged = true, maxcharge = 5, color = colors.LRED, stackcolor = {
+                                                                            [1] = { .3, 0, 0},
+                                                                            [2] = { .4, 0, 0},
+                                                                            [3] = { .6, 0, 0},
+                                                                            [4] = { .8, 0, 0},
+                                                                            [5] = { 1, 0, 0},
+                                                                        }})
 
 -- Spell( 12536 ,{ name = "Clearcast",duration = 15, color = colors.BLACK })
 Spell( 31589 ,{ name = "Slow", duration = 15, pvpduration = 8 })
@@ -951,7 +952,7 @@ Spell( 19615 ,{ name = "Frenzy", duration = 10, target = "player", priority = -1
                             }, glowstack = 5 })
 -- Spell( 82654 ,{ name = "Widow Venom", duration = 30, color = { 0.1, 0.75, 0.1} })--removed
 
-Spell( 56453 ,{ name = "Lock and Load", duration = 12, color = colors.LRED })
+Spell( 168980 ,{ name = "Lock and Load", duration = 12, color = colors.LRED })
 Spell( 19574 ,{ name = "Bestial Wrath", duration = 10, priority = -9, color = colors.LRED, target = "player" })
 Spell( 82692 ,{ name = "Focus Fire", duration = 20, priority = -9.9, color = colors.PINKIERED })
 
