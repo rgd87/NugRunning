@@ -1512,6 +1512,7 @@ do
     NugRunning.UnitAffiliationCheck = UnitAffiliationCheck
 
     local last_taget_update = 0
+    local present_spells = {}
     local function UpdateUnitAuras(unit)
             local up = hUnits[unit]
             if not up then return end
@@ -1530,6 +1531,7 @@ do
             --             NugRunning:SetUnitAuraValues(timer, timer.spellID, UnitAura(unit, GetSpellInfo(timer.spellID), nil, timer.filter))
             --     end
             -- end
+            table_wipe(present_spells)
 
             for _, filter in ipairs(filters) do
                 local timerType = filter == "HELPFUL" and "BUFF" or "DEBUFF"
@@ -1539,16 +1541,27 @@ do
 
                     local opts = config[aura_spellID]
                     if opts and UnitAffiliationCheck(caster, opts.affiliation) then
+                            local timer
+                            timer = gettimer(active, aura_spellID, unitGUID, timerType)
+                            if timer then
+                                NugRunning:SetUnitAuraValues(timer, timer.spellID, UnitAura(unit, GetSpellInfo(timer.spellID), nil, timer.filter))
+                            else
+                                timer = NugRunning:ActivateTimer(playerGUID, unitGUID, UnitName(unit), nil, aura_spellID, name, opts, timerType, duration, count, true)
+                                timer:SetTime( expirationTime - duration + newtimer.fixedoffset, expirationTime)
+                            end
 
-                        local timer
-                        timer = gettimer(active, aura_spellID, unitGUID, timerType)
-                        if timer then
-                            NugRunning:SetUnitAuraValues(timer, timer.spellID, UnitAura(unit, GetSpellInfo(timer.spellID), nil, timer.filter))
-                        else
-                            timer = NugRunning:ActivateTimer(playerGUID, unitGUID, UnitName(unit), nil, aura_spellID, name, opts, timerType, duration, count, true)
-                            timer:SetTime( expirationTime - duration + newtimer.fixedoffset, expirationTime)
-                        end
+                        present_spells[aura_spellID] = true
                     end
+                end
+            end
+            for timer in pairs(active) do
+                if  timer.dstGUID == unitGUID and
+                    timer.srcGUID == playerGUID and
+                    not present_spells[timer.spellID] and
+                    (timer.timerType == "BUFF" or timer.timerType == "DEBUFF")
+                then
+                    free[timer] = true
+                    self:ArrangeTimers()
                 end
             end
     end
