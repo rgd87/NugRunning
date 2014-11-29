@@ -1547,7 +1547,7 @@ do
                                 NugRunning:SetUnitAuraValues(timer, timer.spellID, UnitAura(unit, GetSpellInfo(timer.spellID), nil, timer.filter))
                             else
                                 timer = NugRunning:ActivateTimer(playerGUID, unitGUID, UnitName(unit), nil, aura_spellID, name, opts, timerType, duration, count, true)
-                                timer:SetTime( expirationTime - duration + newtimer.fixedoffset, expirationTime)
+                                timer:SetTime( expirationTime - duration + timer.fixedoffset, expirationTime)
                             end
 
                         present_spells[aura_spellID] = true
@@ -1561,7 +1561,7 @@ do
                     (timer.timerType == "BUFF" or timer.timerType == "DEBUFF")
                 then
                     free[timer] = true
-                    self:ArrangeTimers()
+                    NugRunning:ArrangeTimers()
                 end
             end
     end
