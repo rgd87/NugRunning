@@ -569,7 +569,7 @@ end
 
 if class == "MONK" then
 -- Spell( 120086, { name = "Fists of Fury", color = colors.BLUE, duration = 4 })
-Spell( 120954, { name = "Fortifying Brew", color = colors.BLACK, duration = 20 })
+Spell( 120954, { name = "Fortifying Brew", group = "buffs", color = colors.BLACK, duration = 20 })
 Spell( 115078, { name = "Paralysis", color = colors.PURPLE, duration = 30, pvpduration = 8 })
 Spell( 115072, { name = "Expel Harm", color = colors.TEAL })
 
@@ -627,7 +627,7 @@ Spell( 152173 ,{ name = "Serenity", duration = 10, color = colors.TEAL2, group =
 Spell( 157627 ,{ name = "Breath of the Serpent", duration = 10, color = colors.TEAL2, shine = true, affiliation = "any" })
 
 Cooldown( 121253, { name = "Keg Smash", tick = 1, overlay = {"tick", "end", .35}, ghost = true, priority = 10, color = colors.CURSE })
-Spell( 115307 ,{ name = "Shuffle", short = "", ghost = 4, glowghost = true, priority = 7, fixedlen = 12, shine = true, shinerefresh = true, color = colors.TEAL3, scale = .75, duration = 6 })
+Spell( 115307 ,{ name = "Shuffle", short = "", ghost = 4, glow2time = 2, glowghost = true, priority = 7, fixedlen = 12, shine = true, shinerefresh = true, color = colors.TEAL3, scale = .75, duration = 6 })
 Spell( 119392 ,{ name = "Charging Ox Wave", duration = 3, color = colors.CURSE, multiTarget = true, shine = true })
 Cooldown( 119392 ,{ name = "Charging Ox Wave", ghost = true, priority = 2, color = colors.WOO2DARK, color2 = colors.PINK3 })
 DotSpell( 123725 ,{ name = "Breath of Fire",  priority = 11, short = "", ghost = true, shine = true, color = colors.RED, multiTarget = true, duration = 8 })

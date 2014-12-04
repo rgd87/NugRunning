@@ -491,7 +491,7 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
     timer = next(free)
     if not timer then return end
     active[timer] = true
-    if timer.isGhost then timer:SetScript("OnUpdate",NugRunning.TimerFunc) end
+    timer:SetScript("OnUpdate",NugRunning.TimerFunc)
 
     if opts.init and not opts.init_done then
         opts:init()
@@ -588,6 +588,10 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
     if timer.SetName then timer:SetName(nameText) end
 
     if timer.glow:IsPlaying() then timer.glow:Stop() end
+    if timer.arrowglow:IsPlaying() then
+        timer.arrowglow:Stop()
+        timer.arrowglow.tex:Hide()
+    end
     timer:Show()
     if not timer.animIn:IsPlaying() and not from_unitaura then timer.animIn:Play() end
     timer.shine.tex:SetAlpha(0)
@@ -607,15 +611,16 @@ function NugRunning.RefreshTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID,
         return self:ActivateTimer(srcGUID, dstGUID or multiTargetGUID, dstName, dstFlags, spellID, spellName, opts, timerType)
     end
     if timerType == "COOLDOWN" and not timer.isGhost then return timer end
-    if timer.isGhost then
+    -- if timer.isGhost then
         timer:SetScript("OnUpdate",NugRunning.TimerFunc)
         timer.isGhost = nil
+        timer.expiredGhost = nil
         if not opts.color then
         if timerType == "DEBUFF" then opts.color = { 0.8, 0.1, 0.7}
         else opts.color = { 1, 0.4, 0.2} end
         end
         timer:SetColor(unpack(opts.color))
-    end
+    -- end
 
     local time
     if override then time = override
@@ -665,6 +670,10 @@ function NugRunning.RefreshTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID,
     timer:UpdateMark()
 
     if timer.glow:IsPlaying() then timer.glow:Stop() end
+    if timer.arrowglow:IsPlaying() then
+        timer.arrowglow:Stop()
+        timer.arrowglow.tex:Hide()
+    end
     if not noshine and opts.shinerefresh and not timer.shine:IsPlaying() then timer.shine:Play() end
 
     self:ArrangeTimers()
@@ -896,6 +905,14 @@ function NugRunning.TimerFunc(self,time)
         if self.glow and not self.glow:IsPlaying() then self.glow:Play() end
     end
 
+    local glow2time = opts.glow2time
+    if glow2time and beforeEnd < glow2time then
+        if self.arrowglow and not self.arrowglow:IsPlaying() then
+            self.arrowglow.tex:Show()
+            self.arrowglow:Play()
+        end
+    end
+
     local rm = opts.recast_mark
     if rm and beforeEnd < rm and beforeEnd > rm-0.1 then
         self.mark.shine:Play()
@@ -927,6 +944,10 @@ function NugRunning.GhostExpire(self)
     self:SetScript("OnUpdate", NugRunning.TimerFunc)
     self.expiredGhost = true
     if self.glow:IsPlaying() then self.glow:Stop() end
+    if self.arrowglow:IsPlaying() then
+        self.arrowglow:Stop()
+        self.arrowglow.tex:Hide()
+    end
     free[self] = true
     self.isGhost = nil
 end
@@ -1547,7 +1568,9 @@ do
                                 NugRunning:SetUnitAuraValues(timer, timer.spellID, UnitAura(unit, GetSpellInfo(timer.spellID), nil, timer.filter))
                             else
                                 timer = NugRunning:ActivateTimer(playerGUID, unitGUID, UnitName(unit), nil, aura_spellID, name, opts, timerType, duration, count, true)
+                                if timer then
                                 timer:SetTime( expirationTime - duration + timer.fixedoffset, expirationTime)
+                                end
                             end
 
                         present_spells[aura_spellID] = true
@@ -1587,8 +1610,8 @@ do
                         timer.isGhost = true
                         timer.expiredGhost = true
                         free[timer] = true
-                        timer.isGhost = false
-                        timer.expiredGhost = false
+                        timer.isGhost = nil
+                        timer.expiredGhost = nil
                     end
                 end
             end

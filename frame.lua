@@ -316,6 +316,29 @@ NugRunning.ConstructTimerBar = function(width, height)
     overlay:Hide()
     f.overlay = overlay
 
+
+    local arrow = f:CreateTexture(nil, "ARTWORK",nil,3)
+    arrow:SetTexture("Interface\\AddOns\\NugRunning\\white")
+    arrow:SetHeight(height)
+    arrow:SetWidth(height/4)
+    arrow:SetPoint("TOPRIGHT", f, "TOPLEFT",-3, 0)
+    arrow:SetPoint("BOTTOMRIGHT", f, "BOTTOMLEFT",-3, 0)
+    -- arrow:SetPoint("RIGHT", f, "LEFT",0,-5)
+    arrow:SetVertexColor(1,0,0)
+    arrow:Hide()
+
+    local glow2 = arrow:CreateAnimationGroup()
+    local g2a1 = glow2:CreateAnimation("Rotation")
+    -- g2a1:SetChange(0.5)
+    g2a1:SetDegrees(360)
+    g2a1:SetSmoothing("IN_OUT")
+    g2a1:SetDuration(1)
+    g2a1:SetOrder(1)
+    glow2:SetLooping("BOUNCE")
+    f.arrowglow = glow2
+    f.arrowglow.tex = arrow
+
+
     -- local arrow = f.bar:CreateTexture(nil, "ARTWORK", nil, 5)
     -- arrow:SetSize(11, 10)
     -- arrow:SetTexture("Interface\\AddOns\\NugRunning\\arrows")
