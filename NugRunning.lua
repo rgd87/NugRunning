@@ -808,6 +808,7 @@ function NugRunning.SetUnitAuraValues(self, timer, spellID, name, rank, icon, co
             if aura_spellID then
                 if aura_spellID == spellID and NugRunning.UnitAffiliationCheck(caster, timer.opts.affiliation) then
                     if timer.opts.charged then
+                        timer:SetMinMaxCharge(0, timer.opts.maxcharge)
                         timer:SetCharge(count)
                     elseif not timer.opts.timeless then
                         timer.fixedoffset = timer.opts.fixedlen and duration - timer.opts.fixedlen or 0
