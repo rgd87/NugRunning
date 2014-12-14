@@ -907,10 +907,17 @@ function NugRunning.TimerFunc(self,time)
     end
 
     local glow2time = opts.glow2time
-    if glow2time and beforeEnd < glow2time then
-        if self.arrowglow and not self.arrowglow:IsPlaying() then
-            self.arrowglow.tex:Show()
-            self.arrowglow:Play()
+    if glow2time then
+        if beforeEnd < glow2time then
+            if self.arrowglow and not self.arrowglow:IsPlaying() then
+                self.arrowglow.tex:Show()
+                self.arrowglow:Play()
+            end
+        else
+            if self.arrowglow and self.arrowglow:IsPlaying() then
+                self.arrowglow.tex:Hide()
+                self.arrowglow:Stop()
+            end
         end
     end
 
