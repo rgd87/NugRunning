@@ -4,6 +4,7 @@
 ## Author: d87
 ## SavedVariablesPerCharacter: NRunDB_Char
 ## SavedVariables: NRunDB_Global
+## Version: @project-version@
 helpers.lua
 config.lua
 NugRunning.lua
