@@ -422,8 +422,8 @@ Spell( 51690 ,{ name = "Internal Bleeding", duration = 12, color = colors.DRED  
 Cooldown( 152150 ,{ name = "Death from Above", color = colors.DBROWN  })
 
 Spell( 51713 ,{ name = "Shadow Dance",duration = 8, color = colors.BLACK })
--- Spell( 89775 ,{ name = "Hemo",duration = 60, color = colors.CURSE })
--- Spell( 91021 ,{ name = "Find Weakness", duration = 10, color =  colors.LRED })
+Spell( 16511 ,{ name = "Hemorrhage", priority = -1, glowghost = true, color = colors.DPURPLE, color2 = colors.PURPLE, scale = .8, ghost = 7, duration = 24 })
+Spell( 91021 ,{ name = "Find Weakness", duration = 10, shine = true, scale = .8, priority = -5, group = "buffs", color =  colors.TEAL2 })
 
 --Spell( 1784 ,{ name = "Stealth", color = colors.CURSE, timeless = true, duration = 0.1})
 Spell( 114018,{ name = "Shroud of Concealment", short = "Shroud", color = colors.BLACK, duration = 15 })
