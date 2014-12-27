@@ -1,3 +1,6 @@
+6.0.7:
+- Affiliation check for UnitAura activations
+
 6.0.6:
 - glow2 fix
 - Hemo and Find Weakness added

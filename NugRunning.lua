@@ -452,6 +452,7 @@ end
 local helpful = "HELPFUL"
 local harmful = "HARMFUL"
 function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID, spellName, opts, timerType, override, amount, from_unitaura)  -- duration override
+    if opts.target and dstGUID ~= UnitGUID(opts.target) then return end
     if timerType == "MISSED" then
         if override == "IMMUNE" then return end
         opts = { duration = 3, color = NugRunningConfig.colors.MISSED, scale = .8, priority = opts.priority or 100501, shine = true }
