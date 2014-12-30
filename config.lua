@@ -885,7 +885,8 @@ Spell( 155722 ,{ name = "Rake", duration = 15, color = colors.LRED })
 Spell( 1079 ,{ name = "Rip",duration = 16, color = colors.RED })
 Spell( 22570 ,{ name = "Maim", color = colors.PINK, duration = function() return GetCP() end })
 Cooldown(5217, { name = "Tiger's Fury", color = colors.LBLUE})
-Spell( 52610 ,{ name = "Savage Roar", color = colors.PURPLE, duration = function() return (12 + GetCP() * 6) end })
+--normal, glyph of savage roar
+Spell({ 52610, 174544 },{ name = "Savage Roar", color = colors.PURPLE, duration = function() return (12 + GetCP() * 6) end })
 Spell( 1850 ,{ name = "Dash", duration = 15 })
 -- Spell( 81022 ,{ name = "Stampede", duration = 8 })
 --bear
