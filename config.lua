@@ -340,7 +340,12 @@ EventTimer({ event = "SPELL_CAST_SUCCESS", spellID = 62618, name = "PW:Barrier",
 -- Spell( 88625 ,{ name = "Holy Word: Chastise", color = colors.LRED, short = "HW: Chastise", duration = 3 })
 Cooldown( 88625 ,{ name = "Holy Word: Chastise", color = colors.CURSE, short = "Chastise", resetable = true })
 
-Cooldown( 47540 ,{ name = "Penance", priority = 15, color = colors.CURSE })
+
+Cooldown( 34861 ,{ name = "Circle of Healing", priority = 15, color = colors.CURSE, resetable = true, ghost = true })
+Cooldown( 33076 ,{ name = "Prayer of Mending", priority = 13, color = colors.PINKIERED, resetable = true, ghost = true })
+
+
+Cooldown( 47540 ,{ name = "Penance", priority = 15, color = colors.CURSE, ghost = true })
 -- Spell( 14914 ,{ name = "Holy Fire", priority = 14.1, color = colors.PINK, ghost = 3, duration = 7 }) --holy fire
 Cooldown( 14914 ,{ name = "", overlay = {0,3}, priority = 14, color = colors.PINK }) --holy fire
 Spell( 81661 ,{ name = "Evangelism",duration = 15, group = "buffs", priority = 10, color = colors.ORANGE, stackcolor = {
