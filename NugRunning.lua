@@ -1055,12 +1055,14 @@ do
     local ySign
     local doswap
     local anchors
+    local dbanchors
     function NugRunning.SetupArrange(self)
         point = ( NRunDB.growth == "down" and "TOPLEFT" ) or "BOTTOMLEFT"
         to = ( NRunDB.growth == "down" and "BOTTOMLEFT" ) or "TOPLEFT"
         ySign = ( NRunDB.growth == "down" and -1 ) or 1
         doswap = NRunDB.swapTarget
         anchors = NugRunning.anchors
+        dbanchors = NRunDB.anchors
     end
     -- local playerTimers = {}
     -- local targetTimers = {}
@@ -1112,6 +1114,10 @@ do
 
         for name, anchor in pairs(NugRunning.anchors) do
             local aopts = anchor.opts
+            local growth = dbanchors[name].growth or NRunDB.growth
+            point = ( growth == "down" and "TOPLEFT" ) or "BOTTOMLEFT"
+            to = ( growth == "down" and "BOTTOMLEFT" ) or "TOPLEFT"
+            ySign = ( growth == "down" and -1 ) or 1
             local prev
             local gap = 0
             for _, gopts in pairs(aopts) do
@@ -1418,7 +1424,15 @@ function NugRunning.SlashCmd(msg)
         local p = ParseOpts(v)
         NRunDB.width = p["width"] or NRunDB.width
         NRunDB.height = p["height"] or NRunDB.height
-        NRunDB.growth = p["growth"] or NRunDB.growth
+        aname = p["anchor"]
+        if aname then
+            local growth = p["growth"]
+            if NRunDB.anchors[aname] and growth then
+                NRunDB.anchors[aname].growth = growth
+            end
+        else
+            NRunDB.growth = p["growth"] or NRunDB.growth
+        end
         for i,timer in ipairs(alltimers) do
             timer:Resize(NRunDB.width, NRunDB.height)
             
