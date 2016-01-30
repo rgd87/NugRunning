@@ -66,7 +66,7 @@ NugRunningNameplates:SetScript('OnUpdate', function(self, elapsed)
         for frame in pairs(plates) do
             if frame:IsShown() then
                 if frame:GetAlpha() == 1 and
-                    (UnitName("target") == frame.name:GetText()) and
+                    (UnitFullName("target") == frame.name:GetText()) and
                     targetGUID ~= oldTargetGUID then
                         guidmap[targetGUID] =  frame
                         frame.guid = targetGUID

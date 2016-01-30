@@ -163,7 +163,7 @@ local ItemSetsRegistered = {}
 
 local function TrackItemSet(tiername, itemArray)
     ItemSetsRegistered[tiername] = ItemSetsRegistered[tiername] or {}
-    if not ItemSetsRegistered[tiername].tiems then
+    if not ItemSetsRegistered[tiername].items then
         ItemSetsRegistered[tiername].items = {}
         ItemSetsRegistered[tiername].callbacks = {}
         local bitems = ItemSetsRegistered[tiername].items
@@ -182,8 +182,21 @@ local function RegisterSetBonusCallback(tiername, pieces, handle_on, handle_off)
     tier.callbacks[pieces].off = handle_off
 end
 
+
+local function IsSetBonusActive(tiername, bonuscount)
+        local tier = ItemSetsRegistered[tiername]
+        local tier_items = tier.items
+        local pieces_equipped = 0
+        for _, slot in ipairs(tierSlots) do
+            local itemID = GetInventoryItemID("player", slot)
+            if tier_items[itemID] then pieces_equipped = pieces_equipped + 1 end
+        end
+        return (pieces_equipped >= bonuscount)
+end
+
 helpers.TrackItemSet = TrackItemSet
 helpers.RegisterSetBonusCallback = RegisterSetBonusCallback
+helpers.IsSetBonusActive = IsSetBonusActive
 
 
 local tierSlots = {
