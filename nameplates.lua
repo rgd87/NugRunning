@@ -65,8 +65,16 @@ NugRunningNameplates:SetScript('OnUpdate', function(self, elapsed)
         local targetGUID = UnitGUID("target")
         for frame in pairs(plates) do
             if frame:IsShown() then
-                if frame:GetAlpha() == 1 and
-                    (UnitFullName("target") == frame.name:GetText()) and
+                if frame:GetAlpha() == 1 then
+                    local name, realm = UnitName("target")
+                    local nptext = frame.name:GetText()
+                    if realm then
+                        local splitn = string.find(nptext, "-")
+                        if splitn then
+                            nptext = string.sub(nptext, 1, splitn-1)
+                        end --strip character name from server name
+                    end
+                    if (name == nptext) and
                     targetGUID ~= oldTargetGUID then
                         guidmap[targetGUID] =  frame
                         frame.guid = targetGUID
@@ -75,6 +83,7 @@ NugRunningNameplates:SetScript('OnUpdate', function(self, elapsed)
                         NugRunningNameplates:UpdateNPTimers(frame, guidTimers)
                         return
                         -- frame.name:SetText(targetGUID)
+                    end
                 end
             end
         end
