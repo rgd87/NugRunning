@@ -225,8 +225,8 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
             if opts.nameplates then found = true; break end
         end
         if found then
-            NugRunning:DoNameplates()
-            nameplates = NugRunningNameplates
+            -- NugRunning:DoNameplates()
+            -- nameplates = NugRunningNameplates
         end
     end
     
