@@ -87,7 +87,7 @@ colors["DEFAULT_BUFF"] = { 1, 0.4, 0.2}
 local DotSpell = function(id, opts)
     if type(opts.duration) == "number" then
         local m = opts.duration*0.3 - 0.2
-        opts.recast_mark = m
+        -- opts.recast_mark = m
         opts.overlay = {0, m, 0.25}
     end
     return Spell(id,opts)
@@ -381,7 +381,7 @@ Spell( 5171  ,{ name = "Slice and Dice", shinerefresh = true, fixedlen = 24, sho
     duration = function() return (6 + GetCP()*6) end,
 }) -- SnD fixedlen set to match Rupture maximum duration
 
-Spell( 212283  ,{ name = "Symbols of Death", shinerefresh = true, short = "Symbols", duration = 35, color = colors.PURPLE })
+Spell( 212283  ,{ name = "Symbols of Death", shinerefresh = true, short = "Symbols", duration = 35, color = colors.PINKIERED })
 
 Spell( 206237  ,{ name = "Enveloping Shadows", shinerefresh = true, shine = true, duration = 15, color = colors.PURPLE })
     
@@ -403,13 +403,13 @@ Spell( 1943  ,{ name = "Rupture", shinerefresh = true, fixedlen = 24, color = co
 Spell( 195452  ,{ name = "Nightblade", shinerefresh = true, fixedlen = 16, color = colors.CURSE,
     duration = function() return (6 + GetCP() * 2) end,
 })
-Spell( 703   ,{ name = "Garrote", color = colors.RED, duration = 18 })
-Spell( 1330  ,{ name = "Silence", color = colors.PINK, duration = 3 })
+DotSpell( 703,{ name = "Garrote", color = colors.PINKIERED, duration = 18 })
+-- Spell( 1330  ,{ name = "Silence", color = colors.PINK, duration = 3 })
 
 -- Spell( 200803 ,{ name = "Agonizing Poison", color = { 192/255, 77/255, 48/255}, duration = 12, short = "Agonizing" })
 --Spell( 3409 ,{ name = "Crippling Poison", color = { 192/255, 77/255, 48/255}, duration = 12, short = "Crippling" })
 
-Spell( 32645 ,{ name = "Envenom", color = { 0, 0.65, 0}, duration = function() return (1+GetCP()) end })
+Spell( 32645 ,{ name = "Envenom", color = colors.DTEAL, duration = function() return (1+GetCP()) end })
 Spell( 79140 ,{ name = "Vendetta", shine = true, color = colors.CURSE, duration = 20 })
 Spell( 193538 ,{ name = "Alacrity", shinerefresh = true, priority = -2, color = colors.WOO2DARK, duration = 20, scale = 0.8 })
 
@@ -423,24 +423,17 @@ Spell( 199600,{ name = "Buried Treasure", short = "Energy", shine = true, durati
 Spell( 193356,{ name = "Broadsides", shine = true, duration = 36 }) -- cp generation
 Spell( 193357,{ name = "Shark Infested Waters", short = "Crit", shine = true, duration = 36 }) -- crit
 
-Spell( 14183 ,{ name = "Premeditation",duration = 20, color = colors.CURSE })                    
-Spell( 74002 ,{ name = "Combat Insight", shine = true, shinerefresh = true, duration = 10, color = colors.CURSE })
-
-Spell( 84745 ,{ name = "Shallow Insight", short = "1x Insight", shine = true, color = colors.CURSE, group = "buffs", duration = 15 })
-Spell( 84746 ,{ name = "Moderate Insight", short = "2x Insight", shine = true, color = colors.CURSE, group = "buffs", duration = 15 })
-Spell( 84747 ,{ name = "Deep Insight", short = "3x Insight", shine = true, color = colors.CURSE, group = "buffs", duration = 15 })
 Spell( 13750 ,{ name = "Adrenaline Rush",duration = 15, color = colors.LRED })
 Spell( 13877 ,{ name = "Blade Flurry",duration = 15, color = colors.LRED, timeless = true })
 
-DotSpell( 84617 ,{ name = "Revealing Strike", duration = 24, color = colors.WOO })
 Spell( 51690 ,{ name = "Killing Spree", duration = 3, shine = true, color = colors.RED  })
 Spell( 51690 ,{ name = "Internal Bleeding", duration = 12, color = colors.DRED  })
 Cooldown( 152150 ,{ name = "Death from Above", color = colors.DBROWN  })
 
-Spell( 185422 ,{ name = "Shadow Dance",duration = 3, color = colors.BLACK })
+Spell( 185422 ,{ name = "Shadow Dance", group = "buffs", duration = 3, color = colors.BLACK })
 Spell( 121471 ,{ name = "Shadow Blades", duration = 15, shine = true, color = colors.DPURPLE })
-Spell( 16511 ,{ name = "Hemorrhage", priority = -1, glowghost = true, color = colors.DPURPLE, color2 = colors.PURPLE, scale = .8, ghost = 7, duration = 24 })
-Spell( 196937 ,{ name = "Ghostly Strike", priority = -1, glowghost = true, color = colors.DPURPLE, color2 = colors.PURPLE, scale = .8, ghost = 7, duration = 24 })
+Spell( 16511 ,{ name = "Hemorrhage", priority = -1, glowghost = true, color = colors.DPURPLE, color2 = colors.PURPLE2, scale = .8, ghost = 7, duration = 20, shinerefresh = true })
+Spell( 196937 ,{ name = "Ghostly Strike", priority = -1, glowghost = true, color = colors.DPURPLE, color2 = colors.PURPLE, scale = .8, ghost = 7, duration = 15 })
 Spell( 91021 ,{ name = "Find Weakness", duration = 10, shine = true, scale = .8, priority = -5, group = "buffs", color =  colors.TEAL2 })
 
 --Spell( 1784 ,{ name = "Stealth", color = colors.CURSE, timeless = true, duration = 0.1})
@@ -491,7 +484,8 @@ Cooldown( 118000 ,{ name = "Dragon Roar", fixedlen = 9, ghost = 3, priority = 2,
 --can't use with_cooldown on shockwave, because without effect applied first it's not working.
 --but shockwave still needs to be used on cooldown
 --old enrage Spell( 85288, { name = "Enraged", shine = true, showid = 14202, color = colors.RED, duration = 10 })
-Spell( 184362,{ name = "Enrage", color = colors.DPURPLE, group = "buffs", specmask = 0x0FF, priority = -7, shine = true, shinerefresh = true, duration =6 })
+Spell( 184362,{ name = "Enrage", color = colors.DPURPLE, group = "buffs", specmask = 0x0FF, priority = -7, shine = true, shinerefresh = true, duration = 4 })
+Spell( 215572,{ name = "Frothing Berserker", short = "Frothing", color = colors.DRED, group = "buffs", priority = -6, scale = 0.7, shine = true, shinerefresh = true, duration =6 })
 
 Spell( 12323 ,{ name = "Piercing Howl", multiTarget = true, duration = 15 })
 Spell( 107566 ,{ name = "Staggering Shout", duration = 5 })
@@ -499,7 +493,7 @@ Spell( 107566 ,{ name = "Staggering Shout", duration = 5 })
 Spell( 107574 ,{ name = "Avatar", shine = true, group = "buffs",  color = colors.TEAL2, duration = 30 })
 Spell( 132169 ,{ name = "Storm Bolt", color = colors.TEAL2, duration = 3})
 
-Activation( 184367 ,{ name = "Rampage", shine = true, color = colors.RED, priority = 11, glowtime = 8, duration = 8 })
+Activation( 184367 ,{ name = "Rampage", shine = true, color = colors.RED, priority = 11, glowtime = 6, duration = 8 })
 
 --banners are totems actually
 Spell( 114192 ,{ name = "Mocking Banner", color = colors.PURPLE2, duration = 20})
@@ -522,6 +516,8 @@ Spell( 169686, { name = "Exquisite Proficiency", duration = 6, priority = -5, st
                                                                             [6] = { 1, 0, 0},
                                                                         }})
 
+
+Spell( 215570 ,{ name = "Wrecking Ball", shine = true, color = colors.TEAL, glowtime = 5, duration = 10, priority = 11, scale = .7 })
 
 
 --Spell( 56112 ,{ name = "Furious Attacks", duration = 10 })
@@ -546,13 +542,14 @@ EventTimer({ spellID = -1, event = "SPELL_CAST_SUCCESS", priority = 12, name = "
 Spell( 60503,{ name = "Overpower", shine = true, color = colors.TEAL, glowtime = 10, duration = 10, priority = 11, scale = .7 })
 -- Spell( 60503 ,{ name = "Overpower", priority = 9, overlay = {0,7, 0.3}, fixedlen = 9, shinerefresh = true, shine = true, color = colors.PINKIERED, duration = 12 }) -- Taste for blood --removed
 
-Cooldown( 23881, { name = "Bloodthirst", tick = 1.5, tickshine = true, overlay = {"tick", "end"}, short = "", priority = 10, check_known = true, ghost = true, fixedlen = 6,  color = colors.CURSE })
+Cooldown( 23881, { name = "Bloodthirst", tick = 1.5, tickshine = true, overlay = {"tick", "end"}, short = "", priority = 10, check_known = true, ghost = true, fixedlen = 9,  color = colors.CURSE })
 Spell( 46916 ,{ name = "Bloodsurge", shine = true, priority = 8, color = colors.TEAL, duration = 10 })
 
-Spell( 131116 ,{ name = "Raging Blow", priority = 9, fixedlen = 9, shine = true, shinerefresh = true, duration = 12, stackcolor = {
-                                                                                                [1] = colors.WOO,
-                                                                                                [2] = colors.PINK3,
-                                                                                            },
+Cooldown( 85288, { name = "Raging Blow", short = "", priority = 9, ghost = true, fixedlen = 9,  color = colors.PINKIERED })
+-- Spell( 131116 ,{ name = "Raging Blow", priority = 9, fixedlen = 9, shine = true, shinerefresh = true, duration = 12, stackcolor = {
+                                                                                                -- [1] = colors.WOO,
+                                                                                                -- [2] = colors.PINK3,
+                                                                                            -- },
                                                                             -- onupdate = function(self)
                                                                             --     local now = GetTime()
                                                                             --     local colcd = 0
@@ -569,7 +566,7 @@ Spell( 131116 ,{ name = "Raging Blow", priority = 9, fixedlen = 9, shine = true,
                                                                             --         if self.glow:IsPlaying() then self.glow:Stop() end
                                                                             --     end
                                                                             -- end
-                                                                                })
+                                                                                -- })
 
 Spell( 12975, { name = "Last Stand", color = colors.BLACK, duration = 20, group = "buffs" })
 Spell( 97463, { name = "Commanding Shout", color = colors.BLACK, target = "player", duration = 10, group = "buffs" })
@@ -594,9 +591,7 @@ Spell( 120954, { name = "Fortifying Brew", group = "buffs", color = colors.BLACK
 Spell( 115078, { name = "Paralysis", color = colors.PURPLE, duration = 30, pvpduration = 8 })
 Spell( 115072, { name = "Expel Harm", color = colors.TEAL })
 
-Spell( 118864 ,{ name = "CB: Tiger Palm", short = "Combo Breaker", scale = .8, priority = 6.1, glowtime = 15, color = colors.TEAL2, duration = 15 })
-Spell( 116768 ,{ name = "CB: Blackout Kick", short = "Combo Breaker", scale = .8, priority = 6, glowtime = 15, color = colors.PINK3, duration = 15 })
-Spell( 159407 ,{ name = "CB: Chi Explosion", short = "Combo Breaker", scale = .8, priority = 6, glowtime = 15, color = colors.PINK3, duration = 15 })
+Spell( 116768 ,{ name = "Blackout Kick", scale = .8, priority = 6, glowtime = 15, color = colors.PINK3, duration = 15 })
 
 Spell( 115288 ,{ name = "Energizing Brew", priority = -9, scale = .7, shine = true, group = "buffs", color = colors.LGREEN, duration = 6 })
 Spell( 125195 ,{ name = "Tigereye Brew", priority = -10, shinerefresh = true, color = colors.DBROWN, glowstack = 17, duration = 120 }) --stacks
@@ -605,18 +600,20 @@ Spell( 116740 ,{ name = "Tigereye Brew", color = colors.PINKIERED, priority = -1
 Spell( 125359, { name = "Tiger Power", priority = 5, glowghost = true, color = colors.DPURPLE, color2 = colors.PURPLE, scale = .7, target = "player", ghost = 7, duration = 20 })
 Spell( 127722, { name = "Serpent's Zeal", scale = .7, priority = 4.9, color2 = colors.PINK, color = colors.WOO2DARK, duration = 30 })
 
-Cooldown( 107428, { name = "Rising Sun Kick",tick = 1, overlay = {"tick", "end", .35}, short = "Rising Sun", color = colors.CURSE, priority = 10, ghost = true })
+Cooldown( 107428, { name = "Rising Sun Kick",tick = 1, overlay = {"tick", "end", .35}, fixedlen = 10, short = "Rising Sun", color = colors.CURSE, priority = 10, ghost = true })
 Spell( 130320, { name = "Rising Sun Kick", short = "Rising Sun", color = colors.RED, ghost = true, duration = 15, singleTarget = true })
 
 Cooldown( 115098, { name = "Chi Wave", color = { 29/255, 134/255, 83/255 }, fixedlen = 8, color2 = colors.LGREEN, priority = 6, ghost = true })
 
-Cooldown( 152175 ,{ name = "Hurricane Strike", scale = .75, ghost = true, color = colors.WOO, fixedlen = 12, hide_until = 12 })
+Cooldown( 152175 ,{ name = "Whirling Dragon Punch",  short = "DragonPunch", priority = 3,scale = .85, ghost = true, color = colors.DPURPLE, color2= colors.WOO, fixedlen = 10, hide_until = 12 })
+Spell( 116095 ,{ name = "Disable", ghost = true, color = colors.PURPLE, duration = 15, pvpduration = 8 })
+Spell( 116706 ,{ name = "Root", color = colors.BROWN, duration = 8 })
 
 
 EventTimer({ event = "SPELL_SUMMON", spellID = 123904, name = "Xuen", group = "buffs", duration = 45, priority = -8, color = colors.CHILL })
 
 helpers.Cast(113656, {name = "Fists of Fury", tick = 1, tickshine = true, overlay = {"tick", "end", .3}, color = colors.CURSE, priority = 10.1 })
-Cooldown( 113656, { name = "Fists of Fury", fixedlen = 8, scale = .75, color = colors.WOO2DARK, color2 = colors.DBLUE, priority = 4, ghost =true })
+Cooldown( 113656, { name = "Fists of Fury", fixedlen = 10, scale = .75, color = colors.WOO2DARK, color2 = colors.DBLUE, priority = 4, ghost =true })
 
 Spell( 119611 ,{ name = "Renewing Mist", color = colors.LGREEN, target = "player", duration = 18 })
 -- Spell( 115151 ,{ name = "Renewing Mist", color = colors.TEAL2 })
@@ -633,34 +630,39 @@ Spell( 118674 ,{ name = "Vital Mists", color = colors.TEAL2, duration = 30, stac
                                 [4] = colors.DTEAL,
                                 [5] = colors.TEAL2,
                             } })
-NugRunningConfig.totems[1] = { name = "", color = colors.DPURPLE, priority = - 100, hideName = true }
-NugRunningConfig.totems[2] = { name = "", color = colors.WOO2DARK, priority = - 100, hideName = true }
+
+Spell( 137639 ,{ name = "Storm, Earth and Fire", short = "SEF", group = "buffs", priority = -6, color = colors.DPURPLE, duration = 15 })
+
+-- NugRunningConfig.totems[1] = { name = "", color = colors.DPURPLE, priority = - 100, hideName = true }
+-- NugRunningConfig.totems[2] = { name = "", color = colors.WOO2DARK, priority = - 100, hideName = true }
 -- Spell( 138130 ,{ name = "Clone", color = colors.RED, duration = 100, timeless = true, singleTarget = true })
 
 Spell( 128939 ,{ name = "Elusive Brew", priority = -10, scale = .8, shinerefresh = true, duration = 30, color = colors.DBROWN, glowstack = 15 })
 Spell( 115308 ,{ name = "Elusive Brew", duration = 15, group = "buffs", shine = true, color = colors.PINKIERED })
 Spell( 115295, { name = "Guard", priority = -10, group = "buffs", shine = true, color = colors.WOO2, duration = 30 })
+Spell( 215479, { name = "Ironskin Brew", priority = -10, group = "buffs", shine = true, glowtime = 1, ghost = 1, color = colors.PINK3, duration = 6 })
 
 Spell( 124081 ,{ name = "Zen Sphere", duration = 16, color = { 1, 0.2, 1} })
 Spell( 119381 ,{ name = "Leg Sweep", duration = 5, color = colors.RED, multiTarget = true })
-Spell( 122783 ,{ name = "Diffuse Magic", duration = 6, color = colors.CURSE })
+Spell( 122783 ,{ name = "Diffuse Magic", group = "buffs", shine = true, duration = 6, color = colors.CURSE })
+Spell( 122278 ,{ name = "Dampen Harm", group = "buffs", shine = true, duration = 6, color = colors.CURSE })
 Spell( 152173 ,{ name = "Serenity", duration = 10, color = colors.TEAL2, group = "buffs", priority = -10 })
 Spell( 157627 ,{ name = "Breath of the Serpent", duration = 10, color = colors.TEAL2, shine = true, affiliation = "any" })
 
-Cooldown( 121253, { name = "Keg Smash", tick = 1, overlay = {"tick", "end", .35}, ghost = true, priority = 10, color = colors.CURSE })
+Cooldown( 121253, { name = "Keg Smash", tick = 1, fixedlen = 8, overlay = {"tick", "end", .35}, ghost = true, priority = 10, color = colors.CURSE })
 Spell( 115307 ,{ name = "Shuffle", short = "", ghost = 4, glow2time = 2, glowghost = true, priority = 7, fixedlen = 12, shine = true, shinerefresh = true, color = colors.TEAL3, scale = .75, duration = 6 })
 Spell( 119392 ,{ name = "Charging Ox Wave", duration = 3, color = colors.CURSE, multiTarget = true, shine = true })
 Cooldown( 119392 ,{ name = "Charging Ox Wave", ghost = true, priority = 2, color = colors.WOO2DARK, color2 = colors.PINK3 })
-DotSpell( 123725 ,{ name = "Breath of Fire",  priority = 11, short = "", ghost = true, shine = true, color = colors.RED, multiTarget = true, duration = 8 })
+Spell( 123725 ,{ name = "Breath of Fire",  priority = 11, shine = true, color = colors.RED, multiTarget = true, duration = 8 })
 Cooldown( 116847, { name = "Rushing Jade Wind", short = "", overlay = {0,1, 0.3}, scale = .7, fixedlen = 8, color = colors.PINKIERED, ghost = true, priority = 8 })
+
+Cooldown( 205523 ,{ name = "Blackout Kick", color = colors.PINK3, fixedlen = 8 })
 
 -- Cooldown( 115072, { name = "Expel Harm", color = colors.LGREEN, resetable = true, ghost = true })
 
 EventTimer({ spellID = 108557, event = "SPELL_CAST_SUCCESS", priority = 12, name = "Jab", duration = 0.5, color = colors.PINK3 })
 EventTimer({ spellID = 100784, event = "SPELL_CAST_SUCCESS", priority = 12, name = "Blackout Kick", duration = 0.5, color = colors.REJUV })
-EventTimer({ spellID = 152174, event = "SPELL_CAST_SUCCESS", priority = 12, name = "Chi Explosion", duration = 0.5, color = colors.REJUV })
 EventTimer({ spellID = 100787, event = "SPELL_CAST_SUCCESS", priority = 12, name = "Tiger Palm", duration = 0.5, color = colors.PINK })
-EventTimer({ spellID = 137639, event = "SPELL_CAST_SUCCESS", priority = 12, name = "Spirit", duration = 0.5, color = colors.PINK })
 end
 
 if class == "DEATHKNIGHT" then
@@ -726,6 +728,12 @@ Spell( 55342 ,{ name = "Mirror Image",duration = 40 })
 Spell( 159916 ,{ name = "Amplify Magic",duration = 6, shine = true, group = "buffs" })
 Cooldown( 153626 ,{ name = "Arcane Orb", color = colors.CHIM, ghost = true })
 
+
+Cooldown( 198929,{ name = "Cinderstorm", color = colors.PINKIERED, ghost = true })
+-- Cooldown( 153561,{ name = "Meteor", color = colors.PINKIERED, ghost = true })
+-- Cooldown( 205029,{ name = "Flame On", color = colors.DPURPLE2, scale = 0.7 })
+
+
 EventTimer({ event = "SPELL_SUMMON", spellID = 152087, name = "Prismatic Crystal", group = "buffs", priority = -20, duration = 10, color = colors.CHIM })
 -- not shown in combat log
 Spell( 116267 ,{ name = "Incanter's Flow",duration = 100500, singleTarget = true, timeless = true, charged = true, maxcharge = 5, color = colors.LRED, stackcolor = {
@@ -743,7 +751,7 @@ Spell( 31589 ,{ name = "Slow", duration = 15, pvpduration = 8 })
 Spell( 31661 ,{ name = "Dragon's Breath", duration = 5, color = colors.ORANGE, short = "Breath", multiTarget = true })
 Spell( 2120 ,{ name = "Flamestrike", duration = 8, color = colors.PURPLE, multiTarget = true })
 
-Spell( 48107 ,{ name = "Heating Up", priority = 5.1, shine = true, glowtime = 10, duration = 10, color = colors.DPURPLE })
+Spell( 48107 ,{ name = "Heating Up", priority = 5.1, shine = true, scale = 0.75, glowtime = 7, duration = 10, color = colors.DPURPLE })
 Spell( 48108 ,{ name = "Pyroblast", priority = 5, duration = 15, shine = true, color = colors.REJUV })
 --Pyroblast
 DotSpell( 11366 ,{ name = "", ghost = true, duration = 18, priority = 8, color = colors.PURPLE, singleTarget = true })
@@ -751,7 +759,7 @@ DotSpell( 11366 ,{ name = "", ghost = true, duration = 18, priority = 8, color =
 DotSpell( 44457 ,{ name = "", ghost = true, color = colors.PINKIERED, priority = 9, duration = 12, singleTarget = true })
 Spell( 12654 ,{ name = "Ignite", shinerefresh = false, color = colors.DRED, priority = 1, duration = 5, singleTarget = true })
 Spell( 83853 ,{ name = "Combustion", color = colors.ORANGE2, priority = 1.1, duration = 10, singleTarget = true })
-Cooldown( 108853, { name = "Infeno Blast", color = colors.LRED, ghost = true })
+Cooldown( 108853, { name = "Infeno Blast", color = colors.LRED, ghost = true, resetable = true })
 --Cooldown( 2136, { name = "Fire Blast", resetable = true, color = colors.LRED})
 EventTimer({ spellID = 153561, event = "SPELL_CAST_SUCCESS", name = "Meteor", duration = 2.9, color = colors.FIRE })
 EventTimer({ spellID = 12654, event = "SPELL_PERIODIC_DAMAGE",
@@ -834,8 +842,14 @@ Spell( 105593 ,{ name = "Fist of Justice", duration = 6, short = "FoJ", color = 
 -- Spell( 85696 ,{ name = "Zealotry",duration = 20 })
 Spell( 2812 ,{ name = "Denounce", duration = 4, color = colors.GREEN })
 
+Spell( 183218 ,{ name = "Hand of Hindrance", duration = 10, short = "Hindrance", color = colors.BROWN })
+
+Cooldown( 184575 ,{ name = "Blade of Justice", tickshine = true, ghost = true, priority = 9, fixedlen = 8, color = colors.WOO })
 Cooldown( 35395 ,{ name = "Crusader Strike", tick = 1.5, overlay = {"tick", "end"}, tickshine = true, ghost = true, short = "Crusader", priority = 10, fixedlen = 8, color = colors.CURSE })
+
+Spell( 197277,{ name = "Judgement", shine = true, priority = -100500, color = colors.PURPLE2, duration = 6 }) --debuff
 Cooldown( 20271 ,{ name = "Judgement", ghost = true, fixedlen = 8, priority = 8, color = colors.PURPLE })
+
 Cooldown( 26573 ,{ name = "Consecration", color = colors.PINKIERED, overlay = {0,"gcd",.3}, priority = 9, scale = .7, ghost = true, fixedlen = 8 })
 Cooldown( 24275 ,{ name = "Hammer of Wrath", color = colors.TEAL2, fixedlen = 8, ghost = true, priority = 11 })
 Cooldown( 119072, { name = "Holy Wrath", color = colors.BROWN, priority = 3, ghost = true })
@@ -881,19 +895,23 @@ Spell( 339 ,{ name = "Entangling Roots",duration = 30 })
 -- Spell( 48518 ,{ name = "Lunar Eclipse", timeless = true, duration = 0.1, short = "Lunar", color = colors.LBLUE }) -- Starfire boost
 Spell( 78675,{ name = "Solar Beam", duration = 10, color = colors.GOLD, target = "player" })
 Spell( 33786 ,{ name = "Cyclone", duration = 6 })
-DotSpell( 164812 ,{ name = "Moonfire",duration = 40, priority = 10, ghost = true, color = colors.PURPLE })
+Spell( 164812 ,{ name = "Moonfire",duration = 40, priority = 10, ghost = true, color = colors.PURPLE })
 Spell( 171743 ,{ name = "Lunar Peak", duration = 5, priority = 9.1, scale = .7, color = colors.REJUV, glowtime = 5})
 Spell( 164547 ,{ name = "Lunar Empowerment", duration = 30, priority = 9, color = colors.REJUV})
 Spell( 171744 ,{ name = "Solar Peak", duration = 5, priority = 8.1, scale = .7, color = colors.ORANGE2, glowtime = 5})
 Spell( 164545 ,{ name = "Solar Empowerment", duration = 30, priority = 8, color = colors.ORANGE2})
-DotSpell( 164815 ,{ name = "Sunfire",duration = 24, priority = 9, ghost = true, color = colors.ORANGE })
+Spell( 164815 ,{ name = "Sunfire",duration = 24, priority = 9, ghost = true, color = colors.ORANGE })
 -- Spell( 93400 ,{ name = "Shooting Stars", shine = true, duration = 12, color = colors.CURSE })
 Spell( 48505 ,{ name = "Starfall", shine = true, duration = 10, color = colors.WOO2 })
-Cooldown( 78674 ,{ name = "Starsurge", resetable = true, priority = 6, ghost = true, color = colors.CURSE })
-Spell( 152221 ,{ name = "Stellar Flare",duration = 20, priority = 8, ghost = true, color = colors.CHIM })
+-- Cooldown( 78674 ,{ name = "Starsurge", resetable = true, priority = 6, ghost = true, color = colors.CURSE })
+Cooldown( 197626 ,{ name = "Starsurge", resetable = true, priority = 6, ghost = true, color = colors.CURSE })
+DotSpell( 202347, { name = "Stellar Flare",duration = 24, priority = 5, ghost = true, color = colors.CHIM })
 Spell( 112071 ,{ name = "Celestial Alignment",duration = 15, group = "buffs", color = colors.LBLUE, priority = -20 })
 
+Spell( 213708,{ name = "Galactic Guardian", shine = true, priority = 7, duration = 15, scale = 0.8, color = colors.WOO })
 
+Spell( 192081, { name = "Ironfur", priority = -10, group = "buffs", shine = true, glowtime = 1, ghost = 1, color = colors.PINK3, duration = 6 })
+Spell( 192083, { name = "Mark of Ursol", priority = -10, group = "buffs", shine = true, glowtime = 1, ghost = 1, color = colors.TEAL2, duration = 6 })
 
 DotSpell( 155625 ,{ name = "Moonfire",duration = 14, ghost = true, color = colors.PURPLE }) --cat's moonfire2
 Spell( 158792 ,{ name = "Pulverize",duration = 10, ghost = true, color = colors.WOO2 })
@@ -904,11 +922,13 @@ Spell( {106951, 50334} ,{ name = "Berserk", duration = 15 })
 Spell( 163505 ,{ name = "Rake Stun", duration = 4, color = colors.PINK })
 Spell( 155722 ,{ name = "Rake", duration = 15, color = colors.LRED })
 Spell( 1079 ,{ name = "Rip",duration = 16, color = colors.RED })
-Spell( 22570 ,{ name = "Maim", color = colors.PINK, duration = function() return GetCP() end })
+Spell( 203123 ,{ name = "Maim", color = colors.PINK, duration = function() return GetCP() end })
 Cooldown(5217, { name = "Tiger's Fury", color = colors.LBLUE})
 --normal, glyph of savage roar
 Spell({ 52610, 174544 },{ name = "Savage Roar", color = colors.PURPLE, duration = function() return (12 + GetCP() * 6) end })
 Spell( 1850 ,{ name = "Dash", duration = 15 })
+
+Spell( 69369,{ name = "Predatory Swiftness", duration = 12, color = colors.DTEAL })
 -- Spell( 81022 ,{ name = "Stampede", duration = 8 })
 --bear
 Spell( 132402 ,{ name = "Savage Defense", duration = 6, color = colors.WOO, priority = -8 })
@@ -950,9 +970,39 @@ Spell( 16870 ,{ name = "Clearcasting",  duration = 15 })
 Spell( 155631,{ name = "Clearcasting",  duration = 5, color = colors.CHIM })
 end
 
+if class == "DEMONHUNTER" then
+    -- this excludes talents above lvl 100
+
+    Cooldown( 178740,{ name = "Immolation Aura", color = colors.PINKIERED, priority = 5 })
+    Spell( 207744,{ name = "Fiery Brand",  duration = 8, shine = true, group = "buffs", color = colors.BLACK })
+    Spell( 203819,{ name = "Demon Spikes", color = colors.PINK3, shine = true, group = "buffs", priority = - 9, duration = 6 })
+    Spell( 218256,{ name = "Empower Wards",  duration = 6, shine = true, group = "buffs", color = colors.TEAL2 })
+
+    EventTimer({ spellID = 196718, event = "SPELL_CAST_SUCCESS", name = "Darkness", duration = 8, shine = true, color = colors.DPURPLE, scale = 0.8 })
+
+    Spell( 187827,{ name = "Metamorphosis",  duration = 20, group = "buffs", priority = -8, color = colors.CURSE }) -- vengeance
+    Spell( 162264,{ name = "Metamorphosis",  duration = 30, group = "buffs", priority = -8, color = colors.CURSE }) -- havoc
+
+    Spell( 212800,{ name = "Blur",  duration = 10, shine = true, group = "buffs", color = colors.PINK })
+    
+    Cooldown( 213241,{ name = "Felblade",  color = colors.PURPLE, ghost = true,  priority = 5, })
+
+    Cooldown( 188499,{ name = "Blade Dance",  color = colors.PINKIERED, ghost = 2, priority = 6, })
+    Cooldown( 198013 ,{ name = "Eye Beam", ghost = true, color = colors.DPURPLE2, color2 = colors.REJUV, fixedlen = 15, hide_until = 10 })
+
+    Spell( 179057,{ name = "Chaos Nova",  duration = 5, color = colors.RED, shine = true, multiTarget = true })
+    Spell( 211881,{ name = "Fel Eruption",  duration = 2, color = colors.RED, shine = true })
+
+    Spell( 217832,{ name = "Imprison",  duration = 60, color = colors.GOLD })
+    
+    -- EventTimer({ spellID = 204596, event = "SPELL_CAST_SUCCESS", name = "Sigil of Flame", duration = 2, color = colors.FIRE, scale = 0.8 })
+    -- EventTimer({ spellID = 202138, event = "SPELL_CAST_SUCCESS", name = "Sigil of Chains", duration = 2, color = colors.BROWN, scale = 0.8 })
+    -- EventTimer({ spellID = 202137, event = "SPELL_CAST_SUCCESS", name = "Sigil of Silence", duration = 2, color = colors.WOO2, scale = 0.8 })
+end
+
 if class == "HUNTER" then
-EventTimer({ spellID = 131894, event = "SPELL_CAST_SUCCESS", name = "A Murder of Crows", duration = 30, color = colors.LBLUE })
-Spell( 51755 ,{ name = "Camouflage", duration = 60, target = "player", color = colors.CURSE })
+-- EventTimer({ spellID = 131894, event = "SPELL_CAST_SUCCESS", name = "A Murder of Crows", duration = 30, color = colors.LBLUE })
+Spell( {199483, 198783},{ name = "Camouflage", duration = 60, target = "player", color = colors.CURSE })
 Spell( 19263 ,{ name = "Deterrence", duration = 5, color = colors.LBLUE })
 
 --Spell( 77769 ,{ name = "Trap Launcher", shine = true, timeless = true, duration = 0.1, color = colors.CURSE })
@@ -981,12 +1031,16 @@ Spell( 82692 ,{ name = "Focus Fire", duration = 20, priority = -9.9, color = col
 
 Spell( 136 ,{ name = "Mend Pet", duration = 10, color = colors.LGREEN })
 
---Spell( 2974 ,{ name = "Wing Clip", duration = 10, pvpduration = 8, color = { 192/255, 77/255, 48/255} })
+Spell( 195645,{ name = "Wing Clip", duration = 15, pvpduration = 8, color = colors.BROWN })
+Spell( 200108,{ name = "Ranger's Net Root", short = "Root", duration = 3, color = colors.RED })
+Spell( 206755,{ name = "Ranger's Net", duration = 15, pvpduration = 8, color = colors.BROWN })
+
+Spell( 191241,{ name = "Sticky Bomb", duration = 3, shine = true, color = colors.LRED })
 --Spell( 19306 ,{ name = "Counterattack", duration = 5, color = { 192/255, 77/255, 48/255} })l
-DotSpell( 118253 ,{ name = "Serpent Sting", duration = 15, color = colors.PURPLE })
+-- Spell( 118253 ,{ name = "Serpent Sting", duration = 15, color = colors.PURPLE })
 Spell( 5116 ,{ name = "Concussive Shot", duration = 6, color = colors.CHILL, init = function(self)self.duration = 4 + Talent(19407) end })
 
-Spell( 24394 ,{ name = "Intimidation", duration = 3, color = colors.RED })
+Spell( 24394 ,{ name = "Intimidation", duration = 5, color = colors.RED })
 Spell( 19386 ,{ name = "Wyvern Sting", duration = 30, pvpduration = 8, short = "Wyvern",color = colors.LGREEN })
 
 
@@ -994,24 +1048,59 @@ Spell( 3355 ,{ name = "Freezing Trap", duration = 10, pvpduration = 8, color = c
 
 Spell( 3045 ,{ name = "Rapid Fire", duration = 15, color = colors.CURSE })
 
-Cooldown( 34026 ,{ name = "Kill Command", color = colors.CURSE, ghost = true, tick = -1.5, tickshine = true, overlay = {"tick", "end"}, short = "", priority = 10, })
+Cooldown( 34026 ,{ name = "Kill Command", color = colors.CURSE, ghost = true, tick = 1.5, overlay = {"tick", "end"}, short = "", fixedlen = 9, priority = 10, resetable = true })
 
-Cooldown( 53209 ,{ name = "Chimera Shot", color = { 1, 0.2, 1}, ghost = true, short = "", priority = 10, })
-Cooldown( 53351 ,{ name = "Kill Shot", color = colors.PINKIERED, ghost = true, priority = 9, resetable = true })
+-- Cooldown( 53209 ,{ name = "Chimera Shot", color = { 1, 0.2, 1}, ghost = true, short = "", priority = 10, })
+-- Cooldown( 53351 ,{ name = "Kill Shot", color = colors.PINKIERED, ghost = true, priority = 9, resetable = true })
 
-Cooldown( 53301 ,{ name = "Explosive Shot", color = colors.PINKIERED, ghost = true, tick = -1.5, tickshine = true, overlay = {"tick", "end"}, short = "", priority = 10, })
-Cooldown( 3674 ,{ name = "Black Arrow", color = colors.CURSE, ghost = true, priority = 9 })
+Cooldown( 212431 ,{ name = "Explosive Shot", color = colors.PURPLE, ghost = true, priority = 8, })
+Cooldown( 194599,{ name = "Black Arrow", color = colors.PURPLE, ghost = true, priority = 8 })
 
+
+Spell( 117526,{ name = "Binding Shot Stun", duration = 5, color = colors.RED, multiTarget = true })
+
+-- helpers.Cast(19434, {name = "Aimed Shot", color = colors.CURSE, priority = 10 })
+EventTimer({ spellID = 185358, event = "SPELL_CAST_SUCCESS", priority = 12, name = "Arcane Shot", duration = 0.5, color = colors.PINK })
+EventTimer({ spellID = 2643, event = "SPELL_CAST_SUCCESS", priority = 12, name = "Multi-Shot", duration = 0.5, color = colors.PINK })
+Spell( 223138 ,{ name = "Marking Targets", duration = 15, scale = 0.8, priority = 11, color = colors.PURPLE4, shine = true, shinerefresh = true})
+Activation( 185901,{ name = "Marked Shot", shine = true, scale = 0.8, color = colors.DRED, priority = 11, glowtime = 9, duration = 10 })
+Spell( 213424 ,{ name = "Deadeye", duration = 8, scale = 0.8, priority = -999, color = colors.PINK2, shine = true })
+
+Cooldown( 194855,{ name = "Dragonsfire Grenade", color = colors.DRED, scale = 0.7, ghost = true, priority = 3 })
+Cooldown( 206505,{ name = "A Murder of Crows", short = "Crows", scale = 0.7, ghost = true, resetable = true, priority = 3, color = colors.WOO2DARK  })
+Cooldown( 131894,{ name = "A Murder of Crows", short = "Crows", scale = 0.7, ghost = true, resetable = true, priority = 3, color = colors.WOO2DARK  })
+Cooldown( 162488,{ name = "Steel Trap", color = colors.DTEAL, scale = 0.7, ghost = true, priority = 2 })
+Cooldown( 191433,{ name = "Explosive Trap", color = colors.DPURPLE, scale = 0.7, ghost = true, priority = 4 })
+Cooldown( 194407,{ name = "Spitting Cobra", color = colors.PINK3, scale = 0.7, ghost = true, priority = 1 })
+
+Cooldown( 202800,{ name = "Flanking Strike", tick = 1.5, overlay = {"tick", "end", .35}, tickshine = true, priority = 9, color = colors.CURSE, ghost = true})
+Cooldown( 212436,{ name = "Butchery", color = colors.PURPLE2, ghost = true, priority = 6 })
+
+Spell( 190931,{ name = "Mongoose Fury", duration = 12, color = colors.PINKIERED, group = "buffs", scale = 0.85, priority = -100, shine = true })
+DotSpell( 185855,{ name = "Lacerate", duration = 12, color = colors.RED, priority = -5, ghost = true })
+
+Spell( 193526,{ name = "Trueshot", duration = 15, group = "buffs", priority = -1, color = colors.TEAL, shine = true })
+Spell( 186265,{ name = "Aspect of the Turtle", short = "Turtle", group = "buffs", duration = 8, color = colors.BLACK, shine = true })
+Spell( 186289,{ name = "Aspect of the Eagle", short = "Eagle", group = "buffs", duration = 10, color = colors.TEAL, shine = true })
+Spell( 193530,{ name = "Aspect of the Wild", short = "Wild", group = "buffs", duration = 10, color = colors.TEAL, shine = true })
 
 Spell( 128405 ,{ name = "Narrow Escape", duration = 8, color = colors.BROWN, multiTarget = true })
 Spell( 117526 ,{ name = "Binding Shot", duration = 5, pvpduration = 3, color = colors.RED, multiTarget = true })
-Cooldown( 120679 ,{ name = "Dire Beast", recast_mark = 15, priority = 6, ghost = true, overlay = {0,15, 0.3}, color = colors.BROWN })
+Cooldown( 120679,{ name = "Dire Beast", priority = 6, ghost = true, color = colors.PURPLE, fixedlen = 9, resetable = true })
+Cooldown( 217200,{ name = "Dire Frenzy", priority = 6, ghost = true, color = colors.PURPLE, fixedlen = 9, resetable = true })
 Cooldown( 82726 ,{ name = "Fervor", color = colors.DBLUE })
+Cooldown( 53209 ,{ name = "Chimera Shot", color = colors.CHIM, ghost = true, fixedlen = 9 })
 
 Cooldown( 130392 ,{ name = "Blink Strike", color = colors.WOO2 })
 Cooldown( 109259 ,{ name = "Powershot", color = colors.WOO })
 Cooldown( 117050 ,{ name = "Glaive Toss", color = colors.WOO, ghost = true, priority = 7 })
-Cooldown( 120360 ,{ name = "Barrage", color = colors.WOO })
+Cooldown( 120360 ,{ name = "Barrage", color = colors.WOO, ghost = true })
+Cooldown( 194386 , { name = "Volley", ghost = true, scale = 0.7,overlay = {0,"gcd",.3}, color = colors.PINKIERED, fixedlen = 9, priority = 9.5 })
+
+Cooldown( 198670 ,{ name = "Head Shot", color = colors.DTEAL, ghost = true })
+Cooldown( 214579 ,{ name = "Sidewinders", color = colors.DTEAL, ghost = true })
+Spell( 194594,{ name = "Lock and Load", color = colors.DTEAL, shine = true, glowtime = 14, priority = 12, scale = 0.75, duration = 15, ghost = true })
+
 
 -- helpers.Cast(77767, {name = "Cobra Shot", tick = .5, overlay = {"tick", "end"}, fixedlen = 8, color = colors.GREEN, priority = 15 })
 
