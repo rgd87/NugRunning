@@ -269,6 +269,7 @@ Spell( 710 ,{ name = "Banish", nameplates = true, duration = 30 })
 end
 
 if class == "PRIEST" then
+Cooldown( 205065,{ name = "Void Torrent", color = colors.DTEAL, ghost = true, hide_until = 15 })
 -- BUFFS
 Spell( 139 ,{ name = "Renew", shinerefresh = true, color = colors.LGREEN, duration = 12,  scale = .7,  })
 Spell( 17 ,{ name = "Power Word: Shield", short = "PW:Shield", shinerefresh = true, duration = 15, color = colors.LRED })
@@ -735,6 +736,11 @@ Spell( {221562, 108194} ,{ name = "Asphyxiate", color = colors.PINK, duration = 
 end
 
 if class == "MAGE" then
+Cooldown( 214634 ,{ name = "Ebonbolt", color = colors.DTEAL, scale = 0.7 })
+Cooldown( 194466 ,{ name = "Phoenix's Flames", color = colors.DTEAL, scale = 0.7 })
+Cooldown( 224968 ,{ name = "Mark of Aluneth", color = colors.DTEAL, scale = 0.7, hide_until = 15 })
+Spell( 224968 ,{ name = "Mark of Aluneth", duration = 6, color = colors.DBLUE })
+
 --ARCANE
 Spell( 80353 ,{ name = "Time Warp", shine = true, target = "player", duration = 40, color = colors.WOO2 })
 Spell({ 118,61305,28271,28272,61721,61780 },{ name = "Polymorph", duration = 50, color = colors.LGREEN, pvpduration = 8, short = "Poly" })
@@ -796,7 +802,9 @@ Spell( 82691 ,{ name = "Ring of Frost", shine = true, color = colors.FROZEN, mul
 Spell( 122 ,{ name = "Frost Nova",duration = 8, color = colors.FROZEN, multiTarget = true })
 Spell( 33395 ,{ name = "Freeze",duration = 8, color = colors.FROZEN })
 Spell( 44544 ,{ name = "Fingers of Frost", shine = true, duration = 15, color = colors.FROZEN })
--- Spell( 57761 ,{ name = "Brain Freeze", shine = true, duration = 15, color = colors.LRED })
+Spell( 190446 ,{ name = "Brain Freeze", shine = true, duration = 15, color = colors.DBLUE })
+Spell( 195418 ,{ name = "Chain Reaction", duration = 6, color = colors.PURPLE3 })
+
 
 Spell( 45438 ,{ name = "Ice Block",duration = 10 })
 Spell( 120 ,{ name = "Cone of Cold", duration = 8, color = colors.CHILL, short = "CoC", multiTarget = true })
