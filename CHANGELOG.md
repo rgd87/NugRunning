@@ -1,3 +1,8 @@
+7.0.0:
+- Legion Update
+- PvP Talents aren't updated.
+- Nameplate feature disabled for now
+
 6.0.7:
 - Affiliation check for UnitAura activations
 
