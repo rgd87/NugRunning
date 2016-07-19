@@ -1144,42 +1144,36 @@ Spell( 194594,{ name = "Lock and Load", color = colors.DTEAL, shine = true, glow
 end
 
 if class == "SHAMAN" then
+Cooldown( 205495 ,{ name = "Stormkeeper", ghost = true, color = colors.DTEAL, scale = 0.7, hide_until = 15 })
 Cooldown( 204945 ,{ name = "Doom Winds", ghost = true, color = colors.DTEAL, scale = 0.7, hide_until = 15 })
 Spell( 204945 ,{ name = "Doom Winds", shine = true, color = colors.TEAL3, group = "buffs", duration = 6 })
 
 -- Spell( 8056 ,{ name = "Frost Shock", duration = 8, color = colors.CHILL, short = "FrS" })
 
-Spell( 16188 ,{ name = "Ancestal Swiftness", timeless = true, duration = 0.1, color = colors.TEAL, shine = true, short = "Swiftness" })
 Spell( 61295 ,{ name = "Riptide", duration = 15, color = colors.FROZEN })
 Spell( 51514 ,{ name = "Hex", duration = 50, pvpduration = 8, color = colors.CURSE })
 Spell( 79206 ,{ name = "Spiritwalker's Grace", duration = 10, color = colors.LGREEN, group = "buffs" })
 
-DotSpell( 188838 ,{ name = "Flame Shock", duration = 21, color = colors.PURPLE, })
-        -- init = function(self)
-        --     self.singleTarget = (GetSpecialization() == 2)
-        -- end })
+DotSpell( 188838 ,{ name = "Flame Shock", duration = 21, color = colors.PURPLE, ghost = true }) -- restoration
+Spell( 188389 ,{ name = "Flame Shock", duration = 15, color = colors.PURPLE, ghost = true }) -- elemental
+
+Spell( 196840 ,{ name = "Frost Shock", duration = 5, color = colors.LBLUE, })
+Spell( 197209 ,{ name = "Lightning Rod", duration = 10, color = colors.DBLUE, shine = true, shinerefresh = true })
 
 
 
 Spell( 16166 ,{ name = "Elemental Mastery", duration = 20, color = colors.PINKIERED, group = "buffs" })
 Spell( 77762 ,{ name = "Flame Surge", duration = 6, color = colors.TEAL2, priority = 11, scale = .7, shine = true })
 Cooldown( 51505 ,{ name = "Lava Burst", color = colors.CURSE, ghost = true, priority = 10, resetable = true })
-Cooldown( 165462 ,{ name = "Unleash Flame", color = colors.RED, short = "Unleash", priority = 8, ghost = true }) --elemental
 Cooldown( 51490 ,{ name = "Thunderstorm", color = colors.WOO2 })
 Cooldown( 61882 ,{ name = "Earthquake", color = colors.BROWN })
-Cooldown( 117014 ,{ name = "Elemental Blast", priority = 9.5, ghost = true, color = colors.PURPLE2 })
+Cooldown( 117014 ,{ name = "Elemental Blast", priority = 9.5, ghost = 3, color = colors.PURPLE2 })
 
 Spell( 108281,{ name = "Ancestal Guidance", duration = 10, color = colors.DPURPLE, shine = true })
 
-Spell( 30823 ,{ name = "Shamanistic Rage", duration = 15, color = colors.BLACK })
 Cooldown( 60103 ,{ name = "Lava Lash", color = colors.RED, priority = 9, ghost = true, fixedlen = 10 })
-Spell( 53817 ,{ name = "Maelstrom Weapon", duration = 12, priority = -5, short = "Maelstrom", stackcolor = {
-                                [1] = colors.DPURPLE,
-                                [2] = colors.DPURPLE,
-                                [3] = colors.DPURPLE,
-                                [4] = colors.DPURPLE,
-                                [5] = colors.PURPLE2,
-                            }, glowstack = 5 })
+
+Spell( 210714 ,{ name = "Icefury", duration = 15, color = colors.FROZEN, group = "buffs" })
 
 
 Spell( 194084 ,{ name = "Flametongue", duration = 16, color = colors.RED, group = "buffs" })
@@ -1200,21 +1194,15 @@ Cooldown( 201897 ,{ name = "Boulderfist", color = colors.WOO, priority = 8, ghos
 
 Cooldown( 188089 ,{ name = "Earthen Spike", color = colors.TEAL, ghost = true })
 
-Spell( 73683,{ name = "Unleash Flame", duration = 18, color = colors.TEAL2, priority = 7.1, scale = .7 })
-Cooldown( 8050 ,{ name = "Shock", color = colors.PINKIERED, priority = 7, ghost = true,
-    init = function(self)
-        self.fixedlen = (GetSpecialization() == 2) and 10
-    end })
 
 Spell({ 114050, 114051, 114052} ,{ name = "Ascendance", duration = 15, color = colors.PINK }) --ele, enh, resto
 Spell( 108271 ,{ name = "Astral Shift", duration = 6, color = colors.BLACK })
-Spell( 63685 ,{ name = "Freeze", duration = 5, color = colors.FROZEN })
 
 
 -- TOTEMS
-NugRunningConfig.totems[1] = { name = "Fire", color = {1,80/255,0}, hideName = false, priority = -77 }
-NugRunningConfig.totems[2] = { name = "Earth", color = {74/255, 142/255, 42/255}, priority = -78 }
-NugRunningConfig.totems[3] = { name = "Water", color = { 65/255, 110/255, 1}, priority = -79 }
-NugRunningConfig.totems[4] = { name = "Air", color = {0.6, 0, 1}, priority = -80 }
+NugRunningConfig.totems[1] = { name = "Water", group = "buffs", color = { 65/255, 110/255, 1}, hideName = false, priority = -77 }
+NugRunningConfig.totems[2] = { name = "Earth", group = "buffs",  color = {74/255, 142/255, 42/255}, priority = -78 }
+NugRunningConfig.totems[3] = { name = "Fire", group = "buffs",  color = {1,80/255,0}, priority = -79 }
+NugRunningConfig.totems[4] = { name = "Air", group = "buffs",  color = {0.6, 0, 1}, priority = -80 }
 
 end
