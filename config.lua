@@ -922,6 +922,9 @@ Cooldown( 210722 ,{ name = "Ashmane's Frenzy", hide_until = 15, ghost = true, co
 Spell( 210723 ,{ name = "Ashmane's Frenzy", shine = true, duration = 6, color = colors.DBLUE })
 Spell( 200851 ,{ name = "Rage of the Sleeper", shine = true, duration = 10, color = colors.DBLUE })
 
+
+NugRunningConfig.totems[1] = { name = "Efflorescence", color = colors.PINKIERED, priority = - 100, hideName = true }
+
 Spell( 339 ,{ name = "Entangling Roots",duration = 30 })
 -- Spell( 113746 ,{ name = "Weakened Armor", short = "WeakArmor", priority = -10, affiliation = "any", singleTarget = true, color = colors.BROWN, duration = 30 })
 
@@ -1141,6 +1144,9 @@ Spell( 194594,{ name = "Lock and Load", color = colors.DTEAL, shine = true, glow
 end
 
 if class == "SHAMAN" then
+Cooldown( 204945 ,{ name = "Doom Winds", ghost = true, color = colors.DTEAL, scale = 0.7, hide_until = 15 })
+Spell( 204945 ,{ name = "Doom Winds", shine = true, color = colors.TEAL3, group = "buffs", duration = 6 })
+
 -- Spell( 8056 ,{ name = "Frost Shock", duration = 8, color = colors.CHILL, short = "FrS" })
 
 Spell( 16188 ,{ name = "Ancestal Swiftness", timeless = true, duration = 0.1, color = colors.TEAL, shine = true, short = "Swiftness" })
@@ -1148,10 +1154,13 @@ Spell( 61295 ,{ name = "Riptide", duration = 15, color = colors.FROZEN })
 Spell( 51514 ,{ name = "Hex", duration = 50, pvpduration = 8, color = colors.CURSE })
 Spell( 79206 ,{ name = "Spiritwalker's Grace", duration = 10, color = colors.LGREEN, group = "buffs" })
 
-DotSpell( 8050 ,{ name = "Flame Shock", duration = 30, color = colors.PURPLE,
-        init = function(self)
-            self.singleTarget = (GetSpecialization() == 2)
-        end })
+DotSpell( 188838 ,{ name = "Flame Shock", duration = 21, color = colors.PURPLE, })
+        -- init = function(self)
+        --     self.singleTarget = (GetSpecialization() == 2)
+        -- end })
+
+
+
 Spell( 16166 ,{ name = "Elemental Mastery", duration = 20, color = colors.PINKIERED, group = "buffs" })
 Spell( 77762 ,{ name = "Flame Surge", duration = 6, color = colors.TEAL2, priority = 11, scale = .7, shine = true })
 Cooldown( 51505 ,{ name = "Lava Burst", color = colors.CURSE, ghost = true, priority = 10, resetable = true })
@@ -1171,8 +1180,26 @@ Spell( 53817 ,{ name = "Maelstrom Weapon", duration = 12, priority = -5, short =
                                 [4] = colors.DPURPLE,
                                 [5] = colors.PURPLE2,
                             }, glowstack = 5 })
-Cooldown( 17364 ,{ name = "Stormstrike", color = colors.CURSE, priority = 10, ghost = true, fixedlen = 10 })
-Cooldown( 73680 ,{ name = "Unleash Elements", color = colors.WOO, short = "Unleash", priority = 8, ghost = true, fixedlen = 10 })
+
+
+Spell( 194084 ,{ name = "Flametongue", duration = 16, color = colors.RED, group = "buffs" })
+Spell( 196834 ,{ name = "Frostbrand", duration = 16, color = colors.FROZEN, group = "buffs" })
+Spell( 187878 ,{ name = "Crash Lightning", duration = 10, color = colors.DBLUE, group = "buffs" })
+
+Spell( 201898 ,{ name = "Windsong", duration = 20, color = colors.WOO, group = "buffs" })
+
+Spell( 215864 ,{ name = "Rainfall", duration = 10, color = colors.LGREEN, group = "buffs" })
+Spell( 197211 ,{ name = "Fury of Air", timeless = true, duration = 5, color = colors.TEAL2, scale = 0.8, shine = true, group = "buffs" })
+Cooldown( 197214 ,{ name = "Sundering", color = colors.DBROWN, ghost = true, scale = 0.8 })
+
+Spell( 215785 ,{ name = "Hot Hand", duration = 15, glowtime = 14, color = colors.RED, priority = 9.5, shine = true, scale = 0.7 })
+
+Spell( 201846 ,{ name = "Stormbringer", duration = 12, glowtime = 11, color = colors.DBLUE, priority = 10.5, shine = true, scale = 0.7 })
+Cooldown( 17364 ,{ name = "Stormstrike", color = colors.CURSE, priority = 10, resetable = true, ghost = 6,  })
+Cooldown( 201897 ,{ name = "Boulderfist", color = colors.WOO, priority = 8, ghost = true })
+
+Cooldown( 188089 ,{ name = "Earthen Spike", color = colors.TEAL, ghost = true })
+
 Spell( 73683,{ name = "Unleash Flame", duration = 18, color = colors.TEAL2, priority = 7.1, scale = .7 })
 Cooldown( 8050 ,{ name = "Shock", color = colors.PINKIERED, priority = 7, ghost = true,
     init = function(self)
