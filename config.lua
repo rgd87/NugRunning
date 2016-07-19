@@ -604,14 +604,9 @@ Spell( 115072, { name = "Expel Harm", color = colors.TEAL })
 Spell( 116768 ,{ name = "Blackout Kick", scale = .8, priority = 6, glowtime = 15, color = colors.PINK3, duration = 15 })
 
 Spell( 115288 ,{ name = "Energizing Brew", priority = -9, scale = .7, shine = true, group = "buffs", color = colors.LGREEN, duration = 6 })
-Spell( 125195 ,{ name = "Tigereye Brew", priority = -10, shinerefresh = true, color = colors.DBROWN, glowstack = 17, duration = 120 }) --stacks
 Spell( 116740 ,{ name = "Tigereye Brew", color = colors.PINKIERED, priority = -10, group = "buffs", duration = 15, target = "player" }) --activation
 
-Spell( 125359, { name = "Tiger Power", priority = 5, glowghost = true, color = colors.DPURPLE, color2 = colors.PURPLE, scale = .7, target = "player", ghost = 7, duration = 20 })
-Spell( 127722, { name = "Serpent's Zeal", scale = .7, priority = 4.9, color2 = colors.PINK, color = colors.WOO2DARK, duration = 30 })
-
 Cooldown( 107428, { name = "Rising Sun Kick",tick = 1, overlay = {"tick", "end", .35}, fixedlen = 10, short = "Rising Sun", color = colors.CURSE, priority = 10, ghost = true })
-Spell( 130320, { name = "Rising Sun Kick", short = "Rising Sun", color = colors.RED, ghost = true, duration = 15, singleTarget = true })
 
 Cooldown( 115098, { name = "Chi Wave", color = { 29/255, 134/255, 83/255 }, fixedlen = 8, color2 = colors.LGREEN, priority = 6, ghost = true })
 
@@ -627,29 +622,20 @@ Cooldown( 113656, { name = "Fists of Fury", fixedlen = 10, scale = .75, color = 
 
 Spell( 119611 ,{ name = "Renewing Mist", color = colors.LGREEN, target = "player", duration = 18 })
 -- Spell( 115151 ,{ name = "Renewing Mist", color = colors.TEAL2 })
-Spell( 115867 ,{ name = "Mana Tea", priority = -10, duration = 120, color = colors.DBROWN })
-Cooldown( 123761 ,{ name = "Mana Tea", color = colors.CURSE })
 Spell( 116849 ,{ name = "Life Cocoon", color = colors.PURPLE, duration = 12 })
 
 -- Cooldown( 116680 ,{ name = "Thunder Focus Tea", color = colors.CURSE, overlay = {0, 15}, recast_mark = 15 })
 Spell( 116680 ,{ name = "Thunder Focus Tea", color = colors.CURSE, duration = 30 })
-Spell( 118674 ,{ name = "Vital Mists", color = colors.TEAL2, duration = 30, stackcolor = {
-                                [1] = colors.DTEAL,
-                                [2] = colors.DTEAL,
-                                [3] = colors.DTEAL,
-                                [4] = colors.DTEAL,
-                                [5] = colors.TEAL2,
-                            } })
 
 Spell( 137639 ,{ name = "Storm, Earth and Fire", short = "SEF", group = "buffs", priority = -6, color = colors.DPURPLE, duration = 15 })
 
+Spell( 197908 ,{ name = "Mana Tea", priority = -10, group = "buffs", duration = 10, color = colors.FROZEN })
 -- NugRunningConfig.totems[1] = { name = "", color = colors.DPURPLE, priority = - 100, hideName = true }
 -- NugRunningConfig.totems[2] = { name = "", color = colors.WOO2DARK, priority = - 100, hideName = true }
 -- Spell( 138130 ,{ name = "Clone", color = colors.RED, duration = 100, timeless = true, singleTarget = true })
 
 Spell( 128939 ,{ name = "Elusive Brew", priority = -10, scale = .8, shinerefresh = true, duration = 30, color = colors.DBROWN, glowstack = 15 })
 Spell( 115308 ,{ name = "Elusive Brew", duration = 15, group = "buffs", shine = true, color = colors.PINKIERED })
-Spell( 115295, { name = "Guard", priority = -10, group = "buffs", shine = true, color = colors.WOO2, duration = 30 })
 Spell( 215479, { name = "Ironskin Brew", priority = -10, group = "buffs", shine = true, glowtime = 1, ghost = 1, color = colors.PINK3, duration = 6 })
 
 Spell( 124081 ,{ name = "Zen Sphere", duration = 16, color = { 1, 0.2, 1} })
@@ -657,12 +643,8 @@ Spell( 119381 ,{ name = "Leg Sweep", duration = 5, color = colors.RED, multiTarg
 Spell( 122783 ,{ name = "Diffuse Magic", group = "buffs", shine = true, duration = 6, color = colors.CURSE })
 Spell( 122278 ,{ name = "Dampen Harm", group = "buffs", shine = true, duration = 6, color = colors.CURSE })
 Spell( 152173 ,{ name = "Serenity", duration = 10, color = colors.TEAL2, group = "buffs", priority = -10 })
-Spell( 157627 ,{ name = "Breath of the Serpent", duration = 10, color = colors.TEAL2, shine = true, affiliation = "any" })
 
 Cooldown( 121253, { name = "Keg Smash", tick = 1, fixedlen = 8, overlay = {"tick", "end", .35}, ghost = true, priority = 10, color = colors.CURSE })
-Spell( 115307 ,{ name = "Shuffle", short = "", ghost = 4, glow2time = 2, glowghost = true, priority = 7, fixedlen = 12, shine = true, shinerefresh = true, color = colors.TEAL3, scale = .75, duration = 6 })
-Spell( 119392 ,{ name = "Charging Ox Wave", duration = 3, color = colors.CURSE, multiTarget = true, shine = true })
-Cooldown( 119392 ,{ name = "Charging Ox Wave", ghost = true, priority = 2, color = colors.WOO2DARK, color2 = colors.PINK3 })
 Spell( 123725 ,{ name = "Breath of Fire",  priority = 11, shine = true, color = colors.RED, multiTarget = true, duration = 8 })
 Cooldown( 116847, { name = "Rushing Jade Wind", short = "", overlay = {0,1, 0.3}, scale = .7, fixedlen = 8, color = colors.PINKIERED, ghost = true, priority = 8 })
 
@@ -849,9 +831,7 @@ Spell( 642 ,{ name = "Divine Shield",duration = 8, short = "DShield", color = co
 Spell( 31850,{ name = "Ardent Defender",duration = 10, color = colors.BLACK})
 Spell( 31821,{ name = "Devotion Aura", duration = 6, multiTarget = true, color = colors.GOLD})
 Spell( 1022 ,{ name = "Hand of Protection",duration = 10, short = "Protection", color = colors.WOO2 })
-Spell( 114039 ,{ name = "Hand of Purity",duration = 6, short = "Purity", color = colors.WOO2 })
 Spell( 1044 ,{ name = "Hand of Freedom",duration = 6, short = "Freedom", color = colors.BROWN })
-Spell( 10326 ,{ name = "Turn Evil",duration = 20, pvpduration = 8, color = colors.LGREEN })
 
 --empowered seals
 Spell( 156987 ,{ name = "Justice", scale = .7, group = "buffs", priority = -881, duration = 20, color = colors.DEFAULT_BUFF })
@@ -865,10 +845,8 @@ Spell( 152262 ,{ name = "Seraphim", color = colors.PINKIERED, shine = true, shin
 -- Spell( 31842 ,{ name = "Divine Favor",duration = 20, short = "Favor" })
 Spell( 20066 ,{ name = "Repentance",duration = 60, pvpduration = 8, color = colors.LBLUE })
 Spell( 853 ,{ name = "Hammer of Justice", duration = 6, short = "HoJ", color = colors.FROZEN })
-Spell( 105593 ,{ name = "Fist of Justice", duration = 6, short = "FoJ", color = colors.FROZEN })
 --Spell( 31803 ,{ name = "Censure",duration = 15, color = colors.RED})
 -- Spell( 85696 ,{ name = "Zealotry",duration = 20 })
-Spell( 2812 ,{ name = "Denounce", duration = 4, color = colors.GREEN })
 
 Spell( 183218 ,{ name = "Hand of Hindrance", duration = 10, short = "Hindrance", color = colors.BROWN })
 
@@ -880,16 +858,13 @@ Cooldown( 20271 ,{ name = "Judgement", ghost = true, fixedlen = 8, priority = 8,
 
 Cooldown( 26573 ,{ name = "Consecration", color = colors.PINKIERED, overlay = {0,"gcd",.3}, priority = 9, scale = .7, ghost = true, fixedlen = 8 })
 Cooldown( 24275 ,{ name = "Hammer of Wrath", color = colors.TEAL2, fixedlen = 8, ghost = true, priority = 11 })
-Cooldown( 119072, { name = "Holy Wrath", color = colors.BROWN, priority = 3, ghost = true })
 Cooldown( 31935 ,{ name = "Avenger's Shield", resetable = true, fixedlen = 8, priority = 5, short = "AvShield", scale = .8, color = colors.PINK3, ghost = true })
 
 Spell( 132403 ,{ name = "Shield of the Righteous", short = "Shield", group = "buffs", duration = 3, priority = -15, scale = .7, color = colors.PINK3 })
-Spell( 114637 ,{ name = "Bastion of Glory", short = "Bastion", duration = 20, priority = -15, scale = .7, color = colors.DRED, glowstack = 5 })
 -- Spell( 132403 ,{ name = "Shield of the Righteous", short = "SotR", duration = 3, priority = 10, color = colors.DPURPLE })
 
 --Spell( 94686 ,{ name = "Crusader", duration = 15 })
 Spell( 157048 ,{ name = "Final Verdict", duration = 30, color = colors.DPURPLE, timeless = true, priority = -7.5, scale = .6 })
-Cooldown( 879 ,{ name = "Exorcism", fixedlen = 8, shine = true, color = colors.PINKIERED, resetable = true, ghost = 6 })
 --Activation( 879 ,{ name = "Exorcism", shine = true, color = colors.ORANGE, duration = 15 })
 --Activation( 84963 ,{ name = "Hand of Light", shine = true, showid = 85256, short = "Light", color = colors.PINK, duration = 8 })
 
@@ -908,11 +883,8 @@ Spell( 85499 ,{ name = "Speed of Light", short = "Speed", duration = 7 })
 Spell( 105421 ,{ name = "Blinding Light", duration = 6, multiTarget = true })
 Spell( 114250 ,{ name = "Selfless Healer", short = "Selfless", duration = 15 })
 Spell( 156322 ,{ name = "Eternal Flame", duration = 30, color = colors.LGREEN })
-Spell( 20925 ,{ name = "Sacred Shield", color = colors.GOLD, duration = 30 })
 Spell( 105809 ,{ name = "Holy Avenger", color = colors.GOLD, group = "buffs",  duration = 18 })
-Spell( 90174 ,{ name = "Divine Purpose", shine = true, short = "DPurpose", color = colors.PINK, duration = 8 })
 Cooldown( 114165 ,{ name = "Holy Prism", color = colors.BLACK })
-Spell( {114916, 114917} ,{ name = "Execution Sentence", ghost = true, short = "Execution", color = colors.WOO2, duration = 10 })
 end
 
 if class == "DRUID" then
