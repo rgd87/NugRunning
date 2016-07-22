@@ -1,3 +1,6 @@
+7.0.1:
+- scale_until option and config updates
+
 7.0.0:
 - Legion Update
 - PvP Talents aren't updated.
