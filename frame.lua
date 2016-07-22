@@ -52,7 +52,7 @@ function TimerBar.SetTime(self, s,e, fixedoffset, animProgress)
     self:UpdateMark()
 end
 local function getbarpos(timer, time)
-    local duration = timer.endTime - timer.startTime
+    local duration = timer.endTime - timer._startTimeModified
     if time >= 0 then
         return time / duration * timer.bar:GetWidth(), time / duration
     else
@@ -154,6 +154,10 @@ function TimerBar.ToInfinite(self)
 end
 
 function TimerBar.ToGhost(self)
+    if self._isMinimized then
+        local scale = self.opts.scale or 1
+        self:VScale(scale)
+    end
     self:SetColor(0.5,0,0)
     self.timeText:SetText("")
     self.bar:SetValue(0)
