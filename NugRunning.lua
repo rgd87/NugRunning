@@ -593,6 +593,13 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
         timer.arrowglow:Stop()
         timer.arrowglow.tex:Hide()
     end
+
+    if opts.scale_until then
+        if timer:Remains() > opts.scale_until then
+            timer:VScale(0.4)
+        end
+    end
+
     timer:Show()
     if not timer.animIn:IsPlaying() and not from_unitaura then timer.animIn:Play() end
     timer.shine.tex:SetAlpha(0)
@@ -666,6 +673,12 @@ function NugRunning.RefreshTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID,
             timer.powerLevel = plevel
         end
         self:UpdateTimerPower(timer, plevel)
+    end
+
+    if opts.scale_until then
+        if timer:Remains() > opts.scale_until then
+            timer:VScale(0.4)
+        end
     end
 
     timer:UpdateMark()
@@ -870,6 +883,7 @@ local function GetGradientColor(c1, c2, v)
     local b = c1[3] + v*(c2[3]-c1[3])
     return r,g,b
 end
+NugRunning.GetGradientColor = GetGradientColor
 
 local math_floor = math.floor
 local round = function(v) return math_floor(v+.1) end
@@ -925,6 +939,18 @@ function NugRunning.TimerFunc(self,time)
     local rm = opts.recast_mark
     if rm and beforeEnd < rm and beforeEnd > rm-0.1 then
         self.mark.shine:Play()
+    end
+
+    local scaleAnimLength = 1
+    local su = opts.scale_until
+    if su and beforeEnd <= su and beforeEnd > su - (scaleAnimLength+0.04) then
+        local os = opts.scale or 1
+        local ms = 0.4
+        local progress = 1 - ((beforeEnd - (su - scaleAnimLength))/ scaleAnimLength)
+        if progress > 0.98 then progress = 1 end
+        local pscale = ms + (os-ms)*progress
+        self:VScale(pscale)
+        if self._scale == os and not self.shine:IsPlaying() then self.shine:Play() end
     end
 
     local tickPeriod = self.tickPeriod

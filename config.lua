@@ -372,9 +372,9 @@ end
 
 
 if class == "ROGUE" then
-Cooldown( 209782 ,{ name = "Goremaw's Bite", ghost = true, shine = true, hide_until = 15, color = colors.DTEAL })
+Cooldown( 209782 ,{ name = "Goremaw's Bite", ghost = true, shine = true, minduration = 10, hide_until = 15, color = colors.DTEAL })
 Spell( 202665 ,{ name = "Curse of the Dreadblades", shine = true, duration = 12, color = colors.DTEAL })
-Cooldown( 192759 ,{ name = "Kingsbane", ghost = true, color = colors.DRED,  hide_until = 15,  })
+Cooldown( 192759 ,{ name = "Kingsbane", ghost = true, minduration = 10, color = colors.DRED,  hide_until = 15,  })
 Spell( 192759 ,{ name = "Kingsbane", shine = true, duration = 14, color = colors.DGREEN })
 
 Spell( 1966  ,{ name = "Feint", duration = 5, priority = -1, shine = true, shinerefresh = true, color = colors.LBLUE })
@@ -386,7 +386,7 @@ Spell( 5171  ,{ name = "Slice and Dice", shinerefresh = true, fixedlen = 24, sho
     duration = function() return (6 + GetCP()*6) end,
 }) -- SnD fixedlen set to match Rupture maximum duration
 
-Spell( 212283  ,{ name = "Symbols of Death", shinerefresh = true, short = "Symbols", duration = 35, color = colors.PINKIERED })
+Spell( 212283  ,{ name = "Symbols of Death", shinerefresh = true, ghost = true, short = "Symbols", duration = 35, color = colors.PINKIERED })
 
 Spell( 206237  ,{ name = "Enveloping Shadows", shinerefresh = true, shine = true, duration = 15, color = colors.PURPLE })
 
@@ -405,7 +405,7 @@ Spell( 199743,{ name = "Parley", duration = 360, color = colors.LBLUE })
 Spell( 1943  ,{ name = "Rupture", shinerefresh = true, fixedlen = 24, color = colors.RED,
     duration = function() return (4 + GetCP() * 4) end,
 })
-Spell( 195452  ,{ name = "Nightblade", shinerefresh = true, fixedlen = 16, color = colors.CURSE,
+Spell( 195452  ,{ name = "Nightblade", ghost = true, shinerefresh = true, fixedlen = 16, color = colors.CURSE,
     duration = function() return (6 + GetCP() * 2) end,
 })
 DotSpell( 703,{ name = "Garrote", color = colors.PINKIERED, duration = 18 })
@@ -453,7 +453,7 @@ if class == "WARRIOR" then
 Cooldown( 209577 ,{ name = "Warbreaker", ghost = true, color = colors.DTEAL })
 helpers.Cast(203524, {name = "Neltharion's Fury", color = colors.REJUV, priority = 12.1 })
 Cooldown( 203524 ,{ name = "Neltharion's Fury", ghost = true, hide_until = 15, color = colors.DTEAL })
-Cooldown( 205545 ,{ name = "Odyn's Fury", ghost = true, color = colors.DTEAL })
+Cooldown( 205545 ,{ name = "Odyn's Fury", ghost = true, color = colors.DTEAL, scale_until = 10 })
 
 
 
@@ -489,22 +489,24 @@ Cooldown( 6572 ,{ name = "Revenge", priority = 5, color = colors.PURPLE, resetab
 
 -- Spell( 55694 ,{ name = "Enraged Regeneration", short = "Regen", color = colors.LGREEN, duration = 5 })
 Spell( 132168 ,{ name = "Shockwave", color = colors.CURSE, shine = true, duration = 4, multiTarget = true, })
-Cooldown( 46968 ,{ name = "Shockwave", fixedlen = 9, ghost = 3, priority = 2, color = colors.WOO2DARK, color2 = colors.PINK2 })
-Cooldown( 107570 ,{ name = "Storm Bolt", fixedlen = 9, ghost = 3, priority = 2, color = colors.WOO2DARK, color2 = colors.PINK2 })
-Cooldown( 118000 ,{ name = "Dragon Roar", fixedlen = 9, ghost = 3, priority = 2, color = colors.WOO2DARK, color2 = colors.PINK2, hide_until = 15 })
+Cooldown( 46968 ,{ name = "Shockwave", fixedlen = 9, ghost = 3, priority = 2, color = colors.DBLUE })
+Cooldown( 107570 ,{ name = "Storm Bolt", fixedlen = 9, ghost = 3, priority = 2, color = colors.DBLUE, scale_until = 9 })
 --can't use with_cooldown on shockwave, because without effect applied first it's not working.
 --but shockwave still needs to be used on cooldown
 --old enrage Spell( 85288, { name = "Enraged", shine = true, showid = 14202, color = colors.RED, duration = 10 })
-Spell( 184362,{ name = "Enrage", color = colors.DPURPLE, group = "buffs", specmask = 0x0FF, priority = -7, shine = true, shinerefresh = true, duration = 4 })
+Spell( 184362,{ name = "Enrage", color = colors.PINK3, ghost = 1, shine = true, shinerefresh = true, scale = 0.8, group = "buffs", specmask = 0x0FF, priority = -7, duration = 4 })
 Spell( 215572,{ name = "Frothing Berserker", short = "Frothing", color = colors.DRED, group = "buffs", priority = -6, scale = 0.7, shine = true, shinerefresh = true, duration =6 })
 
 Spell( 12323 ,{ name = "Piercing Howl", multiTarget = true, duration = 15 })
 Spell( 107566 ,{ name = "Staggering Shout", duration = 5 })
 -- Spell( 105771 ,{ name = "Charge Root", duration = 3 })
-Spell( 107574 ,{ name = "Avatar", shine = true, group = "buffs",  color = colors.TEAL2, duration = 30 })
+Spell( 107574 ,{ name = "Avatar", shine = true, group = "buffs",  color = colors.TEAL2, duration = 20 })
 Spell( 132169 ,{ name = "Storm Bolt", color = colors.TEAL2, duration = 3})
 
-Activation( 184367 ,{ name = "Rampage", shine = true, color = colors.RED, priority = 11, glowtime = 6, duration = 8 })
+-- Activation( 184367 ,{ name = "Rampage", shine = true, color = colors.RED, priority = 11, glowtime = 7, duration = 8 })
+
+--settings for special rampage timer
+Spell( 184367 ,{ name = "Rampage", shine = true, color = colors.DPURPLE, color2 = colors.REJUV, priority = 11, glowtime = 7, duration = 8 })
 
 --banners are totems actually
 -- EventTimer({ spellID = 114207, event = "SPELL_CAST_SUCCESS", group = "buffs", affiliation = "raid", name = "Skull Banner", duration = 10, color = colors.RED })
@@ -551,9 +553,11 @@ EventTimer({ spellID = -1, event = "SPELL_CAST_SUCCESS", priority = 12, name = "
 Spell( 60503,{ name = "Overpower", shine = true, color = colors.TEAL, glowtime = 10, duration = 10, priority = 11, scale = .7 })
 -- Spell( 60503 ,{ name = "Overpower", priority = 9, overlay = {0,7, 0.3}, fixedlen = 9, shinerefresh = true, shine = true, color = colors.PINKIERED, duration = 12 }) -- Taste for blood --removed
 
-Cooldown( 23881, { name = "Bloodthirst", tick = 1.5, tickshine = true, overlay = {"tick", "end"}, short = "", priority = 10, check_known = true, ghost = true, fixedlen = 9,  color = colors.CURSE })
+Cooldown( 23881, { name = "Bloodthirst", fixedlen = 9, tick = 1.5, tickshine = true, overlay = {"tick", "end"}, short = "", priority = 10, check_known = true, ghost = true,  color = colors.CURSE })
+Cooldown( 85288, { name = "Raging Blow", fixedlen = 9, short = "", priority = 9, ghost = true,  color = colors.PINKIERED })
+Cooldown( 118000 ,{ name = "Dragon Roar", fixedlen = 9, ghost = 3, priority = 8, ghost = true, scale = 0.8, color = colors.DBROWN, scale_until = 10 })
+Spell( 118000 ,{ name = "Dragon Roar", group = "buffs", shine = true, scale = 0.8, priority = -5, color = colors.PURPLE2, duration = 6 })
 
-Cooldown( 85288, { name = "Raging Blow", short = "", priority = 9, ghost = true, fixedlen = 9,  color = colors.PINKIERED })
 -- Spell( 131116 ,{ name = "Raging Blow", priority = 9, fixedlen = 9, shine = true, shinerefresh = true, duration = 12, stackcolor = {
                                                                                                 -- [1] = colors.WOO,
                                                                                                 -- [2] = colors.PINK3,

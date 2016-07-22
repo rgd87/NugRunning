@@ -183,9 +183,14 @@ function TimerBar.Resize1(self, width, height)
     self.spellText:SetHeight(height/2+1)
 end
 
+function TimerBar.Remains(self)
+    return self.endTime - GetTime()
+end
+
 function TimerBar.VScale(self, scale)
+    if scale == self._scale then return end
     if scale > 1 then scale = 1 end
-    if not self._scale and scale == 1 then return end -- already at full size
+    -- if not self._scale and scale == 1 then return end -- already at full size
 
     self._scale = scale
     local height = self._height * scale
@@ -199,7 +204,15 @@ function TimerBar.VScale(self, scale)
     self.shine:Stop()
     self.shine.tex:SetAlpha(0)
 
-    if scale == 1 then self._scale = nil end
+    if scale < 0.7 then
+        self.spellText:Hide()
+        self.timeText:Hide()
+    else
+        self.spellText:Show()
+        self.timeText:Show()
+    end
+
+    -- if scale == 1 then self._scale = nil end
 end
 
 function TimerBar.Resize(self, width, height)
@@ -387,7 +400,7 @@ NugRunning.ConstructTimerBar = function(width, height)
     
     local sag = at:CreateAnimationGroup()
     local sa1 = sag:CreateAnimation("Alpha")
-    sa1:SetFromAlpha(1)
+    sa1:SetFromAlpha(0)
     sa1:SetToAlpha(1)
     sa1:SetDuration(0.3)
     sa1:SetOrder(1)
@@ -395,12 +408,12 @@ NugRunning.ConstructTimerBar = function(width, height)
     sa2:SetFromAlpha(1)
     sa2:SetToAlpha(0)
     sa2:SetDuration(0.5)
-    sa2:SetSmoothing("OUT")
+    -- sa2:SetSmoothing("OUT")
     sa2:SetOrder(2)
     
-    sag:SetScript("OnFinished",function(self)
-        self:GetParent():SetAlpha(0)
-    end)
+    -- sag:SetScript("OnFinished",function(self)
+        -- self:GetParent():SetAlpha(0)
+    -- end)
 
     f.shine = sag
     f.shine.tex = at

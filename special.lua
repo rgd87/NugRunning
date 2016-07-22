@@ -65,80 +65,156 @@ local UnitGUID = UnitGUID
 -- end
 
 -- Enrage Timer
---[[
+
 if class  == "WARRIOR" then
 
-    local enrageIDs = {
-        [12880] = true, --enrage
-        [18499] = true, --berserker rage
-    }
-    local enrage_name = GetSpellInfo(12880)
-    local RB_ID = 85288
-    local enrage_opts = NugRunningConfig[RB_ID]
-    NugRunningConfig[RB_ID] = nil
+    -- local enrageIDs = {
+    --     [12880] = true, --enrage
+    --     [18499] = true, --berserker rage
+    -- }
+    -- local enrage_name = GetSpellInfo(12880)
+    -- local RB_ID = 85288
 
-    local enrage_timer
-    local enrage_frame = CreateFrame("Frame")
-    enrage_frame.CheckFury = function(self)
-        if IsSpellKnown(23881) then -- Bloodthirst, Raging Blow becomes known only after event is fired
-            self:RegisterEvent("UNIT_AURA")
-        else
-            self:UnregisterEvent("UNIT_AURA")
-            if enrage_timer then
-                active[enrage_timer] = nil
-                enrage_timer:Hide()
-                NugRunning:ArrangeTimers()
-            end
-        end
-    end
+    hooksecurefunc(NugRunning,"PLAYER_LOGIN",function(self,event)
+        local rampageID = 184367
+        local rampage_opts = NugRunningConfig[rampageID]
+        if not rampage_opts then return end
+        local rampageCost = 85
+        NugRunningConfig[rampageID] = nil
 
-    enrage_frame:SetScript("OnEvent",function(self, event, unit)
-        if event == "ACTIVE_TALENT_GROUP_CHANGED" or event == "PLAYER_TALENT_UPDATE" then
-            return self:CheckFury()
-        end
-        if unit ~= "player" then return end
-        local longest = 0
-        local longestDuration
-        for i=1, 100 do
-            local _,_,_,_,_, duration, expires, _,_,_, spellID = UnitAura("player",i,"HELPFUL")
-            if not spellID then break end
-            if enrageIDs[spellID] then
-                if expires > longest then
-                    longest = expires
-                    longestDuration = duration
+        local timer = NugRunning:CreateTimer()
+        table.remove(NugRunning.timers)
+        timer.stacktext:Hide()
+        timer:SetScript("OnUpdate",nil)
+        timer.unit = "player"
+        timer.dstGUID = UnitGUID("player")
+        timer.srcGUID = UnitGUID("player")
+        timer.dontfree = true
+        timer.priority = rampage_opts.priority
+        timer.opts = rampage_opts
+
+        -- local timer = f
+        timer:ToInfinite()
+        timer:UpdateMark()
+        timer:SetCount(1)
+        local texture = GetSpellTexture(rampageID)
+        timer:SetIcon(texture)
+        timer:SetColor(unpack(rampage_opts.color))
+
+
+        local lastPositiveUpdate = 0
+        local lastRageValue = UnitPower("player")
+
+
+        local rampage_frame = CreateFrame("Frame")
+        rampage_frame.timer = f
+        rampage_frame.CheckFury = function(self)
+            if GetSpecialization() == 2 and IsPlayerSpell(184367) then
+                rampageCost = IsPlayerSpell(202922) and 70 or 85 -- carnage
+                timer.bar:SetMinMaxValues(0, rampageCost)
+                self:RegisterEvent("UNIT_POWER_FREQUENT")
+                self:RegisterEvent("SPELL_ACTIVATION_OVERLAY_GLOW_HIDE")
+            else
+                self:UnregisterEvent("UNIT_POWER_FREQUENT")
+                self:UnregisterEvent("SPELL_ACTIVATION_OVERLAY_GLOW_HIDE")
+                if timer then
+                    active[timer] = nil
+                    timer:Hide()
+                    NugRunning:ArrangeTimers()
                 end
             end
         end
-        
-        if longest > 0 then
-            if not enrage_timer then
-                enrage_timer = NugRunning:ActivateTimer(UnitGUID("player"), UnitGUID("player"),
-                                 UnitName("plyer"), nil,
-                                 12880, enrage_name, enrage_opts, "BUFF")
-                enrage_timer.dontfree = true
-            end
-            if not enrage_timer then return end
-            active[enrage_timer] = true
-            enrage_timer.dstGUID = UnitGUID("target")
-            enrage_timer:SetTime(longest - longestDuration, longest)
-            enrage_timer:SetAlpha(1)
-            enrage_timer:Show()
-            NugRunning:ArrangeTimers()
-        elseif enrage_timer then
-            active[enrage_timer] = nil
-            enrage_timer:Hide()
-            NugRunning:ArrangeTimers()
-        end
-    end)
 
-    hooksecurefunc(NugRunning,"PLAYER_LOGIN",function(self,event)
-        enrage_frame:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
-        enrage_frame:RegisterEvent("PLAYER_TALENT_UPDATE")
-        enrage_frame:CheckFury()
+        rampage_frame:SetScript("OnUpdate", function(self, time)
+            self._elapsed = (self._elapsed or 0) + time
+            if self._elapsed < 0.2 then return end
+            self._elapsed = 0
+
+            if lastPositiveUpdate + 5 < GetTime() and UnitPower("player") ~= UnitPowerMax("player") then
+                NugRunning.active[timer] = nil
+                timer:Hide()
+                NugRunning:ArrangeTimers()
+                self:Hide()
+            end
+        end)
+
+        rampage_frame:SetScript("OnEvent",function(self, event, unit)
+            if event == "SPELLS_CHANGED" then
+                return self:CheckFury()
+            end
+
+            if event == "SPELL_ACTIVATION_OVERLAY_GLOW_HIDE" and unit == rampageID then
+                if timer.shine:IsPlaying() then timer.shine:Stop() end
+                if timer.glow:IsPlaying() then timer.glow:Stop() end
+                -- timer:VScale(0.6)
+                timer.bar:SetValue(100)
+                timer:SetColor(unpack(rampage_opts.color))
+            end
+
+            if unit ~= "player" then return end
+
+            local rage = UnitPower("player")
+            if lastRageValue < rage then
+                lastPositiveUpdate = GetTime()
+                self:Show() -- show rampage_frame and start it's on update loop
+
+                local p = rampageCost-UnitPower("player")
+
+                -- if p > 20 then
+                --     timer:VScale(0.6)
+                -- else
+                --     timer:VScale(1)
+                -- end
+    
+                if p <= 0 then
+                    if not timer.shine:IsPlaying() then timer.shine:Play() end
+                    if not timer.glow:IsPlaying() then timer.glow:Play() end
+                    timer.bar:SetValue(100)
+                    timer:SetColor(unpack(rampage_opts.color2))
+                else
+                    if timer.shine:IsPlaying() then timer.shine:Stop() end
+                    if timer.glow:IsPlaying() then timer.glow:Stop() end
+                    timer.bar:SetValue(p)
+                    timer:SetColor(NugRunning.GetGradientColor(rampage_opts.color2, rampage_opts.color, (p/rampageCost)^0.7 ))
+                end
+
+                if not NugRunning.active[timer] then
+                    timer:Show()
+                    NugRunning.active[timer] = true
+                    NugRunning:ArrangeTimers()
+                end
+            end
+            lastRageValue = rage
+
+            -- NugRunning.active[timer] = true
+            -- NugRunning:ArrangeTimers()
+            -- if longest > 0 then
+            --     if not enrage_timer then
+            --         timer = NugRunning:ActivateTimer(UnitGUID("player"), UnitGUID("player"),
+            --                          UnitName("plyer"), nil,
+            --                          12880, rampage_name, rampage_opts, "BUFF")
+            --         timer.dontfree = true
+            --     end
+            --     if not timer then return end
+            --     active[timer] = true
+            --     timer.dstGUID = UnitGUID("target")
+            --     timer:SetTime(longest - longestDuration, longest)
+            --     timer:SetAlpha(1)
+            --     timer:Show()
+            --     NugRunning:ArrangeTimers()
+            -- elseif timer then
+            --     active[timer] = nil
+            --     timer:Hide()
+            --     NugRunning:ArrangeTimers()
+            -- end
+        end)
+
+        rampage_frame:RegisterEvent("SPELLS_CHANGED")
+        rampage_frame:CheckFury()
+
     end)
 
 end
-]]
 
 
 -- if class == "WARLOCK" then
