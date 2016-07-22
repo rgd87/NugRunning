@@ -35,10 +35,19 @@ function TimerBar.SetCount(self,amount)
     else self.stacktext:Hide() end
 end
 
-function TimerBar.SetTime(self,s,e)
+function TimerBar.SetTime(self, s,e, fixedoffset, animProgress)
+    animProgress = animProgress or 1
+    fixedoffset = fixedoffset or self.fixedoffset
+    s = s or self.startTime
+    e = e or self.endTime
     self.startTime = s
     self.endTime = e
+    if not self._isMinimized then
+        s = self.startTime + (fixedoffset*animProgress)
+    end
+    -- print(s,e, fixedoffset, e-s, self.bar:GetValue())
     -- self._duration = e-s
+    self._startTimeModified = s
     self.bar:SetMinMaxValues(s,e)
     self:UpdateMark()
 end
@@ -150,6 +159,8 @@ function TimerBar.ToGhost(self)
     self.bar:SetValue(0)
     if self.glow:IsPlaying() then self.glow:Stop() end
     --self:SetAlpha(0.8)
+    self.mark:Hide()
+    self.mark.texture:Hide()
 end
 do
     local hour, minute = 3600, 60
@@ -168,7 +179,7 @@ do
 end
 
 function TimerBar.Update(self, beforeEnd)
-    self.bar:SetValue(beforeEnd + self.startTime)
+    self.bar:SetValue(beforeEnd + self._startTimeModified)
     self.timeText:SetFormattedText(self:FormatTime(beforeEnd))
 end
 
@@ -203,6 +214,8 @@ function TimerBar.VScale(self, scale)
     self.shine:GetParent():SetHeight(height*1.8)
     self.shine:Stop()
     self.shine.tex:SetAlpha(0)
+
+    self._isMinimized = scale <= 0.4
 
     if scale < 0.7 then
         self.spellText:Hide()

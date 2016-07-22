@@ -418,7 +418,7 @@ function NugRunning.SPELL_UPDATE_COOLDOWN(self,event, periodic)
                             timer.cd_startTime = startTime
                             timer.cd_duration = duration
                             timer.fixedoffset = timer.opts.fixedlen and duration - timer.opts.fixedlen or 0
-                            timer:SetTime(startTime +  timer.fixedoffset, startTime + duration)
+                            timer:SetTime(startTime, startTime + duration,  timer.fixedoffset)
                             opts.timer = timer
                         end
                     else
@@ -426,7 +426,7 @@ function NugRunning.SPELL_UPDATE_COOLDOWN(self,event, periodic)
                         if timer.cd_startTime ~= startTime or timer.cd_duration ~= duration then
                             timer.cd_startTime = startTime
                             timer.fixedoffset = timer.opts.fixedlen and duration - timer.opts.fixedlen or 0
-                            timer:SetTime(startTime +  timer.fixedoffset, startTime + duration)
+                            timer:SetTime(startTime, startTime + duration, timer.fixedoffset)
                         -- elseif timer.cd_duration ~= duration then
                         end
 
@@ -574,7 +574,7 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
         timer:UpdateMark()
         timer:SetCount(amount)
     else
-        timer:SetTime(now + timer.fixedoffset, now + time)
+        timer:SetTime(now, now + time, timer.fixedoffset)
         timer:SetCount(amount)
     end
     timer.count = amount
@@ -597,6 +597,7 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
     if opts.scale_until then
         if timer:Remains() > opts.scale_until then
             timer:VScale(0.4)
+            timer:SetTime(nil, nil, nil, 0) 
         end
     end
 
@@ -651,7 +652,7 @@ function NugRunning.RefreshTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID,
     elseif not opts.timeless then
         local now = GetTime()
         timer.fixedoffset = opts.fixedlen and time - opts.fixedlen or 0
-        if time then timer:SetTime(now + timer.fixedoffset, now + time) end
+        if time then timer:SetTime(now, now + time, timer.fixedoffset) end
         timer:SetCount(amount)
     end
     timer.count = amount
@@ -678,6 +679,7 @@ function NugRunning.RefreshTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID,
     if opts.scale_until then
         if timer:Remains() > opts.scale_until then
             timer:VScale(0.4)
+            -- timer:SetTime(nil,nil, 
         end
     end
 
@@ -827,7 +829,7 @@ function NugRunning.SetUnitAuraValues(self, timer, spellID, name, rank, icon, co
                     elseif not timer.opts.timeless then
                         timer.fixedoffset = timer.opts.fixedlen and duration - timer.opts.fixedlen or 0
                         local oldExpTime = timer.endTime
-                        timer:SetTime(expirationTime - duration + timer.fixedoffset,expirationTime)
+                        timer:SetTime(expirationTime - duration,expirationTime, timer.fixedoffset)
                         timer:SetCount(count)
                         if oldExpTime and oldExpTime + 3 < expirationTime then
                             -- if opts.tick and NRunDB.dotticks then
@@ -950,6 +952,7 @@ function NugRunning.TimerFunc(self,time)
         if progress > 0.98 then progress = 1 end
         local pscale = ms + (os-ms)*progress
         self:VScale(pscale)
+        self:SetTime(nil, nil, nil, progress)
         if self._scale == os and not self.shine:IsPlaying() then self.shine:Play() end
     end
 
@@ -1618,7 +1621,7 @@ do
                             else
                                 timer = NugRunning:ActivateTimer(playerGUID, unitGUID, UnitName(unit), nil, aura_spellID, name, opts, timerType, duration, count, true)
                                 if timer then
-                                timer:SetTime( expirationTime - duration + timer.fixedoffset, expirationTime)
+                                timer:SetTime( expirationTime - duration, expirationTime, timer.fixedoffset)
                                 end
                             end
 
@@ -1689,7 +1692,7 @@ do
                             timerType = filter == "HELPFUL" and "BUFF" or "DEBUFF"
                             newtimer = NugRunning:ActivateTimer(playerGUID, targetGUID, UnitName("target"), nil, aura_spellID, name, config[aura_spellID], timerType, duration, count, true)
                         end
-                        if newtimer then newtimer:SetTime( expirationTime - duration + newtimer.fixedoffset, expirationTime) end
+                        if newtimer then newtimer:SetTime( expirationTime - duration, expirationTime, newtimer.fixedoffset) end
                     end
                 end
             end
@@ -1788,7 +1791,7 @@ function NugRunning:CreateCastbarTimer(timer)
         local endTime = endTimeInt /1000
         local duration = endTime - startTime
         timer.fixedoffset = timer.opts.fixedlen and duration - timer.opts.fixedlen or 0
-        timer:SetTime(startTime +  timer.fixedoffset, startTime + duration)
+        timer:SetTime(startTime, startTime + duration, timer.fixedoffset)
 
         -- self.startTime = startTime / 1000
         -- self.endTime = endTime / 1000
