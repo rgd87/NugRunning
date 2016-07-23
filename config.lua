@@ -176,7 +176,21 @@ Spell( 30108 ,{ name = "", duration = 8,  priority = 10, nameplates = true, ghos
 Spell( 980 ,{ name = "", duration = 18, recast_mark = 5.4, overlay = {0, 5.4, 0.2},  fixedlen = normalize_dots_to, nameplates = true, _ignore_applied_dose = true, ghost = true, priority = 6, color = colors.WOO })
 
 --Corruption
-Spell( 146739 ,{ name = "", duration = 14, recast_mark = 4.2, overlay = {0,4.2, 0.2}, priority = 9, fixedlen = normalize_dots_to, nameplates = true, ghost = true, color = colors.PINK })
+Spell( 146739 ,{ name = "", duration = 14, recast_mark = 4.2, overlay = {0,4.2, 0.2}, priority = 9, fixedlen = normalize_dots_to, nameplates = true, ghost = true, color = colors.PINK,
+    init = function(self)
+            -- self.timeless = IsPlayerSpell(196103)
+            if IsPlayerSpell(196103) then
+                self.timeless = true
+                self.recast_mark = nil
+                self.overlay = nil
+                self.singleTarget = true
+            else
+                self.singleTarget = nil
+                self.timeless = nil
+                self.racast_mark = 4.2
+                self.overlay = {0,4.2, 0.2}
+            end
+    end })
 --Siphon Life
 Spell( 63106 ,{ name = "Siphon Life", duration = 15, recast_mark = 4.5, overlay = {0, 4.5, 0.2}, priority = 5, fixedlen = normalize_dots_to, nameplates = true, ghost = true, color = colors.GREEN })
 

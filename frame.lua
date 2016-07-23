@@ -45,14 +45,16 @@ function TimerBar.SetTime(self, s,e, fixedoffset, animProgress)
     if not self._isMinimized then
         s = self.startTime + (fixedoffset*animProgress)
     end
-    -- print(s,e, fixedoffset, e-s, self.bar:GetValue())
-    -- self._duration = e-s
     self._startTimeModified = s
+
+
+
     self.bar:SetMinMaxValues(s,e)
     self:UpdateMark()
 end
 local function getbarpos(timer, time)
-    local duration = timer.endTime - timer._startTimeModified
+    local duration = timer.endTime - (timer._startTimeModified or timer.startTime)
+    if duration == 0 then return 0 end
     if time >= 0 then
         return time / duration * timer.bar:GetWidth(), time / duration
     else
@@ -139,6 +141,7 @@ function TimerBar.SetMinMaxCharge(self, min, max)
 end
 function TimerBar.SetCharge(self,val)
     self.bar:SetValue(val)
+    print(val, self.bar:GetMinMaxValues())
     if self.opts.stackcolor then
         self:SetColor(unpack(self.opts.stackcolor[val]))
     end
