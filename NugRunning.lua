@@ -1613,7 +1613,9 @@ do
                     if not name then break end
 
                     local opts = config[aura_spellID]
-                    if opts and UnitAffiliationCheck(caster, opts.affiliation) then
+                    --- (unit ~= "mouseover" or not opts.singleTarget)  so that when you mouseover stuff it won't spawn new timers for singleTarget timers
+                    if opts and UnitAffiliationCheck(caster, opts.affiliation) and (unit ~= "mouseover" or not opts.singleTarget) then
+
                             local timer
                             timer = gettimer(active, aura_spellID, unitGUID, timerType)
                             if timer then

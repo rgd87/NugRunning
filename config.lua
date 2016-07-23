@@ -395,7 +395,7 @@ Spell( 202665 ,{ name = "Curse of the Dreadblades", shine = true, duration = 12,
 Cooldown( 192759 ,{ name = "Kingsbane", ghost = true, minduration = 10, color = colors.DBLUE, scale_until = 10,  })
 Spell( 192759 ,{ name = "Kingsbane", shine = true, duration = 14, color = colors.DGREEN })
 
-Cooldown( 185313 ,{ name = "Shadow Dance", ghost = true, color = colors.PURPLE3, scale = 0.5, priority = -100 })
+Cooldown( 185313 ,{ name = "Shadow Dance", minduration = 10, ghost = true, color = colors.PURPLE3, scale = 0.5, priority = -100 })
 
 Spell( 1966  ,{ name = "Feint", duration = 5, priority = -1, shine = true, shinerefresh = true, color = colors.LBLUE })
 Spell( 2983  ,{ name = "Sprint", shine = true, duration = 8 })
@@ -436,19 +436,24 @@ DotSpell( 703,{ name = "Garrote", color = colors.PINKIERED, duration = 18 })
 
 Spell( 32645 ,{ name = "Envenom", color = colors.DTEAL, duration = function() return (1+GetCP()) end })
 Spell( 79140 ,{ name = "Vendetta", shine = true, color = colors.CURSE, duration = 20 })
-Spell( 193538 ,{ name = "Alacrity", shinerefresh = true, priority = -2, color = colors.WOO2DARK, duration = 20, scale = 0.8 })
+Cooldown( 79140 ,{ name = "Vendetta", color = colors.CURSE, scale_until = 10 })
+Cooldown( 703 ,{ name = "Garrote", minduration = 10, color = colors.PINKIERED, scale_until = 5 })
+Spell( 193538 ,{ name = "Alacrity", shinerefresh = true, priority = -2, color = colors.WOO2DARK, duration = 20, scale = 0.5 })
 
 Spell( 137573,{ name = "Burst of Speed", short = "Burst", shine = true, duration = 4 })
 Spell( 195627,{ name = "Opportunity", shine = true, shinerefresh = true, priority = 11, color = colors.PINKIERED, duration = 10 })
 
 --Roll the bones
-Spell( 193358,{ name = "Grand Melee", short = "Haste", shine = true, duration = 36 }) -- haste
-Spell( 193359,{ name = "True Bearing", short = "CDR", shine = true, duration = 36 }) -- cdr
-Spell( 199600,{ name = "Buried Treasure", short = "Energy", shine = true, duration = 36 }) -- energy regen
-Spell( 193356,{ name = "Broadsides", shine = true, duration = 36 }) -- cp generation
-Spell( 193357,{ name = "Shark Infested Waters", short = "Crit", shine = true, duration = 36 }) -- crit
+Spell( 193358,{ name = "Grand Melee", color = colors.PURPLE3, shine = true, duration = 36 }) -- haste
+Spell( 193359,{ name = "True Bearing", shine = true, color = colors.REJUV, duration = 36 }) -- cdr
+Spell( 199603,{ name = "Jolly Roger", shine = true, color = colors.TEAL, duration = 36 }) -- extra attack
+Spell( 199600,{ name = "Buried Treasure", color = colors.GOLD, shine = true, duration = 36 }) -- energy regen
+Spell( 193356,{ name = "Broadsides", shine = true, color = colors.WOO2, duration = 36 }) -- cp generation
+Spell( 193357,{ name = "Shark Infested Waters", short = "Crit", color = colors.PINK3, shine = true, duration = 36 }) -- crit
 
 Spell( 13750 ,{ name = "Adrenaline Rush",duration = 15, color = colors.LRED })
+Cooldown( 13750 ,{ name = "Adrenaline Rush", scale_until = 10, minduration = 10, color = colors.LRED })
+
 Spell( 13877 ,{ name = "Blade Flurry",duration = 15, color = colors.LRED, timeless = true })
 
 Spell( 51690 ,{ name = "Killing Spree", duration = 3, shine = true, color = colors.RED  })
@@ -462,6 +467,9 @@ Spell( 196937 ,{ name = "Ghostly Strike", priority = -1, glowghost = true, color
 Spell( 91021 ,{ name = "Find Weakness", duration = 10, shine = true, scale = .8, priority = -5, group = "buffs", color =  colors.TEAL2 })
 
 --Spell( 1784 ,{ name = "Stealth", color = colors.CURSE, timeless = true, duration = 0.1})
+
+Cooldown( 200806 ,{ name = "Exsanguinate", ghost = true, minduration = 10, color = colors.PURPLE2, scale_until = 10 })
+Cooldown( 137619 ,{ name = "Marked for Death", ghost = true, color = colors.LRED, scale_until = 10 })
 
 Spell( 152151,{ name = "Shadow Reflection", recast_mark = 8, overlay = { 0, 8}, short = "Reflection", color = colors.CURSE, duration = 16 })
 
