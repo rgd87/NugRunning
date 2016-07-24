@@ -5,75 +5,7 @@ local active = NugRunning.active
 local free = NugRunning.free
 local UnitGUID = UnitGUID
 
--- if class == "WARRIOR" then
---     local overpower_id = 7384
---     local op_opts = NugRunningConfig[overpower_id]
---     NugRunningConfig[overpower_id] = nil
-
---     local op_timer
---     local op_frame = CreateFrame("Frame")
---     local old = false
---     --[[op_frame.CheckFury = function(self)
---         if IsSpellKnown(23881) then -- Bloodthirst, Raging Blow becomes known only after event is fired
---             self:RegisterEvent("UNIT_AURA")
---         else
---             self:UnregisterEvent("UNIT_AURA")
---             if enrage_timer then
---                 active[enrage_timer] = nil
---                 enrage_timer:Hide()
---                 NugRunning:ArrangeTimers()
---             end
---         end
---     end]]
-
---     op_frame:SetScript("OnEvent",function(self, event, unit, spellName, rank, lineID, spellID)
---         -- if event == "ACTIVE_TALENT_GROUP_CHANGED" or event == "PLAYER_TALENT_UPDATE" then
---         --    return self:CheckFury()
---         --end
---         if event == "UNIT_SPELLCAST_SUCCEEDED" then
---             if unit ~= "player" then return end
---             if spellID == 12294 then -- Mortal Strike
---                  if op_timer and active[op_timer] then
---                     NugRunning:RefreshTimer(UnitGUID("player"), UnitGUID("player"),
---                                          UnitName("plyer"), nil,
---                                          overpower_id, GetSpellInfo(overpower_id), op_opts, "BUFF" )
---                 end
---             end
---         else -- SPELL_UPDATE_USABLE
---             local new = IsUsableSpell(overpower_id)
---             if new ~= old then
---                 old = new
---                 if new then
---                         op_timer = NugRunning:ActivateTimer(UnitGUID("player"), UnitGUID("player"),
---                                          UnitName("plyer"), nil,
---                                          overpower_id, GetSpellInfo(overpower_id), op_opts, "BUFF")
---                 else
---                     NugRunning:DeactivateTimer(UnitGUID("player"), UnitGUID("player"), overpower_id,  GetSpellInfo(overpower_id), op_opts, "BUFF")
---                 end
---             end
---         end
---     end)
-
---     hooksecurefunc(NugRunning,"PLAYER_LOGIN",function(self,event)
---         --[[op_frame:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
---         op_frame:RegisterEvent("PLAYER_TALENT_UPDATE")
---         op_frame:CheckFury()]]
---         op_frame:RegisterEvent"SPELL_UPDATE_USABLE"
---         op_frame:RegisterEvent"UNIT_SPELLCAST_SUCCEEDED"
---     end)
-
--- end
-
--- Enrage Timer
-
 if class  == "WARRIOR" then
-
-    -- local enrageIDs = {
-    --     [12880] = true, --enrage
-    --     [18499] = true, --berserker rage
-    -- }
-    -- local enrage_name = GetSpellInfo(12880)
-    -- local RB_ID = 85288
 
     hooksecurefunc(NugRunning,"PLAYER_LOGIN",function(self,event)
         local rampageID = 184367
@@ -86,7 +18,6 @@ if class  == "WARRIOR" then
         table.remove(NugRunning.timers)
         timer.stacktext:Hide()
         timer:SetScript("OnUpdate",nil)
-        timer.unit = "player"
         timer.dstGUID = UnitGUID("player")
         timer.srcGUID = UnitGUID("player")
         timer.dontfree = true
@@ -165,7 +96,7 @@ if class  == "WARRIOR" then
                 -- else
                 --     timer:VScale(1)
                 -- end
-    
+
                 if p <= 0 then
                     if not timer.shine:IsPlaying() then timer.shine:Play() end
                     if not timer.glow:IsPlaying() then timer.glow:Play() end
@@ -185,28 +116,6 @@ if class  == "WARRIOR" then
                 end
             end
             lastRageValue = rage
-
-            -- NugRunning.active[timer] = true
-            -- NugRunning:ArrangeTimers()
-            -- if longest > 0 then
-            --     if not enrage_timer then
-            --         timer = NugRunning:ActivateTimer(UnitGUID("player"), UnitGUID("player"),
-            --                          UnitName("plyer"), nil,
-            --                          12880, rampage_name, rampage_opts, "BUFF")
-            --         timer.dontfree = true
-            --     end
-            --     if not timer then return end
-            --     active[timer] = true
-            --     timer.dstGUID = UnitGUID("target")
-            --     timer:SetTime(longest - longestDuration, longest)
-            --     timer:SetAlpha(1)
-            --     timer:Show()
-            --     NugRunning:ArrangeTimers()
-            -- elseif timer then
-            --     active[timer] = nil
-            --     timer:Hide()
-            --     NugRunning:ArrangeTimers()
-            -- end
         end)
 
         rampage_frame:RegisterEvent("SPELLS_CHANGED")
@@ -217,26 +126,88 @@ if class  == "WARRIOR" then
 end
 
 
--- if class == "WARLOCK" then
+if class == "WARLOCK" then
 
--- local active = NugRunning.active
--- local free = NugRunning.free
+    hooksecurefunc(NugRunning,"PLAYER_LOGIN",function(self,event)
 
--- local spellIDs = {
---     [1120] = true
--- }
--- local spell = NugRunningConfig[1120]
--- NugRunningConfig[1120] = nil
--- if not spell then return end
--- spell.id = 1120
+        local cf = CreateFrame"Frame"
+
+        local corruptionID = 146739
+        local corruptionName = GetSpellInfo(corruptionID)
+        local corruption_opts = NugRunningConfig[corruptionID]
+        if not corruption_opts then return end
+        NugRunningConfig[corruptionID] = nil
+
+        local timer = NugRunning:CreateTimer()
+        table.remove(NugRunning.timers)
+        timer.stacktext:Hide()
+        timer.bar:SetValue(100)
+        timer:SetScript("OnUpdate",nil)
+        timer.dstGUID = UnitGUID("player")
+        timer.srcGUID = UnitGUID("player")
+        timer.startTime = 0
+        timer.endTime = 1
+        timer.dontfree = true
+        timer.priority = corruption_opts.priority
+        timer:VScale(0.5)
+        timer.opts = { name = corruption_opts.name, color = corruption_opts.color }
+
+        -- timer:ToInfinite()
+        timer:UpdateMark()
+        timer:SetCount(1)
+        local texture = GetSpellTexture(corruptionID)
+        timer:SetIcon(texture)
+        timer:SetColor(unpack(corruption_opts.color))
 
 
--- hooksecurefunc(NugRunning,"PLAYER_LOGIN",function(self,event)
+        cf:RegisterEvent("SPELLS_CHANGED")
+        -- cf:RegisterEvent("PLAYER_REGEN_DISABLED")
+
+
+        local function IsAbsolutelyCorrupted(unit)
+            if not UnitExists("target") then return false end
+            local name = UnitAura(unit, corruptionName, nil, "HARMFUL|PLAYER")
+            if name then return true end
+        end
+
+        cf:SetScript("OnEvent", function(self, event)
+            if event == "SPELLS_CHANGED" then
+                if IsPlayerSpell(196103) then
+                    NugRunningConfig[corruptionID] = nil
+                    cf:RegisterUnitEvent("UNIT_AURA", "target")
+                    cf:RegisterEvent("PLAYER_TARGET_CHANGED")
+                else
+                    NugRunning.active[timer] = nil
+                    timer:Hide()
+                    cf:UnregisterEvent("UNIT_AURA")
+                    cf:UnregisterEvent("PLAYER_TARGET_CHANGED")
+
+                    NugRunningConfig[corruptionID] = corruption_opts
+                end
+            elseif event == "PLAYER_TARGET_CHANGED" or event == "UNIT_AURA" then
+                if IsAbsolutelyCorrupted("target") then
+                    timer.dstGUID = UnitGUID("target")
+                    if not NugRunning.active[timer] then
+                        timer:Show()
+                        NugRunning.active[timer] = true
+                    end
+                else
+                    NugRunning.active[timer] = nil
+                    timer:Hide()
+                end
+                NugRunning:ArrangeTimers()
+            -- elseif event == "PLAYER_REGEN_DISABLED" then
+                -- local a = 1
+            end
+        end)
+
+    end)
+
 --     spell.timer = NugRunning:ActivateTimer(UnitGUID("player"), UnitGUID("player"), UnitName("player"), nil, spell.id, GetSpellInfo(spell.id), spell, "DEBUFF")
 --     spell.timer:Hide()
 --     active[spell.timer] = nil
 --     spell.timer.dontfree = true
--- end)
+end
 
 -- local faketimer = {}
 -- faketimer.filter = "HARMFUL" --|PLAYER"

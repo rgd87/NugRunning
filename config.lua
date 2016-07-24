@@ -22,9 +22,9 @@ NugRunningConfig.timeFont = { font = "Interface\\AddOns\\NugRunning\\Calibri.ttf
 NugRunningConfig.stackFont = { font = "Interface\\AddOns\\NugRunning\\Calibri.ttf", size = 12 }
 NugRunningConfig.dotpowerFont = { font = "Interface\\AddOns\\NugRunning\\Calibri.ttf", size = 8, alpha = .6 }
 
-NugRunningConfig.nameplates.width = 70
+NugRunningConfig.nameplates.width = 74
 NugRunningConfig.nameplates.height = 7
-NugRunningConfig.nameplates.x_offset = 0
+NugRunningConfig.nameplates.x_offset = 7
 NugRunningConfig.nameplates.y_offset = 0
 
 NugRunningConfig.anchors = {
@@ -176,21 +176,7 @@ Spell( 30108 ,{ name = "", duration = 8,  priority = 10, nameplates = true, ghos
 Spell( 980 ,{ name = "", duration = 18, recast_mark = 5.4, overlay = {0, 5.4, 0.2},  fixedlen = normalize_dots_to, nameplates = true, _ignore_applied_dose = true, ghost = true, priority = 6, color = colors.WOO })
 
 --Corruption
-Spell( 146739 ,{ name = "", duration = 14, recast_mark = 4.2, overlay = {0,4.2, 0.2}, priority = 9, fixedlen = normalize_dots_to, nameplates = true, ghost = true, color = colors.PINK,
-    init = function(self)
-            -- self.timeless = IsPlayerSpell(196103)
-            if IsPlayerSpell(196103) then
-                self.timeless = true
-                self.recast_mark = nil
-                self.overlay = nil
-                self.singleTarget = true
-            else
-                self.singleTarget = nil
-                self.timeless = nil
-                self.racast_mark = 4.2
-                self.overlay = {0,4.2, 0.2}
-            end
-    end })
+Spell( 146739 ,{ name = "", duration = 14, recast_mark = 4.2, overlay = {0,4.2, 0.2}, priority = 9, fixedlen = normalize_dots_to, nameplates = true, ghost = true, color = colors.PINK })
 --Siphon Life
 Spell( 63106 ,{ name = "Siphon Life", duration = 15, recast_mark = 4.5, overlay = {0, 4.5, 0.2}, priority = 5, fixedlen = normalize_dots_to, nameplates = true, ghost = true, color = colors.GREEN })
 
@@ -1024,25 +1010,29 @@ if class == "DEMONHUNTER" then
     Spell( 162264,{ name = "Metamorphosis",  duration = 30, group = "buffs", priority = -8, color = colors.CURSE }) -- havoc
     Spell( 212800,{ name = "Blur",  duration = 10, shine = true, group = "buffs", color = colors.PINK })
     Spell( 196555,{ name = "Netherwalk",  duration = 5, group = "buffs", color = colors.WOO2, shine = true })
-    Cooldown( 213241,{ name = "Felblade",  color = colors.PURPLE, ghost = true,  priority = 5, resetable = true})
-    Cooldown( 185123,{ name = "Throw Glaive", color = colors.DTEAL, priority = 4, resetable = true, })
-    Cooldown( 188499,{ name = "Blade Dance",  color = colors.PINKIERED, ghost = 2, priority = 6, resetable = true })
-    Cooldown( 198013 ,{ name = "Eye Beam", ghost = true, color = colors.DPURPLE2, color2 = colors.REJUV, fixedlen = 15, hide_until = 10, resetable = true })
+    Cooldown( 213241,{ name = "Felblade", color = colors.CURSE, ghost = true, fixedlen = 10, priority = 5, resetable = true})
+    Cooldown( 185123,{ name = "Throw Glaive", ghost = 2, color = colors.PURPLE, priority = 4, resetable = true, })
+    Cooldown( 188499,{ name = "Blade Dance",  color = colors.PINKIERED, ghost = 2, fixedlen = 10, priority = 6, resetable = true })
+
+    helpers.Cast( 198013 ,{ name = "Eye Beam", color = colors.CURSE, priority = 12, })
+
+    Cooldown( 195072 ,{ name = "Fel Rush", ghost = true, color = colors.PURPLE3, fixedlen = 10, scale = 0.8, resetable = true })
+    Cooldown( 198013 ,{ name = "Eye Beam", ghost = true, color = colors.DPURPLE2, color2 = colors.REJUV, fixedlen = 10, scale_until = 10, resetable = true })
     Cooldown( 212084 ,{ name = "Fel Devastation", ghost = true, color = colors.DPURPLE2, color2 = colors.REJUV, fixedlen = 15, hide_until = 10, resetable = true })
     Spell( 179057,{ name = "Chaos Nova",  duration = 5, color = colors.RED, shine = true, multiTarget = true })
     Spell( 211881,{ name = "Fel Eruption",  duration = 2, color = colors.RED, shine = true })
     Spell( 217832,{ name = "Imprison",  duration = 60, color = colors.GOLD })
     Spell( 224509,{ name = "Frailty",  duration = 15, singleTarget = true, ghost = true, color = colors.DPURPLE })
-    Spell( 208628,{ name = "Momentum",  duration = 4, group = "buffs", priority = -99999, shine = true, shinerefresh = true, })
+    Spell( 208628,{ name = "Momentum",  duration = 4, group = "buffs", ghost = 1, priority = -9999, shine = true, shinerefresh = true, color = colors.PINK3, scale = 0.8 })
     Spell( 211048,{ name = "Chaos Blades",  duration = 12, color = colors.TEAL3, shine = true })
 
     Spell( 227225,{ name = "Soul Barrier", group = "buffs", duration = 8, color = colors.WOO2, shine = true })
     Spell( 207811,{ name = "Nether Bond", group = "buffs", duration = 15, color = colors.WOO2, shine = true })
 
-    Cooldown( 211881,{ name = "Fel Eruption", color = colors.WOO, priority = 4, resetable = true, })
+    Cooldown( 211881,{ name = "Fel Eruption", color = colors.DBROWN, ghost = true,  resetable = true, scale_until = 10, fixedlen = 10})
 
-    Cooldown( 207407,{ name = "Soul Carver", color = colors.BLACK, scale_until = 10,})
-    Cooldown( 201467,{ name = "Fury of the Illidari", color = colors.BLACK, scale_until = 10,})
+    Cooldown( 207407,{ name = "Soul Carver", color = colors.DTEAL, scale_until = 10,})
+    Cooldown( 201467,{ name = "Fury of the Illidari", color = colors.DTEAL, scale_until = 10,})
     -- EventTimer({ spellID = 204596, event = "SPELL_CAST_SUCCESS", name = "Sigil of Flame", duration = 2, color = colors.FIRE, scale = 0.8 })
     -- EventTimer({ spellID = 202138, event = "SPELL_CAST_SUCCESS", name = "Sigil of Chains", duration = 2, color = colors.BROWN, scale = 0.8 })
     -- EventTimer({ spellID = 202137, event = "SPELL_CAST_SUCCESS", name = "Sigil of Silence", duration = 2, color = colors.WOO2, scale = 0.8 })

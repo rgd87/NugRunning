@@ -225,8 +225,8 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
             if opts.nameplates then found = true; break end
         end
         if found then
-            -- NugRunning:DoNameplates()
-            -- nameplates = NugRunningNameplates
+            NugRunning:DoNameplates()
+            nameplates = NugRunningNameplates
         end
     end
     
@@ -506,16 +506,16 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
             timer.tickPeriod = nil
         end
 
-        local plevel = self:GetPowerLevel()
-        if ssPendingTimestamp > GetTime() - 0.3 and ssPendingTarget == dstGUID and ssPending[spellID] then
-            timer.powerLevel = ssPending[spellID].powerLevel
-            timer.tickPeriod = ssPending[spellID].tickPeriod
-            ssPending[spellID] = nil
-        else
-            timer.powerLevel = plevel
-        end
+        -- local plevel = self:GetPowerLevel()
+        -- if ssPendingTimestamp > GetTime() - 0.3 and ssPendingTarget == dstGUID and ssPending[spellID] then
+        --     timer.powerLevel = ssPending[spellID].powerLevel
+        --     timer.tickPeriod = ssPending[spellID].tickPeriod
+        --     ssPending[spellID] = nil
+        -- else
+        --     timer.powerLevel = plevel
+        -- end
         
-        self:UpdateTimerPower(timer, plevel)
+        -- self:UpdateTimerPower(timer, plevel)
     end
     timer.srcGUID = srcGUID
     timer.dstGUID = dstGUID
@@ -665,15 +665,15 @@ function NugRunning.RefreshTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID,
             timer.tickPeriod = nil
         end
 
-        local plevel = self:GetPowerLevel()
-        if ssPendingTimestamp > GetTime() - 0.3 and ssPendingTarget == dstGUID and ssPending[spellID] then
-            timer.powerLevel = ssPending[spellID].powerLevel
-            timer.tickPeriod = ssPending[spellID].tickPeriod
-            ssPending[spellID] = nil
-        else
-            timer.powerLevel = plevel
-        end
-        self:UpdateTimerPower(timer, plevel)
+        -- local plevel = self:GetPowerLevel()
+        -- if ssPendingTimestamp > GetTime() - 0.3 and ssPendingTarget == dstGUID and ssPending[spellID] then
+        --     timer.powerLevel = ssPending[spellID].powerLevel
+        --     timer.tickPeriod = ssPending[spellID].tickPeriod
+        --     ssPending[spellID] = nil
+        -- else
+        --     timer.powerLevel = plevel
+        -- end
+        -- self:UpdateTimerPower(timer, plevel)
     end
 
     if opts.scale_until then
@@ -779,7 +779,7 @@ end
 -- 5.0 changes: UnitAura now returns correct info at the time of CLEU SPELL_AURA_APPLIED event
 --              So, spells are no longer queued.
 
-local debuffUnits = {"target","mouseover","arena1","arena2","arena3","arena4","arena5","focus"}
+local debuffUnits = {"target","mouseover","focus","arena1","arena2","arena3","arena4","arena5"}
 local buffUnits = {"player","target","mouseover"}
 
 do
@@ -831,7 +831,7 @@ function NugRunning.SetUnitAuraValues(self, timer, spellID, name, rank, icon, co
                         local oldExpTime = timer.endTime
                         timer:SetTime(expirationTime - duration,expirationTime, timer.fixedoffset)
                         timer:SetCount(count)
-                        if oldExpTime and oldExpTime + 3 < expirationTime then
+                        if oldExpTime and oldExpTime ~= expirationTime then
                             -- if opts.tick and NRunDB.dotticks then
                             --     timer.tickPeriod = opts.tick > 0 and (opts.tick/(1+(UnitSpellHaste("player")/100))) or math.abs(opts.tick)
                             --     timer.mark.fullticks = nil
@@ -839,16 +839,18 @@ function NugRunning.SetUnitAuraValues(self, timer, spellID, name, rank, icon, co
                             --     timer.tickPeriod = nil
                             -- end
 
-                            local plevel = self:GetPowerLevel()
-                            if ssPendingTimestamp > GetTime() - 0.3 and ssPendingTarget == dstGUID and ssPending[spellID] then
-                                timer.powerLevel = ssPending[spellID].powerLevel
-                                timer.tickPeriod = ssPending[spellID].tickPeriod
-                                ssPending[spellID] = nil
-                            else
-                                timer.powerLevel = plevel
-                            end
+                            NugRunning:ArrangeTimers()
 
-                            self:UpdateTimerPower(timer, plevel)
+                            -- local plevel = self:GetPowerLevel()
+                            -- if ssPendingTimestamp > GetTime() - 0.3 and ssPendingTarget == dstGUID and ssPending[spellID] then
+                            --     timer.powerLevel = ssPending[spellID].powerLevel
+                            --     timer.tickPeriod = ssPending[spellID].tickPeriod
+                            --     ssPending[spellID] = nil
+                            -- else
+                            --     timer.powerLevel = plevel
+                            -- end
+
+                            -- self:UpdateTimerPower(timer, plevel)
                         end
                         timer:SetCount(count)
                     else
@@ -1199,30 +1201,30 @@ function NugRunning.PLAYER_TARGET_CHANGED(self)
     self:ArrangeTimers()
 end
 
-function NugRunning:GetPowerLevel()
-    return Scouter and Scouter:GetPowerLevel(true) or 0
-end
-function NugRunning:UpdateTimerPower(timer, plevel)
-    local treshold = 1500
-    if timer.powerLevel > plevel+treshold then
-        timer:SetPowerStatus("HIGH", timer.powerLevel-plevel)
-    elseif timer.powerLevel+treshold < plevel then
-        timer:SetPowerStatus("LOW", timer.powerLevel-plevel)
-    else
-        timer:SetPowerStatus(nil)
-    end
-end
-function NugRunning.POWER_LEVEL_CHANGED(event, plevelfull)
-    local plevel = NugRunning:GetPowerLevel() -- without damage multipliers
-    for timer in pairs(active) do
-        if timer.opts.showpower and timer.powerLevel and not timer.isGhost then
-            -- timer:SetName(timer.powerLevel)
-            NugRunning:UpdateTimerPower(timer, plevel)
-        else
-            timer:SetPowerStatus(nil)
-        end
-    end
-end
+-- function NugRunning:GetPowerLevel()
+--     return Scouter and Scouter:GetPowerLevel(true) or 0
+-- end
+-- function NugRunning:UpdateTimerPower(timer, plevel)
+--     local treshold = 1500
+--     if timer.powerLevel > plevel+treshold then
+--         timer:SetPowerStatus("HIGH", timer.powerLevel-plevel)
+--     elseif timer.powerLevel+treshold < plevel then
+--         timer:SetPowerStatus("LOW", timer.powerLevel-plevel)
+--     else
+--         timer:SetPowerStatus(nil)
+--     end
+-- end
+-- function NugRunning.POWER_LEVEL_CHANGED(event, plevelfull)
+--     local plevel = NugRunning:GetPowerLevel() -- without damage multipliers
+--     for timer in pairs(active) do
+--         if timer.opts.showpower and timer.powerLevel and not timer.isGhost then
+--             -- timer:SetName(timer.powerLevel)
+--             NugRunning:UpdateTimerPower(timer, plevel)
+--         else
+--             timer:SetPowerStatus(nil)
+--         end
+--     end
+-- end
 
 function NugRunning.UNIT_COMBO_POINTS(self,event,unit)
     if unit ~= "player" then return end
@@ -1588,6 +1590,11 @@ do
     local present_spells = {}
     local function UpdateUnitAuras(unit)
             local up = hUnits[unit]
+            if not up then
+                if string.sub(unit, 1, 9) == "nameplate" then
+                    up = 2
+                end
+            end
             if not up then return end
             local unitGUID = UnitGUID(unit)
             if up == 2 and UnitGUID("target") == unitGUID then return end
@@ -1613,8 +1620,7 @@ do
                     if not name then break end
 
                     local opts = config[aura_spellID]
-                    --- (unit ~= "mouseover" or not opts.singleTarget)  so that when you mouseover stuff it won't spawn new timers for singleTarget timers
-                    if opts and UnitAffiliationCheck(caster, opts.affiliation) and (unit ~= "mouseover" or not opts.singleTarget) then
+                    if opts and UnitAffiliationCheck(caster, opts.affiliation) then--and (unit ~= "mouseover" or not opts.singleTarget) then
 
                             local timer
                             timer = gettimer(active, aura_spellID, unitGUID, timerType)
