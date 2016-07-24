@@ -152,7 +152,6 @@ if class == "WARLOCK" then
         timer:VScale(0.5)
         timer.opts = { name = corruption_opts.name, color = corruption_opts.color }
 
-        -- timer:ToInfinite()
         timer:UpdateMark()
         timer:SetCount(1)
         local texture = GetSpellTexture(corruptionID)
@@ -196,66 +195,9 @@ if class == "WARLOCK" then
                     timer:Hide()
                 end
                 NugRunning:ArrangeTimers()
-            -- elseif event == "PLAYER_REGEN_DISABLED" then
-                -- local a = 1
             end
         end)
 
     end)
 
---     spell.timer = NugRunning:ActivateTimer(UnitGUID("player"), UnitGUID("player"), UnitName("player"), nil, spell.id, GetSpellInfo(spell.id), spell, "DEBUFF")
---     spell.timer:Hide()
---     active[spell.timer] = nil
---     spell.timer.dontfree = true
 end
-
--- local faketimer = {}
--- faketimer.filter = "HARMFUL" --|PLAYER"
--- faketimer.fixedoffset = 0
--- faketimer.opts = {}
--- faketimer.spellID = 1120
--- faketimer.SetTime = function(self,s,e)
---     spell.fullduration = e - s
---     spell.ticktime = spell.fullduration / 6
---     spell.timer:SetTime(s,s+spell.ticktime)
---     active[spell.timer] = true
---     spell.timer:Show()
---     NugRunning:ArrangeTimers()
--- end
--- faketimer.SetCount = function() end
--- local t1, realTickTime
-
--- hooksecurefunc(NugRunning,"COMBAT_LOG_EVENT_UNFILTERED",
--- function( self, event, timestamp, eventType, hideCaster,
---             srcGUID, srcName, srcFlags, srcFlags2,
---             dstGUID, dstName, dstFlags, dstFlags2,
---             spellID, spellName, spellSchool, auraType, amount)
---     if spellIDs[spellID] then
---         local isSrcPlayer = (bit.band(srcFlags, COMBATLOG_OBJECT_AFFILIATION_MINE) == COMBATLOG_OBJECT_AFFILIATION_MINE)
---         if isSrcPlayer and dstGUID ~= srcGUID then
---             if eventType == "SPELL_AURA_APPLIED" then
---                 spell.timer.dstGUID = dstGUID
---                 spell.timer.dstName = dstName
---                 NugRunning.QueueAura(spellID, dstGUID, auraType, faketimer )
---                 spell.timer.powerLevel = NugRunning:GetPowerLevel()
---                 spell.ticks = 6
---                 spell.timer:SetCount(spell.ticks)
---                 t1 = GetTime()
---                 realTickTime = nil
---             elseif eventType == "SPELL_PERIODIC_DAMAGE" then
---                 local now = GetTime()
---                 if not realTickTime then realTickTime = now - t1 end
---                 spell.timer:SetTime(now, now + realTickTime)
---                 spell.ticks = spell.ticks -1
---                 spell.timer:SetCount(spell.ticks)
---                 NugRunning:ArrangeTimers()
---             elseif eventType == "SPELL_AURA_REMOVED" then
---                 active[spell.timer] = nil
---                 spell.timer:Hide()
---                 NugRunning:ArrangeTimers()
---             end
---         end
---     end
--- end)
-
--- end

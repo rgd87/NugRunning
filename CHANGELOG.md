@@ -1,3 +1,8 @@
+7.0.2:
+- NNameplate timers now work again
+- Special timer for Absolute Corruption
+- Small Rogue update
+
 7.0.1:
 - scale_until option and config updates
 
