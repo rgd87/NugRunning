@@ -270,6 +270,7 @@ end
 
 if class == "PRIEST" then
 Cooldown( 205065,{ name = "Void Torrent", color = colors.DTEAL, ghost = true, scale_until = 10 })
+Cooldown( 207946,{ name = "Light's Wrath", color = colors.DTEAL, ghost = true, scale_until = 10 })
 -- BUFFS
 Spell( 139 ,{ name = "Renew", shinerefresh = true, color = colors.LGREEN, duration = 12,  scale = .7,  })
 Spell( 17 ,{ name = "Power Word: Shield", short = "PW:Shield", shinerefresh = true, duration = 15, color = colors.LRED })
@@ -280,7 +281,13 @@ Spell( 586 ,{ name = "Fade",duration = 10 })
 -- Spell( 89485 ,{ name = "Inner Focus", shine = true, color = colors.LBLUE, timeless = true, duration = 0.1 })
 -- Spell( 49694,59000 ,{ name = "Improved Spirit Tap",duration = 8 })
 -- Spell( 15271 ,{ name = "Spirit Tap",duration = 15 })
-DotSpell( 589 ,{ name = "Shadow Word: Pain", short = "", duration = 14, ghost = true, nameplates = true, priority = 9, color = colors.PURPLE,  })
+DotSpell( 204213 ,{ name = "Purge the Wicked", short = "", duration = 20, ghost = true, nameplates = true, priority = 9, color = colors.PURPLE,  })
+DotSpell( 589 ,{ name = "Shadow Word: Pain", short = "", duration = 14, ghost = true, nameplates = true, priority = 9, color = colors.PURPLE,
+    init = function(self)
+        self.duration = (GetSpecialization() == 3) and 14 or 18
+        local m = self.duration*0.3 - 0.2
+        self.overlay = {0, m, 0.25}
+    end})
 
 Cooldown( 200174,{ name = "Mindbender", color = colors.BLACK, ghost = true, scale_until = 10 })
 
@@ -294,7 +301,8 @@ Spell( 47585 ,{ name = "Dispersion",duration = 6, color = colors.PURPLE })
 -- Spell( 15286 ,{ name = "Vampiric Embrace",duration = 15, color = colors.CURSE, short = "VampEmbrace" })
 
 Spell( 123254, { name = "Twist of Fate", duration = 10, group = "buffs", priority = -10, color = colors.CURSE, specmask = 0x0FF })
-Spell( 10060, { name = "Power Infusion", duration = 20, group = "buffs", color = colors.PURPLE4 })
+Spell( 10060, { name = "Power Infusion", duration = 20, group = "buffs", color = colors.TEAL3 })
+Cooldown( 10060, { name = "Power Infusion", color = colors.DBROWN, scale_until = 10, })
 -- Spell( 205372, { name = "Void Ray", duration = 6, group = "buffs", priority = -20, scale = 0.5, color = colors.PINK3 })
 Spell( 194249 ,{ name = "Voidform", duration = 1, timeless = true, priority = -20, scale = 0.8, group = "buffs", shine = true, color = colors.DPURPLE })
 
@@ -316,6 +324,7 @@ Spell( 15487 ,{ name = "Silence",duration = 5, color = colors.PINK })
 Spell( 64044 ,{ name = "Psychic Horror", duration = 3, pvpduration = 4 })
 Spell( 8122 ,{ name = "Psychic Scream", duration = 8, multiTarget = true })
 Spell( 205369,{ name = "Mind Bomb", duration = 4, multiTarget = true })
+Spell( 47536,{ name = "Rapture", duration = 11, color = colors.LBLUE, shine = true })
 -- Spell( 64044 ,{ name = "Psychic Horror",duration = 1, multiTarget = true })
 
 --Rapture
@@ -325,13 +334,17 @@ Spell( 15407, { name = "Mind Flay", short = "", priority = 12, tick = 1, overlay
 --Old Shadow Orbs
 -- Spell( 77487 ,{ name = "",duration = 60, charged = true, maxcharge = 3, shine = true, shinerefresh = true, priority = -3, color = colors.WOO })
 
-Cooldown( 214621, { name = "Schism", tick = 1.5, tickshine = true, overlay = {"tick", "end"}, color = colors.CURSE, resetable = true, ghost = true })
+Cooldown( 47540 ,{ name = "Penance", tick = 1.5, tickshine = true, overlay = {"tick", "end"}, fixedlen = 9, priority = 15, color = colors.CURSE, ghost = true })
+Cooldown( 214621, { name = "Schism", overlay = {0, "gcd", 0.3}, priority = 9, fixedlen = 9, color = colors.PINKIERED, ghost = true })
+Cooldown( 129250, { name = "PW:Solace", fixedlen = 9,  color = colors.WOO, priority = 7, ghost = true })
 Cooldown( 8092, { name = "Mind Blast", priority = 9, fixedlen = 9, recast_mark = 1.5, color = colors.CURSE, resetable = true, ghost = true })
 Cooldown( 205448, { name = "Void Bolt", priority = 10, fixedlen = 9, color = colors.PINKIERED, resetable = true, ghost = true })
 Cooldown( 32379, { name = "Shadow Word: Death", short = "SW:Death",  color = colors.PURPLE, resetable = true  })
 
 Cooldown( 205385, { name = "Shadow Crash", color = colors.WOO2, scale_until = 10 })
 
+Cooldown( 110744, { name = "Divine Star", color = colors.DBLUE, fixedlen = 9, ghost = true})
+Cooldown( 120517, { name = "Halo", color = colors.GOLD, fixedlen = 9, scale_until = 9 })
 
 EventTimer({ event = "SPELL_CAST_SUCCESS", spellID = 62618, name = "PW:Barrier", duration = 10, color = colors.GOLD })
 -- Spell( 81782 ,{ name = "Power Word: Barrier", short = "PW: Barrier", duration = 25, color = {1,0.7,0.5} }) -- duration actually used here, invisible aura applied
@@ -347,8 +360,6 @@ Spell( 200200 ,{ name = "Holy Word: Chastise", short = "Castise", color = colors
 -- Cooldown( 34861 ,{ name = "Circle of Healing", priority = 15, color = colors.CURSE, resetable = true, ghost = true })
 Cooldown( 33076 ,{ name = "Prayer of Mending", priority = 13, color = colors.PINKIERED, resetable = true, ghost = 6 })
 
-
-Cooldown( 47540 ,{ name = "Penance", priority = 15, color = colors.CURSE, ghost = true })
 -- Spell( 14914 ,{ name = "Holy Fire", priority = 14.1, color = colors.PINK, ghost = 3, duration = 7 }) --holy fire
 Cooldown( 14914 ,{ name = "", overlay = {0,3}, priority = 14, color = colors.PINK }) --holy fire
 
