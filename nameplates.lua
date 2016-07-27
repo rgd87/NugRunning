@@ -57,7 +57,9 @@ local backdrop = {
     }
 
 function NugRunningNameplates:CreateNameplateTimer(frame)
-    local f = CreateFrame("StatusBar", nil, frame)
+    local parented = confignp.parented
+    local f = CreateFrame("StatusBar")
+    if parented then f:SetParent(frame) end
     f:SetStatusBarTexture([[Interface\AddOns\NugRunning\statusbar]], "OVERLAY")
     local w = confignp.width
     local h = confignp.height

@@ -1,3 +1,6 @@
+7.0.3:
+- Discipline update
+
 7.0.2:
 - NNameplate timers now work again
 - Special timer for Absolute Corruption

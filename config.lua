@@ -26,6 +26,7 @@ NugRunningConfig.nameplates.width = 74
 NugRunningConfig.nameplates.height = 7
 NugRunningConfig.nameplates.x_offset = 7
 NugRunningConfig.nameplates.y_offset = 0
+NugRunningConfig.nameplates.parented = true
 
 NugRunningConfig.anchors = {
     main = {
@@ -763,12 +764,12 @@ Spell( 224968 ,{ name = "Mark of Aluneth", duration = 6, color = colors.DBLUE })
 --ARCANE
 -- Spell( 80353 ,{ name = "Time Warp", shine = true, target = "player", duration = 40, color = colors.WOO2 })
 Spell({ 118,61305,28271,28272,61721,61780 },{ name = "Polymorph", duration = 50, color = colors.LGREEN, pvpduration = 8, short = "Poly" })
-Spell( 12042 ,{ name = "Arcane Power",duration = 15, short = "APwr", color = colors.PINK })
+Spell( 12042 ,{ name = "Arcane Power",duration = 15, group = "buffs", color = colors.PINK })
 --~ Spell( 66 ,{ name = "Fading",duration = 3 - NugRunning.TalentInfo(31574) })
 Spell( 36032 ,{ name = "Arcane Charge",duration = 10, color = colors.CURSE })
 Cooldown( 44425 ,{ name = "Arcane Barrage", color = colors.RED })
 Spell( 79683 ,{ name = "Arcane Missiles!", shine = true, duration = 20, color = colors.WOO })
-Spell( 55342 ,{ name = "Mirror Image",duration = 40 })
+Spell( 55342 ,{ name = "Mirror Image",duration = 40, group = "buffs" })
 
 Cooldown( 153626 ,{ name = "Arcane Orb", color = colors.CHIM, ghost = true })
 
@@ -1012,7 +1013,7 @@ if class == "DEMONHUNTER" then
     -- this excludes talents above lvl 100
     Cooldown( 178740,{ name = "Immolation Aura", color = colors.PINKIERED, priority = 5 })
     Spell( 207744,{ name = "Fiery Brand",  duration = 8, shine = true, group = "buffs", color = colors.RED })
-    Spell( 203819,{ name = "Demon Spikes", color = colors.PINK3, shine = true, group = "buffs", priority = - 9, duration = 6 })
+    Spell( 203819,{ name = "Demon Spikes", ghost = 1, color = colors.PINK3, shine = true, group = "buffs", priority = - 9, duration = 6 })
     Spell( 218256,{ name = "Empower Wards",  duration = 6, shine = true, group = "buffs", color = colors.TEAL2 })
 
     EventTimer({ spellID = 196718, event = "SPELL_CAST_SUCCESS", name = "Darkness", duration = 8, shine = true, color = colors.DPURPLE, scale = 0.8 })
