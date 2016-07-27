@@ -185,7 +185,7 @@ do
 end
 
 function TimerBar.Update(self, beforeEnd)
-    self.bar:SetValue(beforeEnd + self._startTimeModified)
+    self.bar:SetValue(beforeEnd + (self._startTimeModified or self.startTime))
     self.timeText:SetFormattedText(self:FormatTime(beforeEnd))
 end
 
@@ -286,13 +286,13 @@ NugRunning.ConstructTimerBar = function(width, height)
         tile = true, tileSize = 0,
         insets = {left = -2, right = -2, top = -2, bottom = -2},
     }
-    
+
     f:SetWidth(width)
     f:SetHeight(height)
-    
+
     f:SetBackdrop(backdrop)
 	f:SetBackdropColor(0, 0, 0, 0.7)
-    
+
     local ic = CreateFrame("Frame",nil,f)
     ic:SetPoint("TOPLEFT",f,"TOPLEFT", 0, 0)
     ic:SetWidth(height)
@@ -301,7 +301,7 @@ NugRunning.ConstructTimerBar = function(width, height)
     ict:SetTexCoord(.1, .9, .1, .9)
     ict:SetAllPoints(ic)
     f.icon = ict
-    
+
     f.stacktext = ic:CreateFontString(nil, "OVERLAY", "GameFontNormal");
     f.stacktext:SetTextColor(1,1,1)
     f.stacktext:SetFont(NugRunningConfig.stackFont.font,
@@ -310,7 +310,7 @@ NugRunning.ConstructTimerBar = function(width, height)
     f.stacktext:SetJustifyH("RIGHT")
     f.stacktext:SetVertexColor(1,1,1)
     f.stacktext:SetPoint("RIGHT", ic, "RIGHT",1,-5)
-    
+
     f.bar = CreateFrame("StatusBar",nil,f)
     f.bar:SetFrameStrata("MEDIUM")
     local texture = NugRunningConfig.texture or "Interface\\AddOns\\NugRunning\\statusbar"
@@ -319,11 +319,11 @@ NugRunning.ConstructTimerBar = function(width, height)
     f.bar:SetHeight(height)
     f.bar:SetWidth(width - height - 1)
     f.bar:SetPoint("TOPRIGHT",f,"TOPRIGHT",0,0)
-    
+
     f.bar.bg = f.bar:CreateTexture(nil, "BORDER")
 	f.bar.bg:SetAllPoints(f.bar)
 	f.bar.bg:SetTexture(texture)
-    
+
     f.timeText = f.bar:CreateFontString(nil, "ARTWORK", "GameFontNormalSmall");
     f.timeText:SetTextColor(1,1,1)
     f.timeText:SetFont(NugRunningConfig.timeFont.font, NugRunningConfig.timeFont.size, NugRunningConfig.timeFont.flags)
@@ -331,7 +331,7 @@ NugRunning.ConstructTimerBar = function(width, height)
     f.timeText:SetAlpha(NugRunningConfig.timeFont.alpha or 1)
     f.timeText:SetVertexColor(1,1,1)
     f.timeText:SetPoint("RIGHT", f.bar, "RIGHT",-6,0)
-    
+
     f.spellText = f.bar:CreateFontString(nil, "ARTWORK", "GameFontNormal");
     f.spellText:SetTextColor(1,1,1)
     f.spellText:SetFont(NugRunningConfig.nameFont.font, NugRunningConfig.nameFont.size, NugRunningConfig.nameFont.flags)
@@ -405,8 +405,8 @@ NugRunning.ConstructTimerBar = function(width, height)
     sbg:SetAllPoints(powertext)
     powertext.bg = sbg
     f.status = powertext
-    
-    
+
+
     local at = ic:CreateTexture(nil,"OVERLAY")
     at:SetTexture([[Interface\SpellActivationOverlay\IconAlert]])
     at:SetTexCoord(0.00781250,0.50781250,0.27734375,0.52734375)
@@ -416,7 +416,7 @@ NugRunning.ConstructTimerBar = function(width, height)
     at:SetHeight(height*1.8)
     at:SetPoint("CENTER",f.icon,"CENTER",0,0)
     at:SetAlpha(0)
-    
+
     local sag = at:CreateAnimationGroup()
     local sa1 = sag:CreateAnimation("Alpha")
     sa1:SetFromAlpha(0)
@@ -429,15 +429,15 @@ NugRunning.ConstructTimerBar = function(width, height)
     sa2:SetDuration(0.5)
     -- sa2:SetSmoothing("OUT")
     sa2:SetOrder(2)
-    
+
     -- sag:SetScript("OnFinished",function(self)
         -- self:GetParent():SetAlpha(0)
     -- end)
 
     f.shine = sag
     f.shine.tex = at
-    
-    
+
+
     local aag = f:CreateAnimationGroup()
     local aa1 = aag:CreateAnimation("Scale")
     aa1:SetOrigin("BOTTOM",0,0)
@@ -449,7 +449,7 @@ NugRunning.ConstructTimerBar = function(width, height)
     aa2:SetScale(1,10)
     aa2:SetDuration(0.15)
     aa2:SetOrder(2)
-    
+
     local glow = f:CreateAnimationGroup()
     local ga1 = glow:CreateAnimation("Alpha")
     ga1:SetFromAlpha(1)
@@ -458,9 +458,9 @@ NugRunning.ConstructTimerBar = function(width, height)
     ga1:SetOrder(1)
     glow:SetLooping("BOUNCE")
     f.glow = glow
-    
+
     f.animIn = aag
-         
+
     local m = CreateFrame("Frame",nil,self)
     m:SetParent(f)
     m:SetWidth(2)
@@ -468,13 +468,13 @@ NugRunning.ConstructTimerBar = function(width, height)
     m:SetFrameLevel(4)
     m:SetAlpha(0.6)
     m:SetPoint("LEFT",f.bar,"LEFT",10,0)
-    
+
     local texture = m:CreateTexture(nil, "OVERLAY")
     texture:SetTexture("Interface\\Tooltips\\UI-Tooltip-Background")
     texture:SetVertexColor(1,1,1,0.8)
     texture:SetAllPoints(m)
     m.texture = texture
-    
+
     local spark = f.bar:CreateTexture(nil, "OVERLAY", nil, 2)
     spark:SetTexture("Interface\\CastingBar\\UI-CastingBar-Spark")
     spark:SetAlpha(0)
@@ -489,7 +489,7 @@ NugRunning.ConstructTimerBar = function(width, height)
     end
     spark:CatchUp()
     m.spark = spark
-    
+
     local ag = spark:CreateAnimationGroup()
     local a1 = ag:CreateAnimation("Alpha")
     a1:SetFromAlpha(0)
@@ -505,7 +505,7 @@ NugRunning.ConstructTimerBar = function(width, height)
     ag:SetScript("OnFinished", function(self)
         self:GetParent():CatchUp()
     end)
-    
+
     m.shine = ag
 
     f.mark = m
