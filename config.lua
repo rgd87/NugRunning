@@ -937,13 +937,26 @@ Spell( 200851 ,{ name = "Rage of the Sleeper", shine = true, duration = 10, colo
 NugRunningConfig.totems[1] = { name = "Efflorescence", color = colors.PINKIERED, priority = - 100, hideName = true }
 
 Spell( 339 ,{ name = "Entangling Roots",duration = 30 })
+
+Spell( 22842 ,{ name = "Frenzied Regeneration", duration = 3, color = colors.TEAL3, group = "buffs", shine = true })
 -- Spell( 113746 ,{ name = "Weakened Armor", short = "WeakArmor", priority = -10, affiliation = "any", singleTarget = true, color = colors.BROWN, duration = 30 })
 
 -- Spell( 48517 ,{ name = "Solar Eclipse", timeless = true, duration = 0.1, short = "Solar", color = colors.ORANGE }) -- Wrath boost
 -- Spell( 48518 ,{ name = "Lunar Eclipse", timeless = true, duration = 0.1, short = "Lunar", color = colors.LBLUE }) -- Starfire boost
 Spell( 78675,{ name = "Solar Beam", duration = 10, color = colors.GOLD, target = "player" })
 Spell( 33786 ,{ name = "Cyclone", duration = 6 })
-Spell( 164812 ,{ name = "Moonfire",duration = 40, priority = 10, ghost = true, color = colors.PURPLE })
+Spell( 164812 ,{ name = "Moonfire",duration = 40, priority = 10, ghost = true, color = colors.PURPLE,
+        init = function(self)
+            if GetSpecialization() == 3 then
+                self.duration = 16
+                self.singleTarget = true
+                self.scale = 0.6
+            else
+                self.singleTarget = nil
+                self.duration = 40
+                self.scale = 1
+            end
+        end})
 Spell( 164547 ,{ name = "Lunar Empowerment", duration = 30, priority = 9, color = colors.REJUV})
 Spell( 164545 ,{ name = "Solar Empowerment", duration = 30, priority = 8, color = colors.ORANGE2})
 Spell( 164815 ,{ name = "Sunfire",duration = 24, priority = 9, ghost = true, color = colors.ORANGE })
@@ -953,7 +966,7 @@ Spell( 164815 ,{ name = "Sunfire",duration = 24, priority = 9, ghost = true, col
 Cooldown( 197626 ,{ name = "Starsurge", resetable = true, priority = 6, ghost = true, color = colors.CURSE })
 DotSpell( 202347, { name = "Stellar Flare",duration = 24, priority = 5, ghost = true, color = colors.CHIM })
 
-Spell( 213708,{ name = "Galactic Guardian", shine = true, priority = 7, duration = 15, scale = 0.8, color = colors.WOO })
+Spell( 213708,{ name = "Galactic Guardian", shine = true, priority = 12, duration = 15, glowtime = 15, scale = 0.7, color = colors.TEAL2 })
 
 Spell( 192081, { name = "Ironfur", priority = -10, group = "buffs", shine = true, glowtime = 1, ghost = 1, color = colors.PINK3, duration = 6 })
 Spell( 192083, { name = "Mark of Ursol", priority = -10, group = "buffs", shine = true, glowtime = 1, ghost = 1, color = colors.TEAL2, duration = 6 })
@@ -965,24 +978,32 @@ Spell( 155835 ,{ name = "Bristling Fur",duration = 3, color = colors.WOO2 })
 Spell( 106951 ,{ name = "Berserk", duration = 15 })
 --cat
 Spell( 163505 ,{ name = "Rake Stun", duration = 4, color = colors.PINK })
-Spell( 155722 ,{ name = "Rake", duration = 15, color = colors.LRED })
-Spell( 1079 ,{ name = "Rip",duration = 16, color = colors.RED })
+
+local bleed_normalize = nil
+Spell( 155722 ,{ name = "Rake", duration = 15, fixedlen = bleed_normalize, color = colors.PINKIERED })
+Spell( 1079 ,{ name = "Rip", duration = 24, fixedlen = bleed_normalize, color = colors.RED })
+-- feral's thrash
+Spell( 106830, { name = "Thrash", fixedlen = bleed_normalize, singleTarget = true, color = colors.WOO, duration = 15, ghost = true })
+
 Spell( 203123 ,{ name = "Maim", color = colors.PINK, duration = function() return GetCP() end })
-Cooldown(5217, { name = "Tiger's Fury", color = colors.LBLUE})
+Cooldown( 5217, { name = "Tiger's Fury", color = colors.DBROWN, ghost = true, scale_until = 10, fixedlen = 15})
+Cooldown( 202060, { name = "Elune's Guidance", color = colors.PURPLE3, ghost = true, scale_until = 10, fixedlen = 15})
 --normal, glyph of savage roar
-Spell( 52610,{ name = "Savage Roar", color = colors.PURPLE, duration = function() return (12 + GetCP() * 6) end })
+Spell( 52610,{ name = "Savage Roar", group = "buffs", priority = -10, color = colors.PURPLE, duration = function() return (12 + GetCP() * 6) end })
 Spell( 1850 ,{ name = "Dash", duration = 15 })
 
-Spell( 69369,{ name = "Predatory Swiftness", duration = 12, color = colors.DTEAL })
+Spell( 69369,{ name = "Predatory Swiftness", duration = 12, color = colors.DTEAL, scale = 0.4, group = "buffs", shine = true })
 -- Spell( 81022 ,{ name = "Stampede", duration = 8 })
 --bear
 Spell( 22812 ,{ name = "Barkskin",duration = 12, color = colors.WOO2, priority = -9 })
 Spell( 99 ,{ name = "Disorienting Roar", short = "Disorient", duration = 3, multiTarget = true })
 -- Spell( 6795 ,{ name = "Taunt", duration = 3 })
 -- Spell( 5209 ,{ name = "Challenging Roar", shine = true, duration = 6, multiTarget = true })
-Spell( 45334 ,{ name = "Wild Charge",duration = 4, color = colors.LRED }) --bear
 Spell( 5211 ,{ name = "Bash",duration = 5, shine = true, color = colors.PINK })
-Cooldown( 77758, { name = "Thrash", priority = 5, color = colors.PURPLE, fixedlen = 9, ghost = true })
+-- guardian's thrash
+Cooldown( 77758, { name = "Thrash", priority = 8, color = colors.PINKIERED, fixedlen = 9, overlay = {0, "gcd", 0.3}, ghost = true })
+
+
 Cooldown( 33917, { name = "Mangle", tick = -1.5, tickshine = true, overlay = {"tick", "end"}, priority = 10, short = "", resetable = true, fixedlen = 9, ghost = true,  color = colors.CURSE })
 -- Spell( 93622 ,{ name = "Reset", shine = true, color = colors.CURSE, duration = 5 })
 
@@ -990,16 +1011,16 @@ Spell( 102359 ,{ name = "Mass Entanglement", duration = 20, color = colors.BROWN
 Spell( 102351 ,{ name = "Cenarion Ward",duration = 30, color = colors.WOO2 })
 Spell( 102352 ,{ name = "Cenarion Ward",duration = 6, color = colors.TEAL })
 
-Spell( 117679 ,{ name = "Incarnation: Tree of Life", short = "Incarnation", duration =  30, color = colors.TEAL2 })
-Spell( 102558 ,{ name = "Incarnation: Son of Ursoc", short = "Incarnation", duration =  30, color = colors.TEAL2 })
-Spell( 102560 ,{ name = "Incarnation: Chosen of Elune", short = "Incarnation", duration =  30, color = colors.TEAL2 })
-Spell( 102543 ,{ name = "Incarnation: King of the Jungle", short = "Incarnation", duration =  30, color = colors.TEAL2 })
+Spell( 117679 ,{ name = "Incarnation: Tree of Life", short = "Incarnation", duration =  30, color = colors.TEAL2, group = "buffs", shine = true })
+Spell( 102558 ,{ name = "Incarnation: Son of Ursoc", short = "Incarnation", duration =  30, color = colors.TEAL2, group = "buffs", shine = true })
+Spell( 102560 ,{ name = "Incarnation: Chosen of Elune", short = "Incarnation", duration =  30, color = colors.TEAL2, group = "buffs", shine = true })
+Spell( 102543 ,{ name = "Incarnation: King of the Jungle", short = "Incarnation", duration =  30, color = colors.TEAL2, group = "buffs", shine = true })
 
 
 
 Spell( 102342 ,{ name = "Ironbark",duration = 12 })
 
-Spell( 61336 ,{ name = "Survival Instincts", color = colors.BLACK, duration = 12 })
+Spell( 61336 ,{ name = "Survival Instincts", color = colors.BLACK, duration = 12, group = "buffs", ghost = 1 })
 Spell( 124974 ,{ name = "Nature's Vigil", color = colors.TEAL2, duration = 30 })
 Spell( 774 ,{ name = "Rejuvenation", duration = 18, color = colors.REJUV })
 Spell( 155777 ,{ name = "Germination", duration = 18, color = colors.PURPLE2 })
