@@ -992,7 +992,20 @@ Cooldown( 202060, { name = "Elune's Guidance", color = colors.PURPLE3, ghost = t
 Spell( 52610,{ name = "Savage Roar", group = "buffs", priority = -10, color = colors.PURPLE, duration = function() return (12 + GetCP() * 6) end })
 Spell( 1850 ,{ name = "Dash", duration = 15 })
 
-Spell( 69369,{ name = "Predatory Swiftness", duration = 12, color = colors.DTEAL, scale = 0.4, group = "buffs", shine = true })
+Spell( 145152,{ name = "Bloodtalons", duration = 30, color = colors.DRED, priority = -20, scale = 0.6, group = "buffs", shine = true, })
+Spell( 69369,{ name = "Predatory Swiftness", duration = 12, color = colors.DTEAL, scale = 0.4, group = "buffs", shine = true,
+    init = function(self)
+        if IsPlayerSpell(155672) then -- Bloodtalons
+            self.shine = true
+            self.glowtime = 12
+            self.scale = 0.6
+        else
+            self.shine = nil
+            self.glowtime = nil
+            self.scale = 0.4
+        end
+
+    end})
 -- Spell( 81022 ,{ name = "Stampede", duration = 8 })
 --bear
 Spell( 22812 ,{ name = "Barkskin",duration = 12, color = colors.WOO2, priority = -9 })
