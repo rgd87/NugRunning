@@ -803,7 +803,7 @@ DotSpell( 11366 ,{ name = "", ghost = true, duration = 18, priority = 8, color =
 DotSpell( 44457 ,{ name = "", ghost = true, color = colors.PINKIERED, priority = 9, duration = 12, singleTarget = true })
 Spell( 12654 ,{ name = "Ignite", shinerefresh = false, color = colors.DRED, priority = 1, duration = 5, singleTarget = true })
 Spell( 190319,{ name = "Combustion", color = colors.ORANGE2, group = "buffs", priority = -5, duration = 10 })
-Cooldown( 108853, { name = "Infeno Blast", color = colors.LRED, ghost = true, resetable = true })
+Cooldown( 108853, { name = "Inferno Blast", color = colors.LRED, ghost = true, resetable = true })
 --Cooldown( 2136, { name = "Fire Blast", resetable = true, color = colors.LRED})
 EventTimer({ spellID = 153561, event = "SPELL_CAST_SUCCESS", name = "Meteor", duration = 2.9, color = colors.FIRE })
 EventTimer({ spellID = 12654, event = "SPELL_PERIODIC_DAMAGE",
