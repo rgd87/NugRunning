@@ -458,6 +458,7 @@ Spell( 51690 ,{ name = "Killing Spree", duration = 3, shine = true, color = colo
 Spell( 51690 ,{ name = "Internal Bleeding", duration = 12, color = colors.DRED  })
 Cooldown( 152150 ,{ name = "Death from Above", color = colors.DBROWN, ghost = true })
 
+Spell( 115192 ,{ name = "Subterfuge", group = "buffs", duration = 6, color = colors.PURPLE3 })
 Spell( 185422 ,{ name = "Shadow Dance", group = "buffs", duration = 3, color = colors.PURPLE3 })
 Spell( 121471 ,{ name = "Shadow Blades", duration = 15, shine = true, color = colors.DPURPLE })
 Spell( 16511 ,{ name = "Hemorrhage", priority = -1, glowghost = true, color = colors.DPURPLE, color2 = colors.PURPLE2, scale = .8, ghost = 7, duration = 20, shinerefresh = true })
@@ -649,7 +650,8 @@ Spell( 116706 ,{ name = "Root", color = colors.BROWN, duration = 8 })
 EventTimer({ event = "SPELL_SUMMON", spellID = 123904, name = "Xuen", group = "buffs", duration = 45, priority = -8, color = colors.CHILL })
 
 helpers.Cast(113656, {name = "Fists of Fury", tick = 1, tickshine = true, overlay = {"tick", "end", .3}, color = colors.CURSE, priority = 10.1 })
-Cooldown( 113656, { name = "Fists of Fury", fixedlen = 10, scale_until = 10, color = colors.WOO2DARK, color2 = colors.DBLUE, priority = 4, ghost =true })
+Cooldown( 113656, { name = "Fists of Fury", fixedlen = 10, scale_until = 10, color = colors.WOO2DARK, color2 = colors.LBLUE, priority = 4, ghost =true })
+Cooldown( 152175, { name = "Whirling Dragon Punch", fixedlen = 10, scale_until = 10, color = colors.TEAL2, priority = 3, ghost =true })
 
 Spell( 119611 ,{ name = "Renewing Mist", color = colors.LGREEN, target = "player", duration = 18 })
 -- Spell( 115151 ,{ name = "Renewing Mist", color = colors.TEAL2 })
@@ -670,6 +672,7 @@ Spell( 115308 ,{ name = "Elusive Brew", duration = 15, group = "buffs", shine = 
 Spell( 215479, { name = "Ironskin Brew", priority = -10, group = "buffs", shine = true, glowtime = 1, ghost = 1, color = colors.PINK3, duration = 6 })
 
 Spell( 124081 ,{ name = "Zen Sphere", duration = 16, color = { 1, 0.2, 1} })
+Cooldown( 119381 ,{ name = "Leg Sweep", color = colors.DBLUE, scale_until = 8, fixedlen = 8 })
 Spell( 119381 ,{ name = "Leg Sweep", duration = 5, color = colors.RED, multiTarget = true })
 Spell( 122783 ,{ name = "Diffuse Magic", group = "buffs", shine = true, duration = 6, color = colors.CURSE })
 Spell( 122278 ,{ name = "Dampen Harm", group = "buffs", shine = true, duration = 6, color = colors.CURSE })
@@ -682,6 +685,7 @@ Cooldown( 119582 ,{ name = "Purifying Brew", scale = 0.5, color = colors.TEAL3, 
 
 
 Cooldown( 121253, { name = "Keg Smash", tick = 1, fixedlen = 8, overlay = {"tick", "end", .35}, ghost = true, priority = 10, color = colors.CURSE })
+Cooldown( 115181 ,{ name = "Breath of Fire", color = colors.DRED, scale = 0.8, ghost = true })
 Spell( 123725 ,{ name = "Breath of Fire",  priority = 11, shine = true, color = colors.RED, multiTarget = true, duration = 8 })
 Cooldown( 116847, { name = "Rushing Jade Wind", short = "", overlay = {0,1, 0.3}, scale = .7, fixedlen = 8, color = colors.PINKIERED, ghost = true, priority = 8 })
 
