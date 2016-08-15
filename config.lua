@@ -404,7 +404,7 @@ Spell( 5171  ,{ name = "Slice and Dice", shinerefresh = true, fixedlen = 24, sho
     duration = function() return (6 + GetCP()*6) end,
 }) -- SnD fixedlen set to match Rupture maximum duration
 
-Spell( 212283  ,{ name = "Symbols of Death", shinerefresh = true, ghost = true, short = "Symbols", duration = 35, color = colors.PINKIERED })
+Spell( 212283  ,{ name = "Symbols of Death", shinerefresh = true, glowtime = 10.5, glow2time = 5, ghost = true, short = "Symbols", duration = 35, color = colors.PINKIERED })
 
 Spell( 206237  ,{ name = "Enveloping Shadows", shinerefresh = true, shine = true, duration = 15, color = colors.PURPLE })
 
