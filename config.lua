@@ -177,7 +177,7 @@ Spell( 30108 ,{ name = "", duration = 8,  priority = 10, nameplates = true, ghos
 Spell( 980 ,{ name = "", duration = 18, recast_mark = 5.4, overlay = {0, 5.4, 0.2},  fixedlen = normalize_dots_to, nameplates = true, _ignore_applied_dose = true, ghost = true, priority = 6, color = colors.WOO })
 
 --Corruption
-Spell( 146739 ,{ name = "", duration = 14, recast_mark = 4.2, overlay = {0,4.2, 0.2}, priority = 9, fixedlen = normalize_dots_to, nameplates = true, ghost = true, color = colors.PINK })
+Spell( 146739 ,{ name = "", maxtimers = 4, duration = 14, recast_mark = 4.2, overlay = {0,4.2, 0.2}, priority = 9, fixedlen = normalize_dots_to, nameplates = true, ghost = true, color = colors.PINK })
 --Siphon Life
 Spell( 63106 ,{ name = "Siphon Life", duration = 15, recast_mark = 4.5, overlay = {0, 4.5, 0.2}, priority = 5, fixedlen = normalize_dots_to, nameplates = true, ghost = true, color = colors.GREEN })
 
@@ -395,16 +395,16 @@ Spell( 192759 ,{ name = "Kingsbane", shine = true, duration = 14, color = colors
 
 Cooldown( 185313 ,{ name = "Shadow Dance", minduration = 10, ghost = true, color = colors.PURPLE3, scale = 0.5, priority = -100 })
 
-Spell( 1966  ,{ name = "Feint", duration = 5, priority = -1, shine = true, shinerefresh = true, color = colors.LBLUE })
-Spell( 2983  ,{ name = "Sprint", shine = true, duration = 8 })
-Spell( 5277  ,{ name = "Evasion", color = colors.PINK, duration = 15 })
-Spell( 31224 ,{ name = "Cloak of Shadows", color = colors.CURSE, duration = 5, short = "CloS" })
-Spell( 185311 ,{ name = "Crimson Vial", shine = true, color = colors.LGREEN ,duration = 6 })
+Spell( 1966  ,{ name = "Feint", group = "buffs", duration = 5, priority = -1, shine = true, shinerefresh = true, color = colors.LBLUE })
+Spell( 2983  ,{ name = "Sprint", group = "buffs", shine = true, duration = 8 })
+Spell( 5277  ,{ name = "Evasion", group = "buffs", color = colors.PINK, duration = 15 })
+Spell( 31224 ,{ name = "Cloak of Shadows", group = "buffs", color = colors.CURSE, duration = 5, short = "CloS" })
+Spell( 185311 ,{ name = "Crimson Vial", group ="buffs", shine = true, color = colors.LGREEN ,duration = 6 })
 Spell( 5171  ,{ name = "Slice and Dice", shinerefresh = true, fixedlen = 24, short = "SnD", color = colors.PURPLE,
     duration = function() return (6 + GetCP()*6) end,
 }) -- SnD fixedlen set to match Rupture maximum duration
 
-Spell( 212283  ,{ name = "Symbols of Death", shinerefresh = true, glowtime = 10.5, glow2time = 5, ghost = true, short = "Symbols", duration = 35, color = colors.PINKIERED })
+Spell( 212283  ,{ name = "Symbols of Death", shinerefresh = true, glowtime = 6, overlay = {0, 10.5, 0.15}, recast_mark = 10.5, ghost = true, short = "", duration = 35, color = colors.PINKIERED })
 
 Spell( 206237  ,{ name = "Enveloping Shadows", shinerefresh = true, shine = true, duration = 15, color = colors.PURPLE })
 
@@ -423,9 +423,8 @@ Spell( 199743,{ name = "Parley", duration = 360, color = colors.LBLUE })
 Spell( 1943  ,{ name = "Rupture", shinerefresh = true, fixedlen = 24, color = colors.RED,
     duration = function() return (4 + GetCP() * 4) end,
 })
-Spell( 195452  ,{ name = "Nightblade", ghost = true, shinerefresh = true, fixedlen = 16, color = colors.CURSE,
-    duration = function() return (6 + GetCP() * 2) end,
-})
+--Nightblade
+Spell( 195452  ,{ name = "", ghost = true, shinerefresh = true, overlay = {0, 4.8, 0.15}, recast_mark = 4.8, fixedlen = 16, color = colors.CURSE, duration = 16})
 DotSpell( 703,{ name = "Garrote", color = colors.PINKIERED, duration = 18 })
 -- Spell( 1330  ,{ name = "Silence", color = colors.PINK, duration = 3 })
 
@@ -460,7 +459,7 @@ Cooldown( 152150 ,{ name = "Death from Above", color = colors.DBROWN, ghost = tr
 
 Spell( 115192 ,{ name = "Subterfuge", group = "buffs", duration = 6, color = colors.PURPLE3 })
 Spell( 185422 ,{ name = "Shadow Dance", group = "buffs", duration = 3, color = colors.PURPLE3 })
-Spell( 121471 ,{ name = "Shadow Blades", duration = 15, shine = true, color = colors.DPURPLE })
+Spell( 121471 ,{ name = "Shadow Blades", group = "buffs", duration = 15, shine = true, color = colors.DPURPLE })
 Spell( 16511 ,{ name = "Hemorrhage", priority = -1, glowghost = true, color = colors.DPURPLE, color2 = colors.PURPLE2, scale = .8, ghost = 7, duration = 20, shinerefresh = true })
 Spell( 196937 ,{ name = "Ghostly Strike", priority = -1, glowghost = true, color = colors.DPURPLE, color2 = colors.PURPLE, scale = .8, ghost = 7, duration = 15 })
 Spell( 91021 ,{ name = "Find Weakness", duration = 10, shine = true, scale = .8, priority = -5, group = "buffs", color =  colors.TEAL2 })
@@ -892,6 +891,7 @@ Spell( 853 ,{ name = "Hammer of Justice", duration = 6, short = "HoJ", color = c
 Spell( 183218 ,{ name = "Hand of Hindrance", duration = 10, short = "Hindrance", color = colors.BROWN })
 
 Cooldown( 184575 ,{ name = "Blade of Justice", tickshine = true, ghost = true, priority = 9, fixedlen = 8, color = colors.WOO })
+Cooldown( 202270 ,{ name = "Blade of Justice", tickshine = true, ghost = true, priority = 9, fixedlen = 8, color = colors.WOO })
 Cooldown( 35395 ,{ name = "Crusader Strike", tick = 1.5, tickshine = true, overlay = {"tick", "end"}, ghost = true, short = "Crusader", priority = 10, fixedlen = 8, color = colors.CURSE })
 
 Spell( 197277,{ name = "Judgement", shine = true, priority = -100500, color = colors.PURPLE2, duration = 6 }) --debuff

@@ -42,23 +42,30 @@ end})
 local leaveGhost = true
 
 local gettimer = function(self,spellID,dstGUID,timerType)
+    local foundTimer
+    local spellActiveTimers = 0
     if type(spellID) == "number" then
         for timer in pairs(self) do
-            if  timer.spellID == spellID and
-                timer.dstGUID == dstGUID and
-                timer.timerType == timerType then
-                return timer;
+            if timer.spellID == spellID and timer.timerType == timerType then
+                spellActiveTimers = spellActiveTimers + 1
+                if timer.dstGUID == dstGUID then
+                    foundTimer = timer
+                    break
+                end
             end
         end
     else -- comparing by opts table, instead of
         for timer in pairs(self) do
-            if  timer.opts == spellID and
-                timer.dstGUID == dstGUID and
-                timer.timerType == timerType then
-                return timer;
+            if timer.opts == spellID and timer.timerType == timerType then
+                spellActiveTimers = spellActiveTimers + 1
+                if timer.dstGUID == dstGUID then
+                    foundTimer = timer
+                    break
+                end
             end
         end
     end
+    return foundTimer, spellActiveTimers
 end
 local IsPlayerSpell = IsPlayerSpell
 local GetSpellInfo_ = GetSpellInfo
@@ -481,12 +488,16 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
     end
 
 
-    local timer = gettimer(active, opts,dstGUID,timerType) -- finding timer by opts table id
+    local timer, totalTimers = gettimer(active, opts,dstGUID,timerType) -- finding timer by opts table id
     if timer then
         -- spellID = timer.spellID -- swapping current id for existing timer id in case they're different
                                 -- refresh will be searching by spellID again
         if multiTargetGUID then timer.targets[multiTargetGUID] = true end
         return self:RefreshTimer(srcGUID, dstGUID or multiTargetGUID, dstName, dstFlags, spellID, spellName, opts, timerType, override)
+    end
+
+    if opts.maxtimers and totalTimers > opts.maxtimers and UnitGUID("target") ~= dstGUID then
+        return
     end
 
     timer = next(free)
