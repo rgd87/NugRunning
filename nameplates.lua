@@ -20,12 +20,15 @@ NugRunningNameplates:RegisterEvent("NAME_PLATE_UNIT_ADDED")
 NugRunningNameplates:RegisterEvent("NAME_PLATE_UNIT_REMOVED")
 
 
+local activeNameplates = {}
+
 function NugRunningNameplates.NAME_PLATE_CREATED(self, event, frame)
     frame.timers = {}
     frame:GetChildren().BuffFrame:Hide()
 end
 
 function NugRunningNameplates.NAME_PLATE_UNIT_ADDED(self, event, unit)
+    activeNameplates[unit] = true
     local pGUID = UnitGUID(unit)
     local frame = GetNamePlateForUnit(unit)
     local guidTimers = NugRunning:GetTimersByDstGUID(pGUID)
@@ -33,6 +36,7 @@ function NugRunningNameplates.NAME_PLATE_UNIT_ADDED(self, event, unit)
 end
 
 function NugRunningNameplates.NAME_PLATE_UNIT_REMOVED(self, event, unit)
+    activeNameplates[unit] = nil
     local frame = GetNamePlateForUnit(unit)
     for _, timer in ipairs(frame.timers) do
         timer:Hide()
@@ -102,21 +106,20 @@ function NugRunningNameplates:CreateNameplateTimer(frame)
 end
 
 function NugRunningNameplates:Update(targetTimers, guidTimers, targetSwapping)
-
     if targetSwapping then
         local tGUID = UnitGUID("target")
         if tGUID then
             guidTimers[tGUID] = targetTimers
         end
     end
-    -- for guid, np in pairs(guidmap) do
-    for i=1,30 do
-        local unit = "nameplate"..i
-        if not UnitExists(unit) then break end
+
+    for unit in pairs(activeNameplates) do
         local np = GetNamePlateForUnit(unit)
-        local guid = UnitGUID(unit)
-        local nrunTimers = guidTimers[guid]
-        self:UpdateNPTimers(np, nrunTimers)
+        if np then
+            local guid = UnitGUID(unit)
+            local nrunTimers = guidTimers[guid]
+            self:UpdateNPTimers(np, nrunTimers)
+        end
     end
 end
 

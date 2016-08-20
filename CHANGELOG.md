@@ -1,3 +1,17 @@
+7.0.6:
+- Corruption timers from initial blast of Seed of Corruption now limited 
+to 4
+- Fixed nameplate bugs
+- Small changes for Sub Rogue and Retribution
+
+
+7.0.5:
+- Druid update
+- Totem bug fixed
+
+7.0.4:
+- /nrun unlock fixed
+
 7.0.3:
 - Discipline update
 
