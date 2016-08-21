@@ -1,3 +1,6 @@
+7.0.7:
+- Warlock update
+
 7.0.6:
 - Corruption timers from initial blast of Seed of Corruption now limited 
 to 4

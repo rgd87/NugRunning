@@ -36,7 +36,9 @@ setmetatable(free,{ __newindex = function(t,k,v)
     end
     k:Hide()
     rawset(active,k,nil)
-    rawset(t,k,v)
+    if not k.isExternal then
+        rawset(t,k,v)
+    end
     NugRunning:ArrangeTimers()
 end})
 local leaveGhost = true
