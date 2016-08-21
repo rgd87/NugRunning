@@ -133,7 +133,7 @@ Spell( 205179, { name = "Phantom Singularity", duration = 16, color = colors.PUR
 Spell( 111400 ,{ name = "Burning Rush",duration = 20, timeless = true, color = colors.PURPLE2 })
 --so all values are just 1s less than 50% of base duration without haste to be safe
 --Immolate
-Spell( 157736,{ name = "", recast_mark = 4.5, overlay = {0, 4.5, 0.2}, maxtimers = 4, duration = 15, nameplates = true, priority = 10, ghost = true, color = colors.RED })
+Spell( 157736,{ name = "", recast_mark = 5.3, overlay = {0, 5.3, 0.2}, maxtimers = 4, duration = 18, nameplates = true, priority = 10, ghost = true, color = colors.RED })
 
 
 Spell( 117828 ,{ name = "Backdraft", duration = 15, shine = true, priority = -4, shinerefresh = true, color = colors.PURPLE3, scale = 0.5 })

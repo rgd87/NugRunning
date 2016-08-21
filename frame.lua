@@ -38,6 +38,7 @@ end
 function TimerBar.SetTime(self, s,e, fixedoffset, animProgress)
     animProgress = animProgress or 1
     fixedoffset = fixedoffset or self.fixedoffset
+    if not fixedoffset then fixedoffset = 0 end
     s = s or self.startTime
     e = e or self.endTime
     self.startTime = s
