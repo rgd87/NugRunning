@@ -1,3 +1,8 @@
+7.0.8:
+- Garrote now resets
+- Prot Paladin Blessed Hammer talent
+- Sunfire timer limit
+
 7.0.7:
 - Warlock update
 

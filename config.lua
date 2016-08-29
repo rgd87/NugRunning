@@ -383,7 +383,7 @@ DotSpell( 703,{ name = "Garrote", color = colors.PINKIERED, duration = 18 })
 Spell( 32645 ,{ name = "Envenom", color = colors.DTEAL, duration = function() return (1+GetCP()) end })
 Spell( 79140 ,{ name = "Vendetta", shine = true, color = colors.CURSE, duration = 20 })
 Cooldown( 79140 ,{ name = "Vendetta", color = colors.CURSE, scale_until = 10 })
-Cooldown( 703 ,{ name = "Garrote", minduration = 10, color = colors.PINKIERED, scale_until = 5 })
+Cooldown( 703 ,{ name = "Garrote", minduration = 10, color = colors.PINKIERED, scale_until = 5, resetable = true })
 Spell( 193538 ,{ name = "Alacrity", shinerefresh = true, priority = -2, color = colors.WOO2DARK, duration = 20, scale = 0.5 })
 
 Spell( 137573,{ name = "Burst of Speed", short = "Burst", shine = true, duration = 4 })
