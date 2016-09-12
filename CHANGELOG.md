@@ -1,3 +1,7 @@
+7.0.9:
+- 3D Effecs and color strip added
+- Brewmaster, Prot and Arms Warrior configs are pretty good now
+
 7.0.8:
 - Garrote now resets
 - Prot Paladin Blessed Hammer talent

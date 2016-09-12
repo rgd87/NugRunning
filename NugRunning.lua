@@ -353,7 +353,10 @@ function NugRunning.SPELL_ACTIVATION_OVERLAY_GLOW_SHOW(self,event, spellID)
             self:ActivateTimer(UnitGUID("player"),UnitGUID("player"), UnitName("player"), nil, spellID, opts.localname, opts, "ACTIVATION", opts.duration)
         else
             local timer = gettimer(active,spellID,UnitGUID("player"),"COOLDOWN")
-            if timer then timer:SetAlpha(1) end
+            if timer then
+                timer.effect:SetEffect(opts.effect)
+                timer.effect:Show()
+            end
         end
     end
 end
@@ -365,7 +368,10 @@ function NugRunning.SPELL_ACTIVATION_OVERLAY_GLOW_HIDE(self,event, spellID)
             self:DeactivateTimer(UnitGUID("player"),UnitGUID("player"), spellID, nil, opts, "ACTIVATION")
         else
             local timer = gettimer(active,spellID,UnitGUID("player"),"COOLDOWN")
-            if timer then timer:SetAlpha(0.5) end
+            if timer then
+                timer.effect:SetEffect(opts.effect)
+                timer.effect:Hide()
+            end
         end
     end
 end
@@ -592,6 +598,7 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
     end
     timer.count = amount
 
+
     if opts.textfunc and type(opts.textfunc) == "function" then
         nameText = opts.textfunc(timer)
     elseif timerType == "MISSED" then
@@ -604,7 +611,13 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
     if timer.glow:IsPlaying() then timer.glow:Stop() end
     if timer.arrowglow:IsPlaying() then
         timer.arrowglow:Stop()
-        timer.arrowglow.tex:Hide()
+    end
+
+    local effect = opts.effect
+    if effect then
+        timer.effect:SetEffect(effect)
+    else
+        timer.effect:Hide()
     end
 
     if opts.scale_until then
@@ -614,10 +627,20 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
         end
     end
 
+    local arrow = opts.arrow
+    if arrow then
+        local color = arrow[3] and arrow or {1,0,0}
+        timer.arrow:SetVertexColor(unpack(color))
+        timer.arrow:Show()
+    else
+        timer.arrow:Hide()
+    end
+
     timer:Show()
     if not timer.animIn:IsPlaying() and not from_unitaura then timer.animIn:Play() end
     timer.shine.tex:SetAlpha(0)
     if opts.shine and not timer.shine:IsPlaying() then timer.shine:Play() end
+
 
     self:ArrangeTimers()
     return timer
@@ -696,12 +719,27 @@ function NugRunning.RefreshTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID,
         end
     end
 
+    local effect = opts.effect
+    if effect then
+        timer.effect:SetEffect(effect)
+    else
+        timer.effect:Hide()
+    end
+
+    local arrow = opts.arrow
+    if arrow then
+        local color = arrow[3] and arrow or {1,0,0}
+        timer.arrow:SetVertexColor(unpack(color))
+        timer.arrow:Show()
+    else
+        timer.arrow:Hide()
+    end
+
     timer:UpdateMark()
 
     if timer.glow:IsPlaying() then timer.glow:Stop() end
     if timer.arrowglow:IsPlaying() then
         timer.arrowglow:Stop()
-        timer.arrowglow.tex:Hide()
     end
     if not noshine and opts.shinerefresh and not timer.shine:IsPlaying() then timer.shine:Play() end
 
@@ -942,12 +980,12 @@ function NugRunning.TimerFunc(self,time)
     if glow2time then
         if beforeEnd < glow2time then
             if self.arrowglow and not self.arrowglow:IsPlaying() then
-                self.arrowglow.tex:Show()
+                self.arrow:Show()
                 self.arrowglow:Play()
             end
         else
             if self.arrowglow and self.arrowglow:IsPlaying() then
-                self.arrowglow.tex:Hide()
+                -- self.arrow:Hide()
                 self.arrowglow:Stop()
             end
         end
@@ -997,9 +1035,9 @@ function NugRunning.GhostExpire(self)
     self:SetScript("OnUpdate", NugRunning.TimerFunc)
     self.expiredGhost = true
     if self.glow:IsPlaying() then self.glow:Stop() end
+    self.arrow:Hide()
     if self.arrowglow:IsPlaying() then
         self.arrowglow:Stop()
-        self.arrowglow.tex:Hide()
     end
     free[self] = true
     self.isGhost = nil
@@ -1019,6 +1057,7 @@ local TimerBecomeGhost = function(self)
     self.expiredGhost = nil
     self.isGhost = true
     self:SetPowerStatus(nil)
+    self.arrow:Hide()
     self:ToGhost()
     local opts = self.opts
     if type(opts.ghost) == "number" then
@@ -1028,6 +1067,11 @@ local TimerBecomeGhost = function(self)
         self.ghost_duration = 3
         self.ghost_noleave = nil
     end
+    if opts.ghosteffect then
+        self.effect:SetEffect(opts.ghosteffect)
+        self.effect:Show()
+    end
+
     if opts.glowghost then
         if not self.glow:IsPlaying() then self.glow:Play() end
     end
@@ -1814,6 +1858,14 @@ function NugRunning:CreateCastbarTimer(timer)
         timer.fixedoffset = timer.opts.fixedlen and duration - timer.opts.fixedlen or 0
         timer:SetTime(startTime, startTime + duration, timer.fixedoffset)
 
+        local arrow = opts.arrow
+        if arrow then
+            local color = arrow[3] and arrow or {1,0,0}
+            timer.arrow:SetVertexColor(unpack(color))
+            timer.arrow:Show()
+        else
+            timer.arrow:Hide()
+        end
         -- self.startTime = startTime / 1000
         -- self.endTime = endTime / 1000
         -- self.bar:SetMinMaxValues(self.startTime,self.endTime)
