@@ -121,6 +121,8 @@ if race == "Orc" then Spell({ 33702,33697,20572 },{ name = "Blood Fury", duratio
 Spell( 2825  ,{ name = "Bloodlust", group = "buffs", duration = 40, color = colors.DRED, shine = true, affiliation = "raid", target = "player" })
 Spell( 32182 ,{ name = "Heroism", group = "buffs", duration = 40, color = colors.DRED, shine = true, affiliation = "raid", target = "player" })
 Spell( 80353 ,{ name = "Time Warp", group = "buffs", duration = 40, color = colors.DRED, shine = true, affiliation = "raid", target = "player" })
+Spell( 90355 ,{ name = "Ancient Hysteria", group = "buffs", duration = 40, color = colors.DRED, shine = true, affiliation = "raid", target = "player" })
+Spell( 178207 ,{ name = "Drums of Fury", group = "buffs", duration = 40, color = colors.DRED, shine = true, affiliation = "raid", target = "player" })
 
 -- local CASTER_POTIONS = function(specmask)
 --         Spell( 105702 ,{ name = "Potion", specmask = specmask, group = "procs", color = colors.GREEN, duration = 25 }) -- Intellect
@@ -241,6 +243,10 @@ end
 if class == "PRIEST" then
 Cooldown( 205065,{ name = "Void Torrent", color = colors.DTEAL, ghost = true, scale_until = 10 })
 Cooldown( 207946,{ name = "Light's Wrath", color = colors.DTEAL, ghost = true, scale_until = 10 })
+
+Cooldown( 2050,{ name = "Serenity", color = colors.LBLUE, priority = -10, ghosteffect = effects.AEGWYNN, ghost = true, scale = .8 })
+Cooldown( 34861,{ name = "Sanctify", color = colors.GOLD, priority = -9, ghosteffect = effects.JUDGEMENT, ghost = true, scale = .8 })
+
 -- BUFFS
 Spell( 139 ,{ name = "Renew", shinerefresh = true, color = colors.LGREEN, duration = 12,  scale = .7,  })
 Spell( 17 ,{ name = "Power Word: Shield", short = "PW:Shield", shinerefresh = true, duration = 15, color = colors.LRED })
@@ -451,6 +457,8 @@ Cooldown( 205545 ,{ name = "Odyn's Fury", ghost = true, color = colors.DTEAL, sc
 --Focused Rage
 Spell( 207982 ,{ name = "", priority = 13, color = colors.RED, shine = true, shinerefresh = true, scale = 0.8, charged = true, maxcharge = 3 })
 
+Spell( 215562 ,{ name = "War Machine", priority = -1, color = colors.RED2, shine = true, shinerefresh = true, duration = 10, group = "buffs" })
+
 Spell( 85739 ,{ name = "Meatcleaver", glowtime = 20, priority = 13, color = colors.TEAL2, shine = true, scale = 0.75, duration = 20 })
 -- Spell( 6673 ,{ name = "Battle Shout", target = "player", glowtime = 10, priority = -10, color = colors.DPURPLE, duration = 120 })
 -- Spell( 469 ,{ name = "Commanding Shout", target = "player", priority = -10, glowtime = 10, short = "CommShout", color = colors.DPURPLE, duration = 120 })
@@ -648,7 +656,8 @@ Spell( 197908 ,{ name = "Mana Tea", priority = -10, group = "buffs", duration = 
 
 Spell( 128939 ,{ name = "Elusive Brew", priority = -10, scale = .8, shinerefresh = true, duration = 30, color = colors.DBROWN, glowstack = 15 })
 Spell( 115308 ,{ name = "Elusive Brew", duration = 15, group = "buffs", shine = true, color = colors.PINKIERED })
-Spell( 215479, { name = "Ironskin Brew", priority = -10, arrow = colors.REJUV, glow2time = 2, group = "buffs", shine = true, glowtime = 1, ghost = 1, color = colors.PINK3, duration = 6 })
+Spell( 215479, { name = "Ironskin Brew", priority = -10, fixedlen = 10, arrow = colors.REJUV, glow2time = 2, group = "buffs", shine = true, glowtime = 1, ghost = 1, color = colors.PINK3, duration = 6 })
+Spell( 214373, { name = "Brew-Stache", priority = -9, fixedlen = 10, ghosteffect = effects.AEGWYNN, arrow = colors.PINK2, group = "buffs", shine = true, ghost = 4, color = colors.REJUV, duration = 4.5, scale = 0.5 })
 
 Spell( 124081 ,{ name = "Zen Sphere", duration = 16, color = { 1, 0.2, 1} })
 Cooldown( 119381 ,{ name = "Leg Sweep", color = colors.DBLUE, scale_until = 8, fixedlen = 8 })
@@ -665,9 +674,9 @@ Cooldown( 115399 ,{ name = "Black Ox Brew", scale_until = 10, ghosteffect = effe
 
 
 Cooldown( 121253, { name = "Keg Smash", tick = -1, fixedlen = 8, overlay = {"tick", "end", .35}, ghost = true, priority = 10, color = colors.CURSE })
-Cooldown( 115181 ,{ name = "Breath of Fire", color = colors.DRED, scale = 0.8, ghost = true })
+Cooldown( 115181 ,{ name = "Breath of Fire", priority = 6, color = colors.DRED, scale = 0.8, ghost = true, ghosteffect = effects.JUDGEMENT })
 -- Spell( 123725 ,{ name = "Breath of Fire",  priority = 11, shine = true, color = colors.RED, multiTarget = true, duration = 8 })
-Cooldown( 116847, { name = "Rushing Jade Wind", short = "", overlay = {0,1, 0.3}, scale = .7, fixedlen = 8, color = colors.PINKIERED, ghost = true, priority = 8 })
+Cooldown( 116847, { name = "Rushing Jade Wind", short = "", overlay = {0,1, 0.3}, scale = .7, fixedlen = 8, color = colors.DTEAL, ghost = true, priority = 2 })
 
 
 -- Cooldown( 115072, { name = "Expel Harm", color = colors.LGREEN, resetable = true, ghost = true })

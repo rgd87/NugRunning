@@ -1,3 +1,6 @@
+7.0.10:
+- Brew-Stache timer for BrM
+
 7.0.9:
 - 3D Effecs and color strip added
 - Brewmaster, Prot and Arms Warrior configs are pretty good now
