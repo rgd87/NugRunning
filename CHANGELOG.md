@@ -1,4 +1,7 @@
-7.0.10:
+7.1.1:
+- Spam protection for Doom
+
+7.1.0:
 - Brew-Stache timer for BrM
 
 7.0.9:

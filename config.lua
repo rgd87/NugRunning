@@ -186,7 +186,7 @@ Cooldown( 17962, { name = "Conflagrate", ghost = true, priority = 5, color = col
 Spell( 205146,{ name = "Demonic Calling",duration = 20, shine = true, shinerefresh = true, priority = 11, color = colors.TEAL2 })
 Spell( 193396,{ name = "Demonic Empowerment",duration = 12, priority = -20, shine = true, shinerefresh = true, group = "buffs", target = "pet", color = colors.WOO2, scale = 0.5 })
 --Doom
-Spell( 603 ,{ name = "Doom", duration = 20, nameplates = true, ghost = true, priority = 6, color = colors.DPURPLE2 })
+Spell( 603 ,{ name = "Doom", duration = 20, nameplates = true, ghost = true, priority = 6, color = colors.DPURPLE2, maxtimers = 2 })
 
 
 Cooldown( 105174, { name = "Hand of Gul'dan",  ghost = true, shinerefresh = true, color = colors.CURSE })
