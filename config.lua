@@ -204,8 +204,13 @@ local normalize_dots_to = nil--26
 
 --Haunt
 Cooldown( 48181 ,{ name = "Haunt", priority = 8, ghost = true, color = colors.TEAL })
+
 --Unstable Affliction
-Spell( 30108 ,{ name = "", duration = 8,  priority = 10, nameplates = true, ghost = True, color = colors.PINK2 })
+Spell( 233490 ,{ name = "", duration = 8,  priority = 10, nameplates = true, ghost = True, color = colors.PINK2 }) -- first debuff
+Spell( 233496 ,{ name = "", duration = 8,  priority = 10, nameplates = true, ghost = True, color = colors.PINK2 }) -- subsequent applications
+Spell( 233497 ,{ name = "", duration = 8,  priority = 10, nameplates = true, ghost = True, color = colors.PINK2 })
+Spell( 233498 ,{ name = "", duration = 8,  priority = 10, nameplates = true, ghost = True, color = colors.PINK2 })
+Spell( 233499 ,{ name = "", duration = 8,  priority = 10, nameplates = true, ghost = True, color = colors.PINK2 })
 --Agony
 Spell( 980 ,{ name = "", duration = 18, recast_mark = 5.4, overlay = {0, 5.4, 0.2},  fixedlen = normalize_dots_to, nameplates = true, _ignore_applied_dose = true, ghost = true, priority = 6, color = colors.WOO })
 --Corruption
@@ -615,6 +620,25 @@ Spell( 115072, { name = "Expel Harm", color = colors.TEAL })
 
 EventTimer({ spellID = 100780, event = "SPELL_CAST_SUCCESS", priority = 12, name = "Tiger Palm", duration = 0.5, color = colors.PINK, scale = 0.6 })
 EventTimer({ spellID = 205523, event = "SPELL_CAST_SUCCESS", priority = 12, name = "Blackout Strike", duration = 0.5, color = colors.PINK, scale = 0.6 })
+
+
+local function GetBuff(unit, spellID)
+    local name, _,_, count, _, duration, expirationTime, caster, _,_, aura_spellID = UnitAura(unit, GetSpellInfo(spellID), nil, "HELPFUL")
+    if not name then return nil, 0 end
+    return expirationTime - GetTime(), count
+end
+local BlackoutCombo = 228563
+
+local stagger_pause_opts = { name = "Stagger Pause", group = "buffs", priority = -8, showid = 7812, color = colors.DRED, glowtime = 3, shine = true, duration = 3}
+EventTimer({ spellID = 115308, event = "SPELL_CAST_SUCCESS",
+    action = function(active, srcGUID, dstGUID, spellID, damage )
+        local IsBlackoutComboOn = GetBuff("player", BlackoutCombo)
+        if IsBlackoutComboOn then
+            local playerGUID = UnitGUID("player")
+            NugRunning:ActivateTimer(playerGUID, playerGUID, "player", nil, spellID, "Stagger Paused", stagger_pause_opts, "EVENT", stagger_pause_opts.duration)
+        end
+    end,
+ })
 
 
 Spell( 116768 ,{ name = "Blackout Kick", scale = .8, priority = 6, glowtime = 15, color = colors.PINK3, duration = 15 })

@@ -1,3 +1,6 @@
+7.1.2:
+- Fixed Unstable Afflication for 7.1
+
 7.1.1:
 - Spam protection for Doom
 
