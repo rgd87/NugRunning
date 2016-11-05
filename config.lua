@@ -207,10 +207,10 @@ Cooldown( 48181 ,{ name = "Haunt", priority = 8, ghost = true, color = colors.TE
 
 --Unstable Affliction
 Spell( 233490 ,{ name = "", duration = 8,  priority = 10, nameplates = true, ghost = True, color = colors.PINK2 }) -- first debuff
-Spell( 233496 ,{ name = "", duration = 8,  priority = 10, nameplates = true, ghost = True, color = colors.PINK2 }) -- subsequent applications
-Spell( 233497 ,{ name = "", duration = 8,  priority = 10, nameplates = true, ghost = True, color = colors.PINK2 })
-Spell( 233498 ,{ name = "", duration = 8,  priority = 10, nameplates = true, ghost = True, color = colors.PINK2 })
-Spell( 233499 ,{ name = "", duration = 8,  priority = 10, nameplates = true, ghost = True, color = colors.PINK2 })
+Spell( 233496 ,{ name = "", scale = 0.8, scale_until = 2, duration = 8,  priority = 10.1, nameplates = true, ghost = True, color = colors.PINK2 }) -- subsequent applications
+Spell( 233497 ,{ name = "", scale = 0.8, scale_until = 2, duration = 8,  priority = 10.2, nameplates = true, ghost = True, color = colors.PINK2 })
+Spell( 233498 ,{ name = "", scale = 0.8, scale_until = 2, duration = 8,  priority = 10.3, nameplates = true, ghost = True, color = colors.PINK2 })
+Spell( 233499 ,{ name = "", scale = 0.8, scale_until = 2, duration = 8,  priority = 10.4, nameplates = true, ghost = True, color = colors.PINK2 })
 --Agony
 Spell( 980 ,{ name = "", duration = 18, recast_mark = 5.4, overlay = {0, 5.4, 0.2},  fixedlen = normalize_dots_to, nameplates = true, _ignore_applied_dose = true, ghost = true, priority = 6, color = colors.WOO })
 --Corruption
@@ -618,8 +618,8 @@ Spell( 115078, { name = "Paralysis", color = colors.PURPLE, duration = 30, pvpdu
 Spell( 115072, { name = "Expel Harm", color = colors.TEAL })
 
 
-EventTimer({ spellID = 100780, event = "SPELL_CAST_SUCCESS", priority = 12, name = "Tiger Palm", duration = 0.5, color = colors.PINK, scale = 0.6 })
-EventTimer({ spellID = 205523, event = "SPELL_CAST_SUCCESS", priority = 12, name = "Blackout Strike", duration = 0.5, color = colors.PINK, scale = 0.6 })
+-- EventTimer({ spellID = 100780, event = "SPELL_CAST_SUCCESS", priority = 12, name = "Tiger Palm", duration = 0.5, color = colors.PINK, scale = 0.6 })
+-- EventTimer({ spellID = 205523, event = "SPELL_CAST_SUCCESS", priority = 12, name = "Blackout Strike", duration = 0.5, color = colors.PINK, scale = 0.6 })
 
 
 local function GetBuff(unit, spellID)
