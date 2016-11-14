@@ -117,8 +117,17 @@ function TimerBar.UpdateMark(self, time) -- time - usually closest tick time
 
     local overlay2 = self.opts.overlay
     if overlay2 then
+
         local t1 = clear_overlay_point(overlay2[1], self, time)
         local t2 = clear_overlay_point(overlay2[2], self, time)
+
+        local hastereduced = overlay2[4]
+        if hastereduced then
+            local duration = t2 - t1
+            duration = (duration/(1+(UnitSpellHaste("player")/100)))
+            t2 = t1 + duration
+        end
+
         if not t1 or not t2 then
             return -- skip when point contains "tick" or "tickend", but it's not tick update call
         end

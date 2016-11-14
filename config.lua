@@ -697,7 +697,18 @@ Cooldown( 119582 ,{ name = "Purifying Brew", scale = 0.5, color = colors.TEAL3, 
 Cooldown( 115399 ,{ name = "Black Ox Brew", scale_until = 10, ghosteffect = effects.AEGWYNN, color = colors.REJUV, ghost = 6, priority = -20 })
 
 
-Cooldown( 121253, { name = "Keg Smash", tick = -1, fixedlen = 8, overlay = {"tick", "end", .35}, ghost = true, priority = 10, color = colors.CURSE })
+Cooldown( 121253, { name = "", fixedlen = 8, overlay = {1.1, 4.1, .30, true}, recast_mark = 1.1,ghost = true, priority = 10, color = colors.CURSE,
+        init = function(self)
+            if IsPlayerSpell(196736) then
+                self.overlay = {1.1, 4.1, .30, true}
+                self.recast_mark = 1
+                self.tick = nil
+            else
+                self.tick = -1
+                self.overlay = {"tick", "tickend", 0.30}
+                self.recast_mark  = nil
+            end
+        end })
 Cooldown( 115181 ,{ name = "Breath of Fire", priority = 6, color = colors.DRED, scale = 0.8, ghost = true, ghosteffect = effects.JUDGEMENT })
 -- Spell( 123725 ,{ name = "Breath of Fire",  priority = 11, shine = true, color = colors.RED, multiTarget = true, duration = 8 })
 Cooldown( 116847, { name = "Rushing Jade Wind", short = "", overlay = {0,1, 0.3}, scale = .7, fixedlen = 8, color = colors.DTEAL, ghost = true, priority = 2 })
