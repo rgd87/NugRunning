@@ -32,6 +32,8 @@ setmetatable(free,{ __newindex = function(t,k,v)
         else
             if k.opts.ghost and not k.isGhost then return k:BecomeGhost() end
             if k.isGhost and not k.expiredGhost then return end
+            k.isGhost = nil
+            k.expiredGhost = nil
         end
     end
     k:Hide()
@@ -505,21 +507,24 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
     end
 
     if opts.maxtimers and totalTimers >= opts.maxtimers then
-        if UnitGUID("target") ~= dstGUID then
+        -- if UnitGUID("target") ~= dstGUID then
+            -- return
+        -- end
+        if UnitGUID("target") == dstGUID then
+            for deltimer in pairs(active) do
+                if deltimer.opts == opts then
+                    deltimer.isGhost = true
+                    deltimer.expiredGhost = true
+                    -- deltimer.timeless = false
+                    free[deltimer] = true
+                    deltimer.isGhost = nil
+                    deltimer.expiredGhost = nil
+                    break
+                end
+            end
+        else
             return
         end
-        -- if UnitGUID("target") == dstGUID then
-        --     for deltimer in pairs(active) do
-        --         if deltimer.opts == opts then
-        --             deltimer.isGhost = true
-        --             deltimer.expiredGhost = true
-        --             free[deltimer] = true
-        --             break
-        --         end
-        --     end
-        -- else
-        --     return
-        -- end
     end
 
     timer = next(free)
@@ -657,7 +662,6 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
     timer.shine.tex:SetAlpha(0)
     if opts.shine and not timer.shine:IsPlaying() then timer.shine:Play() end
 
-
     self:ArrangeTimers()
     return timer
 end
@@ -665,7 +669,6 @@ end
 function NugRunning.RefreshTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID, spellName, opts, timerType, override, amount, noshine)
     local multiTargetGUID
     if opts.multiTarget then multiTargetGUID = dstGUID; dstGUID = nil; end
-
 
     local timer = gettimer(active, opts or spellID,dstGUID,timerType)
     if not timer then
@@ -900,6 +903,7 @@ function NugRunning.SetUnitAuraValues(self, timer, spellID, name, rank, icon, co
                             timer.timeless = true
                             timer:ToInfinite()
                             timer:UpdateMark()
+                            NugRunning:ArrangeTimers()
                         else
                             timer.fixedoffset = timer.opts.fixedlen and duration - timer.opts.fixedlen or 0
                             local oldExpTime = timer.endTime
