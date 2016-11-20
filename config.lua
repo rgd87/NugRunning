@@ -214,7 +214,7 @@ Spell( 233499 ,{ name = "", scale = 0.8, scale_until = 2, duration = 8,  priorit
 --Agony
 Spell( 980 ,{ name = "", duration = 18, recast_mark = 5.4, overlay = {0, 5.4, 0.2},  fixedlen = normalize_dots_to, nameplates = true, _ignore_applied_dose = true, ghost = true, priority = 6, color = colors.WOO })
 --Corruption
-Spell( 146739 ,{ name = "", maxtimers = 3, duration = 14, recast_mark = 4.2, overlay = {0,4.2, 0.2}, priority = 9, fixedlen = normalize_dots_to, nameplates = true, ghost = true, color = colors.PINKIERED,
+Spell( 146739 ,{ name = "", maxtimers = 2, duration = 14, recast_mark = 4.2, overlay = {0,4.2, 0.2}, priority = 9, fixedlen = normalize_dots_to, nameplates = true, ghost = true, color = colors.PINKIERED,
     init = function(self)
         if IsPlayerSpell(196103) then -- Absolute Corruption
             self.scale = 0.7

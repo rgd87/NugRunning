@@ -511,16 +511,19 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
             -- return
         -- end
         if UnitGUID("target") == dstGUID then
-            for deltimer in pairs(active) do
-                if deltimer.opts == opts then
-                    deltimer.isGhost = true
-                    deltimer.expiredGhost = true
-                    -- deltimer.timeless = false
-                    free[deltimer] = true
-                    deltimer.isGhost = nil
-                    deltimer.expiredGhost = nil
-                    break
+            local deltimer
+            for t in pairs(active) do
+                if t.opts == opts and (not deltimer or deltimer._touched > t._touched) then
+                    deltimer = t
                 end
+            end
+            if deltimer then
+                deltimer.isGhost = true
+                deltimer.expiredGhost = true
+                -- deltimer.timeless = false
+                free[deltimer] = true
+                deltimer.isGhost = nil
+                deltimer.expiredGhost = nil
             end
         else
             return
@@ -531,6 +534,8 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
     if not timer then return end
     active[timer] = true
     timer:SetScript("OnUpdate",NugRunning.TimerFunc)
+
+    timer._touched = GetTime()
 
     if opts.init and not opts.init_done then
         opts:init()
@@ -1279,6 +1284,7 @@ do
 end
 
 function NugRunning.PLAYER_TARGET_CHANGED(self)
+    -- local newTargetGUID = UnitGUID("target")
     self:ArrangeTimers()
 end
 
@@ -1784,6 +1790,9 @@ do
                             newtimer = NugRunning:ActivateTimer(playerGUID, targetGUID, UnitName("target"), nil, aura_spellID, name, config[aura_spellID], timerType, duration, count, true)
                         end
                         if newtimer and not newtimer.timeless then newtimer:SetTime( expirationTime - duration, expirationTime, newtimer.fixedoffset) end
+                        if newtimer and newtimer.opts.maxtimers then
+                            newtimer._touched = GetTime()
+                        end
                     end
                 end
             end
