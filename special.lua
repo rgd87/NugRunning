@@ -130,73 +130,87 @@ if class == "WARLOCK" then
 
     hooksecurefunc(NugRunning,"PLAYER_LOGIN",function(self,event)
 
-        local cf = CreateFrame"Frame"
-
-        local corruptionID = 146739
-        local corruptionName = GetSpellInfo(corruptionID)
-        local corruption_opts = NugRunningConfig[corruptionID]
-        if not corruption_opts then return end
-        NugRunningConfig[corruptionID] = nil
-
-        local timer = NugRunning:CreateTimer()
-        table.remove(NugRunning.timers)
-        timer.stacktext:Hide()
-        timer.bar:SetValue(100)
-        timer:SetScript("OnUpdate",nil)
-        timer.dstGUID = UnitGUID("player")
-        timer.srcGUID = UnitGUID("player")
-        timer.startTime = 0
-        timer.endTime = 1
-        timer.dontfree = true
-        timer.priority = corruption_opts.priority
-        timer:VScale(0.5)
-        timer.opts = { name = corruption_opts.name, color = corruption_opts.color }
-
-        timer:UpdateMark()
-        timer:SetCount(1)
-        local texture = GetSpellTexture(corruptionID)
-        timer:SetIcon(texture)
-        timer:SetColor(unpack(corruption_opts.color))
-
-
-        cf:RegisterEvent("SPELLS_CHANGED")
-        -- cf:RegisterEvent("PLAYER_REGEN_DISABLED")
-
-
-        local function IsAbsolutelyCorrupted(unit)
-            if not UnitExists("target") then return false end
-            local name = UnitAura(unit, corruptionName, nil, "HARMFUL|PLAYER")
-            if name then return true end
-        end
-
-        cf:SetScript("OnEvent", function(self, event)
-            if event == "SPELLS_CHANGED" then
-                if IsPlayerSpell(196103) then
-                    NugRunningConfig[corruptionID] = nil
-                    cf:RegisterUnitEvent("UNIT_AURA", "target")
-                    cf:RegisterEvent("PLAYER_TARGET_CHANGED")
-                else
-                    NugRunning.active[timer] = nil
-                    timer:Hide()
-                    cf:UnregisterEvent("UNIT_AURA")
-                    cf:UnregisterEvent("PLAYER_TARGET_CHANGED")
-
-                    NugRunningConfig[corruptionID] = corruption_opts
+        local corhide = CreateFrame"Frame"
+        corhide:RegisterEvent("PLAYER_REGEN_ENABLED")
+        corhide:SetScript("OnEvent", function(self, event)
+            for timer in pairs(NugRunning.active) do
+                if timer.spellID == 146739 and timer.timeless then
+                    timer.isGhost = true
+                    timer.expiredGhost = true
+                    -- timer.timeless = false
+                    free[timer] = true
                 end
-            elseif event == "PLAYER_TARGET_CHANGED" or event == "UNIT_AURA" then
-                if IsAbsolutelyCorrupted("target") then
-                    timer.dstGUID = UnitGUID("target")
-                    if not NugRunning.active[timer] then
-                        timer:Show()
-                        NugRunning.active[timer] = true
-                    end
-                else
-                    NugRunning.active[timer] = nil
-                    timer:Hide()
-                end
-                NugRunning:ArrangeTimers()
             end
         end)
+
+
+        -- local cf = CreateFrame"Frame"
+        --
+        -- local corruptionID = 146739
+        -- local corruptionName = GetSpellInfo(corruptionID)
+        -- local corruption_opts = NugRunningConfig[corruptionID]
+        -- if not corruption_opts then return end
+        -- NugRunningConfig[corruptionID] = nil
+        --
+        -- local timer = NugRunning:CreateTimer()
+        -- table.remove(NugRunning.timers)
+        -- timer.stacktext:Hide()
+        -- timer.bar:SetValue(100)
+        -- timer:SetScript("OnUpdate",nil)
+        -- timer.dstGUID = UnitGUID("player")
+        -- timer.srcGUID = UnitGUID("player")
+        -- timer.startTime = 0
+        -- timer.endTime = 1
+        -- timer.dontfree = true
+        -- timer.priority = corruption_opts.priority
+        -- timer:VScale(0.5)
+        -- timer.opts = { name = corruption_opts.name, color = corruption_opts.color }
+        --
+        -- timer:UpdateMark()
+        -- timer:SetCount(1)
+        -- local texture = GetSpellTexture(corruptionID)
+        -- timer:SetIcon(texture)
+        -- timer:SetColor(unpack(corruption_opts.color))
+        --
+        --
+        -- cf:RegisterEvent("SPELLS_CHANGED")
+        -- -- cf:RegisterEvent("PLAYER_REGEN_DISABLED")
+        --
+        --
+        -- local function IsAbsolutelyCorrupted(unit)
+        --     if not UnitExists(unit) then return false end
+        --     local name = UnitAura(unit, corruptionName, nil, "HARMFUL|PLAYER")
+        --     if name then return true end
+        -- end
+        --
+        -- cf:SetScript("OnEvent", function(self, event)
+        --     if event == "SPELLS_CHANGED" then
+        --         if IsPlayerSpell(196103) then
+        --             NugRunningConfig[corruptionID] = nil
+        --             cf:RegisterUnitEvent("UNIT_AURA", "target")
+        --             cf:RegisterEvent("PLAYER_TARGET_CHANGED")
+        --         else
+        --             NugRunning.active[timer] = nil
+        --             timer:Hide()
+        --             cf:UnregisterEvent("UNIT_AURA")
+        --             cf:UnregisterEvent("PLAYER_TARGET_CHANGED")
+        --
+        --             NugRunningConfig[corruptionID] = corruption_opts
+        --         end
+        --     elseif event == "PLAYER_TARGET_CHANGED" or event == "UNIT_AURA" then
+        --         if IsAbsolutelyCorrupted("target") then
+        --             timer.dstGUID = UnitGUID("target")
+        --             if not NugRunning.active[timer] then
+        --                 timer:Show()
+        --                 NugRunning.active[timer] = true
+        --             end
+        --         else
+        --             NugRunning.active[timer] = nil
+        --             timer:Hide()
+        --         end
+        --         NugRunning:ArrangeTimers()
+        --     end
+        -- end)
 
         do
             local imps = CreateFrame"Frame"

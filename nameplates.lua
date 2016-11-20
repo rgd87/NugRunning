@@ -118,6 +118,7 @@ function NugRunningNameplates:Update(targetTimers, guidTimers, targetSwapping)
         if np then
             local guid = UnitGUID(unit)
             local nrunTimers = guidTimers[guid]
+            -- if guid == UnitGUID("target") then print("target update") end
             self:UpdateNPTimers(np, nrunTimers)
         end
     end
@@ -136,6 +137,7 @@ function NugRunningNameplates:UpdateNPTimers(np, nrunTimers)
         end
 
         local max = math.max(#nrunTimers, #np.timers)
+        -- if np == GetNamePlateForUnit("target") then print("targetTimers", #nrunTimers) end
         for i=1, max do
             local npt = np.timers[i]
             local nrunt = nrunTimers[i]

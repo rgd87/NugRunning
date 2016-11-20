@@ -504,8 +504,22 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
         return self:RefreshTimer(srcGUID, dstGUID or multiTargetGUID, dstName, dstFlags, spellID, spellName, opts, timerType, override)
     end
 
-    if opts.maxtimers and totalTimers > opts.maxtimers and UnitGUID("target") ~= dstGUID then
-        return
+    if opts.maxtimers and totalTimers >= opts.maxtimers then
+        if UnitGUID("target") ~= dstGUID then
+            return
+        end
+        -- if UnitGUID("target") == dstGUID then
+        --     for deltimer in pairs(active) do
+        --         if deltimer.opts == opts then
+        --             deltimer.isGhost = true
+        --             deltimer.expiredGhost = true
+        --             free[deltimer] = true
+        --             break
+        --         end
+        --     end
+        -- else
+        --     return
+        -- end
     end
 
     timer = next(free)
@@ -582,13 +596,15 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
     end
     timer:SetColor(unpack(opts.color))
 
+    timer.timeless = (opts.timeless or override == -1)
+
     amount = amount or 1
     if opts.charged then
         timer:ToInfinite()
         timer:SetMinMaxCharge(0,opts.maxcharge)
         timer:SetCharge(amount)
         timer:UpdateMark()
-    elseif opts.timeless then
+    elseif timer.timeless then
         timer:ToInfinite()
         timer:UpdateMark()
         timer:SetCount(amount)
@@ -685,7 +701,7 @@ function NugRunning.RefreshTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID,
     end
     if amount and opts.charged then
         timer:SetCharge(amount)
-    elseif not opts.timeless then
+    elseif not timer.timeless then
         local now = GetTime()
         timer.fixedoffset = opts.fixedlen and time - opts.fixedlen or 0
         if time then timer:SetTime(now, now + time, timer.fixedoffset) end
@@ -871,26 +887,34 @@ do
     end
 end
 
-function NugRunning.SetUnitAuraValues(self, timer, spellID, name, rank, icon, count, dispelType, duration, expirationTime, caster, isStealable, shouldConsolidate, aura_spellID, canApplyAura, isBossDebuff, value1, absorb, value3)
+function NugRunning.SetUnitAuraValues(self, timer, spellID, name, rank, icon, count, dispelType, duration, expirationTime, caster, isStealable, shouldConsolidate, aura_spellID, canApplyAura, isBossDebuff)
             if aura_spellID then
                 if aura_spellID == spellID and NugRunning.UnitAffiliationCheck(caster, timer.opts.affiliation) then
                     if timer.opts.charged then
                         timer:SetMinMaxCharge(0, timer.opts.maxcharge)
                         timer:SetCharge(count)
-                    elseif not timer.opts.timeless then
-                        timer.fixedoffset = timer.opts.fixedlen and duration - timer.opts.fixedlen or 0
-                        local oldExpTime = timer.endTime
-                        timer:SetTime(expirationTime - duration,expirationTime, timer.fixedoffset)
+                    elseif not timer.timeless then
                         timer:SetCount(count)
-                        if oldExpTime and oldExpTime ~= expirationTime then
-                            -- if opts.tick and NRunDB.dotticks then
-                            --     timer.tickPeriod = opts.tick > 0 and (opts.tick/(1+(UnitSpellHaste("player")/100))) or math.abs(opts.tick)
-                            --     timer.mark.fullticks = nil
-                            -- else
-                            --     timer.tickPeriod = nil
-                            -- end
+
+                        if duration == 0 then
+                            timer.timeless = true
+                            timer:ToInfinite()
+                            timer:UpdateMark()
+                        else
+                            timer.fixedoffset = timer.opts.fixedlen and duration - timer.opts.fixedlen or 0
+                            local oldExpTime = timer.endTime
+                            timer:SetTime(expirationTime - duration,expirationTime, timer.fixedoffset)
+
+                            if oldExpTime and oldExpTime ~= expirationTime then
+                                -- if opts.tick and NRunDB.dotticks then
+                                --     timer.tickPeriod = opts.tick > 0 and (opts.tick/(1+(UnitSpellHaste("player")/100))) or math.abs(opts.tick)
+                                --     timer.mark.fullticks = nil
+                                -- else
+                                --     timer.tickPeriod = nil
+                                -- end
 
                             NugRunning:ArrangeTimers()
+                        end
 
                             -- local plevel = self:GetPowerLevel()
                             -- if ssPendingTimestamp > GetTime() - 0.3 and ssPendingTarget == dstGUID and ssPending[spellID] then
@@ -906,10 +930,6 @@ function NugRunning.SetUnitAuraValues(self, timer, spellID, name, rank, icon, co
                         timer:SetCount(count)
                     else
                         timer:SetCount(count)
-                    end
-                    if type(absorb) == "number" and absorb > 0
-                        then timer.absorb = absorb
-                        else timer.absorb = nil
                     end
 
                     local name = GetSpellInfo(spellID)
@@ -951,7 +971,7 @@ function NugRunning.TimerFunc(self,time)
     self._elapsed = 0
 
     local opts = self.opts
-    if opts.timeless or opts.charged then return end
+    if self.timeless or opts.charged then return end
 
     local endTime = self.endTime
     local beforeEnd = endTime - GetTime()
@@ -1681,11 +1701,12 @@ do
 
                             local timer
                             timer = gettimer(active, aura_spellID, unitGUID, timerType)
+                            if duration == 0 then duration = -1 end
                             if timer then
                                 NugRunning:SetUnitAuraValues(timer, timer.spellID, UnitAura(unit, GetSpellInfo(timer.spellID), nil, timer.filter))
                             else
                                 timer = NugRunning:ActivateTimer(playerGUID, unitGUID, UnitName(unit), nil, aura_spellID, name, opts, timerType, duration, count, true)
-                                if timer then
+                                if timer and not timer.timeless then
                                 timer:SetTime( expirationTime - duration, expirationTime, timer.fixedoffset)
                                 end
                             end
@@ -1751,13 +1772,14 @@ do
                             end
                         end
                         local newtimer
+                        if duration == 0 then duration = -1 end
                         if found then
                             newtimer = NugRunning:RefreshTimer(playerGUID, targetGUID, UnitName("target"), nil, aura_spellID, name, config[aura_spellID], timerType, duration, count, true)
                         else
                             timerType = filter == "HELPFUL" and "BUFF" or "DEBUFF"
                             newtimer = NugRunning:ActivateTimer(playerGUID, targetGUID, UnitName("target"), nil, aura_spellID, name, config[aura_spellID], timerType, duration, count, true)
                         end
-                        if newtimer then newtimer:SetTime( expirationTime - duration, expirationTime, newtimer.fixedoffset) end
+                        if newtimer and not newtimer.timeless then newtimer:SetTime( expirationTime - duration, expirationTime, newtimer.fixedoffset) end
                     end
                 end
             end

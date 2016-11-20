@@ -214,7 +214,16 @@ Spell( 233499 ,{ name = "", scale = 0.8, scale_until = 2, duration = 8,  priorit
 --Agony
 Spell( 980 ,{ name = "", duration = 18, recast_mark = 5.4, overlay = {0, 5.4, 0.2},  fixedlen = normalize_dots_to, nameplates = true, _ignore_applied_dose = true, ghost = true, priority = 6, color = colors.WOO })
 --Corruption
-Spell( 146739 ,{ name = "", maxtimers = 4, duration = 14, recast_mark = 4.2, overlay = {0,4.2, 0.2}, priority = 9, fixedlen = normalize_dots_to, nameplates = true, ghost = true, color = colors.PINKIERED })
+Spell( 146739 ,{ name = "", maxtimers = 4, duration = 14, recast_mark = 4.2, overlay = {0,4.2, 0.2}, priority = 9, fixedlen = normalize_dots_to, nameplates = true, ghost = true, color = colors.PINKIERED,
+    init = function(self)
+        if IsPlayerSpell(196103) then -- Absolute Corruption
+            self.scale = 0.7
+            self.priority = 0.1
+        else
+            self.scale = 1
+            self.priority = 9
+        end
+    end})
 --Siphon Life
 Spell( 63106 ,{ name = "", duration = 15, recast_mark = 4.5, overlay = {0, 4.5, 0.2}, priority = 5, fixedlen = normalize_dots_to, nameplates = true, ghost = true, color = colors.DTEAL })
 
@@ -700,7 +709,7 @@ Cooldown( 115399 ,{ name = "Black Ox Brew", scale_until = 10, ghosteffect = effe
 Cooldown( 121253, { name = "", fixedlen = 8, overlay = {1.1, 4.1, .30, true}, recast_mark = 1.1,ghost = true, priority = 10, color = colors.CURSE,
         init = function(self)
             if IsPlayerSpell(196736) then
-                self.overlay = {1.1, 4.1, .30, true}
+                self.overlay = {1, 4, .30, true}
                 self.recast_mark = 1
                 self.tick = nil
             else

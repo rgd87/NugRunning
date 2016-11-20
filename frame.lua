@@ -91,6 +91,12 @@ local function clear_overlay_point(p, self, ticktime)
 end
 
 function TimerBar.UpdateMark(self, time) -- time - usually closest tick time
+    if self.timeless then
+        self.overlay2:Hide()
+        self.mark:Hide()
+        self.mark.texture:Hide()
+        return
+    end
     if self.tickPeriod then
         if time then
             if time > 0 then
@@ -159,10 +165,11 @@ end
 
 function TimerBar.ToInfinite(self)
     self.bar:SetMinMaxValues(0,100)
-    self.bar:SetValue(0)
+    self.bar:SetValue(100)
     self.startTime = GetTime()
     self.endTime = self.startTime + 1
     self.timeText:SetText("")
+    self:UpdateMark()
 end
 
 function TimerBar.ToGhost(self)
