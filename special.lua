@@ -130,9 +130,7 @@ if class == "WARLOCK" then
 
     hooksecurefunc(NugRunning,"PLAYER_LOGIN",function(self,event)
 
-        local corhide = CreateFrame"Frame"
-        corhide:RegisterEvent("PLAYER_REGEN_ENABLED")
-        corhide:SetScript("OnEvent", function(self, event)
+        local PurgeCorruption = function()
             for timer in pairs(NugRunning.active) do
                 if timer.spellID == 146739 and timer.timeless then
                     timer.isGhost = true
@@ -140,6 +138,29 @@ if class == "WARLOCK" then
                     -- timer.timeless = false
                     free[timer] = true
                 end
+            end
+        end
+
+        local corhide = CreateFrame"Frame"
+        local ticker
+
+        corhide:RegisterEvent("SPELLS_CHANGED")
+        corhide:SetScript("OnEvent", function(self, event)
+            if event == "SPELLS_CHANGED" then
+                if IsPlayerSpell(196103) then -- Absolute Corruption
+                    corhide:RegisterEvent("PLAYER_REGEN_ENABLED")
+                    corhide:RegisterEvent("PLAYER_REGEN_DISABLED")
+                else
+                    corhide:UnregisterEvent("PLAYER_REGEN_ENABLED")
+                    corhide:UnregisterEvent("PLAYER_REGEN_DISABLED")
+                    if ticker then ticker:Cancel() end
+                end
+            elseif event == "PLAYER_REGEN_ENABLED" then
+                PurgeCorruption()
+                ticker = C_Timer.NewTicker(30, PurgeCorruption)
+            elseif ticker then
+                ticker:Cancel()
+                ticker = nil
             end
         end)
 

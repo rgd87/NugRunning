@@ -522,8 +522,6 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
                 deltimer.expiredGhost = true
                 -- deltimer.timeless = false
                 free[deltimer] = true
-                deltimer.isGhost = nil
-                deltimer.expiredGhost = nil
             end
         else
             return
@@ -1284,7 +1282,6 @@ do
 end
 
 function NugRunning.PLAYER_TARGET_CHANGED(self)
-    -- local newTargetGUID = UnitGUID("target")
     self:ArrangeTimers()
 end
 
