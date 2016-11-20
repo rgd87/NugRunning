@@ -1,4 +1,5 @@
 package-as: NugRunning
+enable-nolib-creation: no
 
 manual-changelog:
 	filename: CHANGELOG.md

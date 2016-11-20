@@ -1,3 +1,7 @@
+7.1.3:
+- Absolute Corruption rework
+- BrM: BoC indicator on Keg Smash timer
+
 7.1.2:
 - Fixed Unstable Affliction for 7.1
 
