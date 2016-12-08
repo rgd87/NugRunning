@@ -115,14 +115,14 @@ end
 helpers.DotSpell = DotSpell
 
 local _, race = UnitRace("player")
-if race == "Troll" then Spell( 26297 ,{ name = "Berserking", duration = 10 }) end --Troll Racial
-if race == "Orc" then Spell({ 33702,33697,20572 },{ name = "Blood Fury", duration = 15 }) end --Orc Racial
+-- if race == "Troll" then Spell( 26297 ,{ name = "Berserking", duration = 10 }) end --Troll Racial
+-- if race == "Orc" then Spell({ 33702,33697,20572 },{ name = "Blood Fury", duration = 15 }) end --Orc Racial
 
-Spell( 2825  ,{ name = "Bloodlust", group = "buffs", duration = 40, color = colors.DRED, shine = true, affiliation = "raid", target = "player" })
-Spell( 32182 ,{ name = "Heroism", group = "buffs", duration = 40, color = colors.DRED, shine = true, affiliation = "raid", target = "player" })
-Spell( 80353 ,{ name = "Time Warp", group = "buffs", duration = 40, color = colors.DRED, shine = true, affiliation = "raid", target = "player" })
-Spell( 90355 ,{ name = "Ancient Hysteria", group = "buffs", duration = 40, color = colors.DRED, shine = true, affiliation = "raid", target = "player" })
-Spell( 178207 ,{ name = "Drums of Fury", group = "buffs", duration = 40, color = colors.DRED, shine = true, affiliation = "raid", target = "player" })
+Spell( 2825  ,{ name = "Bloodlust", group = "buffs", global = true, duration = 40, color = colors.DRED, shine = true, affiliation = "raid", target = "player" })
+Spell( 32182 ,{ name = "Heroism", group = "buffs", global = true, duration = 40, color = colors.DRED, shine = true, affiliation = "raid", target = "player" })
+Spell( 80353 ,{ name = "Time Warp", group = "buffs", global = true, duration = 40, color = colors.DRED, shine = true, affiliation = "raid", target = "player" })
+Spell( 90355 ,{ name = "Ancient Hysteria", group = "buffs", global = true, duration = 40, color = colors.DRED, shine = true, affiliation = "raid", target = "player" })
+Spell( 178207 ,{ name = "Drums of Fury", group = "buffs", global = true, duration = 40, color = colors.DRED, shine = true, affiliation = "raid", target = "player" })
 
 -- local CASTER_POTIONS = function(specmask)
 --         Spell( 105702 ,{ name = "Potion", specmask = specmask, group = "procs", color = colors.GREEN, duration = 25 }) -- Intellect
@@ -705,7 +705,7 @@ Cooldown( 205523 ,{ name = "Blackout Strike", overlay = {0,1, 0.2}, fixedlen = 8
 Cooldown( 119582 ,{ name = "Purifying Brew", scale = 0.5, color = colors.TEAL3, ghost = 6, ghosteffect = effects.NIGHTBORNE })
 Cooldown( 115399 ,{ name = "Black Ox Brew", scale_until = 10, ghosteffect = effects.AEGWYNN, color = colors.REJUV, ghost = 6, priority = -20 })
 
-
+-- Keg Smash
 Cooldown( 121253, { name = "", fixedlen = 8, overlay = {1.1, 4.1, .30, true}, recast_mark = 1.1,ghost = true, priority = 10, color = colors.CURSE,
         init = function(self)
             if IsPlayerSpell(196736) then
@@ -718,9 +718,9 @@ Cooldown( 121253, { name = "", fixedlen = 8, overlay = {1.1, 4.1, .30, true}, re
                 self.recast_mark  = nil
             end
         end })
-Cooldown( 115181 ,{ name = "Breath of Fire", priority = 6, color = colors.DRED, scale = 0.8, ghost = true, ghosteffect = effects.JUDGEMENT })
+Cooldown( 115181 ,{ name = "Breath of Fire", priority = 6, color = colors.RED, ghost = true, ghosteffect = effects.JUDGEMENT })
 -- Spell( 123725 ,{ name = "Breath of Fire",  priority = 11, shine = true, color = colors.RED, multiTarget = true, duration = 8 })
-Cooldown( 116847, { name = "Rushing Jade Wind", short = "", overlay = {0,1, 0.3}, scale = .7, fixedlen = 8, color = colors.DTEAL, ghost = true, priority = 2 })
+Cooldown( 116847, { name = "Rushing Jade Wind", short = "", scale = .7, fixedlen = 8, color = colors.DTEAL, ghost = true, priority = 2 })
 
 
 -- Cooldown( 115072, { name = "Expel Harm", color = colors.LGREEN, resetable = true, ghost = true })

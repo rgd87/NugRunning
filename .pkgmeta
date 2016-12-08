@@ -1,6 +1,9 @@
 package-as: NugRunning
 enable-nolib-creation: no
 
+move-folders:
+    NugRunning/Options/loader: NugRunningOptions
+
 manual-changelog:
 	filename: CHANGELOG.md
 	markup-type: markdown

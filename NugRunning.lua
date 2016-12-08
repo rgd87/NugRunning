@@ -1,6 +1,3 @@
--- Last code revision was in 4.0 beta, since then a lot of new features and workarounds has been made,
--- I made them to be temporary but they remained and became important even if blizzard will fix combat log bug.
--- So it's all crap now and needs a rewrite.
 local _, helpers = ...
 
 NugRunning = CreateFrame("Frame","NugRunning")
@@ -11,6 +8,10 @@ end)
 
 local NRunDB
 local config = NugRunningConfig
+local spells = config.spells
+local activations = config.activations
+local cooldowns = config.cooldowns
+local event_timers = config.event_timers
 local nameplates
 local MAX_TIMERS = 20
 local check_event_timers
@@ -146,6 +147,7 @@ local defaults = {
 }
 
 local function SetupDefaults(t, defaults)
+    if not defaults then return end
     for k,v in pairs(defaults) do
         if type(v) == "table" then
             if t[k] == nil then
@@ -159,6 +161,7 @@ local function SetupDefaults(t, defaults)
     end
 end
 local function RemoveDefaults(t, defaults)
+    if not defaults then return end
     for k, v in pairs(defaults) do
         if type(t[k]) == 'table' and type(v) == 'table' then
             RemoveDefaults(t[k], v)
@@ -171,6 +174,24 @@ local function RemoveDefaults(t, defaults)
     end
     return t
 end
+NugRunning.SetupDefaults = SetupDefaults
+NugRunning.RemoveDefaults = RemoveDefaults
+
+local function MergeTable(t1, t2)
+    if not t2 then return false end
+    for k,v in pairs(t2) do
+        if type(v) == "table" then
+            if t1[k] == nil then
+                t1[k] = CopyTable(v)
+            else
+                MergeTable(t1[k], v)
+            end
+        else
+            t1[k] = v
+        end
+    end
+end
+NugRunning.MergeTable = MergeTable
 
 
 NugRunning:RegisterEvent("PLAYER_LOGIN")
@@ -203,9 +224,39 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
 
     leaveGhost = NRunDB.leaveGhost
 
+
+    NugRunningConfigCustom = NugRunningConfigCustom or {}
+
+    NugRunningConfigMerged = CopyTable(NugRunningConfig)
+
+    local _, class = UnitClass("player")
+    local categories = {"spells", "cooldowns", "activations", "casts"}
+    if not NugRunningConfigCustom[class] then NugRunningConfigCustom[class] = {} end
+
+    local globalConfig = NugRunningConfigCustom["GLOBAL"]
+    MergeTable(NugRunningConfigMerged, globalConfig)
+    local classConfig = NugRunningConfigCustom[class]
+    MergeTable(NugRunningConfigMerged, classConfig)
+    config = NugRunningConfigMerged
+    spells = config.spells
+    activations = config.activations
+    cooldowns = config.cooldowns
+    event_timers = config.event_timers
+    -- for _, timerType in ipairs(categories) do
+        -- for k, opts in pairs(classConfig[timerType]) do
+            -- NugRunningConfigMerged[timerType]
+        -- end
+    -- end
+    -- local mt = {
+    --     __index = function(t,k)
+    --         return t.defaults[k]
+    --     end
+    -- }
+    -- local categories = {"spells", "cooldowns", "activations", "casts"}
+    -- for
+
+
     NugRunning:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
-
-
     NugRunning:RegisterEvent("GLYPH_UPDATED")
     NugRunning:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
     NugRunning.ACTIVE_TALENT_GROUP_CHANGED = NugRunning.ReInitSpells
@@ -246,7 +297,7 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
     NugRunning:RegisterEvent("SPELL_ACTIVATION_OVERLAY_GLOW_HIDE")
 
 
-    if next(NugRunningConfig.event_timers) then check_event_timers = true end
+    if next(event_timers) then check_event_timers = true end
     playerGUID = UnitGUID("player")
 
     NugRunning.anchors = {}
@@ -275,11 +326,22 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
     SlashCmdList["NUGRUNNING"] = NugRunning.SlashCmd
 
     if NRunDB.totems and NugRunning.InitTotems then NugRunning:InitTotems() end
+    NugRunning.SetupSpecialTimers()
+
+
+    local f = CreateFrame('Frame', nil, InterfaceOptionsFrame)
+	f:SetScript('OnShow', function(self)
+		self:SetScript('OnShow', nil)
+		LoadAddOn('NugRunningOptions')
+	end)
 end
 
 function NugRunning.PLAYER_LOGOUT(self, event)
     RemoveDefaults(NRunDB, defaults)
 end
+
+
+
 
 --------------------
 -- CLEU dispatcher
@@ -289,9 +351,9 @@ function NugRunning.COMBAT_LOG_EVENT_UNFILTERED( self, event, timestamp, eventTy
                 dstGUID, dstName, dstFlags, dstFlags2,
                 spellID, spellName, spellSchool, auraType, amount)
 
-    if NugRunningConfig[spellID] then
+    if spells[spellID] then
         local affiliationStatus = (bit_band(srcFlags, AFFILIATION_MINE) == AFFILIATION_MINE)
-        local opts = NugRunningConfig[spellID]
+        local opts = spells[spellID]
         if not affiliationStatus and opts.affiliation then
             affiliationStatus = (bit_band(srcFlags, COMBATLOG_OBJECT_AFFILIATION_MASK) <= opts.affiliation)
         end
@@ -318,9 +380,9 @@ function NugRunning.COMBAT_LOG_EVENT_UNFILTERED( self, event, timestamp, eventTy
     end
 
     if check_event_timers then
-        if NugRunningConfig.event_timers[eventType] then
+        if event_timers[eventType] then
             local affiliationStatus = (bit_band(srcFlags, AFFILIATION_MINE) == AFFILIATION_MINE)
-            local evs = NugRunningConfig.event_timers[eventType]
+            local evs = event_timers[eventType]
             for i, opts in ipairs(evs) do
                 if affiliationStatus or (opts.affiliation and bit_band(srcFlags, COMBATLOG_OBJECT_AFFILIATION_MASK) <= opts.affiliation ) then
                     if spellID == opts.spellID then
@@ -348,8 +410,8 @@ end
 --function NugRunning.SPELL_UPDATE_USABLE(self, event)
 --end
 function NugRunning.SPELL_ACTIVATION_OVERLAY_GLOW_SHOW(self,event, spellID)
-    if NugRunningConfig.activations[spellID] then
-        local opts = NugRunningConfig.activations[spellID]
+    if activations[spellID] then
+        local opts = activations[spellID]
         if not opts.for_cd then
             if opts.showid then spellID = opts.showid end
             self:ActivateTimer(UnitGUID("player"),UnitGUID("player"), UnitName("player"), nil, spellID, opts.localname, opts, "ACTIVATION", opts.duration)
@@ -363,8 +425,8 @@ function NugRunning.SPELL_ACTIVATION_OVERLAY_GLOW_SHOW(self,event, spellID)
     end
 end
 function NugRunning.SPELL_ACTIVATION_OVERLAY_GLOW_HIDE(self,event, spellID)
-    if NugRunningConfig.activations[spellID] then
-        local opts = NugRunningConfig.activations[spellID]
+    if activations[spellID] then
+        local opts = activations[spellID]
         if not opts.for_cd then
             if opts.showid then spellID = opts.showid end
             self:DeactivateTimer(UnitGUID("player"),UnitGUID("player"), spellID, nil, opts, "ACTIVATION")
@@ -395,7 +457,7 @@ local lastCooldownUpdateTime = GetTime()
 function NugRunning.SPELL_UPDATE_COOLDOWN(self,event, periodic)
     if periodic and GetTime() - lastCooldownUpdateTime < 0.9 then return end
     -- print(GetTime(), event)
-    for spellID,opts in pairs(NugRunningConfig.cooldowns) do
+    for spellID,opts in pairs(cooldowns) do
         if not opts.check_known or IsPlayerSpell(spellID) then
 
         local startTime, duration, enabled, charges, maxCharges = GetSpellCooldownCharges(spellID)
@@ -812,7 +874,7 @@ local function free_noghost(timer)
 end
 function NugRunning.DeactivateTimersOnDeath(self,dstGUID)
     for timer in pairs(active) do
-        if NugRunningConfig[timer.spellID] then
+        if spells[timer.spellID] then
         if not timer.dstGUID then -- clearing guid from multi target list just in case
             timer.targets[dstGUID] = nil
             if not next(timer.targets) then free_noghost(timer) end
@@ -1316,13 +1378,13 @@ function NugRunning.UNIT_COMBO_POINTS(self,event,unit)
     self.cpNow = GetComboPoints(unit);
 end
 function NugRunning.ReInitSpells(self,event,arg1)
-    for id,opts in pairs(NugRunningConfig) do
+    for id,opts in pairs(spells) do
         if type(opts) == "table" and opts.init then
             opts:init()
             opts.init_done = true
         end
     end
-    for event, timers in pairs(NugRunningConfig.event_timers) do
+    for event, timers in pairs(event_timers) do
         for _, opts in pairs(timers) do
             if opts.init then
                 opts:init()
@@ -1330,7 +1392,7 @@ function NugRunning.ReInitSpells(self,event,arg1)
             end
         end
     end
-    for id,opts in pairs(NugRunningConfig.cooldowns) do
+    for id,opts in pairs(cooldowns) do
         if opts.init then
             opts:init()
             opts.init_done = true
@@ -1703,7 +1765,7 @@ do
                     local name, _,_, count, _, duration, expirationTime, caster, _,_, aura_spellID = UnitAura(unit, i, filter)
                     if not name then break end
 
-                    local opts = config[aura_spellID]
+                    local opts = spells[aura_spellID]
                     if opts and UnitAffiliationCheck(caster, opts.affiliation) then--and (unit ~= "mouseover" or not opts.singleTarget) then
 
                             local timer
@@ -1766,7 +1828,7 @@ do
                     local name, _,_, count, _, duration, expirationTime, caster, _,_, aura_spellID = UnitAura("target", i, filter)
                     if not name then break end
 
-                    local opts = config[aura_spellID]
+                    local opts = spells[aura_spellID]
                     if opts and UnitAffiliationCheck(caster, opts.affiliation) then
                         if opts.target and opts.target ~= "target" then return end
                         local found, timerType
@@ -1781,10 +1843,10 @@ do
                         local newtimer
                         if duration == 0 then duration = -1 end
                         if found then
-                            newtimer = NugRunning:RefreshTimer(playerGUID, targetGUID, UnitName("target"), nil, aura_spellID, name, config[aura_spellID], timerType, duration, count, true)
+                            newtimer = NugRunning:RefreshTimer(playerGUID, targetGUID, UnitName("target"), nil, aura_spellID, name, spells[aura_spellID], timerType, duration, count, true)
                         else
                             timerType = filter == "HELPFUL" and "BUFF" or "DEBUFF"
-                            newtimer = NugRunning:ActivateTimer(playerGUID, targetGUID, UnitName("target"), nil, aura_spellID, name, config[aura_spellID], timerType, duration, count, true)
+                            newtimer = NugRunning:ActivateTimer(playerGUID, targetGUID, UnitName("target"), nil, aura_spellID, name, spells[aura_spellID], timerType, duration, count, true)
                         end
                         if newtimer and not newtimer.timeless then newtimer:SetTime( expirationTime - duration, expirationTime, newtimer.fixedoffset) end
                         if newtimer and newtimer.opts.maxtimers then
@@ -1882,6 +1944,15 @@ function NugRunning:CreateCastbarTimer(timer)
             timer.mark.fullticks = nil
         else
             timer.tickPeriod = nil
+        end
+
+        if timer.VScale then
+            local scale = opts.scale
+            if scale then
+                timer:VScale(scale)
+            else
+                timer:VScale(1)
+            end
         end
 
         local startTime = startTimeInt /1000

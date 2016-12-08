@@ -1,6 +1,6 @@
 local _, helpers = ...
-
 NugRunningConfig = {}
+NugRunningConfig.spells = {}
 NugRunningConfig.nameplates = {}
 NugRunningConfig.anchors = {}
 NugRunningConfig.cooldowns = {}
@@ -15,7 +15,7 @@ local AFFILIATION_OUTSIDER = COMBATLOG_OBJECT_AFFILIATION_OUTSIDER
 
 helpers.Talent = function (spellID)
     -- local spellName
-    -- if type(spellID) == "number" then 
+    -- if type(spellID) == "number" then
     --     spellName = GetSpellInfo(spellID)
     -- elseif type(spellID) == "string" then
     --     spellName = spellID
@@ -66,28 +66,28 @@ helpers.Spell = function(id, opts)
         -- opts.idgroup = {}
         for _, i in ipairs(id) do
             if opts and not GetSpellInfo(i) then print(string.format("nrun: misssing spell #%d (%s)",i,opts.name)) return end
-            NugRunningConfig[i] = opts
+            NugRunningConfig.spells[i] = opts
             -- opts.idgroup[i] = true
         end
     else
         if opts and not GetSpellInfo(id) then print(string.format("nrun: misssing spell #%d (%s)",id,opts.name)) return end
-        NugRunningConfig[id] = opts
+        NugRunningConfig.spells[id] = opts
     end
 end
 helpers.AddSpell = helpers.Spell
 helpers.ModSpell = function(id, mods)
     if type(id) == "table" then
         for _, i in ipairs(id) do
-            apply_overrides(NugRunningConfig[i], mods)
+            apply_overrides(NugRunningConfig.spells[i], mods)
         end
     else
-        apply_overrides(NugRunningConfig[id], mods)
+        apply_overrides(NugRunningConfig.spells[id], mods)
     end
 end
 
 helpers.Cooldown = function(id, opts)
     if type(id) == "table" then id = id[1] end
-    if opts then 
+    if opts then
         opts.localname = GetSpellInfo(id)
         if not opts.localname then print("nrun: misssing spell #"..id) return end
     end
@@ -101,7 +101,7 @@ end
 
 
 helpers.Cast = function(id, opts)
-    if opts then 
+    if opts then
         opts.localname = GetSpellInfo(id)
         if not opts.localname then print("nrun: misssing spell #"..id) return end
     end

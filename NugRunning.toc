@@ -3,7 +3,7 @@
 ## Notes: Spelltimers
 ## Author: d87
 ## SavedVariablesPerCharacter: NRunDB_Char
-## SavedVariables: NRunDB_Global
+## SavedVariables: NRunDB_Global, NugRunningConfigCustom
 ## Version: @project-version@
 helpers.lua
 config.lua

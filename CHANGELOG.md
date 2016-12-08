@@ -1,3 +1,6 @@
+7.1.4:
+- New Options panel in Interface > AddOns tab
+
 7.1.3:
 - Absolute Corruption rework
 - BrM: BoC indicator on Keg Smash timer
