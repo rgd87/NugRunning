@@ -218,7 +218,7 @@ function NugRunningGUI.CreateCommonForm(self)
 
 	local disabled = AceGUI:Create("CheckBox")
 	disabled:SetLabel("Disabled")
-	disabled:SetRelativeWidth(0.6)
+	disabled:SetRelativeWidth(0.4)
 	disabled:SetCallback("OnValueChanged", function(self, event, value)
 		self.parent.opts["disabled"] = value
 	end)
@@ -226,6 +226,18 @@ function NugRunningGUI.CreateCommonForm(self)
 	-- disabled:SetHeight(36)
 	Form.controls.disabled = disabled
 	Form:AddChild(disabled)
+
+	local short = AceGUI:Create("EditBox")
+	short:SetLabel("Short Name")
+	-- short:SetFullWidth(true)
+	short:SetRelativeWidth(0.29)
+	short:SetCallback("OnEnterPressed", function(self, event, value)
+		self.parent.opts["short"] = value
+	end)
+	-- short.alignoffset = 60
+	-- short:SetHeight(32)
+	Form.controls.short = short
+	Form:AddChild(short)
 
 	local name = AceGUI:Create("EditBox")
 	name:SetLabel("Name")
@@ -251,18 +263,20 @@ function NugRunningGUI.CreateCommonForm(self)
 	Form.controls.duration = duration
 	Form:AddChild(duration)
 
-	local short = AceGUI:Create("EditBox")
-	short:SetLabel("Short Name")
-	-- short:SetFullWidth(true)
-	short:SetRelativeWidth(0.3)
-	short:SetCallback("OnEnterPressed", function(self, event, value)
-		self.parent.opts["short"] = value
+	local fixedlen = AceGUI:Create("EditBox")
+	fixedlen:SetLabel("|cff00ff00Fixed Duration|r")
+	fixedlen:SetRelativeWidth(0.2)
+	fixedlen:SetCallback("OnEnterPressed", function(self, event, value)
+		local v = tonumber(value)
+		if v and v > 0 then
+			self.parent.opts["fixedlen"] = v
+		else
+			self.parent.opts["fixedlen"] = nil
+			self:SetText("")
+		end
 	end)
-	-- short.alignoffset = 60
-	-- short:SetHeight(32)
-	Form.controls.short = short
-	Form:AddChild(short)
-
+	Form.controls.fixedlen = fixedlen
+	Form:AddChild(fixedlen)
 
 
 	local prio = AceGUI:Create("EditBox")
@@ -577,6 +591,8 @@ function NugRunningGUI.CreateCommonForm(self)
 	Form.controls.recast_mark = recast_mark
 	Form:AddChild(recast_mark)
 
+
+
     -- Frame:AddChild(Form)
     -- Frame.top = Form
 	return Form
@@ -628,6 +644,8 @@ function NugRunningGUI.FillForm(self, Form, class, category, id, opts, isEmptyFo
 
 	controls.tick:SetText(opts.tick)
 	controls.recast_mark:SetText(opts.recast_mark)
+	controls.fixedlen:SetText(opts.fixedlen)
+
 	if opts.overlay then
 		controls.overlay_start:SetText(opts.overlay[1])
 		controls.overlay_end:SetText(opts.overlay[2])
