@@ -283,7 +283,7 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
 
     if NRunDB.nameplates then
         local found
-        for _, opts in pairs(config) do
+        for _, opts in pairs(config.spells) do
             if opts.nameplates then found = true; break end
         end
         if found then
