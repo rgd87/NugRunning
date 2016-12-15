@@ -174,7 +174,15 @@ EventTimer({ event = "SPELL_SUMMON", spellID = 111898, name = "Grimoire: Felguar
 -- special timer for imps
 Spell( 104317 ,{ name = "Wild Imps", duration = 12, priority = 4, color = colors.PURPLE })
 
-Cooldown( 104316, { name = "Dreadstalkers", ghost = true, color = colors.DRED })
+Cooldown( 104316, { name = "Dreadstalkers", ghost = true, color = colors.DRED, recast_mark = 3, overlay = {0,3, 0.3}, onupdate = function(self)
+  local endTime = self.endTime
+  local remains = endTime - GetTime()
+  if remains > 3 then
+      self:SetCount(IsPlayerSpell(196272) and 4 or 2)
+  else
+      self:SetCount(0)
+  end
+end })
 -- EventTimer({ spellID = 104317, event = "SPELL_SUMMON", duration = 12, color = colors.WOO })
 
 Spell( 80240 ,{ name = "Havoc", nameplates = true, duration = 8, color = colors.PINK2, scale = 0.8, ghost = true })
