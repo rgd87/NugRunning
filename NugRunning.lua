@@ -6,7 +6,7 @@ NugRunning:SetScript("OnEvent", function(self, event, ...)
     return self[event](self, event, ...)
 end)
 
-local NRunDB
+NRunDB = nil
 local config = NugRunningConfig
 local spells = config.spells
 local activations = config.activations
@@ -1459,36 +1459,15 @@ local ParseOpts = function(str)
     str:gsub("(%w+)%s*=%s*%[%[(.-)%]%]", capture):gsub("(%w+)%s*=%s*(%S+)", capture)
     return t
 end
-function NugRunning.SlashCmd(msg)
-    k,v = string.match(msg, "([%w%+%-%=]+) ?(.*)")
-    if not k or k == "help" then print([[Usage:
-      |cff00ff00/nrun lock|r
-      |cff00ff00/nrun unlock|r
-      |cff00ff00/nrun reset|r
-      |cff00ff00/nrun clear|r
-      |cff00ff00/nrun charopts|r : enable character specific settings
-      |cff00ff00/nrun misses|r : toggle showing cooldowns
-      |cff00ff00/nrun cooldowns|r : toggle showing cooldowns
-      |cff00ff00/nrun targettext|r : toggle taget name text on bars
-      |cff00ff00/nrun spelltext|r : toggle spell text on bars
-      |cff00ff00/nrun shorttext|r : toggle using short names
-      |cff00ff00/nrun swaptarget|r : static order of target debuffs
-      |cff00ff00/nrun totems|r : static order of target debuffs
-      |cff00ff00/nrun nameplates|r : turn on nameplates
-      |cff00ff00/nrun dotticks|r : turn off dot ticks
-      |cff00ff00/nrun dotpower|r : turn off dotpower feature
-      |cff00ff00/nrun localnames|r: toggle localized spell names
-      |cff00ff00/nrun leaveghost|r: don't hide target/player ghosts in combat
-      |cff00ff00/nrun set|r width=120 height=20 growth=up/down
-      |cff00ff00/nrun setpos|r anchor=main point=CENTER parent=UIParent to=CENTER x=0 y=0]]
-    )end
-    if k == "unlock" then
+
+NugRunning.Commands = {
+    ["unlock"] = function()
         for name, anchor in pairs(NugRunning.anchors) do
             anchor:Show()
         end
         NugRunning:Unlock()
-    end
-    if k == "lock" then
+    end,
+    ["lock"] = function()
         for name, anchor in pairs(NugRunning.anchors) do
             anchor:Hide()
         end
@@ -1498,8 +1477,8 @@ function NugRunning.SlashCmd(msg)
             end
         end
         NugRunning.unlocked = nil
-    end
-    if k == "listauras" then
+    end,
+    ["listauras"] = function()
         local unit = v
         local h = false
         for i=1, 100 do
@@ -1516,8 +1495,8 @@ function NugRunning.SlashCmd(msg)
             print(string.format("    %s (id: %d)", name, spellID))
         end
 
-    end
-    if k == "reset" then
+    end,
+    ["reset"] = function()
         for name, anchor in pairs(NRunDB.anchors) do
             anchor.point = "CENTER"
             anchor.parent = "UIParent"
@@ -1527,18 +1506,18 @@ function NugRunning.SlashCmd(msg)
             local pos = anchor
             NugRunning.anchors[name]:SetPoint(pos.point, pos.parent, pos.to, pos.x, pos.y)
         end
-    end
-    if k == "clear" then
+    end,
+    ["clear"] = function()
         NugRunning:ClearTimers(true)
-    end
-    if k == "charopts" then
+    end,
+    ["charspec"] = function()
         local user = UnitName("player").."@"..GetRealmName()
         if NRunDB_Global.charspec[user] then NRunDB_Global.charspec[user] = nil
         else NRunDB_Global.charspec[user] = true
         end
-        print ("NRun: "..(NRunDB_Global.charspec[user] and "Enabled" or "Disabled").." character specific options for this toon. Will take effect after ui reload")
-    end
-    if k == "cooldowns" then
+        print ("NRun: "..(NRunDB_Global.charspec[user] and "Enabled" or "Disabled").." character specific options. Will take effect after /reload")
+    end,
+    ["cooldowns"] = function()
         if NRunDB.cooldownsEnabled then
             NugRunning:UnregisterEvent("SPELL_UPDATE_COOLDOWN")
             if NugRunning.cooldownTicker then NugRunning.cooldownTicker:Cancel() end
@@ -1550,54 +1529,54 @@ function NugRunning.SlashCmd(msg)
         end
         NRunDB.cooldownsEnabled = not NRunDB.cooldownsEnabled
         print("NRun cooldowns "..(NRunDB.cooldownsEnabled and "enabled" or "disabled"))
-    end
-    if k == "targettext" then
+    end,
+    ["targettext"] = function()
         NRunDB.targetTextEnabled = not NRunDB.targetTextEnabled
         print("NRun target name text "..(NRunDB.targetTextEnabled and "enabled" or "disabled"))
-    end
-    if k == "spelltext" then
+    end,
+    ["spelltext"] = function()
         NRunDB.spellTextEnabled = not NRunDB.spellTextEnabled
         print("NRun spell text "..(NRunDB.spellTextEnabled and "enabled" or "disabled"))
-    end
-    if k == "leaveghost" then
+    end,
+    ["leaveghost"] = function()
         NRunDB.leaveGhost = not NRunDB.leaveGhost
         leaveGhost = NRunDB.leaveGhost
         print("NRun leaveghost "..(NRunDB.leaveGhost and "enabled" or "disabled"))
-    end
-    if k == "shorttext" then
+    end,
+    ["shorttext"] = function()
         NRunDB.shortTextEnabled = not NRunDB.shortTextEnabled
         print("NRun short spell text "..(NRunDB.shortTextEnabled and "enabled" or "disabled"))
-    end
-    if k == "localnames" then
+    end,
+    ["localnames"] = function()
         NRunDB.localNames = not NRunDB.localNames
         print("NRun localized spell names "..(NRunDB.localNames and "enabled" or "disabled"))
-    end
-    if k == "misses" then
+    end,
+    ["misses"] = function()
         NRunDB.missesEnabled = not NRunDB.missesEnabled
         print("NRun miss timers "..(NRunDB.missesEnabled and "enabled" or "disabled"))
-    end
-    if k == "swaptarget" then
+    end,
+    ["swaptarget"] = function()
         NRunDB.swapTarget = not NRunDB.swapTarget
         NugRunning:SetupArrange()
         print("Target swapping turned "..(NRunDB.swapTarget and "on" or "off"))
-    end
-    if k == "totems" then
+    end,
+    ["totems"] = function()
         NRunDB.totems = not NRunDB.totems
         print("Totems turned "..(NRunDB.swapTarget and "on" or "off")..". Will take effect after /reload")
-    end
-    if k == "nameplates" then
+    end,
+    ["nameplates"] = function()
         NRunDB.nameplates = not NRunDB.nameplates
         print("Nameplates turned "..(NRunDB.nameplates and "on" or "off")..". Will take effect after /reload")
-    end
-    if k == "dotticks" then
+    end,
+    ["dotticks"] = function()
         NRunDB.dotticks = not NRunDB.dotticks
         print("Dot ticks turned "..(NRunDB.dotticks and "on" or "off")..". Will take effect after /reload")
-    end
-    if k == "dotpower" then
+    end,
+    ["dotpower"] = function()
         NRunDB.dotpower = not NRunDB.dotpower
         print("Dotpower turned "..(NRunDB.dotpower and "on" or "off")..". Will take effect after /reload")
-    end
-    if k == "set" then
+    end,
+    ["set"] = function()
         local p = ParseOpts(v)
         NRunDB.width = p["width"] or NRunDB.width
         NRunDB.height = p["height"] or NRunDB.height
@@ -1621,8 +1600,8 @@ function NugRunning.SlashCmd(msg)
             NugRunning:SetupArrange()
             NugRunning:ArrangeTimers()
         end
-    end
-    if k == "setpos" then
+    end,
+    ["setpos"] = function()
         local p = ParseOpts(v)
         local aname = p["anchor"]
         local anchor = NRunDB.anchors[aname]
@@ -1634,8 +1613,8 @@ function NugRunning.SlashCmd(msg)
         anchor.y = p["y"] or anchor.y
         local pos = anchor
         NugRunning.anchors[aname]:SetPoint(pos.point, pos.parent, pos.to, pos.x, pos.y)
-    end
-    if k == "debug" then
+    end,
+    ["debug"] = function()
         if not NugRunning.debug then
             NugRunning.debug = CreateFrame("Frame")
             NugRunning.debug:SetScript("OnEvent",function( self, event, timestamp, eventType, hideCaster,
@@ -1646,11 +1625,45 @@ function NugRunning.SlashCmd(msg)
                 if isSrcPlayer then print (spellID, spellName, eventType, srcFlags, srcGUID,"->",dstGUID, amount) end
             end)
         end
-        NugRunning.debug:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+        if not NugRunning.debug.enabled then
+            NugRunning.debug:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+            NugRunning.debug.enabled = true
+            print("[NugRunning] Enabled combat log event display")
+        else
+            NugRunning.debug:UnregisterAllEvents()
+            NugRunning.debug.enabled = false
+            print("[NugRunning] Disabled combat log event display")
+        end
+    end,
+}
+
+function NugRunning.SlashCmd(msg)
+    k,v = string.match(msg, "([%w%+%-%=]+) ?(.*)")
+    if not k or k == "help" then print([[Usage:
+      |cff00ff00/nrun lock|r
+      |cff00ff00/nrun unlock|r
+      |cff00ff00/nrun reset|r
+      |cff00ff00/nrun clear|r
+      |cff00ff00/nrun debug|r
+      |cff00ff00/nrun charspec|r : enable character specific settings
+      |cff00ff00/nrun misses|r : toggle showing misses (immunes, resists)
+      |cff00ff00/nrun cooldowns|r : toggle showing cooldowns
+      |cff00ff00/nrun targettext|r : toggle taget name text on bars
+      |cff00ff00/nrun spelltext|r : toggle spell text on bars
+      |cff00ff00/nrun shorttext|r : toggle using short names
+      |cff00ff00/nrun swaptarget|r : static order of target debuffs
+      |cff00ff00/nrun totems|r : static order of target debuffs
+      |cff00ff00/nrun nameplates|r : turn on nameplates
+      |cff00ff00/nrun dotticks|r : turn off dot ticks
+      |cff00ff00/nrun localnames|r: toggle localized spell names
+      |cff00ff00/nrun leaveghost|r: don't hide target/player ghosts in combat
+      |cff00ff00/nrun set|r width=150 height=20 growth=up/down
+      |cff00ff00/nrun setpos|r anchor=main point=CENTER parent=UIParent to=CENTER x=0 y=0]]
+    )end
+    if NugRunning.Commands[k] then
+        NugRunning.Commands[k](v)
     end
-    if k == "nodebug" then
-        NugRunning.debug:UnregisterAllEvents()
-    end
+
 end
 
 function NugRunning:CreateAnchor(name, opts)

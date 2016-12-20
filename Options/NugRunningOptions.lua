@@ -689,7 +689,7 @@ end
 
 
 
-function NugRunningGUI.Create( self )
+function NugRunningGUI.Create(self, name, parent )
     -- Create a container frame
     -- local Frame = AceGUI:Create("Frame")
     -- Frame:SetTitle("NugRunningGUI")
@@ -702,8 +702,8 @@ function NugRunningGUI.Create( self )
 	-- Frame:Hide()
 
 	local Frame = AceGUI:Create("BlizOptionsGroup")
-	Frame:SetName("NugRunning")
-	Frame:SetTitle("NugRunning Options")
+	Frame:SetName(name, parent)
+	Frame:SetTitle("NugRunning Spell List")
 	Frame:SetLayout("Fill")
 	-- Frame:SetHeight(500)
 	-- Frame:SetWidth(700)
@@ -930,7 +930,207 @@ function NugRunningGUI.Create( self )
     return Frame
 end
 
+local function MakeGeneralOptions()
+    local opt = {
+        type = 'group',
+        name = "NugRunning Settings",
+        order = 1,
+        args = {
+            -- charspec = {
+            --     type = 'toggle',
+            --     name = "Character-specific",
+            --     desc = "Switch between global/character configuration",
+            --     width = "full",
+            --     order = 0,
+            --     get = function(info)
+            --         local user = UnitName("player").."@"..GetRealmName()
+            --         return NRunDB_Global.charspec[user]
+            --     end,
+            --     set = function( info, v )
+            --         NugRunning.Commands.charspec()
+            --     end
+            -- },
+            anchors = {
+                type = "group",
+                name = "Anchors",
+                guiInline = true,
+                order = 2,
+                args = {
+                    unlock = {
+                        name = "Unlock",
+                        type = "execute",
+                        -- width = "half",
+                        desc = "Unlock anchor for dragging",
+                        func = function() NugRunning.Commands.unlock() end,
+                        order = 1,
+                    },
+                    lock = {
+                        name = "Lock",
+                        type = "execute",
+                        -- width = "half",
+                        desc = "Lock anchor",
+                        func = function() NugRunning.Commands.lock() end,
+                        order = 2,
+                    },
+                    reset = {
+                        name = "Reset",
+                        type = "execute",
+                        desc = "Reset anchor",
+                        func = function() NugRunning.Commands.reset() end,
+                        order = 3,
+                    },
+                },
+            }, --
+            sizeSettings = {
+                type = "group",
+                name = " ",
+                guiInline = true,
+                order = 3,
+                args = {
+                    width = {
+                        name = "Width",
+                        type = "range",
+                        get = function(info) return NRunDB.width end,
+                        set = function(info, v)
+                            NRunDB.width = v
+                            for i,timer in ipairs(NugRunning.timers) do
+                                timer:Resize(NRunDB.width, NRunDB.height)
+                            end
+                        end,
+                        min = 80,
+                        max = 400,
+                        step = 5,
+                        order = 1,
+                    },
+                    height = {
+                        name = "Height",
+                        type = "range",
+                        get = function(info) return NRunDB.height end,
+                        set = function(info, v)
+                            NRunDB.height = v
+                            for i,timer in ipairs(NugRunning.timers) do
+                                timer:Resize(NRunDB.width, NRunDB.height)
+                            end
+                        end,
+                        min = 10,
+                        max = 50,
+                        step = 1,
+                        order = 2,
+                    },
+                    growth = {
+                        name = "Growth Direction",
+                        type = 'select',
+                        order = 3,
+                        values = {
+                            up = "Up",
+                            down = "Down",
+                        },
+                        get = function(info) return NRunDB.growth end,
+                        set = function( info, v )
+                            NRunDB.growth = v
+                            for i,timer in ipairs(NugRunning.timers) do
+                                timer:ClearAllPoints()
+                            end
+                            NugRunning:SetupArrange()
+                            NugRunning:ArrangeTimers()
+                        end,
+                    },
+                },
+            },
+            timerOptions = {
+                type = "group",
+                name = "Timers",
+                guiInline = true,
+                order = 4,
+                args = {
+
+                    spellText = {
+                        name = "Show Spell Names",
+                        type = "toggle",
+                        desc = "Display spell name on timers",
+                        get = function(info) return NRunDB.spellTextEnabled end,
+                        set = function(info, v) NRunDB.spellTextEnabled = not NRunDB.spellTextEnabled end,
+                        order = 1,
+                    },
+                    localNames = {
+                        name = "Localized Spell Names",
+                        type = "toggle",
+                        desc = "Ignore custom names and always show native spell names",
+                        get = function(info) return NRunDB.localNames end,
+                        set = function(info, v) NRunDB.localNames = not NRunDB.localNames end,
+                        order = 2,
+                    },
+                    misses = {
+                        name = "Misses",
+                        type = "toggle",
+                        desc = "Show short notification when spell is resisted/missed",
+                        get = function(info) return NRunDB.missesEnabled end,
+                        set = function(info, v) NRunDB.missesEnabled = not NRunDB.missesEnabled end,
+                        order = 3,
+                    },
+                    nameplates = {
+                        name = "Nameplate Timers",
+                        type = "toggle",
+                        desc = "Mirror flagged spell timers on nameplates",
+                        get = function(info) return NRunDB.nameplates end,
+                        set = function(info, v) NRunDB.nameplates = not NRunDB.nameplates end,
+                        order = 4,
+                    },
+                    totems = {
+                        name = "Totems",
+                        type = "toggle",
+                        desc = "Display timers for totems (or other similar summons)",
+                        get = function(info) return NRunDB.totems end,
+                        set = function(info, v) NRunDB.totems = not NRunDB.totems end,
+                        order = 5,
+                    },
+                },
+            },
+            debug = {
+                name = "Toggle Combat Log Data",
+                type = "execute",
+                width = "double",
+                desc = "Print occurring combat log events in chat",
+                func = function() NugRunning.Commands.debug() end,
+                order = 7,
+            },
+        },
+    }
+
+    local AceConfigRegistry = LibStub("AceConfigRegistry-3.0")
+    AceConfigRegistry:RegisterOptionsTable("NugRunningGeneral", opt)
+
+    local AceConfigDialog = LibStub("AceConfigDialog-3.0")
+    local panelFrame = AceConfigDialog:AddToBlizOptions("NugRunningGeneral", "General", "NugRunning")
+
+    return panelFrame
+end
+
+
+
+
+
+
+
+
+
+
 do
-	NugRunningGUI.frame = NugRunningGUI:Create()
-	InterfaceOptions_AddCategory(NugRunningGUI.frame.frame);
+    local f = CreateFrame('Frame', "NugRunningOptions", InterfaceOptionsFrame)
+    f.name = "NugRunning"
+    InterfaceOptions_AddCategory(f);
+
+    f.general = MakeGeneralOptions()
+
+    NugRunningGUI.frame = NugRunningGUI:Create("Spell List", "NugRunning")
+    f.spell_list = NugRunningGUI.frame.frame
+    InterfaceOptions_AddCategory(f.spell_list);
+
+    f:Hide()
+    f:SetScript("OnShow", function(self)
+            self:Hide();
+            local list = self.spell_list
+            InterfaceOptionsFrame_OpenToCategory (list)
+            InterfaceOptionsFrame_OpenToCategory (list)
+    end)
 end
