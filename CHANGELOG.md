@@ -1,3 +1,9 @@
+7.1.6:
+- Added general settings category for GUI
+
+7.1.5:
+- Nameplate bugfix
+
 7.1.4:
 - New Options panel in Interface > AddOns tab
 
