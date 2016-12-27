@@ -418,8 +418,16 @@ function NugRunning.SPELL_ACTIVATION_OVERLAY_GLOW_SHOW(self,event, spellID)
         else
             local timer = gettimer(active,spellID,UnitGUID("player"),"COOLDOWN")
             if timer then
-                timer.effect:SetEffect(opts.effect)
-                timer.effect:Show()
+                if opts.effect then
+                    timer.effect:SetEffect(opts.effect)
+                    timer.effect:Show()
+                end
+                local arrow = opts.arrow
+                if arrow then
+                    local color = arrow[3] and arrow or {1,0,0}
+                    timer.arrow:SetVertexColor(unpack(color))
+                    timer.arrow:Show()
+                end
             end
         end
     end
@@ -433,8 +441,13 @@ function NugRunning.SPELL_ACTIVATION_OVERLAY_GLOW_HIDE(self,event, spellID)
         else
             local timer = gettimer(active,spellID,UnitGUID("player"),"COOLDOWN")
             if timer then
-                timer.effect:SetEffect(opts.effect)
-                timer.effect:Hide()
+                if opts.effect then
+                    timer.effect:SetEffect(opts.effect)
+                    timer.effect:Hide()
+                end
+                if opts.arrow then
+                    timer.arrow:Hide()
+                end
             end
         end
     end
