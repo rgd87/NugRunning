@@ -1,3 +1,6 @@
+7.1.7:
+- Revenge changes for 7.1.5
+
 7.1.6:
 - Added general settings category for GUI
 
