@@ -727,7 +727,7 @@ Cooldown( 121253, { name = "", fixedlen = 8, overlay = {1.1, 4.1, .30, true}, re
                 self.recast_mark  = nil
             end
         end })
-Cooldown( 115181 ,{ name = "Breath of Fire", priority = 6, color = colors.RED, ghost = true, ghosteffect = effects.JUDGEMENT })
+Cooldown( 115181 ,{ name = "Breath of Fire", priority = 6, color = colors.RED, ghost = true, resetable = true, ghosteffect = effects.JUDGEMENT })
 -- Spell( 123725 ,{ name = "Breath of Fire",  priority = 11, shine = true, color = colors.RED, multiTarget = true, duration = 8 })
 Cooldown( 116847, { name = "Rushing Jade Wind", short = "", scale = .7, fixedlen = 8, color = colors.DTEAL, ghost = true, priority = 2 })
 
