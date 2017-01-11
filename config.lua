@@ -203,10 +203,11 @@ Spell( 104773,{ name = "Unending Resolve",duration = 12, color = colors.WOO2, gr
 
 Spell( 86211 ,{ name = "Soul Swap", duration = 20, shine = true, color = colors.BLACK })
 
-Spell( 196104 ,{ name = "Mana Tap", duration = 20, shine = true, color = colors.BLACK })
+Spell( 235156 ,{ name = "Life Tap", duration = 20, shine = true, color = colors.BLACK })
 
 Spell( 198590 ,{ name = "Drain Soul", tick = 1, overlay = {"tick", "tickend"},  priority = 14, duration = 6, color = colors.CURSE })
-Spell( 689    ,{ name = "Drain Life", tick = 1, overlay = {"tick", "tickend"},  priority = 14, duration = 6, color = colors.CURSE })
+Spell( 234153 ,{ name = "Drain Life", tick = 1, overlay = {"tick", "tickend"},  priority = 14, duration = 6, color = colors.CURSE })
+Cast( 235155  ,{ name = "Malefic Grasp", priority = 14, color = colors.CURSE })
 
 local normalize_dots_to = nil--26
 

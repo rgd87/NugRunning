@@ -1,3 +1,6 @@
+7.1.8:
+- updates for Warlock 7.1.5 changes
+
 7.1.7:
 - Revenge changes for 7.1.5
 
