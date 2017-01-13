@@ -484,7 +484,7 @@ function NugRunning.SPELL_UPDATE_COOLDOWN(self,event, periodic)
         end
         if duration then
             if duration <= 1.5 then
-                if timer and (active[timer] and opts.resetable) then
+                if timer and active[timer] then
                     local oldcdrem = timer.endTime - GetTime()
                     if oldcdrem > duration or oldcdrem < 0 then
                         if not timer.isGhost then

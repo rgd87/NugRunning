@@ -615,11 +615,11 @@ function NugRunningGUI.FillForm(self, Form, class, category, id, opts, isEmptyFo
 	controls.disabled:SetValue(false)
 	controls.disabled:SetDisabled(isEmptyForm)
 
-	controls.name:SetText(opts.name)
+	controls.name:SetText(opts.name or "")
 	controls.priority:SetText(opts.priority)
 	controls.group:SetValue(opts.group or "default")
 	controls.short:SetText(opts.short)
-	controls.duration:SetText(opts.duration)
+	controls.duration:SetText((type(opts.duration) == "function" and "<func>") or opts.duration)
 	controls.scale:SetValue(opts.scale or 1)
 	controls.scale_until:SetText(opts.scale_until)
 	controls.shine:SetValue(opts.shine)
