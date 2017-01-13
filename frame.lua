@@ -512,12 +512,16 @@ NugRunning.ConstructTimerBar = function(width, height)
     pmf.oz = 0
 
     pmf.SetEffect = function(self, effect)
+        if type(effect) == "string" then
+            effect = NugRunningConfig.effects[effect]
+        end
         self.model_path = effect.path
         local scale = effect.scale or 1
         self:SetSize(height*scale, height*scale)
         local x = effect.x or 0
         local y = effect.y or 0
         pmf:SetPoint("CENTER", ic, "LEFT", x, y)
+        self:Hide()
     end
 
     pmf:SetScript("OnHide", ResetTransformations)

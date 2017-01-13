@@ -715,6 +715,7 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
     local effect = opts.effect
     if effect then
         timer.effect:SetEffect(effect)
+        timer.effect:Show()
     else
         timer.effect:Hide()
     end
@@ -819,6 +820,7 @@ function NugRunning.RefreshTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID,
     local effect = opts.effect
     if effect then
         timer.effect:SetEffect(effect)
+        timer.effect:Show()
     else
         timer.effect:Hide()
     end

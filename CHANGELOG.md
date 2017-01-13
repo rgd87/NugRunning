@@ -1,3 +1,10 @@
+7.1.9:
+- GUI Tooltips
+- all spells are now resetable by default
+- 3D effect option added to GUI
+- scale when set to 1 in GUI bug fixed
+- settings for spells variable duration bug fixed
+
 7.1.8:
 - updates for Warlock 7.1.5 changes
 
