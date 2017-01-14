@@ -234,7 +234,7 @@ function NugRunningGUI.CreateCommonForm(self)
 	Form:AddChild(spellID)
 
 	local disabled = AceGUI:Create("CheckBox")
-	disabled:SetLabel("|cffff5555Disabled|r")
+	disabled:SetLabel("Disabled")
 	disabled:SetRelativeWidth(0.4)
 	disabled:SetCallback("OnValueChanged", function(self, event, value)
         if value == false then value = nil end
