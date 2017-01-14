@@ -181,11 +181,15 @@ local function MergeTable(t1, t2)
     if not t2 then return false end
     for k,v in pairs(t2) do
         if type(v) == "table" then
-            if t1[k] == nil then
-                t1[k] = CopyTable(v)
-            else
-                MergeTable(t1[k], v)
-            end
+            -- if v.disabled then
+                -- t1[k] = nil
+            -- else
+                if t1[k] == nil then
+                    t1[k] = CopyTable(v)
+                else
+                    MergeTable(t1[k], v)
+                end
+            -- end
         else
             t1[k] = v
         end
@@ -544,6 +548,8 @@ end
 local helpful = "HELPFUL"
 local harmful = "HARMFUL"
 function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID, spellName, opts, timerType, override, amount, from_unitaura)  -- duration override
+    if opts.disabled then return end
+
     if opts.target and dstGUID ~= UnitGUID(opts.target) then return end
     if timerType == "MISSED" then
         if override == "IMMUNE" then return end

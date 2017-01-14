@@ -1,3 +1,6 @@
+7.1.10:
+- Disabling spells in GUI now works properly
+
 7.1.9:
 - GUI Tooltips
 - all spells are now resetable by default

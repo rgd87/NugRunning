@@ -35,7 +35,7 @@ function NugRunningGUI.GenerateCategoryTree(self, isGlobal, category)
 			-- print(opts.name, custom_opts)
 			if not custom_opts or not next(custom_opts) then
 				status = nil
-			elseif custom_opts["disabled"] then
+			elseif custom_opts.disabled then
 				status = "|cffff0000[D] |r"
 				order = 6
 			elseif not NugRunningConfig[category][spellID] then
@@ -180,9 +180,13 @@ function NugRunningGUI.CreateCommonForm(self)
 
 
 		if default_opts then
-			NugRunning.RemoveDefaults(delta, default_opts)
+            NugRunning.RemoveDefaults(delta, default_opts)
 			NugRunningConfigMerged[category][spellID] = CopyTable(default_opts)
-			NugRunning.MergeTable(NugRunningConfigMerged[category][spellID], delta)
+            -- if delta.disabled then
+                -- NugRunningConfigMerged[category][spellID] = nil
+            -- else
+            NugRunning.MergeTable(NugRunningConfigMerged[category][spellID], delta)
+            -- end
 		else
 			NugRunningConfigMerged[category][spellID] = delta
 		end
@@ -230,9 +234,10 @@ function NugRunningGUI.CreateCommonForm(self)
 	Form:AddChild(spellID)
 
 	local disabled = AceGUI:Create("CheckBox")
-	disabled:SetLabel("Disabled")
+	disabled:SetLabel("|cffff5555Disabled|r")
 	disabled:SetRelativeWidth(0.4)
 	disabled:SetCallback("OnValueChanged", function(self, event, value)
+        if value == false then value = nil end
 		self.parent.opts["disabled"] = value
 	end)
 	-- disabled.alignoffset = 10
@@ -686,7 +691,7 @@ function NugRunningGUI.FillForm(self, Form, class, category, id, opts, isEmptyFo
 	local controls = Form.controls
 	controls.spellID:SetText(id or "")
 	controls.spellID:SetDisabled(not isEmptyForm)
-	controls.disabled:SetValue(false)
+	controls.disabled:SetValue(opts.disabled)
 	controls.disabled:SetDisabled(isEmptyForm)
 
 	controls.name:SetText(opts.name or "")
