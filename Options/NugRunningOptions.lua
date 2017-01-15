@@ -177,6 +177,7 @@ function NugRunningGUI.CreateCommonForm(self)
 		if opts.affiliation == COMBATLOG_OBJECT_AFFILIATION_MINE then opts.affiliation = nil end
 		-- PRESAVE = p.opts
 		local delta = CopyTable(opts)
+        delta.timer = nil -- important, clears runtime data
 
 
 		if default_opts then
@@ -459,7 +460,7 @@ function NugRunningGUI.CreateCommonForm(self)
 	maxtimers:SetCallback("OnEnterPressed", function(self, event, value)
 		local v = tonumber(value)
 		if v and v > 0 then
-			self.parent.opts["maxtimers"] = value
+			self.parent.opts["maxtimers"] = v
             self.parent.controls.multiTarget:SetValue(false)
             self.parent.opts["multiTarget"] = false
             self.parent.controls.singleTarget:SetValue(false)
