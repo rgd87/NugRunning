@@ -749,7 +749,7 @@ DotSpell( 55078 ,{ name = "Blood Plague", ghost = true, color = colors.PURPLE, p
 Spell( 191587,{ name = "Virulent Plague", ghost = true, color = colors.PURPLE, priority = 9, singleTarget = true, duration = 21 })
 -- Spell( 43265 ,{ name = "Death and Decay", short = "DnD", color = colors.RED, duration = 10, target = "player" })
 Cooldown( 43265 ,{ name = "Death and Decay", color = colors.PINKIERED, priority = 8, resetable = true, ghost = true, minduration = 11 })
-Cooldown( 196771,{ name = "Remorseless Winter", color = colors.DRED, ghost = true })
+Cooldown( 196770,{ name = "Remorseless Winter", color = colors.DRED, ghost = true })
 Spell( 156004 ,{ name = "Defile", color = colors.DPURPLE, duration = 10 })
 
 Spell( 195181,{ name = "Bone Shield", duration = 100500, timeless = true, charged = true, maxcharge = 10, color = colors.CURSE, group = "buffs", priority = -100 })
