@@ -170,7 +170,7 @@ function NugRunningGUI.CreateCommonForm(self)
 		if opts.ghost == false then opts.ghost = nil end
 		if opts.singleTarget == false then opts.singleTarget = nil end
 		if opts.multiTarget == false then opts.multiTarget = nil end
-		if opts.scale == default_opts.scale then opts.scale = nil end
+		if default_opts and (opts.scale == default_opts.scale) then opts.scale = nil end
 		if opts.shine == false then opts.shine = nil end
 		if opts.shinerefresh == false then opts.shinerefresh = nil end
 		if opts.nameplates == false then opts.nameplates = nil end
@@ -460,6 +460,10 @@ function NugRunningGUI.CreateCommonForm(self)
 		local v = tonumber(value)
 		if v and v > 0 then
 			self.parent.opts["maxtimers"] = value
+            self.parent.controls.multiTarget:SetValue(false)
+            self.parent.opts["multiTarget"] = false
+            self.parent.controls.singleTarget:SetValue(false)
+            self.parent.opts["singleTarget"] = false
 		else
 			self.parent.opts["maxtimers"] = nil
 			self:SetText("")
@@ -477,6 +481,9 @@ function NugRunningGUI.CreateCommonForm(self)
 		self.parent.opts["singleTarget"] = value
 		if value then
 			self.parent.controls.multiTarget:SetValue(false)
+            self.parent.opts["multiTarget"] = false
+            self.parent.controls.maxtimers:SetText("")
+            self.parent.opts["maxtimers"] = nil
 		end
 	end)
 	Form.controls.singleTarget = singleTarget
@@ -490,6 +497,9 @@ function NugRunningGUI.CreateCommonForm(self)
 		self.parent.opts["multiTarget"] = value
 		if value then
 			self.parent.controls.singleTarget:SetValue(false)
+            self.parent.opts["singleTarget"] = false
+            self.parent.controls.maxtimers:SetText("")
+            self.parent.opts["maxtimers"] = nil
 		end
 	end)
 	Form.controls.multiTarget = multiTarget

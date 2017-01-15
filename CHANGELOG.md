@@ -1,3 +1,7 @@
+7.1.11:
+- Bugfix for spell creation
+- Added proper ST/MT/MaxTimers setting validation
+
 7.1.10:
 - Disabling spells in GUI now works properly
 
