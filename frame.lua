@@ -56,11 +56,14 @@ end
 local function getbarpos(timer, time)
     local duration = timer.endTime - (timer._startTimeModified or timer.startTime)
     if duration == 0 then return 0 end
+    local progress
     if time >= 0 then
-        return time / duration * timer.bar:GetWidth(), time / duration
+        progress = time / duration
     else
-        return (duration+time) / duration * timer.bar:GetWidth(), (duration+time) / duration
+        progress = (duration+time) / duration
     end
+    if progress > 1 then progress = 1 end
+    return progress * timer.bar:GetWidth(), progress
 end
 
 function TimerBar.MoveMark(self, time)
