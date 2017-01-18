@@ -70,6 +70,7 @@ function NugRunningGUI.CreateNewTimerForm(self)
     -- Form:SetHeight(0)
     Form:SetLayout("Flow")
 	Form.opts = {}
+    Form.controls = {}
 
 	Form.ShowNewTimer = function(self, category)
 		assert(category)
@@ -93,6 +94,7 @@ function NugRunningGUI.CreateNewTimerForm(self)
 		self.parent:ShowNewTimer("spells")
 	end)
 	Form:AddChild(newspell)
+    Form.controls.newspell = newspell
 
 	local newcooldown = AceGUI:Create("Button")
 	newcooldown:SetText("New Cooldown")
@@ -101,6 +103,7 @@ function NugRunningGUI.CreateNewTimerForm(self)
 		self.parent:ShowNewTimer("cooldowns")
 	end)
 	Form:AddChild(newcooldown)
+    Form.controls.newcooldown = newcooldown
 
 	local newcast = AceGUI:Create("Button")
 	newcast:SetText("New Cast")
@@ -109,6 +112,7 @@ function NugRunningGUI.CreateNewTimerForm(self)
 		self.parent:ShowNewTimer("casts")
 	end)
 	Form:AddChild(newcast)
+    Form.controls.newcast = newcast
 
 	return Form
 end
@@ -907,6 +911,14 @@ function NugRunningGUI.Create(self, name, parent )
 			end
 			NewTimerForm.class = class
 			Frame.rpane:AddChild(NewTimerForm)
+            if class == "GLOBAL" then
+                NewTimerForm.controls.newcooldown:SetDisabled(true)
+                NewTimerForm.controls.newcast:SetDisabled(true)
+            else
+                NewTimerForm.controls.newcooldown:SetDisabled(false)
+                NewTimerForm.controls.newcast:SetDisabled(false)
+            end
+
 			return
 		end
 
