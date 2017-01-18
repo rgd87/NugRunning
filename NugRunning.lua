@@ -152,6 +152,8 @@ local function SetupDefaults(t, defaults)
         if type(v) == "table" then
             if t[k] == nil then
                 t[k] = CopyTable(v)
+            elseif t[k] == false then
+                t[k] = false --pass
             else
                 SetupDefaults(t[k], v)
             end
@@ -194,6 +196,13 @@ local function MergeTable(t1, t2)
             t1[k] = v
         end
     end
+    -- if mergeEmptySlots   then
+    --     for k,v in pairs(t1) do
+    --         if t1[k] and t2[k] == false then
+    --             t1[k] = nil
+    --         end
+    --     end
+    -- end
 end
 NugRunning.MergeTable = MergeTable
 

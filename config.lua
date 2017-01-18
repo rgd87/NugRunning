@@ -205,10 +205,11 @@ Spell( 104773,{ name = "Unending Resolve",duration = 12, color = colors.WOO2, gr
 
 Spell( 86211 ,{ name = "Soul Swap", duration = 20, shine = true, color = colors.BLACK })
 
-Spell( 196104 ,{ name = "Mana Tap", duration = 20, shine = true, color = colors.BLACK })
+Spell( 235156 ,{ name = "Life Tap", duration = 20, shine = true, color = colors.BLACK })
 
 Spell( 198590 ,{ name = "Drain Soul", tick = 1, overlay = {"tick", "tickend"},  priority = 14, duration = 6, color = colors.CURSE })
-Spell( 689    ,{ name = "Drain Life", tick = 1, overlay = {"tick", "tickend"},  priority = 14, duration = 6, color = colors.CURSE })
+Spell( 234153 ,{ name = "Drain Life", tick = 1, overlay = {"tick", "tickend"},  priority = 14, duration = 6, color = colors.CURSE })
+Cast( 235155  ,{ name = "Malefic Grasp", priority = 14, color = colors.CURSE })
 
 local normalize_dots_to = nil--26
 
@@ -400,7 +401,7 @@ Spell( 185311 ,{ name = "Crimson Vial", group ="buffs", shine = true, color = co
 Spell( 5171  ,{ name = "Slice and Dice", shinerefresh = true, fixedlen = 24, short = "SnD", color = colors.PURPLE,
     duration = function() return (6 + GetCP()*6) end,
 }) -- SnD fixedlen set to match Rupture maximum duration
--- effect = "AEGWYNN", ghosteffect = "JUDGEMENT, 
+-- effect = "AEGWYNN", ghosteffect = "JUDGEMENT,
 Spell( 212283  ,{ name = "Symbols of Death", shinerefresh = true, glowtime = 6, overlay = {0, 10.5, 0.15}, recast_mark = 10.5, ghost = true, short = "", duration = 35, color = colors.PINKIERED })
 
 Spell( 206237  ,{ name = "Enveloping Shadows", shinerefresh = true, shine = true, duration = 15, color = colors.PURPLE })
@@ -881,7 +882,7 @@ Cooldown( 84714, { name = "Frozen Orb", color = colors.WOO, scale_until = 10, gh
 Spell( 157913,{ name = "Evanesce", duration = 3, color = colors.PINK })
 Spell( 11426 ,{ name = "Ice Barrier", group = "buffs", duration = 60, color = colors.LGREEN })
 Spell( 108839 ,{ name = "Ice Floes", duration = 15, color = colors.CURSE })
-Spell( 115610 ,{ name = "Temporal Shield", duration = 4, color = colors.LGREEN })
+-- Spell( 115610 ,{ name = "Temporal Shield", duration = 4, color = colors.LGREEN })
 
 Spell( 32612 ,{ name = "Invisibility",duration = 20 })
 Spell( 110960 ,{ name = "Greater Invisibility", duration = 20, color = colors.CURSE })
@@ -935,7 +936,6 @@ Spell( 853 ,{ name = "Hammer of Justice", duration = 6, short = "HoJ", color = c
 Spell( 183218 ,{ name = "Hand of Hindrance", duration = 10, short = "Hindrance", color = colors.BROWN })
 
 Cooldown( 184575 ,{ name = "Blade of Justice", tickshine = true, ghost = true, priority = 9, fixedlen = 8, color = colors.WOO })
-Cooldown( 202270 ,{ name = "Blade of Justice", tickshine = true, ghost = true, priority = 9, fixedlen = 8, color = colors.WOO })
 Cooldown( 35395 ,{ name = "Crusader Strike", tick = 1.5, tickshine = true, overlay = {"tick", "end"}, ghost = true, short = "Crusader", priority = 10, fixedlen = 8, color = colors.CURSE })
 Cooldown( 204019 ,{ name = "Blessed Hammer", tick = 1.5, tickshine = true, overlay = {"tick", "end"}, ghost = true, priority = 10, fixedlen = 8, color = colors.CURSE })
 

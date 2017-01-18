@@ -1,3 +1,8 @@
+7.1.12:
+- GUI bugfixes
+- Blade of Justice #202270 removed for 7.1.5
+- Temporal Shield removed for 7.1.5
+
 7.1.11:
 - Bugfix for spell creation
 - Added proper ST/MT/MaxTimers setting validation

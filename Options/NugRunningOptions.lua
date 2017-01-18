@@ -127,7 +127,9 @@ local function AddTooltip(widget, tooltipText)
     widget:SetCallback("OnLeave", tooltipOnLeave)
 end
 
-
+local clean = function(delta, default_opts, property, emptyValue)
+    if delta[property] == emptyValue and default_opts[property] == nil then delta[property] = nil end
+end
 
 function NugRunningGUI.CreateCommonForm(self)
 	local Form = AceGUI:Create("ScrollFrame")
@@ -167,14 +169,28 @@ function NugRunningGUI.CreateCommonForm(self)
 		end
 
         local default_opts = NugRunningConfig[category][spellID]
-		if opts.ghost == false then opts.ghost = nil end
-		if opts.singleTarget == false then opts.singleTarget = nil end
-		if opts.multiTarget == false then opts.multiTarget = nil end
-		if default_opts and (opts.scale == default_opts.scale) then opts.scale = nil end
-		if opts.shine == false then opts.shine = nil end
-		if opts.shinerefresh == false then opts.shinerefresh = nil end
-		if opts.nameplates == false then opts.nameplates = nil end
-		if opts.affiliation == COMBATLOG_OBJECT_AFFILIATION_MINE then opts.affiliation = nil end
+        if default_opts then
+            clean(opts, default_opts, "ghost", false)
+            clean(opts, default_opts, "singleTarget", false)
+            clean(opts, default_opts, "multiTarget", false)
+            clean(opts, default_opts, "scale", 1)
+            clean(opts, default_opts, "shine", false)
+            clean(opts, default_opts, "shinerefresh", false)
+            clean(opts, default_opts, "nameplates", false)
+            clean(opts, default_opts, "group", "default")
+            clean(opts, default_opts, "affiliation", COMBATLOG_OBJECT_AFFILIATION_MINE)
+            clean(opts, default_opts, "fixedlen", false)
+            clean(opts, default_opts, "priority", 0)
+            clean(opts, default_opts, "scale_until", false)
+            clean(opts, default_opts, "maxtimers", false)
+            clean(opts, default_opts, "color2", false)
+            clean(opts, default_opts, "arrow", false)
+            clean(opts, default_opts, "overlay", false)
+            clean(opts, default_opts, "tick", false)
+            clean(opts, default_opts, "recast_mark", false)
+            clean(opts, default_opts, "effect", "NONE")
+            clean(opts, default_opts, "ghosteffect", "NONE")
+        end
 		-- PRESAVE = p.opts
 		local delta = CopyTable(opts)
         delta.timer = nil -- important, clears runtime data
@@ -186,7 +202,7 @@ function NugRunningGUI.CreateCommonForm(self)
             -- if delta.disabled then
                 -- NugRunningConfigMerged[category][spellID] = nil
             -- else
-            NugRunning.MergeTable(NugRunningConfigMerged[category][spellID], delta)
+            NugRunning.MergeTable(NugRunningConfigMerged[category][spellID], delta, true)
             -- end
 		else
 			NugRunningConfigMerged[category][spellID] = delta
@@ -257,7 +273,7 @@ function NugRunningGUI.CreateCommonForm(self)
 	-- short:SetHeight(32)
 	Form.controls.short = short
 	Form:AddChild(short)
-    AddTooltip(short, "Shortened label to display")
+    AddTooltip(short, "Shortened label, overrides full name")
 
 	local name = AceGUI:Create("EditBox")
 	name:SetLabel("Name")
@@ -293,7 +309,7 @@ function NugRunningGUI.CreateCommonForm(self)
 		if v and v > 0 then
 			self.parent.opts["fixedlen"] = v
 		else
-			self.parent.opts["fixedlen"] = nil
+			self.parent.opts["fixedlen"] = false
 			self:SetText("")
 		end
 	end)
@@ -310,6 +326,9 @@ function NugRunningGUI.CreateCommonForm(self)
 		local v = tonumber(value)
 		if v then
 			self.parent.opts["priority"] = v
+        else
+            self.parent.opts["priority"] = 0
+            self:SetText("")
 		end
 	end)
 	-- prio:SetHeight(32)
@@ -326,7 +345,6 @@ function NugRunningGUI.CreateCommonForm(self)
 	}, { "default", "buffs", "procs"})
 	group:SetRelativeWidth(0.30)
 	group:SetCallback("OnValueChanged", function(self, event, value)
-		if value == "default" then value = nil end
 		self.parent.opts["group"] = value
 	end)
 	-- group:SetHeight(32)
@@ -359,7 +377,7 @@ function NugRunningGUI.CreateCommonForm(self)
 		if v then
 			self.parent.opts["scale_until"] = v
 		else
-			self.parent.opts["scale_until"] = nil
+			self.parent.opts["scale_until"] = false
 			self:SetText("")
 		end
 	end)
@@ -392,7 +410,7 @@ function NugRunningGUI.CreateCommonForm(self)
 	c2r:SetText("X")
 	c2r:SetRelativeWidth(0.1)
 	c2r:SetCallback("OnClick", function(self, event)
-		self.parent.opts["color2"] = nil
+		self.parent.opts["color2"] = false
 		self.parent.controls.color2:SetColor(0,0,0)
 	end)
 	Form.controls.c2r = c2r
@@ -414,7 +432,7 @@ function NugRunningGUI.CreateCommonForm(self)
 	ar:SetText("X")
 	ar:SetRelativeWidth(0.1)
 	ar:SetCallback("OnClick", function(self, event)
-		self.parent.opts["arrow"] = nil
+		self.parent.opts["arrow"] = false
 		self.parent.controls.arrow:SetColor(0,0,0)
 	end)
 	Form.controls.ar = ar
@@ -466,7 +484,7 @@ function NugRunningGUI.CreateCommonForm(self)
             self.parent.controls.singleTarget:SetValue(false)
             self.parent.opts["singleTarget"] = false
 		else
-			self.parent.opts["maxtimers"] = nil
+			self.parent.opts["maxtimers"] = false
 			self:SetText("")
 		end
 	end)
@@ -484,7 +502,7 @@ function NugRunningGUI.CreateCommonForm(self)
 			self.parent.controls.multiTarget:SetValue(false)
             self.parent.opts["multiTarget"] = false
             self.parent.controls.maxtimers:SetText("")
-            self.parent.opts["maxtimers"] = nil
+            self.parent.opts["maxtimers"] = false
 		end
 	end)
 	Form.controls.singleTarget = singleTarget
@@ -500,7 +518,7 @@ function NugRunningGUI.CreateCommonForm(self)
 			self.parent.controls.singleTarget:SetValue(false)
             self.parent.opts["singleTarget"] = false
             self.parent.controls.maxtimers:SetText("")
-            self.parent.opts["maxtimers"] = nil
+            self.parent.opts["maxtimers"] = false
 		end
 	end)
 	Form.controls.multiTarget = multiTarget
@@ -544,7 +562,7 @@ function NugRunningGUI.CreateCommonForm(self)
 			v = value
 		else
 			v = tonumber(value)
-			if v <= 0 then v = nil end
+			if v and v <= 0 then v = nil end
 		end
 		if v then
 			if not self.parent.opts.overlay then
@@ -553,14 +571,15 @@ function NugRunningGUI.CreateCommonForm(self)
 				self.parent.opts.overlay[1] = v
 			end
 		else
-			self.parent.opts["overlay"] = nil
-			self:SetText("")
+			self.parent.opts["overlay"] = false
+			self.parent.controls.overlay_start:SetText("")
 			self.parent.controls.overlay_end:SetText("")
+            self.parent.controls.overlay_haste:SetValue(false)
 		end
 	end)
 	Form.controls.overlay_start = overlay_start
 	Form:AddChild(overlay_start)
-    AddTooltip(overlay_start, "Overlay is a darkened area to mark timings.")
+    AddTooltip(overlay_start, "Overlay marks time intervals.\nSpecial values:\ngcd\ntick")
 
 	local overlay_end = AceGUI:Create("EditBox")
 	overlay_end:SetLabel("Overlay End")
@@ -571,7 +590,7 @@ function NugRunningGUI.CreateCommonForm(self)
 			v = value
 		else
 			v = tonumber(value)
-			if v <= 0 then v = nil end
+			if v and v <= 0 then v = nil end
 		end
 		if v then
 			if not self.parent.opts.overlay then
@@ -580,23 +599,24 @@ function NugRunningGUI.CreateCommonForm(self)
 				self.parent.opts.overlay[2] = v
 			end
 		else
-			self.parent.opts["overlay"] = nil
-			self:SetText("")
+			self.parent.opts["overlay"] = false
+			self.parent.controls.overlay_start:SetText("")
 			self.parent.controls.overlay_end:SetText("")
+            self.parent.controls.overlay_haste:SetValue(false)
 		end
 	end)
 	Form.controls.overlay_end = overlay_end
 	Form:AddChild(overlay_end)
-    AddTooltip(overlay_end, "Overlay is a darkened area to mark timings.")
+    AddTooltip(overlay_end, "Overlay marks time intervals.\nSpecial values:\ntickend\nend")
 
 	local overlay_haste = AceGUI:Create("CheckBox")
 	overlay_haste:SetLabel("Haste Reduced")
 	overlay_haste:SetRelativeWidth(0.4)
 	overlay_haste:SetCallback("OnValueChanged", function(self, event, value)
 		if not self.parent.opts.overlay then
-			self.parent.opts.overlay = {nil, nil, 0.3, v}
+			self.parent.opts.overlay = {nil, nil, 0.3, value}
 		else
-			self.parent.opts.overlay[4] = v
+            self.parent.opts.overlay[4] = value
 		end
 	end)
 	Form.controls.overlay_haste = overlay_haste
@@ -610,10 +630,10 @@ function NugRunningGUI.CreateCommonForm(self)
 		local v = tonumber(value)
 		if v then
 			self.parent.opts["tick"] = v
-			self.parent.opts["recast_mark"] = nil
+			self.parent.opts["recast_mark"] = false
 			self.parent.controls.recast_mark:SetText("")
 		else
-			self.parent.opts["tick"] = nil
+			self.parent.opts["tick"] = false
 			self:SetText("")
 		end
 	end)
@@ -628,10 +648,10 @@ function NugRunningGUI.CreateCommonForm(self)
 		local v = tonumber(value)
 		if v and v > 0 then
 			self.parent.opts["recast_mark"] = v
-			self.parent.opts["tick"] = nil
+			self.parent.opts["tick"] = false
 			self.parent.controls.tick:SetText("")
 		else
-			self.parent.opts["recast_mark"] = nil
+			self.parent.opts["recast_mark"] = false
 			self:SetText("")
 		end
 	end)
@@ -655,7 +675,6 @@ function NugRunningGUI.CreateCommonForm(self)
     effect:SetList(effectsList, effectsOrder)
     effect:SetRelativeWidth(0.34)
     effect:SetCallback("OnValueChanged", function(self, event, value)
-        if value == "NONE" then value = nil end
         self.parent.opts["effect"] = value
     end)
     Form.controls.effect = effect
@@ -667,7 +686,6 @@ function NugRunningGUI.CreateCommonForm(self)
     ghosteffect:SetList(effectsList, effectsOrder)
     ghosteffect:SetRelativeWidth(0.34)
     ghosteffect:SetCallback("OnValueChanged", function(self, event, value)
-        if value == "NONE" then value = nil end
         self.parent.opts["ghosteffect"] = value
     end)
     Form.controls.ghosteffect = ghosteffect
@@ -758,7 +776,7 @@ function NugRunningGUI.FillForm(self, Form, class, category, id, opts, isEmptyFo
 		controls.delete:SetText("Restore")
 	else
 		controls.delete:SetDisabled(true)
-		controls.delete:SetText("Delete")
+		controls.delete:SetText("Restore")
 	end
 
 
