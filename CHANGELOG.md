@@ -1,3 +1,6 @@
+7.1.13:
+- Attempt to fix issues with Chronomatic Anomaly boss fight
+
 7.1.12:
 - GUI bugfixes
 - Blade of Justice #202270 removed for 7.1.5
