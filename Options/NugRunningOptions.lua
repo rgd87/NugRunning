@@ -342,11 +342,23 @@ function NugRunningGUI.CreateCommonForm(self)
 
 	local group = AceGUI:Create("Dropdown")
 	group:SetLabel("Group")
-	group:SetList({
-		default = "Default",
-		buffs = "Buffs",
-		procs = "Procs"
-	}, { "default", "buffs", "procs"})
+
+    local groupList = {
+        default = "Default"
+    }
+    local groupOrder = { "default" }
+    for anchor,groups in pairs(NugRunningConfig.anchors) do
+        for i, group in ipairs(groups) do
+            local name = group.name
+            if name ~= "player" and name ~= "target" and name ~= "offtargets" then
+                groupList[name] = name
+                table.insert(groupOrder, name)
+            end
+        end
+    end
+
+
+	group:SetList(groupList, groupOrder)
 	group:SetRelativeWidth(0.30)
 	group:SetCallback("OnValueChanged", function(self, event, value)
 		self.parent.opts["group"] = value
