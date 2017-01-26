@@ -184,7 +184,7 @@ function NugRunningGUI.CreateCommonForm(self)
             clean(opts, default_opts, "group", "default")
             clean(opts, default_opts, "affiliation", COMBATLOG_OBJECT_AFFILIATION_MINE)
             clean(opts, default_opts, "fixedlen", false)
-            clean(opts, default_opts, "priority", 0)
+            clean(opts, default_opts, "priority", false)
             clean(opts, default_opts, "scale_until", false)
             clean(opts, default_opts, "maxtimers", false)
             clean(opts, default_opts, "color2", false)
@@ -331,7 +331,7 @@ function NugRunningGUI.CreateCommonForm(self)
 		if v then
 			self.parent.opts["priority"] = v
         else
-            self.parent.opts["priority"] = 0
+            self.parent.opts["priority"] = false
             self:SetText("")
 		end
 	end)
@@ -427,7 +427,7 @@ function NugRunningGUI.CreateCommonForm(self)
 	c2r:SetRelativeWidth(0.1)
 	c2r:SetCallback("OnClick", function(self, event)
 		self.parent.opts["color2"] = false
-		self.parent.controls.color2:SetColor(0,0,0)
+		self.parent.controls.color2:SetColor(1,1,1,0)
 	end)
 	Form.controls.c2r = c2r
 	Form:AddChild(c2r)
@@ -449,7 +449,7 @@ function NugRunningGUI.CreateCommonForm(self)
 	ar:SetRelativeWidth(0.1)
 	ar:SetCallback("OnClick", function(self, event)
 		self.parent.opts["arrow"] = false
-		self.parent.controls.arrow:SetColor(0,0,0)
+		self.parent.controls.arrow:SetColor(1,1,1,0)
 	end)
 	Form.controls.ar = ar
 	Form:AddChild(ar)
@@ -760,8 +760,8 @@ function NugRunningGUI.FillForm(self, Form, class, category, id, opts, isEmptyFo
 
 	controls.color:SetColor(unpack(opts.color or {0.8, 0.1, 0.7} ))
 	-- print(unpack(opts.color2))
-	controls.color2:SetColor(unpack(opts.color2 or {0,0,0} ))
-	controls.arrow:SetColor(unpack(opts.arrow or {0,0,0} ))
+	controls.color2:SetColor(unpack(opts.color2 or {1,1,1,0} ))
+	controls.arrow:SetColor(unpack(opts.arrow or {1,1,1,0} ))
 
 	controls.affiliation:SetValue(opts.affiliation or COMBATLOG_OBJECT_AFFILIATION_MINE)
 	controls.nameplates:SetValue(opts.namaplates)
