@@ -1,3 +1,8 @@
+7.1.14:
+- Removed cast success EventTimers for paladin finishers
+- Judgement debuff timer now single target
+- fixed Remorseless Winter timer apearing when all runes are depleted
+
 7.1.13:
 - Attempt to fix issues with Chronomatic Anomaly boss fight
 
