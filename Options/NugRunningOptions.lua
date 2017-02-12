@@ -1212,13 +1212,24 @@ local function MakeGeneralOptions()
                         set = function(info, v) NRunDB.nameplates = not NRunDB.nameplates end,
                         order = 4,
                     },
+                    nameplateLines = {
+                        name = "Nameplate Lines",
+                        type = "toggle",
+                        desc = "Draw guide lines from nameplates to main timers",
+                        get = function(info) return NRunDB.nameplateLines end,
+                        set = function(info, v)
+                            NRunDB.nameplateLines = not NRunDB.nameplateLines
+                            NugRunningNameplates:EnableLines(NRunDB.nameplateLines)
+                        end,
+                        order = 5,
+                    },
                     totems = {
                         name = "Totems",
                         type = "toggle",
                         desc = "Display timers for totems (or other similar summons)",
                         get = function(info) return NRunDB.totems end,
                         set = function(info, v) NRunDB.totems = not NRunDB.totems end,
-                        order = 5,
+                        order = 6,
                     },
                 },
             },

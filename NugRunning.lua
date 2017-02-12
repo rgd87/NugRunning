@@ -142,6 +142,7 @@ local defaults = {
     totems = true,
     leaveGhost = false,
     nameplates = false,
+    nameplateLines = true,
     dotpower = true,
     dotticks = true,
 }
@@ -302,6 +303,7 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
         if found then
             NugRunning:DoNameplates()
             nameplates = NugRunningNameplates
+            NugRunningNameplates:EnableLines(NRunDB.nameplateLines)
         end
     end
 
@@ -1598,6 +1600,11 @@ NugRunning.Commands = {
     ["nameplates"] = function()
         NRunDB.nameplates = not NRunDB.nameplates
         print("Nameplates turned "..(NRunDB.nameplates and "on" or "off")..". Will take effect after /reload")
+    end,
+    ["nameplatelines"] = function()
+        NRunDB.nameplateLines = not NRunDB.nameplateLines
+        NugRunningNameplates:EnableLines(NRunDB.nameplateLines)
+        print("NameplateLines turned "..(NRunDB.nameplateLines and "on" or "off"))
     end,
     ["dotticks"] = function()
         NRunDB.dotticks = not NRunDB.dotticks

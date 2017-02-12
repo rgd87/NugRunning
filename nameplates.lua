@@ -4,6 +4,7 @@ local next = next
 local table_remove = table.remove
 
 local makeicon = true
+local enableLines = true
 local confignp = NugRunningConfig.nameplates
 local Nplates
 local plates = {}
@@ -19,7 +20,7 @@ NugRunningNameplates:RegisterEvent("NAME_PLATE_CREATED")
 NugRunningNameplates:RegisterEvent("NAME_PLATE_UNIT_ADDED")
 NugRunningNameplates:RegisterEvent("NAME_PLATE_UNIT_REMOVED")
 
-
+local playerNameplate
 local activeNameplates = {}
 
 function NugRunningNameplates.NAME_PLATE_CREATED(self, event, frame)
@@ -31,6 +32,7 @@ function NugRunningNameplates.NAME_PLATE_UNIT_ADDED(self, event, unit)
     activeNameplates[unit] = true
     local pGUID = UnitGUID(unit)
     local frame = GetNamePlateForUnit(unit)
+    if pGUID == UnitGUID("player") then playerNameplate = frame end
     local guidTimers = NugRunning:GetTimersByDstGUID(pGUID)
     NugRunningNameplates:UpdateNPTimers(frame, guidTimers)
 end
@@ -52,6 +54,10 @@ local MiniOnUpdate = function(self, time)
     local beforeEnd = endTime - GetTime()
 
     self:SetValue(beforeEnd + self.startTime)
+end
+
+function NugRunningNameplates:EnableLines(state)
+    enableLines = state
 end
 
 local backdrop = {
@@ -105,6 +111,19 @@ function NugRunningNameplates:CreateNameplateTimer(frame)
     return f
 end
 
+function NugRunningNameplates:CreateNameplateLine(frame)
+    local line = frame:CreateLine(nil, "ARTWORK")
+    line:SetTexture("Interface\\AddOns\\NugRunning\\white")
+    line:SetStartPoint("CENTER", frame.UnitFrame.healthBar, 0,0)
+    line:SetEndPoint("CENTER", UIParent, 100,200)
+    line:SetThickness(0.5)
+    line:SetVertexColor(1,0.3,0.3)
+    line:Hide()
+
+    frame.nrunLine = line
+    return line
+end
+
 function NugRunningNameplates:Update(targetTimers, guidTimers, targetSwapping)
     if targetSwapping then
         local tGUID = UnitGUID("target")
@@ -117,13 +136,15 @@ function NugRunningNameplates:Update(targetTimers, guidTimers, targetSwapping)
         local np = GetNamePlateForUnit(unit)
         if np then
             local guid = UnitGUID(unit)
+            local optUnit
+            if guid == UnitGUID("target") then optUnit = "target" end
             local nrunTimers = guidTimers[guid]
-            self:UpdateNPTimers(np, nrunTimers)
+            self:UpdateNPTimers(np, nrunTimers, optUnit)
         end
     end
 end
 
-function NugRunningNameplates:UpdateNPTimers(np, nrunTimers)
+function NugRunningNameplates:UpdateNPTimers(np, nrunTimers, nameplateUnit)
     if nrunTimers then
         local i = 1
         while i <= #nrunTimers do
@@ -156,10 +177,29 @@ function NugRunningNameplates:UpdateNPTimers(np, nrunTimers)
             end
 
         end
+
+        if np ~= playerNameplate and enableLines then
+            local line = np.nrunLine or self:CreateNameplateLine(np)
+            local guidFirstTimer = nrunTimers[1]
+            -- GUIDFIRST = guidFirstTimer
+            line:SetEndPoint("LEFT", guidFirstTimer, 0,0)
+            line:Show()
+            if nameplateUnit == "target" then
+                line:SetThickness(1)
+                line:SetVertexColor(1,0,0)
+            else
+                line:SetThickness(.5)
+                line:SetVertexColor(1,.3,.3)
+            end
+            if not guidFirstTimer then line:Hide() end
+        elseif np.nrunLine then
+            np.nrunLine:Hide()
+        end
     else
         for _, timer in ipairs(np.timers) do
             timer:Hide()
         end
+        if np.nrunLine then np.nrunLine:Hide() end
     end
 end
 
