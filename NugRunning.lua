@@ -142,7 +142,7 @@ local defaults = {
     totems = true,
     leaveGhost = false,
     nameplates = false,
-    nameplateLines = true,
+    nameplateLines = false,
     dotpower = true,
     dotticks = true,
 }
