@@ -1,3 +1,6 @@
+7.1.15:
+- nameplate linse feature
+
 7.1.14:
 - Removed cast success EventTimers for paladin finishers
 - Judgement debuff timer now single target
