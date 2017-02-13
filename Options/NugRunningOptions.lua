@@ -28,7 +28,7 @@ function NugRunningGUI.GenerateCategoryTree(self, isGlobal, category)
 	local t = {}
 	for spellID, opts in pairs(NugRunningConfigMerged[category]) do
 		if (isGlobal and opts.global) or (not isGlobal and not opts.global) then
-			local name = (opts.name == "" or not opts.name) and GetSpellInfo(spellID) or opts.name
+			local name = (opts.name == "" or not opts.name) and (GetSpellInfo(spellID) or "Unknown") or opts.name
 			local custom_opts = custom[category] and custom[category][spellID]
 			local status
 			local order = 5
@@ -159,9 +159,12 @@ function NugRunningGUI.CreateCommonForm(self)
 		if not spellID then -- make new timer
 			spellID = tonumber(self.parent.controls.spellID:GetText())
 			if not spellID then
-				--invalid spell id
+				--invalid spell id string
 				return
 			end
+            if not GetSpellInfo(spellID) then
+                return -- spell doesn't exist
+            end
 
 			if not opts.name then
 				opts.name = GetSpellInfo(spellID)
@@ -186,6 +189,7 @@ function NugRunningGUI.CreateCommonForm(self)
             clean(opts, default_opts, "fixedlen", false)
             clean(opts, default_opts, "priority", false)
             clean(opts, default_opts, "scale_until", false)
+            clean(opts, default_opts, "hide_until", false)
             clean(opts, default_opts, "maxtimers", false)
             clean(opts, default_opts, "color2", false)
             clean(opts, default_opts, "arrow", false)
@@ -195,6 +199,7 @@ function NugRunningGUI.CreateCommonForm(self)
             clean(opts, default_opts, "effect", "NONE")
             clean(opts, default_opts, "ghosteffect", "NONE")
         end
+        if opts.overlay and (not default_opts or not default_opts.overlay) and (not opts.overlay[1] or not opts.overlay[2]) then opts.overlay = nil end
 		-- PRESAVE = p.opts
 		local delta = CopyTable(opts)
         delta.timer = nil -- important, clears runtime data
@@ -245,9 +250,17 @@ function NugRunningGUI.CreateCommonForm(self)
 	local spellID = AceGUI:Create("EditBox")
 	spellID:SetLabel("Spell ID")
 	spellID:SetDisabled(true)
+    spellID:DisableButton(true)
 	spellID:SetRelativeWidth(0.2)
-	spellID:SetCallback("OnEnterPressed", function(self, event, value)
-		self.parent.opts["spellID"] = value
+	spellID:SetCallback("OnTextChanged", function(self, event, value)
+        local v = tonumber(value)
+        if v and v > 0 and GetSpellInfo(v) then
+            self.parent.opts["spellID"] = v
+            self.editbox:SetTextColor(1,1,1)
+        else
+            self.editbox:SetTextColor(1,0,0)
+        end
+        if value == "" then self.parent.opts["spellID"] = nil end
 	end)
 	-- spellID:SetHeight(32)
 	-- spellID.alignoffset = 30
@@ -295,10 +308,14 @@ function NugRunningGUI.CreateCommonForm(self)
 	duration:SetLabel("Duration")
 	duration:SetDisabled(true)
 	duration:SetRelativeWidth(0.19)
-	duration:SetCallback("OnEnterPressed", function(self, event, value)
+    duration:DisableButton(true)
+	duration:SetCallback("OnTextChanged", function(self, event, value)
 		local v = tonumber(value)
 		if v and v > 0 then
 			self.parent.opts["duration"] = v
+        elseif value == "" then
+            self.parent.opts["fixedlen"] = false
+            self:SetText("")
 		end
 	end)
 	Form.controls.duration = duration
@@ -308,11 +325,12 @@ function NugRunningGUI.CreateCommonForm(self)
 	local fixedlen = AceGUI:Create("EditBox")
 	fixedlen:SetLabel("|cff00ff00Fixed Duration|r")
 	fixedlen:SetRelativeWidth(0.2)
-	fixedlen:SetCallback("OnEnterPressed", function(self, event, value)
+    fixedlen:DisableButton(true)
+	fixedlen:SetCallback("OnTextChanged", function(self, event, value)
 		local v = tonumber(value)
 		if v and v > 0 then
 			self.parent.opts["fixedlen"] = v
-		else
+		elseif value == "" then
 			self.parent.opts["fixedlen"] = false
 			self:SetText("")
 		end
@@ -326,11 +344,12 @@ function NugRunningGUI.CreateCommonForm(self)
 	prio:SetLabel("|cff55ff55Priority|r")
 	-- prio:SetFullWidth(true)
 	prio:SetRelativeWidth(0.15)
-	prio:SetCallback("OnEnterPressed", function(self, event, value)
+    prio:DisableButton(true)
+	prio:SetCallback("OnTextChanged", function(self, event, value)
 		local v = tonumber(value)
 		if v then
 			self.parent.opts["priority"] = v
-        else
+        elseif value == "" then
             self.parent.opts["priority"] = false
             self:SetText("")
 		end
@@ -388,11 +407,12 @@ function NugRunningGUI.CreateCommonForm(self)
 	local scale_until = AceGUI:Create("EditBox")
 	scale_until:SetLabel("Minimize Until")
 	scale_until:SetRelativeWidth(0.22)
-	scale_until:SetCallback("OnEnterPressed", function(self, event, value)
+    scale_until:DisableButton(true)
+	scale_until:SetCallback("OnTextChanged", function(self, event, value)
 		local v = tonumber(value)
 		if v then
 			self.parent.opts["scale_until"] = v
-		else
+		elseif value == "" then
 			self.parent.opts["scale_until"] = false
 			self:SetText("")
 		end
@@ -455,6 +475,23 @@ function NugRunningGUI.CreateCommonForm(self)
 	Form:AddChild(ar)
     AddTooltip(ar, "Remove Highlight Color")
 
+    local hide_until = AceGUI:Create("EditBox")
+    hide_until:SetLabel("Hide Until")
+    hide_until:SetRelativeWidth(0.17)
+    hide_until:DisableButton(true)
+    hide_until:SetCallback("OnTextChanged", function(self, event, value)
+        local v = tonumber(value)
+        if v then
+            self.parent.opts["hide_until"] = v
+        elseif value == "" then
+            self.parent.opts["hide_until"] = false
+            self:SetText("")
+        end
+    end)
+    Form.controls.hide_until = hide_until
+    Form:AddChild(hide_until)
+    AddTooltip(hide_until, "Hide until duration is less than X\n(Only for cooldowns)")
+
 	local ghost = AceGUI:Create("CheckBox")
 	ghost:SetLabel("Ghost")
 	ghost:SetRelativeWidth(0.32)
@@ -491,7 +528,8 @@ function NugRunningGUI.CreateCommonForm(self)
 	local maxtimers = AceGUI:Create("EditBox")
 	maxtimers:SetLabel("Max Timers")
 	maxtimers:SetRelativeWidth(0.25)
-	maxtimers:SetCallback("OnEnterPressed", function(self, event, value)
+    maxtimers:DisableButton(true)
+	maxtimers:SetCallback("OnTextChanged", function(self, event, value)
 		local v = tonumber(value)
 		if v and v > 0 then
 			self.parent.opts["maxtimers"] = v
@@ -499,7 +537,7 @@ function NugRunningGUI.CreateCommonForm(self)
             self.parent.opts["multiTarget"] = false
             self.parent.controls.singleTarget:SetValue(false)
             self.parent.opts["singleTarget"] = false
-		else
+		elseif value == "" then
 			self.parent.opts["maxtimers"] = false
 			self:SetText("")
 		end
@@ -560,7 +598,7 @@ function NugRunningGUI.CreateCommonForm(self)
 
 	local nameplates = AceGUI:Create("CheckBox")
 	nameplates:SetLabel("Show on Nameplates")
-	nameplates:SetRelativeWidth(0.5)
+	nameplates:SetRelativeWidth(0.4)
 	nameplates:SetCallback("OnValueChanged", function(self, event, value)
 		self.parent.opts["nameplates"] = value
 	end)
@@ -568,10 +606,13 @@ function NugRunningGUI.CreateCommonForm(self)
 	Form:AddChild(nameplates)
     AddTooltip(nameplates, "Mirror timer on nameplates.\nMay need /reload to enable nameplate functionality.")
 
+    
+
 
 	local overlay_start = AceGUI:Create("EditBox")
 	overlay_start:SetLabel("Overlay Start")
 	overlay_start:SetRelativeWidth(0.25)
+    -- overlay_start:DisableButton(true)
 	overlay_start:SetCallback("OnEnterPressed", function(self, event, value)
 		local v
 		if value == "tick" or value == "tickend" or value ==  "end" or value == "gcd" then
@@ -600,6 +641,7 @@ function NugRunningGUI.CreateCommonForm(self)
 	local overlay_end = AceGUI:Create("EditBox")
 	overlay_end:SetLabel("Overlay End")
 	overlay_end:SetRelativeWidth(0.25)
+    -- overlay_end:DisableButton(true)
 	overlay_end:SetCallback("OnEnterPressed", function(self, event, value)
 		local v
 		if value == "tick" or value == "tickend" or value ==  "end" or value == "gcd" then
@@ -642,13 +684,14 @@ function NugRunningGUI.CreateCommonForm(self)
 	local tick = AceGUI:Create("EditBox")
 	tick:SetLabel("Tick")
 	tick:SetRelativeWidth(0.15)
-	tick:SetCallback("OnEnterPressed", function(self, event, value)
+    tick:DisableButton(true)
+	tick:SetCallback("OnTextChanged", function(self, event, value)
 		local v = tonumber(value)
 		if v then
 			self.parent.opts["tick"] = v
 			self.parent.opts["recast_mark"] = false
 			self.parent.controls.recast_mark:SetText("")
-		else
+		elseif value == "" then
 			self.parent.opts["tick"] = false
 			self:SetText("")
 		end
@@ -660,13 +703,14 @@ function NugRunningGUI.CreateCommonForm(self)
 	local recast_mark = AceGUI:Create("EditBox")
 	recast_mark:SetLabel("Recast Mark")
 	recast_mark:SetRelativeWidth(0.15)
-	recast_mark:SetCallback("OnEnterPressed", function(self, event, value)
+    recast_mark:DisableButton(true)
+	recast_mark:SetCallback("OnTextChanged", function(self, event, value)
 		local v = tonumber(value)
 		if v and v > 0 then
 			self.parent.opts["recast_mark"] = v
 			self.parent.opts["tick"] = false
 			self.parent.controls.tick:SetText("")
-		else
+		elseif value == "" then
 			self.parent.opts["recast_mark"] = false
 			self:SetText("")
 		end
@@ -727,6 +771,11 @@ local ReverseLookup = function(self, effect)
         end
     end
 end
+local fillAlpha = function(rgb)
+    local r,g,b,a = unpack(rgb)
+    a = a or 1
+    return r,g,b,a
+end
 
 function NugRunningGUI.FillForm(self, Form, class, category, id, opts, isEmptyForm)
 	Form.opts = opts
@@ -746,6 +795,7 @@ function NugRunningGUI.FillForm(self, Form, class, category, id, opts, isEmptyFo
 	controls.duration:SetText((type(opts.duration) == "function" and "<func>") or opts.duration)
 	controls.scale:SetValue(opts.scale or 1)
 	controls.scale_until:SetText(opts.scale_until)
+    controls.hide_until:SetText(opts.hide_until)
 	controls.shine:SetValue(opts.shine)
 	controls.shinerefresh:SetValue(opts.shinerefresh)
 
@@ -758,13 +808,13 @@ function NugRunningGUI.FillForm(self, Form, class, category, id, opts, isEmptyFo
 	controls.singleTarget:SetValue(opts.singleTarget)
 	controls.multiTarget:SetValue(opts.multiTarget)
 
-	controls.color:SetColor(unpack(opts.color or {0.8, 0.1, 0.7} ))
-	-- print(unpack(opts.color2))
-	controls.color2:SetColor(unpack(opts.color2 or {1,1,1,0} ))
-	controls.arrow:SetColor(unpack(opts.arrow or {1,1,1,0} ))
+	controls.color:SetColor(fillAlpha(opts.color or {0.8, 0.1, 0.7} ))
+	-- print(fillAlpha(opts.color2))
+	controls.color2:SetColor(fillAlpha(opts.color2 or {1,1,1,0} ))
+	controls.arrow:SetColor(fillAlpha(opts.arrow or {1,1,1,0} ))
 
 	controls.affiliation:SetValue(opts.affiliation or COMBATLOG_OBJECT_AFFILIATION_MINE)
-	controls.nameplates:SetValue(opts.namaplates)
+	controls.nameplates:SetValue(opts.nameplates)
 
 	controls.tick:SetText(opts.tick)
 	controls.recast_mark:SetText(opts.recast_mark)
@@ -782,7 +832,6 @@ function NugRunningGUI.FillForm(self, Form, class, category, id, opts, isEmptyFo
 
     controls.effect:SetValue(opts.effect or "NONE")
     controls.ghosteffect:SetValue(opts.ghosteffect or "NONE")
-
 
 	if id and not NugRunningConfig[category][id] then
 		controls.delete:SetDisabled(false)
@@ -803,6 +852,7 @@ function NugRunningGUI.FillForm(self, Form, class, category, id, opts, isEmptyFo
 		controls.multiTarget:SetDisabled(false)
 		controls.affiliation:SetDisabled(false)
 		controls.nameplates:SetDisabled(false)
+        controls.hide_until:SetDisabled(true)
 	else
 		controls.duration:SetDisabled(true)
 		controls.maxtimers:SetDisabled(true)
@@ -810,6 +860,7 @@ function NugRunningGUI.FillForm(self, Form, class, category, id, opts, isEmptyFo
 		controls.multiTarget:SetDisabled(true)
 		controls.affiliation:SetDisabled(true)
 		controls.nameplates:SetDisabled(true)
+        controls.hide_until:SetDisabled(false)
 	end
 
 end
