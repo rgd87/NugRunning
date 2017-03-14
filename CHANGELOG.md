@@ -1,4 +1,5 @@
 7.1.15:
+- gui bugfixes
 - nameplate linse feature
 
 7.1.14:
