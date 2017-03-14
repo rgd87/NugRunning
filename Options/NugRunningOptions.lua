@@ -370,11 +370,11 @@ function NugRunningGUI.CreateCommonForm(self)
 
 	local scale = AceGUI:Create("Slider")
 	scale:SetLabel("Scale")
-	scale:SetSliderValues(0.3, 1, 0.05)
+	scale:SetSliderValues(0.3, 2, 0.05)
 	scale:SetRelativeWidth(0.30)
 	scale:SetCallback("OnValueChanged", function(self, event, value)
 		local v = tonumber(value)
-		if v and v >= 0.3 and v <= 1 then
+		if v and v >= 0.3 and v <= 2 then
 			self.parent.opts["scale"] = v
 		else
 			self.parent.opts["scale"] = 1

@@ -226,7 +226,7 @@ end
 
 function TimerBar.VScale(self, scale)
     if scale == self._scale then return end
-    if scale > 1 then scale = 1 end
+    if scale > 2 then scale = 2 end
     -- if not self._scale and scale == 1 then return end -- already at full size
 
     self._scale = scale
@@ -234,8 +234,14 @@ function TimerBar.VScale(self, scale)
     local width = self._width
     self:Resize1(width, height)
 
-    local x = 0.8 * (1-scale) * 0.5
-    self.icon:SetTexCoord(.1, .9, .1+x, .9-x)
+    if scale <= 1 then
+        local x = 0.8 * (1-scale) * 0.5 -- half of the texcoord height * scale difference
+        self.icon:SetTexCoord(.1, .9, .1+x, .9-x)
+    elseif scale <=2 then
+        local x = self._height/height * 0.4
+        self.icon:SetTexCoord(.5-x, .5+x, .1, .9)
+    end
+
     self.icon:GetParent():SetHeight(height)
     self.shine:GetParent():SetHeight(height*1.8)
     self.shine:Stop()
