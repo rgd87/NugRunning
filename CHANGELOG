@@ -1,8 +1,12 @@
+7.1.16:
+- individual timers now can be scaled up to 2
+
 7.1.15:
 - gui bugfixes
 - nameplate linse feature
 
 7.1.14:
+
 - Removed cast success EventTimers for paladin finishers
 - Judgement debuff timer now single target
 - fixed Remorseless Winter timer apearing when all runes are depleted

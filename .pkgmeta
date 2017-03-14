@@ -5,7 +5,7 @@ move-folders:
     NugRunning/Options/loader: NugRunningOptions
 
 manual-changelog:
-	filename: CHANGELOG.md
+	filename: CHANGELOG
 	markup-type: markdown
 ignore:
 	- CHANGELOG.md
