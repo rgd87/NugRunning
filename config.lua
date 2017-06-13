@@ -393,9 +393,8 @@ Spell( 5171  ,{ name = "Slice and Dice", shinerefresh = true, fixedlen = 24, sho
     duration = function() return (6 + GetCP()*6) end,
 }) -- SnD fixedlen set to match Rupture maximum duration
 -- effect = "AEGWYNN", ghosteffect = "JUDGEMENT,
-Spell( 212283  ,{ name = "Symbols of Death", shinerefresh = true, glowtime = 6, overlay = {0, 10.5, 0.15}, recast_mark = 10.5, ghost = true, short = "", duration = 35, color = colors.PINKIERED })
-
-Spell( 206237  ,{ name = "Enveloping Shadows", shinerefresh = true, shine = true, duration = 15, color = colors.PURPLE })
+Spell( 212283  ,{ name = "Symbols", shinerefresh = true, ghost = 1, group = "buffs", duration = 10, color = colors.PINKIERED })
+Cooldown( 212283 ,{ name = "Symbols", color = colors.CURSE, scale_until = 5 })
 
 Spell( 1833  ,{ name = "Cheap Shot", duration = 4, color = colors.LRED })
 Spell( 408   ,{ name = "Kidney Shot", shine = true, duration = function() return 1+GetCP() end, color = colors.LRED })
@@ -453,7 +452,9 @@ Spell( 196937 ,{ name = "Ghostly Strike", priority = -1, glowghost = true, color
 
 --Spell( 1784 ,{ name = "Stealth", color = colors.CURSE, timeless = true, duration = 0.1})
 
-Cooldown( 200806 ,{ name = "Exsanguinate", ghost = true, minduration = 10, color = colors.PURPLE2, scale_until = 10 })
+Cooldown( 200806 ,{ name = "Exsanguinate", ghost = true, color = colors.PURPLE2, scale_until = 10 })
+Cooldown( 245388,{ name = "Toxic Blade", color = colors.GREEN, ghost = true, scale_until = 5 })
+Spell( 245389,{ name = "Toxic Blade", color = colors.PURPLE2, shine = true, group = "buffs", duration = 9 })
 Cooldown( 137619 ,{ name = "Marked for Death", ghost = true, color = colors.LRED, scale_until = 10 })
 
 
@@ -487,7 +488,7 @@ Spell( 203581 ,{ name = "Dragon Scales", group = "buffs", priority = -7, color =
 
 -- Spell( 20511 ,{ name = "Intimidating Shout", short = "Fear", duration = 8, multiTarget = true }) --removed
 
-DotSpell( 772 ,{ name = "Rend", color = colors.RED, duration = 15, ghost = true })
+DotSpell( 772 ,{ name = "Rend", color = colors.RED, duration = 8, ghost = true })
 Spell( 208086 ,{ name = "Colossus Smash", singleTarget = true, shine = true, priority = -100500, color = colors.PURPLE2, duration = 6 }) --debuff
 --different versions of spell for arms and fury
 Cooldown( 167105,{ name = "Colossus Smash", priority = 9.5, scale = .7, check_known = true, ghost = true, color = colors.PINKIERED, resetable = true, duration = 20 })
@@ -989,7 +990,6 @@ DotSpell( 202347, { name = "Stellar Flare",duration = 24, priority = 5, ghost = 
 Spell( 213708,{ name = "Galactic Guardian", shine = true, priority = 12, duration = 15, glowtime = 15, scale = 0.7, color = colors.TEAL2 })
 
 Spell( 192081, { name = "Ironfur", priority = -10, group = "buffs", shine = true, glowtime = 1, ghost = 1, color = colors.PINK3, duration = 6 })
-Spell( 192083, { name = "Mark of Ursol", priority = -10, group = "buffs", shine = true, glowtime = 1, ghost = 1, color = colors.TEAL2, duration = 6 })
 
 DotSpell( 155625 ,{ name = "Moonfire",duration = 14, ghost = true, color = colors.PURPLE }) --cat's moonfire2
 Spell( 158792 ,{ name = "Pulverize",duration = 10, ghost = true, color = colors.WOO2 })
