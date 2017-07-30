@@ -73,7 +73,7 @@ local function Rampage()
         end
 
         if event == "SPELL_ACTIVATION_OVERLAY_GLOW_HIDE" and unit == rampageID then
-            if timer.shine:IsPlaying() then timer.shine:Stop() end
+            -- if timer.shine:IsPlaying() then timer.shine:Stop() end
             if timer.glow:IsPlaying() then timer.glow:Stop() end
             -- timer:VScale(0.6)
             timer.bar:SetValue(100)
@@ -97,12 +97,12 @@ local function Rampage()
             -- end
 
             if p <= 0 then
-                if not timer.shine:IsPlaying() then timer.shine:Play() end
+                -- if not timer.shine:IsPlaying() then timer.shine:Play() end
                 if not timer.glow:IsPlaying() then timer.glow:Play() end
                 timer.bar:SetValue(100)
                 timer:SetColor(unpack(rampage_opts.color2))
             else
-                if timer.shine:IsPlaying() then timer.shine:Stop() end
+                -- if timer.shine:IsPlaying() then timer.shine:Stop() end
                 if timer.glow:IsPlaying() then timer.glow:Stop() end
                 timer.bar:SetValue(p)
                 timer:SetColor(NugRunning.GetGradientColor(rampage_opts.color2, rampage_opts.color, (p/rampageCost)^0.7 ))
