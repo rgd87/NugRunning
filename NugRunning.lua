@@ -1280,10 +1280,12 @@ do
     local groups = { player = {}, target = {} }
     local guid_groups = {}
     local sortfunc = function(a,b)
-        if a.priority == b.priority then
+        local ap = a.priority or 0
+        local bp = b.priority or 0
+        if ap == bp then
             return a.endTime > b.endTime
         else
-            return a.priority < b.priority
+            return ap < bp
         end
     end
 
