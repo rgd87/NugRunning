@@ -763,7 +763,7 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
     return timer
 end
 
-function NugRunning.RefreshTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID, spellName, opts, timerType, override, amount, noshine)
+function NugRunning.RefreshTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID, spellName, opts, timerType, override, amount, ignore_applied_dose)
     local multiTargetGUID
     if opts.multiTarget then multiTargetGUID = dstGUID; dstGUID = nil; end
 
@@ -786,7 +786,7 @@ function NugRunning.RefreshTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID,
     local time
     if override then time = override
     else
-        if dstGUID then
+        if dstGUID and not ignore_applied_dose then
             time = NugRunning.SetDefaultDuration(dstFlags, opts, timer)
         end
         if timerType == "BUFF" or timerType == "DEBUFF" then
@@ -809,7 +809,7 @@ function NugRunning.RefreshTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID,
     end
     timer.count = amount
 
-    if not noshine then
+    if not ignore_applied_dose then
         if opts.tick and NRunDB.dotticks then
             timer.tickPeriod = opts.tick > 0 and (opts.tick/(1+(UnitSpellHaste("player")/100))) or math.abs(opts.tick)
             timer.mark.fullticks = nil
