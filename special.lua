@@ -1,3 +1,4 @@
+local NugRunning = NugRunning
 local class = select(2,UnitClass("player"))
 
 
@@ -36,7 +37,7 @@ local function Rampage()
 
 
     local rampage_frame = CreateFrame("Frame")
-    rampage_frame.timer = f
+    rampage_frame.timer = timer
     rampage_frame.CheckFury = function(self)
         if GetSpecialization() == 2 and IsPlayerSpell(184367) then
             rampageCost = IsPlayerSpell(202922) and 70 or 85 -- carnage

@@ -1,12 +1,13 @@
 local _, helpers = ...
 
 NugRunning = CreateFrame("Frame","NugRunning")
+local NugRunning = NugRunning
 
 NugRunning:SetScript("OnEvent", function(self, event, ...)
     return self[event](self, event, ...)
 end)
 
-NRunDB = nil
+local NRunDB = nil
 local config = NugRunningConfig
 local spells = config.spells
 local activations = config.activations
@@ -214,7 +215,7 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
     NRunDB_Global = NRunDB_Global or {}
     NRunDB_Char = NRunDB_Char or {}
     NRunDB_Global.charspec = NRunDB_Global.charspec or {}
-    user = UnitName("player").."@"..GetRealmName()
+    local user = UnitName("player").."@"..GetRealmName()
     if NRunDB_Global.charspec[user] then
         NRunDB = NRunDB_Char
     else
@@ -716,6 +717,7 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
     timer.count = amount
 
 
+    local nameText
     if opts.textfunc and type(opts.textfunc) == "function" then
         nameText = opts.textfunc(timer)
     elseif timerType == "MISSED" then
@@ -1513,7 +1515,7 @@ NugRunning.Commands = {
         end
         NugRunning.unlocked = nil
     end,
-    ["listauras"] = function()
+    ["listauras"] = function(v)
         local unit = v
         local h = false
         for i=1, 100 do
@@ -1620,7 +1622,7 @@ NugRunning.Commands = {
         local p = ParseOpts(v)
         NRunDB.width = p["width"] or NRunDB.width
         NRunDB.height = p["height"] or NRunDB.height
-        aname = p["anchor"]
+        local aname = p["anchor"]
         if aname then
             local growth = p["growth"]
             if NRunDB.anchors[aname] and growth then
@@ -1678,7 +1680,7 @@ NugRunning.Commands = {
 }
 
 function NugRunning.SlashCmd(msg)
-    k,v = string.match(msg, "([%w%+%-%=]+) ?(.*)")
+    local k,v = string.match(msg, "([%w%+%-%=]+) ?(.*)")
     if not k or k == "help" then print([[Usage:
       |cff00ff00/nrun lock|r
       |cff00ff00/nrun unlock|r

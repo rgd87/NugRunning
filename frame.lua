@@ -580,7 +580,7 @@ NugRunning.ConstructTimerBar = function(width, height)
 
     f.animIn = aag
 
-    local m = CreateFrame("Frame",nil,self)
+    local m = CreateFrame("Frame",nil, f)
     m:SetParent(f)
     m:SetWidth(1)
     m:SetHeight(f:GetHeight()*0.9)

@@ -1,3 +1,4 @@
+local NugRunning = NugRunning
 function NugRunning:DoNameplates()
 
 local next = next
@@ -15,6 +16,7 @@ local guidmap = {}
 local GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
 
 NugRunningNameplates = CreateFrame("Frame")
+local NugRunningNameplates = NugRunningNameplates
 
 NugRunningNameplates:RegisterEvent("NAME_PLATE_CREATED")
 NugRunningNameplates:RegisterEvent("NAME_PLATE_UNIT_ADDED")
