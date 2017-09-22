@@ -481,7 +481,9 @@ Spell( 132404 ,{ name = "Shield Block", color = colors.WOO2, shine = true, group
 Cooldown( 2565 ,{ name = "", priority = 9.9, fixedlen = 9, scale = .5, ghost = true, color = colors.DPURPLE, }) -- shield block cd
 -- Cooldown( 156321 ,{ name = "", priority = 9.9, fixedlen = 9, scale = .5, ghost = true, color = colors.DPURPLE, }) -- shield charge cd
 Spell( 190456 ,{ name = "Ignore Pain", ghost = 0.5, group = "buffs", priority = -8, glowtime = 4, color = colors.WOO, duration = 6, arrow = colors.WOO })
-Spell( 203581 ,{ name = "Dragon Scales", group = "buffs", priority = -7, color = colors.DRED, duration = 12, shine = true, shinerefresh = true })
+Spell( 203581 ,{ name = "Dragon Scales", group = "buffs", priority = -9, color = colors.DRED, duration = 12, shine = true, shinerefresh = true })
+Spell( 202574 ,{ name = "Vengeance Ignore Pain", group = "buffs", priority = -10, scale = 0.5, color = colors.DRED, duration = 15, })
+Spell( 202573 ,{ name = "Vengeance Revenge", group = "buffs", priority = -10, scale = 0.5, color = colors.TEAL2, duration = 15, })
 
 -- Spell( 85730 ,{ name = "Deadly Calm", group = "buffs", duration = 10 })
 -- Spell( 115767 ,{ name = "Deep Wounds", color = colors.DRED, duration = 15, singleTarget = true })
@@ -505,7 +507,7 @@ Spell( 1715 ,{ name = "Hamstring", ghost = true, color = colors.PURPLE, duration
 Spell( 1160 ,{ name = "Demoralizing Shout", short = "DemoShout", shine = true, group = "buffs", color = colors.DPURPLE, duration = 10, multiTarget = true })
 
 Cooldown( 6572 ,{ name = "Revenge", priority = 5, color = colors.PURPLE, resetable = true, fixedlen = 9, ghost = 1 })
-Activation( 6572, { effect = "JUDGEMENT", priority = 5.1, color = colors.REJUV, scale = 0.5, glowtime = 6, duration = 6, showid = 3127 })
+Activation( 6572, { effect = "JUDGEMENT", priority = 10.1, color = colors.REJUV, scale = 0.5, glowtime = 6, duration = 6, showid = 3127 })
 
 -- Spell( 55694 ,{ name = "Enraged Regeneration", short = "Regen", color = colors.LGREEN, duration = 5 })
 Spell( 132168 ,{ name = "Shockwave", color = colors.CURSE, shine = true, arrow = colors.LGREEN, duration = 4, multiTarget = true, })
@@ -652,7 +654,6 @@ Cooldown( 107428, { name = "Rising Sun Kick",tick = -1, overlay = {"tick", "end"
 
 Cooldown( 115098, { name = "Chi Wave", color = { 29/255, 134/255, 83/255 }, fixedlen = 8, color2 = colors.LGREEN, priority = 6, ghost = true })
 
-Cooldown( 152175 ,{ name = "Whirling Dragon Punch",  short = "DragonPunch", priority = 3,scale = .85, ghost = true, color = colors.DPURPLE, color2= colors.WOO, fixedlen = 10, hide_until = 12 })
 Spell( 116095 ,{ name = "Disable", ghost = true, color = colors.PURPLE, duration = 15, pvpduration = 8 })
 Spell( 116706 ,{ name = "Root", color = colors.BROWN, duration = 8 })
 

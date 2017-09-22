@@ -1526,10 +1526,10 @@ NugRunning.Commands = {
         end
         h = false
         for i=1, 100 do
-            local name, _,_,_,_,_,_,_,_,_, spellID = UnitAura(unit, i, "HARMFUL")
+            local name, _,_,_,_,duration,_,_,_,_, spellID = UnitAura(unit, i, "HARMFUL")
             if not name then break end
             if not h then print("DEBUFFS:"); h = true; end
-            print(string.format("    %s (id: %d)", name, spellID))
+            print(string.format("    %s (id: %d) Duration: %s", name, spellID, duration or "none" ))
         end
 
     end,
