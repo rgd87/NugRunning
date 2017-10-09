@@ -133,6 +133,10 @@ local defaults = {
     growth = "up",
     width = 150,
     height = 20,
+    np_height = 74,
+    np_width = 7,
+    np_xoffset = 0,
+    np_yoffset = 0,
     cooldownsEnabled = true,
     missesEnabled = true,
     targetTextEnabled = false,
@@ -698,7 +702,7 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
     end
     timer:SetColor(unpack(opts.color))
 
-    timer.timeless = (opts.timeless or override == -1)
+    timer.timeless = (opts.timeless or opts.charged or override == -1)
 
     amount = amount or 1
     if opts.charged then
@@ -802,6 +806,7 @@ function NugRunning.RefreshTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID,
         end
     end
     if amount and opts.charged then
+        timer:SetMinMaxCharge(0, timer.opts.maxcharge)
         timer:SetCharge(amount)
     elseif not timer.timeless then
         local now = GetTime()

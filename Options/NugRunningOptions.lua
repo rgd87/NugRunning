@@ -9,7 +9,6 @@ local AceGUI = LibStub("AceGUI-3.0")
 local COMBATLOG_OBJECT_AFFILIATION_PARTY_OR_RAID = COMBATLOG_OBJECT_AFFILIATION_RAID + COMBATLOG_OBJECT_AFFILIATION_PARTY
 
 
-
 function NugRunningGUI.SlashCmd(msg)
     NugRunningGUI.frame:Show()
 end
@@ -1131,7 +1130,7 @@ local function MakeGeneralOptions()
             --     order = 0,
             --     get = function(info)
             --         local user = UnitName("player").."@"..GetRealmName()
-            --         return NRunDB_Global.charspec[user]
+            --         return NugRunning.db_Global.charspec[user]
             --     end,
             --     set = function( info, v )
             --         NugRunning.Commands.charspec()
@@ -1177,11 +1176,11 @@ local function MakeGeneralOptions()
                     width = {
                         name = "Width",
                         type = "range",
-                        get = function(info) return NRunDB.width end,
+                        get = function(info) return NugRunning.db.width end,
                         set = function(info, v)
-                            NRunDB.width = v
+                            NugRunning.db.width = v
                             for i,timer in ipairs(NugRunning.timers) do
-                                timer:Resize(NRunDB.width, NRunDB.height)
+                                timer:Resize(NugRunning.db.width, NugRunning.db.height)
                             end
                         end,
                         min = 80,
@@ -1192,11 +1191,11 @@ local function MakeGeneralOptions()
                     height = {
                         name = "Height",
                         type = "range",
-                        get = function(info) return NRunDB.height end,
+                        get = function(info) return NugRunning.db.height end,
                         set = function(info, v)
-                            NRunDB.height = v
+                            NugRunning.db.height = v
                             for i,timer in ipairs(NugRunning.timers) do
-                                timer:Resize(NRunDB.width, NRunDB.height)
+                                timer:Resize(NugRunning.db.width, NugRunning.db.height)
                             end
                         end,
                         min = 10,
@@ -1212,15 +1211,75 @@ local function MakeGeneralOptions()
                             up = "Up",
                             down = "Down",
                         },
-                        get = function(info) return NRunDB.growth end,
+                        get = function(info) return NugRunning.db.growth end,
                         set = function( info, v )
-                            NRunDB.growth = v
+                            NugRunning.db.growth = v
                             for i,timer in ipairs(NugRunning.timers) do
                                 timer:ClearAllPoints()
                             end
                             NugRunning:SetupArrange()
                             NugRunning:ArrangeTimers()
                         end,
+                    },
+                },
+            },
+            nameplate_sizeSettings = {
+                type = "group",
+                name = " ",
+                guiInline = true,
+                order = 3,
+                args = {
+                    width = {
+                        name = "Nameplate Width",
+                        type = "range",
+                        get = function(info) return NugRunning.db.np_width end,
+                        set = function(info, v)
+                            NugRunning.db.np_width = v
+                            NugRunningNameplates:Resize()
+                        end,
+                        min = 50,
+                        max = 200,
+                        step = 1,
+                        order = 1,
+                    },
+                    height = {
+                        name = "Nameplate Height",
+                        type = "range",
+                        get = function(info) return NugRunning.db.np_height end,
+                        set = function(info, v)
+                            NugRunning.db.np_height = v
+                            NugRunningNameplates:Resize()
+                        end,
+                        min = 3,
+                        max = 50,
+                        step = 1,
+                        order = 2,
+                    },
+                    xoffset = {
+                        name = "Nameplate X Offset",
+                        type = "range",
+                        get = function(info) return NugRunning.db.np_xoffset end,
+                        set = function(info, v)
+                            NugRunning.db.np_xoffset = v
+                            NugRunningNameplates:Resize()
+                        end,
+                        min = 0,
+                        max = 200,
+                        step = 1,
+                        order = 3,
+                    },
+                    yoffset = {
+                        name = "Nameplate Y Offset",
+                        type = "range",
+                        get = function(info) return NugRunning.db.np_yoffset end,
+                        set = function(info, v)
+                            NugRunning.db.np_yoffset = v
+                            NugRunningNameplates:Resize()
+                        end,
+                        min = 0,
+                        max = 200,
+                        step = 1,
+                        order = 3,
                     },
                 },
             },
@@ -1235,42 +1294,42 @@ local function MakeGeneralOptions()
                         name = "Show Spell Names",
                         type = "toggle",
                         desc = "Display spell name on timers",
-                        get = function(info) return NRunDB.spellTextEnabled end,
-                        set = function(info, v) NRunDB.spellTextEnabled = not NRunDB.spellTextEnabled end,
+                        get = function(info) return NugRunning.db.spellTextEnabled end,
+                        set = function(info, v) NugRunning.db.spellTextEnabled = not NugRunning.db.spellTextEnabled end,
                         order = 1,
                     },
                     localNames = {
                         name = "Localized Spell Names",
                         type = "toggle",
                         desc = "Ignore custom names and always show native spell names",
-                        get = function(info) return NRunDB.localNames end,
-                        set = function(info, v) NRunDB.localNames = not NRunDB.localNames end,
+                        get = function(info) return NugRunning.db.localNames end,
+                        set = function(info, v) NugRunning.db.localNames = not NugRunning.db.localNames end,
                         order = 2,
                     },
                     misses = {
                         name = "Misses",
                         type = "toggle",
                         desc = "Show short notification when spell is resisted/missed",
-                        get = function(info) return NRunDB.missesEnabled end,
-                        set = function(info, v) NRunDB.missesEnabled = not NRunDB.missesEnabled end,
+                        get = function(info) return NugRunning.db.missesEnabled end,
+                        set = function(info, v) NugRunning.db.missesEnabled = not NugRunning.db.missesEnabled end,
                         order = 3,
                     },
                     nameplates = {
                         name = "Nameplate Timers",
                         type = "toggle",
                         desc = "Mirror flagged spell timers on nameplates",
-                        get = function(info) return NRunDB.nameplates end,
-                        set = function(info, v) NRunDB.nameplates = not NRunDB.nameplates end,
+                        get = function(info) return NugRunning.db.nameplates end,
+                        set = function(info, v) NugRunning.db.nameplates = not NugRunning.db.nameplates end,
                         order = 4,
                     },
                     nameplateLines = {
                         name = "Nameplate Lines",
                         type = "toggle",
                         desc = "Draw guide lines from nameplates to main timers",
-                        get = function(info) return NRunDB.nameplateLines end,
+                        get = function(info) return NugRunning.db.nameplateLines end,
                         set = function(info, v)
-                            NRunDB.nameplateLines = not NRunDB.nameplateLines
-                            NugRunningNameplates:EnableLines(NRunDB.nameplateLines)
+                            NugRunning.db.nameplateLines = not NugRunning.db.nameplateLines
+                            NugRunningNameplates:EnableLines(NugRunning.db.nameplateLines)
                         end,
                         order = 5,
                     },
@@ -1278,8 +1337,8 @@ local function MakeGeneralOptions()
                         name = "Totems",
                         type = "toggle",
                         desc = "Display timers for totems (or other similar summons)",
-                        get = function(info) return NRunDB.totems end,
-                        set = function(info, v) NRunDB.totems = not NRunDB.totems end,
+                        get = function(info) return NugRunning.db.totems end,
+                        set = function(info, v) NugRunning.db.totems = not NugRunning.db.totems end,
                         order = 6,
                     },
                 },

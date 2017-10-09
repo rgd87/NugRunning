@@ -22,10 +22,6 @@ NugRunningConfig.timeFont = { font = "Interface\\AddOns\\NugRunning\\Calibri.ttf
 NugRunningConfig.stackFont = { font = "Interface\\AddOns\\NugRunning\\Calibri.ttf", size = 12 }
 NugRunningConfig.dotpowerFont = { font = "Interface\\AddOns\\NugRunning\\Calibri.ttf", size = 8, alpha = .6 }
 
-NugRunningConfig.nameplates.width = 74
-NugRunningConfig.nameplates.height = 7
-NugRunningConfig.nameplates.x_offset = 7
-NugRunningConfig.nameplates.y_offset = 0
 NugRunningConfig.nameplates.parented = true
 
 NugRunningConfig.anchors = {
@@ -491,7 +487,9 @@ Spell( 202573 ,{ name = "Vengeance Revenge", group = "buffs", priority = -10, sc
 -- Spell( 20511 ,{ name = "Intimidating Shout", short = "Fear", duration = 8, multiTarget = true }) --removed
 
 DotSpell( 772 ,{ name = "Rend", color = colors.RED, duration = 8, ghost = true })
+Spell( 242188 ,{ name = "Executioner's Precision", short = "Precision", singleTarget = true, shine = true, shinerefresh = true, priority = -100501, color = colors.WOO, duration = 10, charged = true, maxcharge = 2, scale = 0.6 }) --debuff
 Spell( 208086 ,{ name = "Colossus Smash", singleTarget = true, shine = true, priority = -100500, color = colors.PURPLE2, duration = 6 }) --debuff
+
 --different versions of spell for arms and fury
 Cooldown( 167105,{ name = "Colossus Smash", priority = 9.5, scale = .7, check_known = true, ghost = true, color = colors.PINKIERED, resetable = true, duration = 20 })
 Activation( 167105, { for_cd = 167105, effect = "NIGHTBORNE" })
@@ -665,6 +663,8 @@ Cooldown( 113656, { name = "Fists of Fury", fixedlen = 10, scale_until = 10, col
 Cooldown( 152175, { name = "Whirling Dragon Punch", fixedlen = 10, scale_until = 10, color = colors.TEAL2, priority = 3, ghost =true })
 
 Spell( 119611 ,{ name = "Renewing Mist", color = colors.LGREEN, target = "player", duration = 18 })
+
+Spell( 202090 ,{ name = "Teachings", color = colors.REJUV, priority = 10.1, scale = 0.7, duration = 18, timeless = true })
 
 Spell( 197916 ,{ name = "Lifecycles", color = colors.TEAL3, duration = 15 })
 Spell( 197919 ,{ name = "Lifecycles", color = colors.GOLD, duration = 15 })
@@ -952,8 +952,10 @@ if class == "DRUID" then
 Spell( 208253 ,{ name = "Essence of G'Hanir", duration = 8, color = colors.DBLUE })
 Cooldown( 202767 ,{ name = "Moon", ghost = true, color = colors.PINK3 })
 Cooldown( 210722 ,{ name = "Ashmane's Frenzy", scale_until = 15, ghost = true, color = colors.DTEAL })
-Spell( 210723 ,{ name = "Ashmane's Frenzy", shine = true, duration = 6, color = colors.DBLUE })
+Spell( 210723 ,{ name = "Ashmane's Frenzy", scale = 0.3, duration = 6, color = colors.PURPLE4 })
 Spell( 200851 ,{ name = "Rage of the Sleeper", shine = true, duration = 10, color = colors.DBLUE })
+
+Spell( 135700 ,{ name = "Moment of Clarity", shine = true, duration = 15, color = colors.LBLUE, group = "buffs" })
 
 
 NugRunningConfig.totems[1] = { name = "Efflorescence", color = colors.PINKIERED, priority = - 100, hideName = true }
@@ -996,34 +998,50 @@ DotSpell( 155625 ,{ name = "Moonfire",duration = 14, ghost = true, color = color
 Spell( 158792 ,{ name = "Pulverize",duration = 10, ghost = true, color = colors.WOO2 })
 Spell( 155835 ,{ name = "Bristling Fur",duration = 3, color = colors.WOO2 })
 
-Spell( 106951 ,{ name = "Berserk", duration = 15 })
+Spell( 106951 ,{ name = "Berserk", duration = 15, shine = true, color = colors.TEAL2, group = "buffs" })
 --cat
-Spell( 163505 ,{ name = "Rake Stun", duration = 4, color = colors.PINK })
+Spell( 163505 ,{ name = "Rake Stun", duration = 4, scale = 0.5, priority = 6.2, color = colors.PINK })
 
 local bleed_normalize = nil
-Spell( 155722 ,{ name = "Rake", duration = 15, fixedlen = bleed_normalize, color = colors.PINKIERED })
-Spell( 1079 ,{ name = "Rip", duration = 24, fixedlen = bleed_normalize, color = colors.RED })
--- feral's thrash
-Spell( 106830, { name = "Thrash", fixedlen = bleed_normalize, singleTarget = true, color = colors.WOO, duration = 15, ghost = true })
+Spell( 155722 ,{ name = "Rake", duration = 15, priority = 6, ghost = 4, overlay = {0, 15*0.3, 0.2}, fixedlen = bleed_normalize, color = colors.PINKIERED,
+        init = function(self)
+            self.overlay[2] = IsPlayerSpell(202032) and 15*0.8*0.3 or 15*0.3
+        end})
+Spell( 1079 ,{ name = "Rip", duration = 24, priority = 5, ghost = 4, overlay = {0, 24*0.3, 0.2}, fixedlen = bleed_normalize, color = colors.RED,
+        init = function(self)
+            self.overlay[2] = IsPlayerSpell(202032) and 24*0.8*0.3 or 24*0.3
+        end })
 
-Spell( 203123 ,{ name = "Maim", color = colors.PINK, duration = function() return GetCP() end })
-Cooldown( 5217, { name = "Tiger's Fury", color = colors.DBROWN, ghost = true, scale_until = 10, fixedlen = 15})
+-- Spell( 210705 ,{ name = "Ashamane's Rip", duration = 24, priority = 4, scale = 0.75, fixedlen = 24, color = colors.PURPLE })
+-- feral's thrash
+Spell( 106830, { name = "Thrash", fixedlen = bleed_normalize,  overlay = {0, 15*0.3, 0.2}, singleTarget = true, color = colors.PURPLE, duration = 15, ghost = true, 
+        init = function(self)
+            self.overlay[2] = IsPlayerSpell(202032) and 15*0.8*0.3 or 15*0.3
+        end})
+
+Cooldown( 202028, { name = "Brutal Slash", priority = 10, ghost = true, color = colors.CURSE })
+
+Spell( 203123 ,{ name = "Maim", color = colors.PINK, duration = 5 })
+Spell( 5217, { name = "Tiger's Fury", duration = 8, color = colors.GOLD, scale = 0.7, group = "buffs", shine = true })
+Cooldown( 5217, { name = "Tiger's Fury", color = colors.DBROWN, ghost = true, scale_until = 5})
 Cooldown( 202060, { name = "Elune's Guidance", color = colors.PURPLE3, ghost = true, scale_until = 10, fixedlen = 15})
 --normal, glyph of savage roar
 Spell( 52610,{ name = "Savage Roar", group = "buffs", priority = -10, color = colors.PURPLE, duration = function() return (12 + GetCP() * 6) end })
 Spell( 1850 ,{ name = "Dash", duration = 15 })
 
-Spell( 145152,{ name = "Bloodtalons", duration = 30, color = colors.DRED, priority = -20, scale = 0.6, group = "buffs", shine = true, })
-Spell( 69369,{ name = "Predatory Swiftness", duration = 12, color = colors.DTEAL, scale = 0.4, group = "buffs", shine = true,
+Spell( 145152,{ name = "Bloodtalons", duration = 30, color = colors.DRED, priority = -25, scale = 0.75, group = "buffs", shine = true, })
+Spell( 69369,{ name = "Predatory Swiftness", priority = -20, duration = 12, color = colors.PURPLE4, color2 = colors.REJUV, scale = 0.5, glowtime = 12, group = "buffs",
     init = function(self)
         if IsPlayerSpell(155672) then -- Bloodtalons
-            self.shine = true
+            -- self.shine = true
             self.glowtime = 12
+            self.priority = -20
             self.scale = 0.6
         else
-            self.shine = nil
+            -- self.shine = nil
             self.glowtime = nil
-            self.scale = 0.4
+            self.priority = 1
+            self.scale = 0.3
         end
 
     end})
@@ -1057,7 +1075,7 @@ Spell( 102342 ,{ name = "Ironbark",duration = 12 })
 Spell( 61336 ,{ name = "Survival Instincts", color = colors.BLACK, duration = 12, group = "buffs", ghost = 1 })
 Spell( 774 ,{ name = "Rejuvenation", duration = 18, color = colors.REJUV })
 Spell( 155777 ,{ name = "Germination", duration = 18, color = colors.PURPLE2 })
-Spell( 8936 ,{ name = "Regrowth",duration = 6, color = { 198/255, 233/255, 80/255} })
+-- Spell( 8936 ,{ name = "Regrowth",duration = 6, specmask = 0xFF0F, color = { 198/255, 233/255, 80/255} })
 Spell( 33763 ,{ name = "Lifebloom", shinerefresh = true, recast_mark = 3, duration = 15, color = { 0.5, 1, 0.5} })
 Spell( 48438 ,{ name = "Wild Growth", duration = 7, multiTarget = true, color = colors.LGREEN })
 Spell( 16870 ,{ name = "Clearcasting",  duration = 15 })

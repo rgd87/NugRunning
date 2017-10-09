@@ -7,8 +7,10 @@ local table_remove = table.remove
 local makeicon = true
 local enableLines = true
 local confignp = NugRunningConfig.nameplates
-local Nplates
-local plates = {}
+
+local all_np_timers = {}
+local np_xoffset = 0
+local np_yoffset = 0
 
 local oldTargetGUID
 local guidmap = {}
@@ -71,12 +73,17 @@ local backdrop = {
 function NugRunningNameplates:CreateNameplateTimer(frame)
     local parented = confignp.parented
     local f = CreateFrame("StatusBar")
+    table.insert(all_np_timers, f)
     if parented then f:SetParent(frame) end
     f:SetStatusBarTexture([[Interface\AddOns\NugRunning\statusbar]], "OVERLAY")
-    local w = confignp.width
-    local h = confignp.height
-    local xo = confignp.x_offset
-    local yo = confignp.y_offset
+    -- local w = confignp.width
+    -- local h = confignp.height
+    -- local xo = confignp.x_offset
+    -- local yo = confignp.y_offset
+    local w = NugRunning.db.np_width
+    local h = NugRunning.db.np_height
+    local xo = NugRunning.db.np_xoffset
+    local yo = NugRunning.db.np_yoffset
     f:SetWidth(w)
     f:SetHeight(h)
 
@@ -124,6 +131,34 @@ function NugRunningNameplates:CreateNameplateLine(frame)
 
     frame.nrunLine = line
     return line
+end
+
+function NugRunningNameplates:Resize()
+    
+    np_xoffset = NugRunning.db.np_xoffset
+    np_yoffset = NugRunning.db.np_yoffset
+
+    for _,npt in ipairs(all_np_timers) do
+        local w = NugRunning.db.np_width
+        local h = NugRunning.db.np_height 
+        npt:SetWidth(w)
+        npt:SetHeight(h)
+        npt.icon:SetHeight(h)
+        npt.icon:SetWidth(2*h)
+        backdrop.insets.left = -(h*2) -1
+        npt:SetBackdrop(backdrop)
+        npt:SetBackdropColor(0,0,0,0.7)
+    end
+
+    for unit in pairs(activeNameplates) do
+        local np = GetNamePlateForUnit(unit)
+        if np then
+            local firstTimer = np.timers[1]
+            if firstTimer then
+                firstTimer:SetPoint("BOTTOM", np, "TOP", 7+np_xoffset,-7+np_yoffset)
+            end
+        end
+    end
 end
 
 function NugRunningNameplates:Update(targetTimers, guidTimers, targetSwapping)
@@ -176,6 +211,10 @@ function NugRunningNameplates:UpdateNPTimers(np, nrunTimers, nameplateUnit)
                     npt.icon:SetTexture(nrunt.icon:GetTexture())
                 end
                 npt:Show()
+
+                if i == 1 then --
+                    npt:SetPoint("BOTTOM", np, "TOP", 7+np_xoffset,-7+np_yoffset)
+                end
             end
 
         end
