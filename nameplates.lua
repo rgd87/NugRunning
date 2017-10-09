@@ -74,7 +74,13 @@ function NugRunningNameplates:CreateNameplateTimer(frame)
     local parented = confignp.parented
     local f = CreateFrame("StatusBar")
     table.insert(all_np_timers, f)
-    if parented then f:SetParent(frame) end
+    if parented then
+        if TidyPlates then
+            f:SetParent(frame.extended)
+        else
+            f:SetParent(frame)
+        end
+    end
     f:SetStatusBarTexture([[Interface\AddOns\NugRunning\statusbar]], "OVERLAY")
     -- local w = confignp.width
     -- local h = confignp.height
@@ -248,27 +254,6 @@ end
 NugRunningNameplates:SetScript("OnEvent", function(self, event, ...)
     return self[event](self, event, ...)
 end)
-
--- function NugRunningNameplates:ADDON_LOADED(event, name)
-function NugRunningNameplates:PLAYER_ENTERING_WORLD(event)
-    if  TidyPlates and TidyPlates.PlateHandler and
-        TidyPlates.PlateHandler:HasScript("OnUpdate")
-    then
-        self:UnregisterEvent("PLAYER_ENTERING_WORLD")
-
-        local FrameSetAlpha = NugRunningNameplates.SetAlpha
-        TidyPlates.PlateHandler:HookScript("OnUpdate", function()
-            for frame in pairs(plates) do
-                for _,timer in ipairs(frame.timers) do
-                    FrameSetAlpha(timer, frame.alpha or 1)
-                end
-            end
-        end)
-    end
-end
-
-NugRunningNameplates:RegisterEvent("PLAYER_ENTERING_WORLD")
-
 
 
 end
