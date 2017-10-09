@@ -77,6 +77,8 @@ function NugRunningNameplates:CreateNameplateTimer(frame)
     if parented then
         if TidyPlates then
             f:SetParent(frame.extended)
+        elseif KuiNameplates then
+            f:SetParent(frame.kui)
         else
             f:SetParent(frame)
         end

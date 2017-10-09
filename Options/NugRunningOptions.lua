@@ -1263,8 +1263,8 @@ local function MakeGeneralOptions()
                             NugRunning.db.np_xoffset = v
                             NugRunningNameplates:Resize()
                         end,
-                        min = 0,
-                        max = 200,
+                        min = -100,
+                        max = 100,
                         step = 1,
                         order = 3,
                     },
@@ -1276,8 +1276,8 @@ local function MakeGeneralOptions()
                             NugRunning.db.np_yoffset = v
                             NugRunningNameplates:Resize()
                         end,
-                        min = 0,
-                        max = 200,
+                        min = -100,
+                        max = 100,
                         step = 1,
                         order = 3,
                     },

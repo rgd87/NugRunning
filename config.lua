@@ -969,21 +969,33 @@ Spell( 22842 ,{ name = "Frenzied Regeneration", duration = 3, color = colors.TEA
 -- Spell( 48518 ,{ name = "Lunar Eclipse", timeless = true, duration = 0.1, short = "Lunar", color = colors.LBLUE }) -- Starfire boost
 Spell( 78675,{ name = "Solar Beam", duration = 10, color = colors.GOLD, target = "player" })
 Spell( 33786 ,{ name = "Cyclone", duration = 6 })
-Spell( 164812 ,{ name = "Moonfire",duration = 40, priority = 10, ghost = true, color = colors.PURPLE,
+Spell( 164812 ,{ name = "Moonfire",duration = 16, nameplates = true, priority = 10, ghost = true, color = colors.PURPLE,
         init = function(self)
+            local duration = 16
+            if GetSpecialization() == 4 then duration = duration + 4 end -- persistance trait
+            if GetSpecialization() == 1 then duration = duration + 6 end -- balance druid thing
+            self.duration = duration
+        --     self.overlay[2] = duration*0.3
+
             if GetSpecialization() == 3 then
-                self.duration = 16
                 self.singleTarget = true
                 self.scale = 0.6
             else
                 self.singleTarget = nil
-                self.duration = 40
                 self.scale = 1
             end
+        end
+        })
+Spell( 164547 ,{ name = "Lunar Empowerment", short = "", group = "buffs", priority = -25, duration = 30, scale = 0.8, priority = 9, ghost = true, color = colors.REJUV, charged = true, maxcharge = 3})
+Spell( 164545 ,{ name = "Solar Empowerment", short = "", group = "buffs", priority = -24, duration = 30, scale = 0.8, priority = 8, ghost = true, color = colors.ORANGE2, charged = true, maxcharge = 3})
+Spell( 164815 ,{ name = "Sunfire",duration = 18, nameplates = true, priority = 9, ghost = true, color = colors.ORANGE, maxtimers = 3,
+        init = function(self)
+            local duration = 12
+            if GetSpecialization() == 4 then duration = duration + 4 end -- persistance trait
+            if GetSpecialization() == 1 then duration = duration + 6 end -- balance druid thing
+            self.duration = duration
+            -- self.overlay[2] = duration*0.3
         end})
-Spell( 164547 ,{ name = "Lunar Empowerment", duration = 30, priority = 9, color = colors.REJUV})
-Spell( 164545 ,{ name = "Solar Empowerment", duration = 30, priority = 8, color = colors.ORANGE2})
-Spell( 164815 ,{ name = "Sunfire",duration = 24, priority = 9, ghost = true, color = colors.ORANGE, maxtimers = 3 })
 -- Spell( 93400 ,{ name = "Shooting Stars", shine = true, duration = 12, color = colors.CURSE })
 -- Spell( 48505 ,{ name = "Starfall", shine = true, duration = 10, color = colors.WOO2 })
 -- Cooldown( 78674 ,{ name = "Starsurge", resetable = true, priority = 6, ghost = true, color = colors.CURSE })
@@ -994,7 +1006,6 @@ Spell( 213708,{ name = "Galactic Guardian", shine = true, priority = 12, duratio
 
 Spell( 192081, { name = "Ironfur", priority = -10, group = "buffs", shine = true, glowtime = 1, ghost = 1, color = colors.PINK3, duration = 6 })
 
-DotSpell( 155625 ,{ name = "Moonfire",duration = 14, ghost = true, color = colors.PURPLE }) --cat's moonfire2
 Spell( 158792 ,{ name = "Pulverize",duration = 10, ghost = true, color = colors.WOO2 })
 Spell( 155835 ,{ name = "Bristling Fur",duration = 3, color = colors.WOO2 })
 
@@ -1003,18 +1014,18 @@ Spell( 106951 ,{ name = "Berserk", duration = 15, shine = true, color = colors.T
 Spell( 163505 ,{ name = "Rake Stun", duration = 4, scale = 0.5, priority = 6.2, color = colors.PINK })
 
 local bleed_normalize = nil
-Spell( 155722 ,{ name = "Rake", duration = 15, priority = 6, ghost = 4, overlay = {0, 15*0.3, 0.2}, fixedlen = bleed_normalize, color = colors.PINKIERED,
+Spell( 155722 ,{ name = "Rake", duration = 15, priority = 6, nameplates = true, ghost = 4, overlay = {0, 15*0.3, 0.2}, fixedlen = bleed_normalize, color = colors.PINKIERED,
         init = function(self)
             self.overlay[2] = IsPlayerSpell(202032) and 15*0.8*0.3 or 15*0.3
         end})
-Spell( 1079 ,{ name = "Rip", duration = 24, priority = 5, ghost = 4, overlay = {0, 24*0.3, 0.2}, fixedlen = bleed_normalize, color = colors.RED,
+Spell( 1079 ,{ name = "Rip", duration = 24, priority = 5, ghost = 4, nameplates = true, overlay = {0, 24*0.3, 0.2}, fixedlen = bleed_normalize, color = colors.RED,
         init = function(self)
             self.overlay[2] = IsPlayerSpell(202032) and 24*0.8*0.3 or 24*0.3
         end })
 
 -- Spell( 210705 ,{ name = "Ashamane's Rip", duration = 24, priority = 4, scale = 0.75, fixedlen = 24, color = colors.PURPLE })
 -- feral's thrash
-Spell( 106830, { name = "Thrash", fixedlen = bleed_normalize,  overlay = {0, 15*0.3, 0.2}, singleTarget = true, color = colors.PURPLE, duration = 15, ghost = true, 
+Spell( 106830, { name = "Thrash", fixedlen = bleed_normalize, nameplates = true, overlay = {0, 15*0.3, 0.2}, singleTarget = true, color = colors.PURPLE, duration = 15, ghost = true, 
         init = function(self)
             self.overlay[2] = IsPlayerSpell(202032) and 15*0.8*0.3 or 15*0.3
         end})
@@ -1068,13 +1079,13 @@ Spell( 102558 ,{ name = "Incarnation: Son of Ursoc", short = "Incarnation", dura
 Spell( 102560 ,{ name = "Incarnation: Chosen of Elune", short = "Incarnation", duration =  30, color = colors.TEAL2, group = "buffs", shine = true })
 Spell( 102543 ,{ name = "Incarnation: King of the Jungle", short = "Incarnation", duration =  30, color = colors.TEAL2, group = "buffs", shine = true })
 
-
+Spell( 194223 ,{ name = "Celestial Alignment", short = "Alignment", duration =  15, color = colors.TEAL2, group = "buffs", shine = true })
 
 Spell( 102342 ,{ name = "Ironbark",duration = 12 })
 
 Spell( 61336 ,{ name = "Survival Instincts", color = colors.BLACK, duration = 12, group = "buffs", ghost = 1 })
-Spell( 774 ,{ name = "Rejuvenation", duration = 18, color = colors.REJUV })
-Spell( 155777 ,{ name = "Germination", duration = 18, color = colors.PURPLE2 })
+Spell( 774 ,{ name = "Rejuvenation", scale = 0.7, priority = 5, duration = 18, color = colors.REJUV })
+Spell( 155777 ,{ name = "Germination", scale = 0.5, priority = 5.2, duration = 18, color = colors.PURPLE2 })
 -- Spell( 8936 ,{ name = "Regrowth",duration = 6, specmask = 0xFF0F, color = { 198/255, 233/255, 80/255} })
 Spell( 33763 ,{ name = "Lifebloom", shinerefresh = true, recast_mark = 3, duration = 15, color = { 0.5, 1, 0.5} })
 Spell( 48438 ,{ name = "Wild Growth", duration = 7, multiTarget = true, color = colors.LGREEN })
