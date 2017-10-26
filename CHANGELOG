@@ -1,3 +1,10 @@
+### 7.3.3
+
+- fixedlen option support for nameplate timers
+- Shadow Priest dots are now normalized to their corresponding durations to make them properly extend during Void form
+- Small Rogue updates
+- Rake, Rip, Garrote, Nightblade, Rupture displayed on nameplates by default
+
 ### 7.3.2
 
 - nameplate timer size settings in GUI
