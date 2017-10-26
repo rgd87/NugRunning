@@ -40,7 +40,8 @@ local function Rampage()
     rampage_frame.timer = timer
     rampage_frame.CheckFury = function(self)
         if GetSpecialization() == 2 and IsPlayerSpell(184367) then
-            rampageCost = IsPlayerSpell(202922) and 70 or 85 -- carnage
+            -- rampageCost = IsPlayerSpell(202922) and 70 or 85 -- carnage
+            rampageCost = IsPlayerSpell(202922) and 70 or 100 -- carnage
             timer.bar:SetMinMaxValues(0, rampageCost)
             self:RegisterEvent("UNIT_POWER_FREQUENT")
             self:RegisterEvent("SPELL_ACTIVATION_OVERLAY_GLOW_HIDE")

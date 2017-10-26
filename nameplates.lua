@@ -209,7 +209,7 @@ function NugRunningNameplates:UpdateNPTimers(np, nrunTimers, nameplateUnit)
             if not nrunt  then
                 npt:Hide()
             else
-                npt.startTime = nrunt.startTime
+                npt.startTime = nrunt._startTimeModified or nrunt.startTime
                 npt.endTime = nrunt.endTime
                 npt:SetMinMaxValues(nrunt.bar:GetMinMaxValues())
                 local r,g,b = nrunt.bar:GetStatusBarColor()
