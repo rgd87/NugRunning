@@ -45,10 +45,11 @@ function NugRunningGUI.GenerateCategoryTree(self, isGlobal, category)
 				order = 2
 			end
 			local text = status and status..name or name
+			local texture = opts.isItem and select(5,GetItemInfoInstant(spellID)) or  GetSpellTexture(spellID)
 			table.insert(t, {
 				value = spellID,
 				text = text,
-				icon = GetSpellTexture(spellID),
+				icon = texture,
 				order = order,
 			})
 		end
@@ -102,7 +103,16 @@ function NugRunningGUI.CreateNewTimerForm(self)
 		self.parent:ShowNewTimer("cooldowns")
 	end)
 	Form:AddChild(newcooldown)
-    Form.controls.newcooldown = newcooldown
+	Form.controls.newcooldown = newcooldown
+	
+	local newitemcooldown = AceGUI:Create("Button")
+	newitemcooldown:SetText("New Item Cooldown")
+	newitemcooldown:SetFullWidth(true)
+	newitemcooldown:SetCallback("OnClick", function(self, event)
+		self.parent:ShowNewTimer("itemcooldowns")
+	end)
+	Form:AddChild(newitemcooldown)
+    Form.controls.newitemcooldown = newitemcooldown
 
 	local newcast = AceGUI:Create("Button")
 	newcast:SetText("New Cast")
@@ -166,7 +176,11 @@ function NugRunningGUI.CreateCommonForm(self)
             end
 
 			if not opts.name then
-				opts.name = GetSpellInfo(spellID)
+				if opts.isItem then
+					opts.name = GetItemInfo(spellID) or "Item"
+				else
+					opts.name = GetSpellInfo(spellID)
+				end
 			end
 			if category == "spells" and not opts.duration then
 				opts.duration = 3
@@ -253,7 +267,7 @@ function NugRunningGUI.CreateCommonForm(self)
 	spellID:SetRelativeWidth(0.2)
 	spellID:SetCallback("OnTextChanged", function(self, event, value)
         local v = tonumber(value)
-        if v and v > 0 and GetSpellInfo(v) then
+        if (v and v > 0 and GetSpellInfo(v)) or self.parent.opts.isItem then
             self.parent.opts["spellID"] = v
             self.editbox:SetTextColor(1,1,1)
         else
@@ -781,6 +795,11 @@ function NugRunningGUI.FillForm(self, Form, class, category, id, opts, isEmptyFo
 	Form.class = class
 	Form.category = category
 	Form.id = id
+
+	if category == "itemcooldowns" then
+		opts.isItem = true
+	end
+
 	local controls = Form.controls
 	controls.spellID:SetText(id or "")
 	controls.spellID:SetDisabled(not isEmptyForm)
@@ -860,6 +879,12 @@ function NugRunningGUI.FillForm(self, Form, class, category, id, opts, isEmptyFo
 		controls.affiliation:SetDisabled(true)
 		controls.nameplates:SetDisabled(true)
         controls.hide_until:SetDisabled(false)
+	end
+
+	if category == "itemcooldowns" then
+		controls.spellID:SetLabel("Item ID")
+	else
+		controls.spellID:SetLabel("Spell ID")
 	end
 
 end
@@ -973,10 +998,12 @@ function NugRunningGUI.Create(self, name, parent )
 			NewTimerForm.class = class
 			Frame.rpane:AddChild(NewTimerForm)
             if class == "GLOBAL" then
-                NewTimerForm.controls.newcooldown:SetDisabled(true)
+				NewTimerForm.controls.newcooldown:SetDisabled(true)
+				NewTimerForm.controls.newitemcooldown:SetDisabled(true)
                 NewTimerForm.controls.newcast:SetDisabled(true)
             else
-                NewTimerForm.controls.newcooldown:SetDisabled(false)
+				NewTimerForm.controls.newcooldown:SetDisabled(false)
+				NewTimerForm.controls.newitemcooldown:SetDisabled(false)
                 NewTimerForm.controls.newcast:SetDisabled(false)
             end
 
@@ -1056,6 +1083,12 @@ function NugRunningGUI.Create(self, name, parent )
 						children = NugRunningGUI:GenerateCategoryTree(false,"cooldowns")
 					},
 					{
+						value = "itemcooldowns",
+						text = "Item Cooldowns",
+						icon = "Interface\\Icons\\inv_potionc_5",
+						children = NugRunningGUI:GenerateCategoryTree(false,"itemcooldowns")
+					},
+					{
 						value = "casts",
 						text = "Casts",
 						icon = "Interface\\Icons\\spell_deathvortex",
@@ -1081,7 +1114,7 @@ function NugRunningGUI.Create(self, name, parent )
 
 
 
-	local categories = {"spells", "cooldowns", "casts"}
+	local categories = {"spells", "cooldowns", "itemcooldowns", "casts"}
 	for i,group in ipairs(t) do -- expand all groups
 		if group.value ~= "GLOBAL" then
 			treegroup.localstatus.groups[group.value] = true
