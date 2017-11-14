@@ -4,6 +4,7 @@ NugRunningConfig.spells = {}
 NugRunningConfig.nameplates = {}
 NugRunningConfig.anchors = {}
 NugRunningConfig.cooldowns = {}
+NugRunningConfig.itemcooldowns = {}
 NugRunningConfig.activations = {}
 NugRunningConfig.event_timers = {}
 NugRunningConfig.totems = {}
@@ -97,6 +98,19 @@ helpers.AddCooldown = helpers.Cooldown
 helpers.ModCooldown = function(id, mods)
     if type(id) == "table" then id = id[1] end
     apply_overrides(NugRunningConfig.cooldowns[id], mods)
+end
+
+helpers.Item = function(id, opts)
+    if opts then
+        opts.localname = GetItemInfo(id) or "Item"
+        opts.isItem = true
+        local start,duration, enabled = GetItemCooldown(id)
+        if start == 0 and duration == 0 and enabled == 0 then
+            print("nrun: no cooldown on item #"..id)
+            return
+        end
+    end
+    NugRunningConfig.itemcooldowns[id] = opts
 end
 
 

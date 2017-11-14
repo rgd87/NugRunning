@@ -12,6 +12,7 @@ local config = NugRunningConfig
 local spells = config.spells
 local activations = config.activations
 local cooldowns = config.cooldowns
+local itemcooldowns = config.itemcooldowns
 local event_timers = config.event_timers
 local nameplates
 local MAX_TIMERS = 20
@@ -260,6 +261,7 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
     spells = config.spells
     activations = config.activations
     cooldowns = config.cooldowns
+    itemcooldowns = config.itemcooldowns
     event_timers = config.event_timers
     -- for _, timerType in ipairs(categories) do
         -- for k, opts in pairs(classConfig[timerType]) do
@@ -486,78 +488,85 @@ local function GetSpellCooldownCharges(spellID)
     return startTime, duration, enabled, charges, maxCharges
 end
 
+local gcdDuration = 1.5
+function CheckCooldown(spellID, opts, startTime, duration, enabled, charges, maxCharges, isItem)
+    local cdType = isItem and "ITEMCOOLDOWN" or "COOLDOWN"
+    local timer
+    local old_timer = opts.timer
+    if old_timer and (old_timer.spellID == spellID and old_timer.timerType == cdType) then
+        timer = opts.timer
+    elseif opts.replaces then
+        timer = gettimer(active, opts.replaces, UnitGUID("player"), cdType)
+    end
+    if duration then
+        if duration <= gcdDuration then
+            if timer and active[timer] then
+                local oldcdrem = timer.endTime - GetTime()
+                if oldcdrem > duration or oldcdrem < 0 then
+                    if not timer.isGhost then
+                        free[timer] = true
+                        if timer.isGhost and not timer.shine:IsPlaying() then timer.shine:Play() end
+                        opts.timer = nil
+                    end
+                end
+            end
+        else
+                if not active[timer] or timer.isGhost then
+                    local mdur = opts.minduration
+                    local time_remains = (duration + startTime) - GetTime()
+                    local mrem = opts.hide_until
+                    if (not mdur or duration > mdur) and (not mrem or time_remains < mrem) then
+                        timer = NugRunning:ActivateTimer(UnitGUID("player"),UnitGUID("player"), UnitName("player"), nil, spellID, opts.localname, opts, cdType, time_remains)
+                    else
+                        if timer and timer.isGhost then
+                            NugRunning.GhostExpire(timer)
+                        end
+                    end
+                    if timer then
+                        timer.cd_startTime = startTime
+                        timer.cd_duration = duration
+                        timer.fixedoffset = timer.opts.fixedlen and duration - timer.opts.fixedlen or 0
+                        timer:SetTime(startTime, startTime + duration,  timer.fixedoffset)
+                        opts.timer = timer
+                    end
+                else
+                    -- print("1", spellID, startTime, duration)
+                    if timer.cd_startTime ~= startTime or timer.cd_duration ~= duration then
+                        timer.cd_startTime = startTime
+                        timer.fixedoffset = timer.opts.fixedlen and duration - timer.opts.fixedlen or 0
+                        timer:SetTime(startTime, startTime + duration, timer.fixedoffset)
+                    -- elseif timer.cd_duration ~= duration then
+                    end
+
+                    if opts.replaces then
+                        local name,_, texture = GetSpellInfo(spellID)
+                        timer:SetIcon(texture)
+                        timer:SetName(NugRunning:MakeName(opts, name, timer.dstName) )
+                        if opts.color then timer:SetColor(unpack(opts.color)) end
+                    end
+                    opts.timer = timer
+                end
+                if charges and timer then
+                    opts.timer:SetCount(maxCharges-charges)
+                end
+        end
+    end
+end
+
 local lastCooldownUpdateTime = GetTime()
 function NugRunning.SPELL_UPDATE_COOLDOWN(self,event, periodic)
     if periodic and GetTime() - lastCooldownUpdateTime < 0.9 then return end
-    local _, gcdDuration = GetSpellCooldown(61304) -- gcd spell
-    -- print(GetTime(), event)
+    gcdDuration = select(2,GetSpellCooldown(61304)) -- gcd spell
+
     for spellID,opts in pairs(cooldowns) do
         if not opts.check_known or IsPlayerSpell(spellID) then
-
-        local startTime, duration, enabled, charges, maxCharges = GetSpellCooldownCharges(spellID)
-
-        local timer
-        local old_timer = opts.timer
-        if old_timer and (old_timer.spellID == spellID and old_timer.timerType == "COOLDOWN") then
-            timer = opts.timer
-        elseif opts.replaces then
-            timer = gettimer(active, opts.replaces, UnitGUID("player"), "COOLDOWN")
+            local startTime, duration, enabled, charges, maxCharges = GetSpellCooldownCharges(spellID)
+            CheckCooldown(spellID, opts, startTime, duration, enabled, charges, maxCharges)
         end
-        if duration then
-            if duration <= gcdDuration then
-                if timer and active[timer] then
-                    local oldcdrem = timer.endTime - GetTime()
-                    if oldcdrem > duration or oldcdrem < 0 then
-                        if not timer.isGhost then
-                            free[timer] = true
-                            if timer.isGhost and not timer.shine:IsPlaying() then timer.shine:Play() end
-                            opts.timer = nil
-                        end
-                    end
-                end
-            else
-                    if not active[timer] or timer.isGhost then
-                        local mdur = opts.minduration
-                        local time_remains = (duration + startTime) - GetTime()
-                        local mrem = opts.hide_until
-                        if (not mdur or duration > mdur) and (not mrem or time_remains < mrem) then
-                            timer = self:ActivateTimer(UnitGUID("player"),UnitGUID("player"), UnitName("player"), nil, spellID, opts.localname, opts, "COOLDOWN", time_remains)
-                        else
-                            if timer and timer.isGhost then
-                                NugRunning.GhostExpire(timer)
-                            end
-                        end
-                        if timer then
-                            timer.cd_startTime = startTime
-                            timer.cd_duration = duration
-                            timer.fixedoffset = timer.opts.fixedlen and duration - timer.opts.fixedlen or 0
-                            timer:SetTime(startTime, startTime + duration,  timer.fixedoffset)
-                            opts.timer = timer
-                        end
-                    else
-                        -- print("1", spellID, startTime, duration)
-                        if timer.cd_startTime ~= startTime or timer.cd_duration ~= duration then
-                            timer.cd_startTime = startTime
-                            timer.fixedoffset = timer.opts.fixedlen and duration - timer.opts.fixedlen or 0
-                            timer:SetTime(startTime, startTime + duration, timer.fixedoffset)
-                        -- elseif timer.cd_duration ~= duration then
-                        end
-
-                        if opts.replaces then
-                            local name,_, texture = GetSpellInfo(spellID)
-                            timer:SetIcon(texture)
-                            timer:SetName(self:MakeName(opts, name, timer.dstName) )
-                            if opts.color then timer:SetColor(unpack(opts.color)) end
-                        end
-                        opts.timer = timer
-                    end
-                    if charges and timer then
-                        opts.timer:SetCount(maxCharges-charges)
-                    end
-            end
-        end
-
-        end
+    end
+    for itemID,opts in pairs(itemcooldowns) do
+        local startTime, duration, enabled = GetItemCooldown(itemID)
+        CheckCooldown(itemID, opts, startTime, duration, enabled, nil, nil, true)
     end
     lastCooldownUpdateTime = GetTime()
 end
@@ -662,7 +671,11 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
     if multiTargetGUID then timer.targets[multiTargetGUID] = true end
     timer.spellID = spellID
     timer.timerType = timerType
-    timer:SetIcon(select(3,GetSpellInfo(opts.showid or spellID)))
+    if opts.isItem then
+        timer:SetIcon(select(5,GetItemInfoInstant(spellID)))
+    else
+        timer:SetIcon(select(3,GetSpellInfo(opts.showid or spellID)))
+    end
     timer.opts = opts
     timer.onupdate = opts.onupdate
 
@@ -777,7 +790,7 @@ function NugRunning.RefreshTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID,
     if not timer then
         return self:ActivateTimer(srcGUID, dstGUID or multiTargetGUID, dstName, dstFlags, spellID, spellName, opts, timerType)
     end
-    if timerType == "COOLDOWN" and not timer.isGhost then return timer end
+    if timerType == "COOLDOWN" or timerType == "ITEMCOOLDOWN" and not timer.isGhost then return timer end
     -- if timer.isGhost then
         timer:SetScript("OnUpdate",NugRunning.TimerFunc)
         timer.isGhost = nil

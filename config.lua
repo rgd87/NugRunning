@@ -9,6 +9,7 @@ local Cooldown = helpers.Cooldown
 local Activation = helpers.Activation
 local EventTimer = helpers.EventTimer
 local Cast = helpers.Cast
+local Item = helpers.Item
 local Anchor = helpers.Anchor
 local Talent = helpers.Talent
 local Glyph = helpers.Glyph
@@ -270,9 +271,12 @@ Cooldown( 207946,{ name = "Light's Wrath", color = colors.DTEAL, ghost = true, s
 Cooldown( 2050,{ name = "Serenity", color = colors.LBLUE, priority = -10, ghosteffect = "AEGWYNN", ghost = true, scale = .8 })
 Cooldown( 34861,{ name = "Sanctify", color = colors.GOLD, priority = -9, ghosteffect = "JUDGEMENT", ghost = true, scale = .8 })
 
+Cooldown( 17,{ name = "Power Word: Shield", priority = -10, scale = 0.5, color = colors.PINKIERED, ghost = true })
+
 -- BUFFS
 Spell( 139 ,{ name = "Renew", shinerefresh = true, color = colors.LGREEN, duration = 12,  scale = .7,  })
-Spell( 17 ,{ name = "Power Word: Shield", short = "PW:Shield", shinerefresh = true, duration = 15, color = colors.LRED })
+Spell( 17 ,{ name = "Power Word: Shield", shinerefresh = true, duration = 15, color = colors.LRED })
+
 Spell( 41635 ,{ name = "Prayer of Mending", shinerefresh = true, duration = 30, color = colors.TEAL3, scale = .7, textfunc = function(timer) return timer.dstName end })
 Spell( 47788 ,{ name = "Guardian Spirit", shine = true, duration = 10, color = colors.LBLUE, short = "Guardian" })
 Spell( 33206 ,{ name = "Pain Suppression",shine = true, duration = 8, color = colors.LBLUE })
@@ -317,7 +321,7 @@ Spell( 205369,{ name = "Mind Bomb", duration = 4, multiTarget = true })
 Spell( 47536,{ name = "Rapture", duration = 11, color = colors.LBLUE, shine = true })
 -- Spell( 64044 ,{ name = "Psychic Horror",duration = 1, multiTarget = true })
 
-Spell( 15407, { name = "Mind Flay", short = "", priority = 12, tick = 1, overlay = {"tick", "tickend"}, color = colors.PURPLE2, priority = 11, duration = 3, scale = 0.8, target = "player" })
+Spell( 15407, { name = "Mind Flay", short = "", priority = 12, tick = 1, overlay = {"tick", "tickend"}, color = colors.PURPLE2, priority = 11, duration = 3, scale = 0.8 })
 
 --Old Shadow Orbs
 -- Spell( 77487 ,{ name = "",duration = 60, charged = true, maxcharge = 3, shine = true, shinerefresh = true, priority = -3, color = colors.WOO })
@@ -791,6 +795,9 @@ Spell( {221562, 108194} ,{ name = "Asphyxiate", color = colors.PINK, duration = 
 end
 
 if class == "MAGE" then
+    
+-- Item( 153130 ,{ name = "Man'Ari", color = colors.DTEAL, ghost = true })
+
 Cooldown( 214634 ,{ name = "Ebonbolt", color = colors.DTEAL, scale_until = 10, ghost = true })
 Cooldown( 194466 ,{ name = "Phoenix's Flames", color = colors.DTEAL, scale = 0.5, priority = -1, ghost = true })
 Cooldown( 224968 ,{ name = "Mark of Aluneth", color = colors.DTEAL, scale_until = 10, ghost = true })
