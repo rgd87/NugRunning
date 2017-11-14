@@ -321,7 +321,11 @@ Spell( 205369,{ name = "Mind Bomb", duration = 4, multiTarget = true })
 Spell( 47536,{ name = "Rapture", duration = 11, color = colors.LBLUE, shine = true })
 -- Spell( 64044 ,{ name = "Psychic Horror",duration = 1, multiTarget = true })
 
+<<<<<<< HEAD
 Spell( 15407, { name = "Mind Flay", short = "", priority = 12, tick = 1, overlay = {"tick", "tickend"}, color = colors.PURPLE2, priority = 11, duration = 3, scale = 0.8 })
+=======
+Cast( 15407, { name = "Mind Flay", short = "", priority = 12, tick = 1, overlay = {"tick", "tickend"}, color = colors.PURPLE2, priority = 11, duration = 3, scale = 0.8 })
+>>>>>>> 8f7a338518dbbab2bda69250653093412e315cb3
 
 --Old Shadow Orbs
 -- Spell( 77487 ,{ name = "",duration = 60, charged = true, maxcharge = 3, shine = true, shinerefresh = true, priority = -3, color = colors.WOO })

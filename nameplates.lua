@@ -29,8 +29,8 @@ local activeNameplates = {}
 
 function NugRunningNameplates.NAME_PLATE_CREATED(self, event, frame)
     frame.timers = {}
-    if frame:GetChildren().BuffFrame then
-        frame:GetChildren().BuffFrame:Hide()
+    if frame.UnitFrame and frame.UnitFrame.BuffFrame then
+        frame.UnitFrame.BuffFrame:Hide()
     end
 end
 

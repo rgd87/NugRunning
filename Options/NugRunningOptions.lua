@@ -157,7 +157,7 @@ function NugRunningGUI.CreateCommonForm(self)
 
 		if not spellID then -- make new timer
 			spellID = tonumber(self.parent.controls.spellID:GetText())
-			if not spellID then
+			if not spellID or not tonumber(spellID) then
 				--invalid spell id string
 				return
 			end
@@ -313,8 +313,8 @@ function NugRunningGUI.CreateCommonForm(self)
 		if v and v > 0 then
 			self.parent.opts["duration"] = v
         elseif value == "" then
-            self.parent.opts["fixedlen"] = false
-            self:SetText("")
+            self.parent.opts["duration"] = 3
+            self:SetText("3")
 		end
 	end)
 	Form.controls.duration = duration
@@ -884,7 +884,6 @@ function NugRunningGUI.Create(self, name, parent )
 	Frame:SetLayout("Fill")
 	-- Frame:SetHeight(500)
 	-- Frame:SetWidth(700)
-	NRO = Frame
 	-- Frame:Show()
 
 
