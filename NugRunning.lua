@@ -790,7 +790,7 @@ function NugRunning.RefreshTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID,
     if not timer then
         return self:ActivateTimer(srcGUID, dstGUID or multiTargetGUID, dstName, dstFlags, spellID, spellName, opts, timerType)
     end
-    if timerType == "COOLDOWN" or timerType == "ITEMCOOLDOWN" and not timer.isGhost then return timer end
+    if (timerType == "COOLDOWN" or timerType == "ITEMCOOLDOWN") and not timer.isGhost then return timer end
     -- if timer.isGhost then
         timer:SetScript("OnUpdate",NugRunning.TimerFunc)
         timer.isGhost = nil
