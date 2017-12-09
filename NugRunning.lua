@@ -1636,7 +1636,7 @@ NugRunning.Commands = {
         NRunDB.dotpower = not NRunDB.dotpower
         print("Dotpower turned "..(NRunDB.dotpower and "on" or "off")..". Will take effect after /reload")
     end,
-    ["set"] = function()
+    ["set"] = function(v)
         local p = ParseOpts(v)
         NRunDB.width = p["width"] or NRunDB.width
         NRunDB.height = p["height"] or NRunDB.height
@@ -1661,7 +1661,7 @@ NugRunning.Commands = {
             NugRunning:ArrangeTimers()
         end
     end,
-    ["setpos"] = function()
+    ["setpos"] = function(v)
         local p = ParseOpts(v)
         local aname = p["anchor"]
         local anchor = NRunDB.anchors[aname]
