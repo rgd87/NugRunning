@@ -796,7 +796,7 @@ function NugRunning.RefreshTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID,
     if not timer then
         return self:ActivateTimer(srcGUID, dstGUID or multiTargetGUID, dstName, dstFlags, spellID, spellName, opts, timerType)
     end
-    if timerType == "COOLDOWN" or timerType == "ITEMCOOLDOWN" and not timer.isGhost then return timer end
+    if (timerType == "COOLDOWN" or timerType == "ITEMCOOLDOWN") and not timer.isGhost then return timer end
     -- if timer.isGhost then
         timer:SetScript("OnUpdate",NugRunning.TimerFunc)
         timer.isGhost = nil
@@ -1643,7 +1643,7 @@ NugRunning.Commands = {
         NRunDB.dotpower = not NRunDB.dotpower
         print("Dotpower turned "..(NRunDB.dotpower and "on" or "off")..". Will take effect after /reload")
     end,
-    ["set"] = function()
+    ["set"] = function(v)
         local p = ParseOpts(v)
         NRunDB.width = p["width"] or NRunDB.width
         NRunDB.height = p["height"] or NRunDB.height
@@ -1668,7 +1668,7 @@ NugRunning.Commands = {
             NugRunning:ArrangeTimers()
         end
     end,
-    ["setpos"] = function()
+    ["setpos"] = function(v)
         local p = ParseOpts(v)
         local aname = p["anchor"]
         local anchor = NRunDB.anchors[aname]
