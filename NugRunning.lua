@@ -113,7 +113,6 @@ NugRunning.timers = alltimers
 NugRunning.gettimer = gettimer
 NugRunning.helpers = helpers
 
-
 local defaults = {
     anchors = {
         main = {
@@ -151,6 +150,11 @@ local defaults = {
     nameplateLines = false,
     dotpower = true,
     dotticks = true,
+    textureName = "Aluminium",
+    nptextureName = "Aluminium",
+    nameFont = { font = "ClearFont", size = 10, alpha = 0.5 },
+    timeFont = { font = "ClearFont", size = 8, alpha = 1 },
+    stackFont = { font = "ClearFont", size = 12 },
 }
 
 local function SetupDefaults(t, defaults)
@@ -335,7 +339,9 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
         free[timer] = true
     end
     --remove timer from the pool and change it to castbar
-    NugRunning:CreateCastbarTimer(table.remove(NugRunning.timers))
+    local cbt = next(free)
+    free[cbt] = nil
+    NugRunning:CreateCastbarTimer(cbt)
 
     -- local _,class = UnitClass("player")
     -- if (class == "WARLOCK" or class == "PRIEST") and NRunDB.dotpower then
@@ -1198,7 +1204,7 @@ end
 local TimerBecomeGhost = function(self)
     self.expiredGhost = nil
     self.isGhost = true
-    self:SetPowerStatus(nil)
+    -- self:SetPowerStatus(nil)
     self.arrow:Hide()
     self:ToGhost()
     local opts = self.opts
@@ -1480,6 +1486,7 @@ function NugRunning.Unlock(self)
         timer:SetIcon("Interface\\Icons\\inv_misc_questionmark")
         timer:SetName("Test timer")
         timer:SetColor(0.4, 0.4, 0.4)
+        timer:SetCount(5)
         timer:Show()
         local point, to
         local xOffset, yOffset, ySign = 0, 4, 1

@@ -1,4 +1,10 @@
 local NugRunning = NugRunning
+local LSM = LibStub("LibSharedMedia-3.0")
+
+
+local all_np_timers = {}
+NugRunning.nameplate_timers = all_np_timers
+
 function NugRunning:DoNameplates()
 
 local next = next
@@ -8,7 +14,6 @@ local makeicon = true
 local enableLines = true
 local confignp = NugRunningConfig.nameplates
 
-local all_np_timers = {}
 local np_xoffset = 0
 local np_yoffset = 0
 
@@ -19,6 +24,7 @@ local GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
 
 NugRunningNameplates = CreateFrame("Frame")
 local NugRunningNameplates = NugRunningNameplates
+
 
 NugRunningNameplates:RegisterEvent("NAME_PLATE_CREATED")
 NugRunningNameplates:RegisterEvent("NAME_PLATE_UNIT_ADDED")
@@ -85,7 +91,8 @@ function NugRunningNameplates:CreateNameplateTimer(frame)
             f:SetParent(frame)
         end
     end
-    f:SetStatusBarTexture([[Interface\AddOns\NugRunning\statusbar]], "OVERLAY")
+    local texture = LSM:Fetch("statusbar", NugRunning.db.nptextureName)
+    f:SetStatusBarTexture(texture, "OVERLAY")
     -- local w = confignp.width
     -- local h = confignp.height
     -- local xo = confignp.x_offset

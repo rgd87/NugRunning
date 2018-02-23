@@ -16,12 +16,12 @@ local Glyph = helpers.Glyph
 local GetCP = helpers.GetCP
 local _,class = UnitClass("player")
 
-NugRunningConfig.texture = "Interface\\AddOns\\NugRunning\\statusbar"
--- NugRunningConfig.texture = "Interface\\TargetingFrame\\UI-StatusBar"
-NugRunningConfig.nameFont = { font = "Interface\\AddOns\\NugRunning\\Calibri.ttf", size = 10, alpha = 0.5 }
-NugRunningConfig.timeFont = { font = "Interface\\AddOns\\NugRunning\\Calibri.ttf", size = 8, alpha = 1 }
-NugRunningConfig.stackFont = { font = "Interface\\AddOns\\NugRunning\\Calibri.ttf", size = 12 }
-NugRunningConfig.dotpowerFont = { font = "Interface\\AddOns\\NugRunning\\Calibri.ttf", size = 8, alpha = .6 }
+-- NugRunningConfig.overrideTexture = true
+-- NugRunningConfig.texture = "Interface\\AddOns\\NugRunning\\statusbar"
+-- NugRunningConfig.overrideFonts = true
+-- NugRunningConfig.nameFont = { font = "Interface\\AddOns\\NugRunning\\Calibri.ttf", size = 10, alpha = 0.5 }
+-- NugRunningConfig.timeFont = { font = "Interface\\AddOns\\NugRunning\\Calibri.ttf", size = 8, alpha = 1 }
+-- NugRunningConfig.stackFont = { font = "Interface\\AddOns\\NugRunning\\Calibri.ttf", size = 12 }
 
 NugRunningConfig.nameplates.parented = true
 

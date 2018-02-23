@@ -1,4 +1,5 @@
 NugRunningGUI = CreateFrame("Frame","NugRunningGUI")
+local NugRunning = NugRunning
 
 -- NugRunningGUI:SetScript("OnEvent", function(self, event, ...)
 	-- self[event](self, event, ...)
@@ -8,6 +9,7 @@ NugRunningGUI = CreateFrame("Frame","NugRunningGUI")
 local AceGUI = LibStub("AceGUI-3.0")
 local COMBATLOG_OBJECT_AFFILIATION_PARTY_OR_RAID = COMBATLOG_OBJECT_AFFILIATION_RAID + COMBATLOG_OBJECT_AFFILIATION_PARTY
 
+local LSM = LibStub("LibSharedMedia-3.0")
 
 function NugRunningGUI.SlashCmd(msg)
     NugRunningGUI.frame:Show()
@@ -1172,7 +1174,7 @@ local function MakeGeneralOptions()
                 type = "group",
                 name = "Anchors",
                 guiInline = true,
-                order = 2,
+                order = 1,
                 args = {
                     unlock = {
                         name = "Unlock",
@@ -1203,8 +1205,21 @@ local function MakeGeneralOptions()
                 type = "group",
                 name = " ",
                 guiInline = true,
-                order = 3,
+                order = 2,
                 args = {
+					texture = {
+						type = "select",
+						name = "Texture",
+						order = 0.5,
+						desc = "Set the statusbar texture.",
+						get = function(info) return NugRunning.db.textureName end,
+						set = function(info, value)
+							NugRunning.db.textureName = value
+							NugRunning:UpdateAllTextures()
+						end,
+						values = LSM:HashTable("statusbar"),
+						dialogControl = "LSM30_Statusbar",
+					},
                     width = {
                         name = "Width",
                         type = "range",
@@ -1257,10 +1272,23 @@ local function MakeGeneralOptions()
             },
             nameplate_sizeSettings = {
                 type = "group",
-                name = " ",
+                name = "Nameplate Bars",
                 guiInline = true,
                 order = 3,
                 args = {
+					texture = {
+						type = "select",
+						name = "Texture",
+						order = 0.5,
+						desc = "Set the statusbar texture.",
+						get = function(info) return NugRunning.db.nptextureName end,
+						set = function(info, value)
+							NugRunning.db.nptextureName = value
+							NugRunning:UpdateAllNameplateTextures()
+						end,
+						values = LSM:HashTable("statusbar"),
+						dialogControl = "LSM30_Statusbar",
+					},
                     width = {
                         name = "Nameplate Width",
                         type = "range",
@@ -1314,7 +1342,131 @@ local function MakeGeneralOptions()
                         order = 3,
                     },
                 },
-            },
+			},
+			fonts = {
+                type = "group",
+                name = "Fonts",
+                guiInline = true,
+                order = 6,
+                args = {
+                    namefont = {
+						type = "select",
+						name = "Name Font",
+						order = 1,
+						get = function(info) return NugRunning.db.nameFont.font end,
+						set = function(info, value)
+							NugRunning.db.nameFont.font = value
+							NugRunning:UpdateAllFonts()
+						end,
+						values = LSM:HashTable("font"),
+						dialogControl = "LSM30_Font",
+					},
+					nameSize = {
+                        name = "Name Size",
+                        type = "range",
+                        get = function(info) return NugRunning.db.nameFont.size end,
+                        set = function(info, v)
+							NugRunning.db.nameFont.size = v
+							NugRunning:UpdateAllFonts()
+                        end,
+                        min = 3,
+                        max = 40,
+                        step = 1,
+                        order = 2,
+					},
+					nameAlpha = {
+                        name = "Name Alpha",
+                        type = "range",
+						get = function(info) return NugRunning.db.nameFont.alpha end,
+						set = function(info, v)
+							NugRunning.db.nameFont.alpha = v
+							NugRunning:UpdateAllFonts()
+                        end,
+                        min = 0,
+                        max = 1,
+                        step = 0.01,
+                        order = 3,
+					},
+					
+					timefont = {
+						type = "select",
+						name = "Time Font",
+						order = 4,
+						get = function(info) return NugRunning.db.timeFont.font end,
+						set = function(info, value)
+							NugRunning.db.timeFont.font = value
+							NugRunning:UpdateAllFonts()
+						end,
+						values = LSM:HashTable("font"),
+						dialogControl = "LSM30_Font",
+					},
+					timeSize = {
+                        name = "Time Size",
+                        type = "range",
+                        get = function(info) return NugRunning.db.timeFont.size end,
+                        set = function(info, v)
+							NugRunning.db.timeFont.size = v
+							NugRunning:UpdateAllFonts()
+                        end,
+                        min = 3,
+                        max = 40,
+                        step = 1,
+                        order = 5,
+					},
+					timeAlpha = {
+                        name = "Time Alpha",
+                        type = "range",
+						get = function(info) return NugRunning.db.timeFont.alpha end,
+						set = function(info, v)
+							NugRunning.db.timeFont.alpha = v
+							NugRunning:UpdateAllFonts()
+                        end,
+                        min = 0,
+                        max = 1,
+                        step = 0.01,
+                        order = 6,
+					},
+					
+					stackfont = {
+						type = "select",
+						name = "Stack Font",
+						order = 7,
+						get = function(info) return NugRunning.db.stackFont.font end,
+						set = function(info, value)
+							NugRunning.db.stackFont.font = value
+							NugRunning:UpdateAllFonts()
+						end,
+						values = LSM:HashTable("font"),
+						dialogControl = "LSM30_Font",
+					},
+					stackSize = {
+                        name = "Stack Size",
+                        type = "range",
+                        get = function(info) return NugRunning.db.stackFont.size end,
+                        set = function(info, v)
+							NugRunning.db.stackFont.size = v
+							NugRunning:UpdateAllFonts()
+                        end,
+                        min = 3,
+                        max = 40,
+                        step = 1,
+                        order = 8,
+					},
+					stackAlpha = {
+                        name = "Stack Alpha",
+                        type = "range",
+						get = function(info) return NugRunning.db.stackFont.alpha end,
+						set = function(info, v)
+							NugRunning.db.stackFont.alpha = v
+							NugRunning:UpdateAllFonts()
+                        end,
+                        min = 0,
+                        max = 1,
+                        step = 0.01,
+                        order = 9,
+                    },
+				},
+			},
             timerOptions = {
                 type = "group",
                 name = "Timers",

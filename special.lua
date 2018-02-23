@@ -14,7 +14,8 @@ local function Rampage()
     NugRunningConfig.spells[rampageID] = nil
 
     local timer = NugRunning:CreateTimer()
-    table.remove(NugRunning.timers)
+    free[time] = nil
+    -- table.remove()
     timer.stacktext:Hide()
     timer:SetScript("OnUpdate",nil)
     timer.dstGUID = UnitGUID("player")
@@ -239,7 +240,7 @@ local function Warlock()
         NugRunningConfig.spells[hogID] = nil
 
         local timer = NugRunning:CreateTimer()
-        table.remove(NugRunning.timers)
+        free[timer] = nil
         -- timer.stacktext:Hide()
         timer.bar:SetValue(100)
         -- timer:SetScript("OnUpdate",nil)

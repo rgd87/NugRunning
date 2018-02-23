@@ -1,3 +1,23 @@
+local NugRunning = NugRunning
+local LSM = LibStub("LibSharedMedia-3.0")
+
+LSM:Register("statusbar", "Aluminium", [[Interface\AddOns\NugRunning\statusbar.tga]])
+LSM:Register("font", "ClearFont", [[Interface\AddOns\NugRunning\Calibri.ttf]], GetLocale() ~= "enUS" and 15)
+
+local getStatusbar = function()
+	if not NugRunningConfig.overrideTexture then
+		return LSM:Fetch("statusbar", NugRunning.db.textureName)
+	else return NugRunningConfig.texture end
+end
+local getFont = function(labelName)
+	if not NugRunningConfig.overrideFonts then
+		local s = NugRunning.db[labelName]
+		return LSM:Fetch("font", s.font), s.size, s.alpha
+	else
+		local s = NugRunningConfig[labelName]
+		return s.font, s.size, s.alpha
+	end
+end
 
 NugRunning.TimerBar = {}
 local TimerBar = NugRunning.TimerBar
@@ -221,6 +241,45 @@ function TimerBar.Resize1(self, width, height)
     self.spellText:SetHeight(height/2+1)
 end
 
+function TimerBar.UpdateFonts(f)
+    local nameFont, nameSize, nameAlpha = getFont("nameFont")
+    f.spellText:SetFont(nameFont, nameSize)
+    f.spellText:SetAlpha(nameAlpha or 1)
+
+    local stackFont, stackSize, _stackAlpha = getFont("stackFont")
+    f.stacktext:SetFont(stackFont, stackSize, "OUTLINE")
+
+    local timeFont, timeSize, timeAlpha = getFont("timeFont")
+    f.timeText:SetFont(timeFont, timeSize)
+    f.timeText:SetJustifyH("RIGHT")
+    f.timeText:SetAlpha(timeAlpha or 1)
+end
+
+function TimerBar.UpdateTexture(f)
+    local texture = getStatusbar()
+    f.bar:SetStatusBarTexture(texture)
+	f.bar.bg:SetTexture(texture)
+end
+
+function NugRunning.UpdateAllFonts()
+    for i,timer in ipairs(NugRunning.timers) do
+        timer:UpdateFonts()
+    end
+end
+function NugRunning.UpdateAllTextures()
+    for i,timer in ipairs(NugRunning.timers) do
+        timer:UpdateTexture()
+    end
+end
+function NugRunning.UpdateAllNameplateTextures()
+    for i,f in ipairs(NugRunning.nameplate_timers) do
+        local texture = LSM:Fetch("statusbar", NugRunning.db.nptextureName)
+        f:SetStatusBarTexture(texture)
+        f.bg:SetTexture(texture)
+    end
+end
+
+
 function TimerBar.Remains(self)
     return self.endTime - GetTime()
 end
@@ -273,36 +332,22 @@ function TimerBar.Resize(self, width, height)
     self.shine:GetParent():SetHeight(height*1.8)
 end
 
--- function TimerBar.SetPowerStatus(self, status)
+-- function TimerBar.SetPowerStatus(self, status, powerdiff)
 --     if status == "HIGH" then
---         -- self.status:SetTexCoord(0, 26/32, 0, 23/64)
---         self.status:SetVertexColor(1,1,1, 0.2)
+--         self.status:SetTextColor(.5,1,.5)
+--         self.status:SetText("+"..powerdiff)
 --         self.status:Show()
+--         self.status.bg:Show()
 --     elseif status == "LOW" then
---         -- self.status:SetTexCoord(0, 26/32, 41/64, 1)
---         self.status:SetVertexColor(0,0,0, 0.5)
+--         self.status:SetTextColor(1,.1,.1)
+--         self.status:SetText(powerdiff)
 --         self.status:Show()
+--         self.status.bg:Show()
 --     else
 --         self.status:Hide()
+--         self.status.bg:Hide()
 --     end
 -- end
-
-function TimerBar.SetPowerStatus(self, status, powerdiff)
-    if status == "HIGH" then
-        self.status:SetTextColor(.5,1,.5)
-        self.status:SetText("+"..powerdiff)
-        self.status:Show()
-        self.status.bg:Show()
-    elseif status == "LOW" then
-        self.status:SetTextColor(1,.1,.1)
-        self.status:SetText(powerdiff)
-        self.status:Show()
-        self.status.bg:Show()
-    else
-        self.status:Hide()
-        self.status.bg:Hide()
-    end
-end
 
 function TimerBar.ShowOverlayGlow(self)
     local self = self.iconframe
@@ -377,16 +422,15 @@ NugRunning.ConstructTimerBar = function(width, height)
 
     f.stacktext = ic:CreateFontString(nil, "OVERLAY", "GameFontNormal");
     f.stacktext:SetTextColor(1,1,1)
-    f.stacktext:SetFont(NugRunningConfig.stackFont.font,
-                        NugRunningConfig.stackFont.size,
-                        NugRunningConfig.stackFont.flags or "OUTLINE")
+    local stackFont, stackSize, _stackAlpha = getFont("stackFont")
+    f.stacktext:SetFont(stackFont, stackSize, "OUTLINE")
     f.stacktext:SetJustifyH("RIGHT")
     f.stacktext:SetVertexColor(1,1,1)
     f.stacktext:SetPoint("RIGHT", ic, "RIGHT",1,-5)
 
     f.bar = CreateFrame("StatusBar",nil,f)
     f.bar:SetFrameStrata("MEDIUM")
-    local texture = NugRunningConfig.texture or "Interface\\AddOns\\NugRunning\\statusbar"
+    local texture = getStatusbar()
     f.bar:SetStatusBarTexture(texture)
     f.bar:GetStatusBarTexture():SetDrawLayer("ARTWORK")
     f.bar:SetHeight(height)
@@ -399,19 +443,21 @@ NugRunning.ConstructTimerBar = function(width, height)
 
     f.timeText = f.bar:CreateFontString(nil, "ARTWORK", "GameFontNormalSmall");
     f.timeText:SetTextColor(1,1,1)
-    f.timeText:SetFont(NugRunningConfig.timeFont.font, NugRunningConfig.timeFont.size, NugRunningConfig.timeFont.flags)
+    local timeFont, timeSize, timeAlpha = getFont("timeFont")
+    f.timeText:SetFont(timeFont, timeSize)
     f.timeText:SetJustifyH("RIGHT")
-    f.timeText:SetAlpha(NugRunningConfig.timeFont.alpha or 1)
+    f.timeText:SetAlpha(timeAlpha or 1)
     f.timeText:SetVertexColor(1,1,1)
     f.timeText:SetPoint("RIGHT", f.bar, "RIGHT",-6,0)
 
     f.spellText = f.bar:CreateFontString(nil, "ARTWORK", "GameFontNormal");
     f.spellText:SetTextColor(1,1,1)
-    f.spellText:SetFont(NugRunningConfig.nameFont.font, NugRunningConfig.nameFont.size, NugRunningConfig.nameFont.flags)
+    local nameFont, nameSize, nameAlpha = getFont("nameFont")
+    f.spellText:SetFont(nameFont, nameSize)
     f.spellText:SetWidth(f.bar:GetWidth()*0.8)
     f.spellText:SetHeight(height/2+1)
     f.spellText:SetJustifyH("CENTER")
-    f.spellText:SetAlpha(NugRunningConfig.nameFont.alpha or 1)
+    f.spellText:SetAlpha(nameAlpha or 1)
     f.spellText:SetPoint("LEFT", f.bar, "LEFT",6,0)
     f.spellText.SetName = SpellTextUpdate
 
@@ -466,18 +512,19 @@ NugRunning.ConstructTimerBar = function(width, height)
     -- status:Hide()
 
     -- local status = CreateFrame("Frame", nil, f.bar)
-    local powertext = f.bar:CreateFontString()
-    powertext:SetFont(NugRunningConfig.dotpowerFont.font,
-                      NugRunningConfig.dotpowerFont.size,
-                      NugRunningConfig.dotpowerFont.flags)
-    powertext:SetPoint("BOTTOMLEFT", f.bar, "BOTTOMLEFT",13,0)
 
-    local sbg = f.bar:CreateTexture(nil, "ARTWORK", nil, 5)
-    sbg:SetTexture("Interface\\Tooltips\\UI-Tooltip-Background")
-    sbg:SetVertexColor(0,0,0, NugRunningConfig.dotpowerFont.alpha)
-    sbg:SetAllPoints(powertext)
-    powertext.bg = sbg
-    f.status = powertext
+    -- local powertext = f.bar:CreateFontString()
+    -- powertext:SetFont(NugRunningConfig.dotpowerFont.font,
+    --                   NugRunningConfig.dotpowerFont.size,
+    --                   NugRunningConfig.dotpowerFont.flags)
+    -- powertext:SetPoint("BOTTOMLEFT", f.bar, "BOTTOMLEFT",13,0)
+
+    -- local sbg = f.bar:CreateTexture(nil, "ARTWORK", nil, 5)
+    -- sbg:SetTexture("Interface\\Tooltips\\UI-Tooltip-Background")
+    -- sbg:SetVertexColor(0,0,0, NugRunningConfig.dotpowerFont.alpha)
+    -- sbg:SetAllPoints(powertext)
+    -- powertext.bg = sbg
+    -- f.status = powertext
 
 
     local at = ic:CreateTexture(nil,"OVERLAY")
