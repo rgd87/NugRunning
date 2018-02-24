@@ -5,6 +5,9 @@
 ## SavedVariablesPerCharacter: NRunDB_Char
 ## SavedVariables: NRunDB_Global, NugRunningConfigCustom
 ## Version: @project-version@
+Libs\LibStub\LibStub.lua
+Libs\CallbackHandler-1.0\CallbackHandler-1.0.lua
+Libs\LibSharedMedia-3.0\lib.xml
 helpers.lua
 config.lua
 NugRunning.lua
@@ -12,6 +15,3 @@ frame.lua
 special.lua
 totems.lua
 nameplates.lua
-Libs\LibStub\LibStub.lua
-Libs\CallbackHandler-1.0\CallbackHandler-1.0.lua
-Libs\LibSharedMedia-3.0\lib.xml

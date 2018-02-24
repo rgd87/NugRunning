@@ -1,6 +1,11 @@
-### 7.3.5
+### 7.3.7
+
+- fixed a LibStub loading order bug
+
+### 7.3.6
 
 - Added texture and font settings to GUI
+- fixed set and setpos commands
 
 ### 7.3.4
 
