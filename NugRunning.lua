@@ -616,7 +616,7 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
         -- spellID = timer.spellID -- swapping current id for existing timer id in case they're different
                                 -- refresh will be searching by spellID again
         if multiTargetGUID then timer.targets[multiTargetGUID] = true end
-        return self:RefreshTimer(srcGUID, dstGUID or multiTargetGUID, dstName, dstFlags, spellID, spellName, opts, timerType, override)
+        return self:RefreshTimer(srcGUID, dstGUID or multiTargetGUID, dstName, dstFlags, spellID, spellName, opts, timerType, override, amount, from_unitaura)
     end
 
     if opts.maxtimers and totalTimers >= opts.maxtimers then
@@ -884,7 +884,7 @@ function NugRunning.RefreshTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID,
     if timer.arrowglow:IsPlaying() then
         timer.arrowglow:Stop()
     end
-    if not noshine and opts.shinerefresh and not timer.shine:IsPlaying() then timer.shine:Play() end
+    if not ignore_applied_dose and opts.shinerefresh and not timer.shine:IsPlaying() then timer.shine:Play() end -- ignore_applied_dose is the same as noshine
 
     self:ArrangeTimers()
     return timer
