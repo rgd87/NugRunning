@@ -14,7 +14,7 @@ local function Rampage()
     NugRunningConfig.spells[rampageID] = nil
 
     local timer = NugRunning:CreateTimer()
-    free[time] = nil
+    free[timer] = nil
     -- table.remove()
     timer.stacktext:Hide()
     timer:SetScript("OnUpdate",nil)
