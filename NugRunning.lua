@@ -1566,7 +1566,9 @@ NugRunning.Commands = {
             anchor.x = 0
             anchor.y = 0
             local pos = anchor
-            NugRunning.anchors[name]:SetPoint(pos.point, pos.parent, pos.to, pos.x, pos.y)
+            if NugRunning.anchors[name] then
+                NugRunning.anchors[name]:SetPoint(pos.point, pos.parent, pos.to, pos.x, pos.y)
+            end
         end
     end,
     ["clear"] = function()

@@ -738,8 +738,8 @@ if class == "DEATHKNIGHT" then
 -- Cooldown( 220143 ,{ name = "Apocalypse", color = colors.DBLUE, scale_until = 15, ghost = true })
 Cooldown( 205223 ,{ name = "Consumption", color = colors.DBLUE, ghost = true, scale_until = 10 })
 
-DotSpell( 55095 ,{ name = "Frost Fever", ghost = true, color = colors.PURPLE, duration = 24 })
-DotSpell( 55078 ,{ name = "Blood Plague", ghost = true, color = colors.PURPLE, priority = 9, singleTarget = true, duration = 24 })
+DotSpell( 55095 ,{ name = "Frost Fever", ghost = true, color = colors.PURPLE, duration = 24, maxtimers = 1, })
+DotSpell( 55078 ,{ name = "Blood Plague", ghost = true, color = colors.PURPLE, priority = 9, maxtimers = 1, duration = 24 })
 Spell( 191587,{ name = "Virulent Plague", ghost = true, color = colors.PURPLE, priority = 9, singleTarget = true, duration = 21 })
 -- Spell( 43265 ,{ name = "Death and Decay", short = "DnD", color = colors.RED, duration = 10, target = "player" })
 Cooldown( 43265 ,{ name = "Death and Decay", color = colors.PINKIERED, priority = 8, resetable = true, ghost = true, minduration = 11 })
