@@ -753,6 +753,9 @@ Spell( 196782,{ name = "Outbreak", color = colors.DTEAL, duration = 10 })
 Spell( 206940,{ name = "Mark of Blood", color = colors.PINK3, duration = 25 })
 Spell( 219809,{ name = "Tombstone", color = colors.DTEAL, duration = 8 })
 
+Spell( 180612, { name = "Mitigation", scale = 0.6, arrow = colors.WOO, color = colors.DTEAL, group = "buffs", priority = -20, duration = 3 })
+Cooldown(50842,{ name = "Blood Boil", color = colors.DRED, scale = 0.7,  priority = 6,  ghost = true })
+
 Cooldown( 206931,{ name = "Exsanguinate", color = colors.DRED, ghost = true, minduration = 20 })
 -- Cooldown( 207317,{ name = "Epidemic", color = colors.PURPLE3, ghost = true, minduration = 6 })
 
