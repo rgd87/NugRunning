@@ -116,6 +116,12 @@ NugRunning.helpers = helpers
 local defaults = {
     anchors = {
         main = {
+            groups = {
+                { name = "player", gap = 10, alpha = 1 },
+                { name = "target", gap = 10, alpha = 1},
+                { name = "buffs", gap = 25, alpha = 1},
+                { name = "offtargets", gap = 6, alpha = .7},
+            },
             point = "CENTER",
             parent = "UIParent",
             to = "CENTER",
@@ -123,6 +129,9 @@ local defaults = {
             y = 0,
         },
         secondary = {
+            groups = {
+                { name = "procs", gap = 10, alpha = .8},
+            },
             point = "CENTER",
             parent = "UIParent",
             to = "CENTER",
@@ -327,9 +336,13 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
     playerGUID = UnitGUID("player")
 
     NugRunning.anchors = {}
-    for name, opts in pairs(NugRunningConfig.anchors) do
-        local anchor = NugRunning:CreateAnchor(name, opts)
-        NugRunning.anchors[name] = anchor
+    for name, opts in pairs(NRunDB.anchors) do
+        if not opts.groups then
+            NRunDB.anchors[name] = nil
+        else
+            local anchor = NugRunning:CreateAnchor(name, opts)
+            NugRunning.anchors[name] = anchor
+        end
     end
 
     NugRunning:SetupArrange()
@@ -1351,14 +1364,14 @@ do
         end
 
         for name, anchor in pairs(NugRunning.anchors) do
-            local aopts = anchor.opts
+            local aopts = NRunDB.anchors[name].groups
             local growth = dbanchors[name].growth or NRunDB.growth
             point = ( growth == "down" and "TOPLEFT" ) or "BOTTOMLEFT"
             to = ( growth == "down" and "BOTTOMLEFT" ) or "TOPLEFT"
             ySign = ( growth == "down" and -1 ) or 1
             local prev
             local gap = 0
-            for _, gopts in pairs(aopts) do
+            for _, gopts in pairs(aopts) do 
                 local gname = gopts.name
                 local alpha = gopts.alpha
                 if gname == "offtargets" then
@@ -1512,6 +1525,34 @@ local function capturesTable()
 end
 
 
+local findGroup = function(groupName)
+    for anchorName, opts in pairs(NRunDB.anchors) do
+        if opts.groups then
+            for i, g in ipairs(opts.groups) do
+                if g.name == groupName then
+                    return anchorName, i
+                end
+            end
+        end
+    end
+end
+
+local fixOfftargets = function(groups)
+    local offtargetsIndex
+    for i=1, #groups do
+        if groups[i].name == "offtargets" then
+            offtargetsIndex = i
+            break
+        end
+    end
+    if offtargetsIndex and offtargetsIndex ~= #groups then -- if offtarget group isn't last
+        print("NRun: offtargets groups should always be the last!")
+        local g = table.remove(groups, offtargetsIndex) -- make it last
+        table.insert(groups, g)
+    end
+end
+
+
 local ParseOpts = function(str)
     local t = {}
     local capture = function(k,v)
@@ -1645,6 +1686,89 @@ NugRunning.Commands = {
         NRunDB.dotpower = not NRunDB.dotpower
         print("Dotpower turned "..(NRunDB.dotpower and "on" or "off")..". Will take effect after /reload")
     end,
+
+    ["listgroups"] = function(v)
+        for anchor, opts in pairs(NRunDB.anchors) do
+            print("Anchor: "..anchor)
+            if opts.groups then
+                for i, group in ipairs(opts.groups) do
+                    print(string.format("    <%d> %s : gap=%d alpha=%.2f",i, group.name, group.gap, group.alpha))
+                end
+            end
+        end
+    end,
+
+
+    ["createanchor"] = function(v)
+        local p = ParseOpts(v)
+        local anchor = p.anchor
+        if anchor and not NRunDB.anchors[anchor] then
+            NRunDB.anchors[anchor] = {
+                groups = {
+                },
+                point = "CENTER",
+                parent = "UIParent",
+                to = "CENTER",
+                x = 0,
+                y = 0,
+            }
+        end
+    end,
+    ["deleteanchor"] = function(v)
+        local p = ParseOpts(v)
+        local anchor = p.anchor
+        if anchor and NRunDB.anchors[anchor] then
+            NRunDB.anchors[anchor] = nil
+        end
+    end,
+
+    ["creategroup"] = function(v)
+        local p = ParseOpts(v)
+        local anchor = p.anchor
+        local group = p.group
+        if anchor and group then
+            if NRunDB.anchors[anchor] then
+                local anchorGroups = NRunDB.anchors[anchor].groups
+                table.insert(anchorGroups, { name = group, gap = 10, alpha = 1})
+
+                fixOfftargets(anchorGroups)
+            end
+        end
+    end,
+
+    ["deletegroup"] = function(v)
+        local p = ParseOpts(v)
+        local group = p.group
+        if group then
+            local anchor, index = findGroup(group)
+            table.remove(NRunDB.anchors[anchor].groups, index)
+        end
+    end,
+
+    ["groupset"] = function(v)
+        local p = ParseOpts(v)
+        if p.group then
+            local group = p.group
+            local anchor, groupIndex = findGroup(group)
+
+            local groups = NRunDB.anchors[anchor].groups
+            local groupOpts = groups[groupIndex]
+            groupOpts.gap = tonumber(p.gap) or groupOpts.gap
+            groupOpts.alpha = tonumber(p.alpha) or groupOpts.alpha
+
+            if tonumber(p.order) then
+
+                local newIndex = tonumber(p.order)
+                local g = table.remove(groups, groupIndex)
+                table.insert(groups, newIndex, g)
+
+                fixOfftargets(groups)
+            end
+        else
+            print("missing 'group' parameter")
+        end
+    end,
+
     ["set"] = function(v)
         local p = ParseOpts(v)
         NRunDB.width = p["width"] or NRunDB.width
@@ -1758,7 +1882,7 @@ function NugRunning:CreateAnchor(name, opts)
         NRunDB.anchors[name] = { point = "CENTER", parent ="UIParent", to = "CENTER", x = 0, y = 0}
     end
     f.db_tbl = NRunDB.anchors[name]
-    f.opts = opts
+    f.opts = opts.groups
     f:SetScript("OnMouseDown",function(self)
         self:StartMoving()
     end)

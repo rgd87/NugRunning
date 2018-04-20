@@ -25,18 +25,6 @@ local _,class = UnitClass("player")
 
 NugRunningConfig.nameplates.parented = true
 
-NugRunningConfig.anchors = {
-    main = {
-        { name = "player", gap = 10, alpha = 1 },
-        { name = "target", gap = 10, alpha = 1},
-        { name = "buffs", gap = 25, alpha = 1},
-        { name = "offtargets", gap = 6, alpha = .7},
-    },
-    secondary = {
-        { name = "procs", gap = 10, alpha = .8},
-    },
-}
-
 NugRunningConfig.colors = {}
 local colors = NugRunningConfig.colors
 colors["RED"] = { 0.8, 0, 0}
