@@ -682,7 +682,7 @@ Spell( 197908 ,{ name = "Mana Tea", priority = -10, group = "buffs", duration = 
 
 Spell( 128939 ,{ name = "Elusive Brew", priority = -10, scale = .8, shinerefresh = true, duration = 30, color = colors.DBROWN, glowstack = 15 })
 Spell( 115308 ,{ name = "Elusive Brew", duration = 15, group = "buffs", shine = true, color = colors.PINKIERED })
-Spell( 215479, { name = "Ironskin Brew", priority = -10, fixedlen = 10, arrow = colors.REJUV, glow2time = 2, group = "buffs", shine = true, glowtime = 1, ghost = 1, color = colors.PINK3, duration = 6 })
+Spell( 215479, { name = "Ironskin Brew", priority = -10, fixedlen = 10, arrow = colors.REJUV, group = "buffs", shine = true, glowtime = 1, glow2time = 2, ghost = 1, color = colors.PINK3, duration = 6, })
 Spell( 214373, { name = "Brew-Stache", priority = -9, fixedlen = 10, ghosteffect = "AEGWYNN", arrow = colors.PINK2, group = "buffs", shine = true, ghost = 4, color = colors.REJUV, duration = 4.5, scale = 0.5 })
 
 Cooldown( 119381 ,{ name = "Leg Sweep", color = colors.DBLUE, scale_until = 8, fixedlen = 8 })

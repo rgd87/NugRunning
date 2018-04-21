@@ -212,7 +212,10 @@ function NugRunningGUI.CreateCommonForm(self)
             clean(opts, default_opts, "tick", false)
             clean(opts, default_opts, "recast_mark", false)
             clean(opts, default_opts, "effect", "NONE")
-            clean(opts, default_opts, "ghosteffect", "NONE")
+			clean(opts, default_opts, "ghosteffect", "NONE")
+			clean(opts, default_opts, "glowtime", false)
+			clean(opts, default_opts, "glow2time", false)
+			clean(opts, default_opts, "effecttime", false)
         end
         if opts.overlay and (not default_opts or not default_opts.overlay) and (not opts.overlay[1] or not opts.overlay[2]) then opts.overlay = nil end
 		-- PRESAVE = p.opts
@@ -245,7 +248,7 @@ function NugRunningGUI.CreateCommonForm(self)
 
 	local delete = AceGUI:Create("Button")
 	delete:SetText("Delete")
-	save:SetRelativeWidth(0.5)
+	save:SetRelativeWidth(0.45)
 	delete:SetCallback("OnClick", function(self, event)
 		local p = self.parent
 		local class = p.class
@@ -699,7 +702,7 @@ function NugRunningGUI.CreateCommonForm(self)
 
 	local pandemic = AceGUI:Create("Button")
 	pandemic:SetText("Pandemic")
-	pandemic:SetRelativeWidth(0.3)
+	pandemic:SetRelativeWidth(0.25)
 	pandemic:SetCallback("OnClick", function(self, event)
 		local duration = self.parent.opts.duration
 		local m = duration*0.3 - 0.1
@@ -783,7 +786,58 @@ function NugRunningGUI.CreateCommonForm(self)
     end)
     Form.controls.ghosteffect = ghosteffect
     Form:AddChild(ghosteffect)
-    AddTooltip(ghosteffect, "Effect during ghost phase")
+	AddTooltip(ghosteffect, "Effect during ghost phase")
+	
+	local glowtime = AceGUI:Create("EditBox")
+	glowtime:SetLabel("Glow At")
+	glowtime:SetRelativeWidth(0.15)
+    glowtime:DisableButton(true)
+	glowtime:SetCallback("OnTextChanged", function(self, event, value)
+		local v = tonumber(value)
+        if v then
+            self.parent.opts["glowtime"] = v
+        elseif value == "" then
+            self.parent.opts["glowtime"] = false
+            self:SetText("")
+        end
+	end)
+	Form.controls.glowtime = glowtime
+	Form:AddChild(glowtime)
+    AddTooltip(glowtime, "Time when timer starts glowing")
+
+	local glow2time = AceGUI:Create("EditBox")
+	glow2time:SetLabel("Spin At")
+	glow2time:SetRelativeWidth(0.15)
+    glow2time:DisableButton(true)
+	glow2time:SetCallback("OnTextChanged", function(self, event, value)
+		local v = tonumber(value)
+        if v then
+            self.parent.opts["glow2time"] = v
+        elseif value == "" then
+            self.parent.opts["glow2time"] = false
+            self:SetText("")
+        end
+	end)
+	Form.controls.glow2time = glow2time
+	Form:AddChild(glow2time)
+	AddTooltip(glow2time, "Time when highlight starts spinning.\n(Requires highlight color enabled)")
+	
+	local effecttime = AceGUI:Create("EditBox")
+	effecttime:SetLabel("Effect At")
+	effecttime:SetRelativeWidth(0.20)
+    effecttime:DisableButton(true)
+	effecttime:SetCallback("OnTextChanged", function(self, event, value)
+		local v = tonumber(value)
+        if v then
+            self.parent.opts["effecttime"] = v
+        elseif value == "" then
+            self.parent.opts["effecttime"] = false
+            self:SetText("")
+        end
+	end)
+	Form.controls.effecttime = effecttime
+	Form:AddChild(effecttime)
+    AddTooltip(effecttime, "Time when 3D effect starts being shown")
 
     -- Frame:AddChild(Form)
     -- Frame.top = Form
@@ -833,7 +887,10 @@ function NugRunningGUI.FillForm(self, Form, class, category, id, opts, isEmptyFo
 	controls.duration:SetText((type(opts.duration) == "function" and "<func>") or opts.duration)
 	controls.scale:SetValue(opts.scale or 1)
 	controls.scale_until:SetText(opts.scale_until)
-    controls.hide_until:SetText(opts.hide_until)
+	controls.hide_until:SetText(opts.hide_until)
+	controls.glowtime:SetText(opts.glowtime)
+	controls.glow2time:SetText(opts.glow2time)
+	controls.effecttime:SetText(opts.effecttime)
 	controls.shine:SetValue(opts.shine)
 	controls.shinerefresh:SetValue(opts.shinerefresh)
 

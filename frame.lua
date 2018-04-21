@@ -569,6 +569,8 @@ NugRunning.ConstructTimerBar = function(width, height)
     pmf.oz = 0
 
     pmf.SetEffect = function(self, effect)
+        if effect == self._effect_name then return end
+        self._effect_name = effect
         if type(effect) == "string" then
             effect = NugRunningConfig.effects[effect]
         end
