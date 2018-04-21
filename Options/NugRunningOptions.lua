@@ -384,8 +384,17 @@ function NugRunningGUI.CreateCommonForm(self)
         default = "Default"
     }
     local groupOrder = { "default" }
-    for anchor,groups in pairs(NugRunningConfig.anchors) do
-        for i, group in ipairs(groups) do
+    -- for anchor,groups in pairs(NugRunningConfig.anchors) do
+    --     for i, group in ipairs(groups) do
+    --         local name = group.name
+    --         if name ~= "player" and name ~= "target" and name ~= "offtargets" then
+    --             groupList[name] = name
+    --             table.insert(groupOrder, name)
+    --         end
+    --     end
+	-- end
+	for anchor, opts in pairs(NugRunning.db.anchors) do
+        for i, group in ipairs(opts.groups) do
             local name = group.name
             if name ~= "player" and name ~= "target" and name ~= "offtargets" then
                 groupList[name] = name
