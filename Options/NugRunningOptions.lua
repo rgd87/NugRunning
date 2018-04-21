@@ -613,7 +613,7 @@ function NugRunningGUI.CreateCommonForm(self)
 
 	local nameplates = AceGUI:Create("CheckBox")
 	nameplates:SetLabel("Show on Nameplates")
-	nameplates:SetRelativeWidth(0.4)
+	nameplates:SetRelativeWidth(0.56)
 	nameplates:SetCallback("OnValueChanged", function(self, event, value)
 		self.parent.opts["nameplates"] = value
 	end)
@@ -626,7 +626,7 @@ function NugRunningGUI.CreateCommonForm(self)
 
 	local overlay_start = AceGUI:Create("EditBox")
 	overlay_start:SetLabel("Overlay Start")
-	overlay_start:SetRelativeWidth(0.25)
+	overlay_start:SetRelativeWidth(0.20)
     -- overlay_start:DisableButton(true)
 	overlay_start:SetCallback("OnEnterPressed", function(self, event, value)
 		local v
@@ -655,7 +655,7 @@ function NugRunningGUI.CreateCommonForm(self)
 
 	local overlay_end = AceGUI:Create("EditBox")
 	overlay_end:SetLabel("Overlay End")
-	overlay_end:SetRelativeWidth(0.25)
+	overlay_end:SetRelativeWidth(0.20)
     -- overlay_end:DisableButton(true)
 	overlay_end:SetCallback("OnEnterPressed", function(self, event, value)
 		local v
@@ -684,7 +684,7 @@ function NugRunningGUI.CreateCommonForm(self)
 
 	local overlay_haste = AceGUI:Create("CheckBox")
 	overlay_haste:SetLabel("Haste Reduced")
-	overlay_haste:SetRelativeWidth(0.4)
+	overlay_haste:SetRelativeWidth(0.3)
 	overlay_haste:SetCallback("OnValueChanged", function(self, event, value)
 		if not self.parent.opts.overlay then
 			self.parent.opts.overlay = {nil, nil, 0.3, value}
@@ -694,7 +694,25 @@ function NugRunningGUI.CreateCommonForm(self)
 	end)
 	Form.controls.overlay_haste = overlay_haste
 	Form:AddChild(overlay_haste)
-    AddTooltip(overlay_haste, "Overlay length is reduced by haste.")
+	AddTooltip(overlay_haste, "Overlay length is reduced by haste.")
+	
+
+	local pandemic = AceGUI:Create("Button")
+	pandemic:SetText("Pandemic")
+	pandemic:SetRelativeWidth(0.3)
+	pandemic:SetCallback("OnClick", function(self, event)
+		local duration = self.parent.opts.duration
+		local m = duration*0.3 - 0.1
+		self.parent.opts.overlay = {0, m, 0.25}
+		self.parent.opts.recast_mark = m
+		self.parent.controls.overlay_end:SetText(m)
+		self.parent.controls.overlay_start:SetText(0)
+		self.parent.controls.overlay_haste:SetValue(false)
+		self.parent.controls.recast_mark:SetText(m)
+	end)
+	Form.controls.pandemic = pandemic
+	Form:AddChild(pandemic)
+    AddTooltip(pandemic, "Calculate pandemic overlay from duration")
 
 	local tick = AceGUI:Create("EditBox")
 	tick:SetLabel("Tick")
