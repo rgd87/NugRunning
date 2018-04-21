@@ -1364,7 +1364,7 @@ do
         end
 
         for name, anchor in pairs(NugRunning.anchors) do
-            local aopts = NRunDB.anchors[name].groups
+            local aopts = dbanchors[name].groups
             local growth = dbanchors[name].growth or NRunDB.growth
             point = ( growth == "down" and "TOPLEFT" ) or "BOTTOMLEFT"
             to = ( growth == "down" and "BOTTOMLEFT" ) or "TOPLEFT"
@@ -1525,6 +1525,19 @@ local function capturesTable()
 end
 
 
+
+local protectedGroups = {
+    player = true,
+    target = true,
+    buffs = true,
+    offtargets = true,
+    procs = true,
+}
+local protectedAnchors = {
+    main = true,
+    secondary = true,
+}
+
 local findGroup = function(groupName)
     for anchorName, opts in pairs(NRunDB.anchors) do
         if opts.groups then
@@ -1535,6 +1548,10 @@ local findGroup = function(groupName)
             end
         end
     end
+end
+
+local function Colorize(hexColor, text)
+    return "|cff" .. tostring(hexColor or 'ffffff') .. tostring(text) .. "|r"
 end
 
 local fixOfftargets = function(groups)
@@ -1688,11 +1705,20 @@ NugRunning.Commands = {
     end,
 
     ["listgroups"] = function(v)
+        print("|cffffaaaaNugRunning Groups:|r")
         for anchor, opts in pairs(NRunDB.anchors) do
-            print("Anchor: "..anchor)
+            local hdr = string.format("Anchor: |cff33ff33%s|r", anchor)
+            if opts.growth then
+                hdr = hdr .. string.format(" : growth=%s", opts.growth)
+            end
+            print(hdr)
+            
             if opts.groups then
-                for i, group in ipairs(opts.groups) do
-                    print(string.format("    <%d> %s : gap=%d alpha=%.2f",i, group.name, group.gap, group.alpha))
+                for i, g in ipairs(opts.groups) do
+                    local color = "ffffff"
+                    if protectedGroups[g.name] then color = "888888" end
+                    
+                    print(string.format("    <%d> %s : gap=%d alpha=%.2f",i, Colorize(color,g.name), g.gap, g.alpha))
                 end
             end
         end
@@ -1701,9 +1727,9 @@ NugRunning.Commands = {
 
     ["createanchor"] = function(v)
         local p = ParseOpts(v)
-        local anchor = p.anchor
-        if anchor and not NRunDB.anchors[anchor] then
-            NRunDB.anchors[anchor] = {
+        local name = p.anchor
+        if name and not NRunDB.anchors[name] then
+            NRunDB.anchors[name] = {
                 groups = {
                 },
                 point = "CENTER",
@@ -1712,13 +1738,21 @@ NugRunning.Commands = {
                 x = 0,
                 y = 0,
             }
+            local anchor = NugRunning:CreateAnchor(name, NRunDB.anchors[name])
+            NugRunning.anchors[name] = anchor
         end
     end,
     ["deleteanchor"] = function(v)
         local p = ParseOpts(v)
-        local anchor = p.anchor
-        if anchor and NRunDB.anchors[anchor] then
-            NRunDB.anchors[anchor] = nil
+        local name = p.anchor
+        if name and NRunDB.anchors[name] then
+            if protectedAnchors[name] then
+                print(string.format("Anchor '%s' is protected", name))
+                return
+            end
+
+            NRunDB.anchors[name] = nil
+            NugRunning.anchors[name]:Hide()
         end
     end,
 
@@ -1726,6 +1760,12 @@ NugRunning.Commands = {
         local p = ParseOpts(v)
         local anchor = p.anchor
         local group = p.group
+        
+        if findGroup(group) then
+            print(string.format("Group '%s' already exists", group))
+            return
+        end
+
         if anchor and group then
             if NRunDB.anchors[anchor] then
                 local anchorGroups = NRunDB.anchors[anchor].groups
@@ -1740,6 +1780,11 @@ NugRunning.Commands = {
         local p = ParseOpts(v)
         local group = p.group
         if group then
+            if protectedGroups[group] then
+                print(string.format("Group '%s' is protected", group))
+                return
+            end
+
             local anchor, index = findGroup(group)
             table.remove(NRunDB.anchors[anchor].groups, index)
         end
@@ -1750,6 +1795,9 @@ NugRunning.Commands = {
         if p.group then
             local group = p.group
             local anchor, groupIndex = findGroup(group)
+            if not groupIndex then
+                print(string.format("Group '%s' doesn't exist", group))
+            end
 
             local groups = NRunDB.anchors[anchor].groups
             local groupOpts = groups[groupIndex]
@@ -1766,6 +1814,28 @@ NugRunning.Commands = {
             end
         else
             print("missing 'group' parameter")
+        end
+    end,
+
+    ["anchorset"] = function(v)
+        local p = ParseOpts(v)
+        local aname = p.anchor
+        local anchor = NRunDB.anchors[aname]
+        if not anchor then print(string.format("Anchor '%s' doesn't exist", aname)) end
+        anchor.growth = p.growth or anchor.growth
+        if p.growth == "nil" then anchor.growth = nil end
+        anchor.point = p.point or anchor.point
+        anchor.parent = p.parent or anchor.parent
+        anchor.to = p.to or anchor.to
+        anchor.x = p.x or anchor.x
+        anchor.y = p.y or anchor.y
+        if p.point or p.to or p.x or p.y or p.parent then
+            NugRunning.anchors[aname]:SetPoint(anchor.point, anchor.parent, anchor.to, anchor.x, anchor.y)
+        end
+        if p.growth then
+            for i,timer in ipairs(alltimers) do timer:ClearAllPoints() end
+            NugRunning:SetupArrange()
+            NugRunning:ArrangeTimers()
         end
     end,
 
@@ -1794,19 +1864,6 @@ NugRunning.Commands = {
             NugRunning:ArrangeTimers()
         end
     end,
-    ["setpos"] = function(v)
-        local p = ParseOpts(v)
-        local aname = p["anchor"]
-        local anchor = NRunDB.anchors[aname]
-        if not anchor then print(string.format("Anchor '%s' doesn't exist", aname)) end
-        anchor.point = p["point"] or anchor.point
-        anchor.parent = p["parent"] or anchor.parent
-        anchor.to = p["to"] or anchor.to
-        anchor.x = p["x"] or anchor.x
-        anchor.y = p["y"] or anchor.y
-        local pos = anchor
-        NugRunning.anchors[aname]:SetPoint(pos.point, pos.parent, pos.to, pos.x, pos.y)
-    end,
     ["debug"] = function()
         if not NugRunning.debug then
             NugRunning.debug = CreateFrame("Frame")
@@ -1833,25 +1890,31 @@ NugRunning.Commands = {
 function NugRunning.SlashCmd(msg)
     local k,v = string.match(msg, "([%w%+%-%=]+) ?(.*)")
     if not k or k == "help" then print([[Usage:
-      |cff00ff00/nrun lock|r
-      |cff00ff00/nrun unlock|r
-      |cff00ff00/nrun reset|r
-      |cff00ff00/nrun clear|r
-      |cff00ff00/nrun debug|r
-      |cff00ff00/nrun charspec|r : enable character specific settings
-      |cff00ff00/nrun misses|r : toggle showing misses (immunes, resists)
-      |cff00ff00/nrun cooldowns|r : toggle showing cooldowns
-      |cff00ff00/nrun targettext|r : toggle taget name text on bars
-      |cff00ff00/nrun spelltext|r : toggle spell text on bars
-      |cff00ff00/nrun shorttext|r : toggle using short names
-      |cff00ff00/nrun swaptarget|r : static order of target debuffs
-      |cff00ff00/nrun totems|r : static order of target debuffs
-      |cff00ff00/nrun nameplates|r : turn on nameplates
-      |cff00ff00/nrun dotticks|r : turn off dot ticks
-      |cff00ff00/nrun localnames|r: toggle localized spell names
-      |cff00ff00/nrun leaveghost|r: don't hide target/player ghosts in combat
-      |cff00ff00/nrun set|r width=150 height=20 growth=up/down
-      |cff00ff00/nrun setpos|r anchor=main point=CENTER parent=UIParent to=CENTER x=0 y=0]]
+        |cff00ff00/nrun lock|r
+        |cff00ff00/nrun unlock|r
+        |cff00ff00/nrun reset|r
+        |cff00ff00/nrun clear|r
+        |cff00ff00/nrun debug|r
+        |cff00ff00/nrun charspec|r : enable character specific settings
+        |cff00ff00/nrun misses|r : toggle showing misses (immunes, resists)
+        |cff00ff00/nrun cooldowns|r : toggle showing cooldowns
+        |cff00ff00/nrun targettext|r : toggle taget name text on bars
+        |cff00ff00/nrun spelltext|r : toggle spell text on bars
+        |cff00ff00/nrun shorttext|r : toggle using short names
+        |cff00ff00/nrun swaptarget|r : static order of target debuffs
+        |cff00ff00/nrun totems|r : static order of target debuffs
+        |cff00ff00/nrun nameplates|r : turn on nameplates
+        |cff00ff00/nrun dotticks|r : turn off dot ticks
+        |cff00ff00/nrun localnames|r: toggle localized spell names
+        |cff00ff00/nrun leaveghost|r: don't hide target/player ghosts in combat
+        |cff00ff00/nrun set|r width=150 height=20 growth=up/down
+        |cff00ff00/nrun createanchor|r anchor=anchorName
+        |cff00ff00/nrun deleteanchor|r anchor=anchorName
+        |cff00ff00/nrun creategroup|r anchor=anchorName group=groupName
+        |cff00ff00/nrun deletegroup|r group=groupName
+        |cff00ff00/nrun groupset|r group=groupName gap=10 alpha=0.9 order=1
+        |cff00ff00/nrun anchorset|r growth=<up/down>
+        ]]
     )end
     if NugRunning.Commands[k] then
         NugRunning.Commands[k](v)
