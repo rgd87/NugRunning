@@ -1,3 +1,11 @@
+### 7.3.9
+
+- added glow, highlight spin, effecttime options
+- fixed effect option
+- added pandemic button that fills overlay based on duration
+- console commands for creating new anchors and groups
+- removed anchors table customization from config and userconfig
+
 ### 7.3.8
 
 - fixed a typo bug for warriors
