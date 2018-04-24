@@ -920,16 +920,16 @@ Spell( 183218 ,{ name = "Hand of Hindrance", duration = 10, short = "Hindrance",
 Cooldown( 184575 ,{ name = "Blade of Justice", tickshine = true, ghost = true, priority = 9, fixedlen = 8, color = colors.WOO, ghosteffect = "NIGHTBORNE" })
 Cooldown( 35395 ,{ name = "Crusader Strike", tick = 1.5, tickshine = true, overlay = {"tick", "end"}, ghost = true, short = "Crusader", priority = 10, fixedlen = 8, color = colors.CURSE })
 Cooldown( 217020 ,{ name = "Zeal", tick = 1.5, tickshine = true, overlay = {"tick", "end"}, ghost = true, priority = 10, fixedlen = 8, color = colors.CURSE })
-Cooldown( 204019 ,{ name = "Blessed Hammer", tick = 1.5, tickshine = true, overlay = {"tick", "end"}, ghost = true, priority = 10, fixedlen = 8, color = colors.CURSE })
+Cooldown( 204019 ,{ name = "Blessed Hammer", ghost = true, ghosteffect = "AEGWYNN", priority = 10, fixedlen = 8, color = colors.CURSE })
 
 Spell( 197277,{ name = "Judgement", shine = true, singleTarget = true, priority = -100500, color = colors.PURPLE2, duration = 6 }) --debuff
-Cooldown( 20271 ,{ name = "Judgement", ghost = true, fixedlen = 8, priority = 8, color = colors.PURPLE })
+Cooldown( 20271 ,{ name = "Judgement", ghost = true, fixedlen = 8, priority = 8, color = colors.PURPLE, ghosteffect = "JUDGEMENT" })
 
-Cooldown( 26573 ,{ name = "Consecration", color = colors.PINKIERED, overlay = {0,"gcd",.3}, priority = 9, scale = .7, ghost = true, fixedlen = 8 })
+Cooldown( 26573 ,{ name = "Consecration", color = colors.PINKIERED, overlay = {0,"gcd",.3}, priority = 9, scale = 1, ghost = true, fixedlen = 8 })
 Cooldown( 24275 ,{ name = "Hammer of Wrath", color = colors.TEAL2, fixedlen = 8, ghost = true, priority = 11 })
-Cooldown( 31935 ,{ name = "Avenger's Shield", resetable = true, fixedlen = 8, priority = 5, short = "AvShield", scale = .8, color = colors.PINK3, ghost = true })
+Cooldown( 31935 ,{ name = "Avenger's Shield", resetable = true, fixedlen = 8, priority = 5, scale = 1, ghosteffect = "NIGHTBORNE", color = colors.TEAL, ghost = true })
 
-Spell( 132403 ,{ name = "Shield of the Righteous", short = "Shield", group = "buffs", duration = 3, priority = -15, scale = .7, color = colors.PINK3 })
+Spell( 132403 ,{ name = "Shield of the Righteous", short = "Shield", group = "buffs", duration = 3, priority = -15, scale = 1, glowtime = 1, arrow = colors.PINK2, color = colors.PINK3 })
 Cooldown( 53600 ,{ name = "Shield of the Righteous", ghost = true, color = colors.PURPLE3, scale = 0.5, priority = -100 })
 -- Spell( 132403 ,{ name = "Shield of the Righteous", short = "SotR", duration = 3, priority = 10, color = colors.DPURPLE })
 
