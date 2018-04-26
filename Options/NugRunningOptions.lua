@@ -646,7 +646,7 @@ function NugRunningGUI.CreateCommonForm(self)
 			v = value
 		else
 			v = tonumber(value)
-			if v and v <= 0 then v = nil end
+			if v and v < 0 then v = nil end
 		end
 		if v then
 			if not self.parent.opts.overlay then
