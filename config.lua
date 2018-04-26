@@ -930,7 +930,7 @@ Cooldown( 24275 ,{ name = "Hammer of Wrath", color = colors.TEAL2, fixedlen = 8,
 Cooldown( 31935 ,{ name = "Avenger's Shield", resetable = true, fixedlen = 8, priority = 5, scale = 1, ghosteffect = "NIGHTBORNE", color = colors.TEAL, ghost = true })
 
 Spell( 132403 ,{ name = "Shield of the Righteous", short = "Shield", group = "buffs", duration = 3, priority = -15, scale = 1, glowtime = 1, arrow = colors.PINK2, color = colors.PINK3 })
-Cooldown( 53600 ,{ name = "Shield of the Righteous", ghost = true, color = colors.PURPLE3, scale = 0.5, priority = -100 })
+Cooldown( 53600 ,{ name = "Shield of the Righteous", ghost = true, color = colors.PURPLE3, ghosteffect = "NIGHTBORNE", group = "buffs", scale = 0.5, priority = -100 })
 -- Spell( 132403 ,{ name = "Shield of the Righteous", short = "SotR", duration = 3, priority = 10, color = colors.DPURPLE })
 
 --Spell( 94686 ,{ name = "Crusader", duration = 15 })
