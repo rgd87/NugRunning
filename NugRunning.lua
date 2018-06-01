@@ -91,7 +91,20 @@ local GetSpellCooldown = GetSpellCooldown
 local GetSpellCharges = GetSpellCharges
 local GetSpecialization = GetSpecialization
 local bit_band = bit.band
+
+-- local IsBFA = GetBuildInfo():match("^8")
+-- local UnitAura = function(...)
+--     local name, _, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, nameplateShowPersonal, spellId, canApplyAura, isBossDebuff, isCastByPlayer, nameplateShowAll, timeMod
+--     if IsBFA then
+--         name, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, nameplateShowPersonal, spellId, canApplyAura, isBossDebuff, isCastByPlayer, nameplateShowAll, timeMod = UnitAura(...)
+--     else
+--         name, _, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, nameplateShowPersonal, spellId, canApplyAura, isBossDebuff, isCastByPlayer, nameplateShowAll, timeMod = UnitAura(...)
+--     end
+--     return name, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, nameplateShowPersonal, spellId, canApplyAura, isBossDebuff, isCastByPlayer, nameplateShowAll, timeMod
+-- end
 local UnitAura = UnitAura
+
+
 local UnitGUID = UnitGUID
 local table_wipe = table.wipe
 local COMBATLOG_OBJECT_AFFILIATION_MASK = COMBATLOG_OBJECT_AFFILIATION_MASK

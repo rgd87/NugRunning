@@ -29,6 +29,7 @@ end
 
 function TimerBar.SetColor(self,r,g,b)
     self.bar:SetStatusBarColor(r,g,b)
+    self.bar.spark:SetVertexColor(r,g,b)
     self.bar.bg:SetVertexColor(r*.5, g*.5, b*.5)
 end
 
@@ -237,12 +238,15 @@ function TimerBar.Resize1(self, width, height)
     self.mark.spark:SetHeight(height*2.6)
     self.bar:SetWidth(width - self._height - 1)
     self.bar:SetHeight(height)
+    self.bar.spark:SetHeight(height)
+    self.bar.spark:SetWidth(height*2)
     self.spellText:SetWidth(self.bar:GetWidth()*0.8)
     self.spellText:SetHeight(height/2+1)
 end
 
 function TimerBar.UpdateFonts(f)
     local nameFont, nameSize, nameAlpha = getFont("nameFont")
+    print(nameFont, nameSize)
     f.spellText:SetFont(nameFont, nameSize)
     f.spellText:SetAlpha(nameAlpha or 1)
 
@@ -393,6 +397,21 @@ local ResetTransformations = function(self)
     self:SetPosition(0,0,0)
 end
 
+local SparkSetValue = function(self, v)
+    local min, max = self:GetMinMaxValues()
+    local total = max-min
+    local p
+    if total == 0 then
+        p = 0
+    else
+        p = (v-min)/(max-min)
+        if p > 1 then p = 1 end
+    end
+    local len = p*self:GetWidth()
+    self.spark:SetPoint("CENTER", self, "LEFT", len, 0)
+    return self:SetValue1(v)
+end
+
 NugRunning.ConstructTimerBar = function(width, height)
     local f = CreateFrame("Frame",nil,UIParent)
     f.prototype = "TimerBar"
@@ -428,18 +447,31 @@ NugRunning.ConstructTimerBar = function(width, height)
     f.stacktext:SetVertexColor(1,1,1)
     f.stacktext:SetPoint("RIGHT", ic, "RIGHT",1,-5)
 
-    f.bar = CreateFrame("StatusBar",nil,f)
-    f.bar:SetFrameStrata("MEDIUM")
+    local bar = CreateFrame("StatusBar",nil,f)
+    bar:SetFrameStrata("MEDIUM")
     local texture = getStatusbar()
-    f.bar:SetStatusBarTexture(texture)
-    f.bar:GetStatusBarTexture():SetDrawLayer("ARTWORK")
-    f.bar:SetHeight(height)
-    f.bar:SetWidth(width - height - 1)
-    f.bar:SetPoint("TOPRIGHT",f,"TOPRIGHT",0,0)
+    bar:SetStatusBarTexture(texture)
+    bar:GetStatusBarTexture():SetDrawLayer("ARTWORK")
+    bar:SetHeight(height)
+    bar:SetWidth(width - height - 1)
+    bar:SetPoint("TOPRIGHT",f,"TOPRIGHT",0,0)
 
-    f.bar.bg = f.bar:CreateTexture(nil, "BORDER")
-	f.bar.bg:SetAllPoints(f.bar)
-	f.bar.bg:SetTexture(texture)
+    bar.bg = bar:CreateTexture(nil, "BORDER")
+	bar.bg:SetAllPoints(bar)
+    bar.bg:SetTexture(texture)
+
+    local spark = bar:CreateTexture(nil, "ARTWORK", nil, 4)
+    spark:SetBlendMode("ADD")
+    spark:SetTexture([[Interface\AddOns\NugRunning\spark.tga]])
+    spark:SetSize(bar:GetHeight()*2, bar:GetHeight())
+    spark:SetPoint("CENTER", bar, "TOP",0,0)
+
+    bar.spark = spark
+
+    f.bar = bar
+    
+    bar.SetValue1 = bar.SetValue
+    bar.SetValue = SparkSetValue
 
     f.timeText = f.bar:CreateFontString(nil, "ARTWORK", "GameFontNormalSmall");
     f.timeText:SetTextColor(1,1,1)
