@@ -409,7 +409,17 @@ local SparkSetValue = function(self, v)
     end
     local len = p*self:GetWidth()
     self.spark:SetPoint("CENTER", self, "LEFT", len, 0)
-    return self:SetValue1(v)
+    return self:NormalSetValue(v)
+end
+
+function TimerBar.EnableSpark(self, isEnabled)
+    if isEnabled then
+        self.bar.spark:Show()
+        self.bar.SetValue = SparkSetValue
+    else
+        self.bar.spark:Hide()
+        self.bar.SetValue = self.bar.NormalSetValue
+    end
 end
 
 NugRunning.ConstructTimerBar = function(width, height)
@@ -470,8 +480,8 @@ NugRunning.ConstructTimerBar = function(width, height)
 
     f.bar = bar
     
-    bar.SetValue1 = bar.SetValue
-    bar.SetValue = SparkSetValue
+    bar.NormalSetValue = bar.SetValue
+    bar.SparkSetValue = SparkSetValue
 
     f.timeText = f.bar:CreateFontString(nil, "ARTWORK", "GameFontNormalSmall");
     f.timeText:SetTextColor(1,1,1)

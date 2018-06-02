@@ -789,6 +789,8 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
         timer.effect:Hide()
     end
 
+    timer:EnableSpark(true)
+
     if opts.scale_until then
         if timer:Remains() > opts.scale_until then
             timer:VScale(0.4)
