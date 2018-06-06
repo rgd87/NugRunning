@@ -31,6 +31,7 @@ local function Rampage()
     local texture = GetSpellTexture(rampageID)
     timer:SetIcon(texture)
     timer:SetColor(unpack(rampage_opts.color))
+    timer:EnableSpark(true)
 
 
     local lastPositiveUpdate = 0
@@ -41,8 +42,10 @@ local function Rampage()
     rampage_frame.timer = timer
     rampage_frame.CheckFury = function(self)
         if GetSpecialization() == 2 and IsPlayerSpell(184367) then
-            -- rampageCost = IsPlayerSpell(202922) and 70 or 85 -- carnage
-            rampageCost = IsPlayerSpell(202922) and 70 or 100 -- carnage
+            rampageCost = IsPlayerSpell(215571) and 95 or 85 -- Frothing Berserker
+            if IsPlayerSpell(202922) then -- Carnage
+                rampageCost = rampageCost - 10
+            end
             timer.bar:SetMinMaxValues(0, rampageCost)
             self:RegisterEvent("UNIT_POWER_FREQUENT")
             self:RegisterEvent("SPELL_ACTIVATION_OVERLAY_GLOW_HIDE")

@@ -475,6 +475,7 @@ NugRunning.ConstructTimerBar = function(width, height)
     spark:SetTexture([[Interface\AddOns\NugRunning\spark.tga]])
     spark:SetSize(bar:GetHeight()*2, bar:GetHeight())
     spark:SetPoint("CENTER", bar, "TOP",0,0)
+    spark:Hide()
 
     bar.spark = spark
 

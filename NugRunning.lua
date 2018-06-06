@@ -1606,6 +1606,11 @@ NugRunning.Commands = {
         end
         NugRunning.unlocked = nil
     end,
+    ["gui"] = function(v)
+        LoadAddOn('NugRunningOptions')
+        InterfaceOptionsFrame_OpenToCategory("NugRunning")
+        InterfaceOptionsFrame_OpenToCategory("NugRunning")
+    end,
     ["listauras"] = function(v)
         local unit = v
         local h = false
