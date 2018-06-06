@@ -91,20 +91,7 @@ local GetSpellCooldown = GetSpellCooldown
 local GetSpellCharges = GetSpellCharges
 local GetSpecialization = GetSpecialization
 local bit_band = bit.band
-
--- local IsBFA = GetBuildInfo():match("^8")
--- local UnitAura = function(...)
---     local name, _, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, nameplateShowPersonal, spellId, canApplyAura, isBossDebuff, isCastByPlayer, nameplateShowAll, timeMod
---     if IsBFA then
---         name, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, nameplateShowPersonal, spellId, canApplyAura, isBossDebuff, isCastByPlayer, nameplateShowAll, timeMod = UnitAura(...)
---     else
---         name, _, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, nameplateShowPersonal, spellId, canApplyAura, isBossDebuff, isCastByPlayer, nameplateShowAll, timeMod = UnitAura(...)
---     end
---     return name, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, nameplateShowPersonal, spellId, canApplyAura, isBossDebuff, isCastByPlayer, nameplateShowAll, timeMod
--- end
 local UnitAura = UnitAura
-
-
 local UnitGUID = UnitGUID
 local table_wipe = table.wipe
 local COMBATLOG_OBJECT_AFFILIATION_MASK = COMBATLOG_OBJECT_AFFILIATION_MASK
@@ -168,7 +155,7 @@ local defaults = {
     localNames = false,
     totems = true,
     leaveGhost = false,
-    nameplates = false,
+    nameplates = true,
     nameplateLines = false,
     dotpower = true,
     dotticks = true,
@@ -304,17 +291,14 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
 
 
     NugRunning:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
-    NugRunning:RegisterEvent("GLYPH_UPDATED")
     NugRunning:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
     NugRunning.ACTIVE_TALENT_GROUP_CHANGED = NugRunning.ReInitSpells
-    NugRunning.GLYPH_UPDATED = NugRunning.ReInitSpells
     -- NugRunning:RegisterEvent("PLAYER_TALENT_UPDATE")
     -- NugRunning.PLAYER_TALENT_UPDATE = NugRunning.ReInitSpells
     NugRunning.CHARACTER_POINTS_CHANGED = NugRunning.ReInitSpells
     NugRunning:RegisterEvent("CHARACTER_POINTS_CHANGED")
     NugRunning:ReInitSpells()
 
-    NugRunning:RegisterEvent("UNIT_COMBO_POINTS")
 
     NugRunning:RegisterEvent("PLAYER_TARGET_CHANGED")
     -- NugRunning:RegisterEvent("UNIT_AURA")
@@ -400,10 +384,12 @@ end
 --------------------
 -- CLEU dispatcher
 --------------------
-function NugRunning.COMBAT_LOG_EVENT_UNFILTERED( self, event, timestamp, eventType, hideCaster,
-                srcGUID, srcName, srcFlags, srcFlags2,
-                dstGUID, dstName, dstFlags, dstFlags2,
-                spellID, spellName, spellSchool, auraType, amount)
+function NugRunning.COMBAT_LOG_EVENT_UNFILTERED( self, event )
+
+    local timestamp, eventType, hideCaster,
+    srcGUID, srcName, srcFlags, srcFlags2,
+    dstGUID, dstName, dstFlags, dstFlags2,
+    spellID, spellName, spellSchool, auraType, amount = CombatLogGetCurrentEventInfo()
 
     if spells[spellID] then
         local affiliationStatus = (bit_band(srcFlags, AFFILIATION_MINE) == AFFILIATION_MINE)
@@ -807,6 +793,8 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
         timer.arrow:Hide()
     end
 
+    -- print(srcGUID,dstGUID,dstName,dstFlags, spellID, spellName, opts, timerType, override, amount)
+
     timer:Show()
     if not timer.animIn:IsPlaying() and not from_unitaura then timer.animIn:Play() end
     timer.shine.tex:SetAlpha(0)
@@ -1042,7 +1030,7 @@ do
     end
 end
 
-function NugRunning.SetUnitAuraValues(self, timer, spellID, name, rank, icon, count, dispelType, duration, expirationTime, caster, isStealable, shouldConsolidate, aura_spellID, canApplyAura, isBossDebuff)
+function NugRunning.SetUnitAuraValues(self, timer, spellID, name, icon, count, dispelType, duration, expirationTime, caster, isStealable, shouldConsolidate, aura_spellID, canApplyAura, isBossDebuff)
             if aura_spellID then
                 if aura_spellID == spellID and NugRunning.UnitAffiliationCheck(caster, timer.opts.affiliation) then
                     if timer.opts.charged then
@@ -1097,9 +1085,9 @@ end
 
 function NugRunning.GetUnitAuraData(self, unit, timer, spellID)
         for auraIndex=1,100 do
-            local name, rank, icon, count, dispelType, duration, expirationTime, caster, isStealable, shouldConsolidate, aura_spellID, canApplyAura, isBossDebuff, value1, absorb, value3 = UnitAura(unit, auraIndex, timer.filter)
+            local name, icon, count, dispelType, duration, expirationTime, caster, isStealable, shouldConsolidate, aura_spellID, canApplyAura, isBossDebuff, value1, absorb, value3 = UnitAura(unit, auraIndex, timer.filter)
             if spellID == aura_spellID then
-                return NugRunning:SetUnitAuraValues(timer, spellID, name, rank, icon, count, dispelType, duration, expirationTime, caster, isStealable, shouldConsolidate, aura_spellID, canApplyAura, isBossDebuff, value1, absorb, value3)
+                return NugRunning:SetUnitAuraValues(timer, spellID, name, icon, count, dispelType, duration, expirationTime, caster, isStealable, shouldConsolidate, aura_spellID, canApplyAura, isBossDebuff, value1, absorb, value3)
             elseif name == nil then
                 return
             end
@@ -1471,11 +1459,6 @@ end
 --     end
 -- end
 
-function NugRunning.UNIT_COMBO_POINTS(self,event,unit)
-    if unit ~= "player" then return end
-    self.cpWas = self.cpNow or 0
-    self.cpNow = GetComboPoints(unit);
-end
 function NugRunning.ReInitSpells(self,event,arg1)
     for id,opts in pairs(spells) do
         if type(opts) == "table" and opts.init then
@@ -1627,14 +1610,14 @@ NugRunning.Commands = {
         local unit = v
         local h = false
         for i=1, 100 do
-            local name, _,_,_,_,duration,_,_,_,_, spellID = UnitAura(unit, i, "HELPFUL")
+            local name, _,_,_,duration,_,_,_,_, spellID = UnitAura(unit, i, "HELPFUL")
             if not name then break end
             if not h then print("BUFFS:"); h = true; end
             print(string.format("    %s (id: %d) Duration: %s", name, spellID, duration or "none" ))
         end
         h = false
         for i=1, 100 do
-            local name, _,_,_,_,duration,_,_,_,_, spellID = UnitAura(unit, i, "HARMFUL")
+            local name, _,_,_,duration,_,_,_,_, spellID = UnitAura(unit, i, "HARMFUL")
             if not name then break end
             if not h then print("DEBUFFS:"); h = true; end
             print(string.format("    %s (id: %d) Duration: %s", name, spellID, duration or "none" ))
@@ -2056,7 +2039,7 @@ do
             for _, filter in ipairs(filters) do
                 local timerType = filter == "HELPFUL" and "BUFF" or "DEBUFF"
                 for i=1,200 do
-                    local name, _,_, count, _, duration, expirationTime, caster, _,_, aura_spellID = UnitAura(unit, i, filter)
+                    local name, icon, count, dispelType, duration, expirationTime, caster, isStealable, shouldConsolidate, aura_spellID = UnitAura(unit, i, filter)
                     if not name then break end
 
                     local opts = spells[aura_spellID]
@@ -2066,7 +2049,7 @@ do
                             timer = gettimer(active, aura_spellID, unitGUID, timerType)
                             if duration == 0 then duration = -1 end
                             if timer then
-                                NugRunning:SetUnitAuraValues(timer, timer.spellID, UnitAura(unit, GetSpellInfo(timer.spellID), nil, timer.filter))
+                                NugRunning:SetUnitAuraValues(timer, timer.spellID, name, icon, count, dispelType, duration, expirationTime, caster, isStealable, shouldConsolidate, aura_spellID)
                             else
                                 timer = NugRunning:ActivateTimer(playerGUID, unitGUID, UnitName(unit), nil, aura_spellID, name, opts, timerType, duration, count, true)
                                 if timer and not timer.timeless then
@@ -2119,7 +2102,7 @@ do
 
             for _, filter in ipairs(filters) do
                 for i=1,100 do
-                    local name, _,_, count, _, duration, expirationTime, caster, _,_, aura_spellID = UnitAura("target", i, filter)
+                    local name, _, count, _, duration, expirationTime, caster, _,_, aura_spellID = UnitAura("target", i, filter)
                     if not name then break end
 
                     local opts = spells[aura_spellID]
