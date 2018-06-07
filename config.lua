@@ -1024,6 +1024,10 @@ end
 
 if class == "DRUID" then
 Spell( 208253 ,{ name = "Essence of G'Hanir", duration = 8, color = colors.DBLUE })
+
+-- Ability
+Cooldown( 274281 ,{ name = "New Moon", ghost = true, color = colors.PINK3 })
+-- Artifact
 Cooldown( 202767 ,{ name = "Moon", ghost = true, color = colors.PINK3 })
 
 Cooldown( 274837 ,{ name = "Feral Frenzy", scale_until = 10, ghost = true, color = colors.DTEAL })
@@ -1045,13 +1049,12 @@ Spell( 22842 ,{ name = "Frenzied Regeneration", duration = 5, color = colors.TEA
 -- Spell( 48518 ,{ name = "Lunar Eclipse", timeless = true, duration = 0.1, short = "Lunar", color = colors.LBLUE }) -- Starfire boost
 Spell( 78675,{ name = "Solar Beam", duration = 10, color = colors.GOLD, target = "player" })
 Spell( 33786 ,{ name = "Cyclone", duration = 6 })
-Spell( 164812 ,{ name = "Moonfire",duration = 16, nameplates = true, priority = 10, ghost = true, color = colors.PURPLE,
+DotSpell( 164812 ,{ name = "Moonfire",duration = 16, nameplates = true, priority = 10, ghost = true, color = colors.PURPLE,
         init = function(self)
             local duration = 16
-            if GetSpecialization() == 4 then duration = duration + 4 end -- persistance trait
             if GetSpecialization() == 1 then duration = duration + 6 end -- balance druid thing
             self.duration = duration
-        --     self.overlay[2] = duration*0.3
+            self.overlay[2] = duration*0.3
 
             if GetSpecialization() == 3 then
                 self.singleTarget = true
@@ -1062,21 +1065,21 @@ Spell( 164812 ,{ name = "Moonfire",duration = 16, nameplates = true, priority = 
             end
         end
         })
-Spell( 164547 ,{ name = "Lunar Empowerment", short = "", group = "buffs", priority = -25, duration = 30, scale = 0.8, priority = 9, ghost = true, color = colors.REJUV, charged = true, maxcharge = 3})
-Spell( 164545 ,{ name = "Solar Empowerment", short = "", group = "buffs", priority = -24, duration = 30, scale = 0.8, priority = 8, ghost = true, color = colors.ORANGE2, charged = true, maxcharge = 3})
-Spell( 164815 ,{ name = "Sunfire",duration = 18, nameplates = true, priority = 9, ghost = true, color = colors.ORANGE, maxtimers = 3,
+Spell( 164547 ,{ name = "Lunar Empowerment", short = "", group = "buffs", priority = -25, duration = 30, scale = 0.8, ghost = true, color = colors.REJUV, charged = true, maxcharge = 3})
+Spell( 164545 ,{ name = "Solar Empowerment", short = "", group = "buffs", priority = -24, duration = 30, scale = 0.8, ghost = true, color = colors.ORANGE2, charged = true, maxcharge = 3})
+DotSpell( 164815 ,{ name = "Sunfire",duration = 12, nameplates = true, priority = 9, ghost = true, color = colors.ORANGE, maxtimers = 1,
         init = function(self)
             local duration = 12
-            if GetSpecialization() == 4 then duration = duration + 4 end -- persistance trait
             if GetSpecialization() == 1 then duration = duration + 6 end -- balance druid thing
             self.duration = duration
-            -- self.overlay[2] = duration*0.3
+            self.overlay[2] = duration*0.3
         end})
 -- Spell( 93400 ,{ name = "Shooting Stars", shine = true, duration = 12, color = colors.CURSE })
 -- Spell( 48505 ,{ name = "Starfall", shine = true, duration = 10, color = colors.WOO2 })
 -- Cooldown( 78674 ,{ name = "Starsurge", resetable = true, priority = 6, ghost = true, color = colors.CURSE })
 Cooldown( 197626 ,{ name = "Starsurge", resetable = true, priority = 6, ghost = true, color = colors.CURSE })
 DotSpell( 202347, { name = "Stellar Flare",duration = 24, priority = 5, ghost = true, color = colors.CHIM })
+Spell( 279709, { name = "Starlord", duration = 15, group = "buffs", color = colors.CHIM, scale = 0.5 })
 
 Spell( 213708,{ name = "Galactic Guardian", shine = true, priority = 12, duration = 15, glowtime = 15, scale = 0.7, color = colors.TEAL2 })
 
