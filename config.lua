@@ -937,9 +937,31 @@ Spell( 114923 ,{ name = "Nether Tempest", duration = 12, color = colors.PURPLE }
 end
 
 if class == "PALADIN" then
+
+local normalized_length = 8
+
 Spell( 200652 ,{ name = "Tyr's Deliverance", duration = 10, color = colors.DBLUE })
 Spell( 209202 ,{ name = "Eye of Tyr", duration = 9, multiTarget = true, color = colors.DBLUE })
-Cooldown( 205273 ,{ name = "Wake of Ashes", ghost = true, color = colors.DBLUE, scale_until = 8, fixedlen = 8 })
+
+Spell( 205191 ,{ name = "Eye for an Eye", duration = 10, group = "buffs", color = colors.LRED })
+Spell( 184662 ,{ name = "Shield of Vengeance", duration = 15, group = "buffs", color = colors.GOLD })
+
+
+
+Spell( 204150 ,{ name = "Aegis of Light", duration = 6, group = "buffs", color = colors.GOLD })
+Spell( 84963 ,{ name = "Inquisition", duration = 45, group = "buffs", scale = 0.6, ghost = true, color = colors.PURPLE })
+Spell( 231895 ,{ name = "Crusade", duration = 25, shine = true, group = "buffs", scale = 0.6, ghost = true, color = colors.PURPLE })
+
+-- Talent
+Cooldown( 255937 ,{ name = "Wake of Ashes", ghost = true, color = colors.DBLUE, scale_until = 8 })
+
+-- Artifact
+Cooldown( 205273 ,{ name = "Wake of Ashes", ghost = true, color = colors.DBLUE, scale_until = 8, fixedlen = normalized_length })
+
+
+Spell( 267799 ,{ name = "Execution Sentence", scale = 0.9, duration = 12, color = colors.REJUV })
+Cooldown( 267798 ,{ name = "Execution Sentence", ghost = true, color = colors.DPURPLE, scale_until = 5 })
+
 
 --Spell( 53657 ,{ name = "Judgements of the Pure", short = "JotP", duration = 100500, color = colors.LBLUE })
 Spell( 31884 ,{ name = "Avenging Wrath",duration = 20, group = "buffs", color = colors.PURPLE2 })
@@ -962,17 +984,17 @@ Spell( 853 ,{ name = "Hammer of Justice", duration = 6, short = "HoJ", color = c
 
 Spell( 183218 ,{ name = "Hand of Hindrance", duration = 10, short = "Hindrance", color = colors.BROWN })
 
-Cooldown( 184575 ,{ name = "Blade of Justice", tickshine = true, ghost = true, priority = 9, fixedlen = 8, color = colors.WOO, ghosteffect = "NIGHTBORNE" })
-Cooldown( 35395 ,{ name = "Crusader Strike", tick = 1.5, tickshine = true, overlay = {"tick", "end"}, ghost = true, short = "Crusader", priority = 10, fixedlen = 8, color = colors.CURSE })
-Cooldown( 217020 ,{ name = "Zeal", tick = 1.5, tickshine = true, overlay = {"tick", "end"}, ghost = true, priority = 10, fixedlen = 8, color = colors.CURSE })
-Cooldown( 204019 ,{ name = "Blessed Hammer", ghost = true, ghosteffect = "AEGWYNN", priority = 10, fixedlen = 8, color = colors.CURSE })
+Cooldown( 184575 ,{ name = "Blade of Justice", tickshine = true, ghost = true, priority = 9, fixedlen = normalized_length, color = colors.WOO, ghosteffect = "NIGHTBORNE" })
+Cooldown( 35395 ,{ name = "Crusader Strike", tick = 1.5, tickshine = true, overlay = {"tick", "end"}, ghost = true, short = "Crusader", priority = 10, fixedlen = normalized_length, color = colors.CURSE })
+Cooldown( 217020 ,{ name = "Zeal", tick = 1.5, tickshine = true, overlay = {"tick", "end"}, ghost = true, priority = 10, fixedlen = normalized_length, color = colors.CURSE })
+Cooldown( 204019 ,{ name = "Blessed Hammer", ghost = true, ghosteffect = "AEGWYNN", priority = 10, fixedlen = normalized_length, color = colors.CURSE })
 
 Spell( 197277,{ name = "Judgement", shine = true, singleTarget = true, priority = -100500, color = colors.PURPLE2, duration = 6 }) --debuff
-Cooldown( 20271 ,{ name = "Judgement", ghost = true, fixedlen = 8, priority = 8, color = colors.PURPLE, ghosteffect = "JUDGEMENT" })
+Cooldown( 20271 ,{ name = "Judgement", ghost = true, fixedlen = normalized_length, priority = 8, color = colors.PURPLE, ghosteffect = "JUDGEMENT" })
 
-Cooldown( 26573 ,{ name = "Consecration", color = colors.PINKIERED, overlay = {0,"gcd",.3}, priority = 9, scale = 1, ghost = true, fixedlen = 8 })
-Cooldown( 24275 ,{ name = "Hammer of Wrath", color = colors.TEAL2, fixedlen = 8, ghost = true, priority = 11 })
-Cooldown( 31935 ,{ name = "Avenger's Shield", resetable = true, fixedlen = 8, priority = 5, scale = 1, ghosteffect = "NIGHTBORNE", color = colors.TEAL, ghost = true })
+Cooldown( 26573 ,{ name = "Consecration", color = colors.PINKIERED, overlay = {0,"gcd",.3}, priority = 9, scale = 1, ghost = true, fixedlen = normalized_length })
+Cooldown( 24275 ,{ name = "Hammer of Wrath", color = colors.TEAL2, fixedlen = normalized_length, ghost = true, priority = 11 })
+Cooldown( 31935 ,{ name = "Avenger's Shield", resetable = true, fixedlen = normalized_length, priority = 5, scale = 1, ghosteffect = "NIGHTBORNE", color = colors.TEAL, ghost = true })
 
 Spell( 132403 ,{ name = "Shield of the Righteous", short = "Shield", group = "buffs", duration = 3, priority = -15, scale = 1, glowtime = 1, arrow = colors.PINK2, color = colors.PINK3 })
 Cooldown( 53600 ,{ name = "Shield of the Righteous", ghost = true, color = colors.PURPLE3, ghosteffect = "NIGHTBORNE", group = "buffs", scale = 0.5, priority = -100 })
