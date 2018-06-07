@@ -231,122 +231,122 @@ local function Warlock()
     --     end
     -- end)
 
-    do
-        local imps = CreateFrame"Frame"
+    -- do
+    --     local imps = CreateFrame"Frame"
 
-        -- 105174 -- hog spell
-        -- 104317 -- imp SPELL_SUMMON
-        local hogID = 104317
-        local hogName = GetSpellInfo(hogID)
-        local hog_opts = NugRunningConfig.spells[hogID]
-        if not hog_opts then return end
-        NugRunningConfig.spells[hogID] = nil
+    --     -- 105174 -- hog spell
+    --     -- 104317 -- imp SPELL_SUMMON
+    --     local hogID = 104317
+    --     local hogName = GetSpellInfo(hogID)
+    --     local hog_opts = NugRunningConfig.spells[hogID]
+    --     if not hog_opts then return end
+    --     NugRunningConfig.spells[hogID] = nil
 
-        local timer = NugRunning:CreateTimer()
-        free[timer] = nil
-        -- timer.stacktext:Hide()
-        timer.bar:SetValue(100)
-        -- timer:SetScript("OnUpdate",nil)
-        timer.dstGUID = UnitGUID("player")
-        timer.srcGUID = UnitGUID("player")
-        timer.startTime = 0
-        timer.endTime = 1
-        timer.isExternal = true
-        timer.priority = hog_opts.priority
-        timer.opts = { name = hog_opts.name, color = hog_opts.color }
-        -- if hog_opts.scale then
-            -- timer:VScale(hog_opts.scale)
-        -- end
+    --     local timer = NugRunning:CreateTimer()
+    --     free[timer] = nil
+    --     -- timer.stacktext:Hide()
+    --     timer.bar:SetValue(100)
+    --     -- timer:SetScript("OnUpdate",nil)
+    --     timer.dstGUID = UnitGUID("player")
+    --     timer.srcGUID = UnitGUID("player")
+    --     timer.startTime = 0
+    --     timer.endTime = 1
+    --     timer.isExternal = true
+    --     timer.priority = hog_opts.priority
+    --     timer.opts = { name = hog_opts.name, color = hog_opts.color }
+    --     -- if hog_opts.scale then
+    --         -- timer:VScale(hog_opts.scale)
+    --     -- end
 
-        local nameText = NugRunning:MakeName(hog_opts, hogName)
-        timer:SetName(nameText)
+    --     local nameText = NugRunning:MakeName(hog_opts, hogName)
+    --     timer:SetName(nameText)
 
-        timer:UpdateMark()
-        timer:SetCount(1)
+    --     timer:UpdateMark()
+    --     timer:SetCount(1)
 
-        local texture = GetSpellTexture(205146) -- some Imps Texture
-        timer:SetIcon(texture)
-        timer:SetColor(unpack(hog_opts.color))
+    --     local texture = GetSpellTexture(205146) -- some Imps Texture
+    --     timer:SetIcon(texture)
+    --     timer:SetColor(unpack(hog_opts.color))
 
-        imps:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
-        imps:RegisterEvent("SPELLS_CHANGED")
+    --     imps:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+    --     imps:RegisterEvent("SPELLS_CHANGED")
 
-        local bit_band = bit.band
-        local AFFILIATION_MINE = COMBATLOG_OBJECT_AFFILIATION_MINE
+    --     local bit_band = bit.band
+    --     local AFFILIATION_MINE = COMBATLOG_OBJECT_AFFILIATION_MINE
 
-        local ImpHistory = {}
-        local duration = hog_opts.duration
-        local math_floor = math.floor
-        local round = function(v) return math_floor(v*10+.1)/10 end
+    --     local ImpHistory = {}
+    --     local duration = hog_opts.duration
+    --     local math_floor = math.floor
+    --     local round = function(v) return math_floor(v*10+.1)/10 end
 
-        local UpdateCounter = function(t)
-            local nowInt = round(GetTime())
-            local numImps = 0
-            for timestamp, count in pairs(ImpHistory) do
-                if timestamp < nowInt then
-                    ImpHistory[timestamp] = nil
-                else
-                    numImps = numImps + count
-                end
-            end
-            t:SetCount(numImps)
-        end
+    --     local UpdateCounter = function(t)
+    --         local nowInt = round(GetTime())
+    --         local numImps = 0
+    --         for timestamp, count in pairs(ImpHistory) do
+    --             if timestamp < nowInt then
+    --                 ImpHistory[timestamp] = nil
+    --             else
+    --                 numImps = numImps + count
+    --             end
+    --         end
+    --         t:SetCount(numImps)
+    --     end
 
-        timer.onupdate = function(self)
-            UpdateCounter(self)
-        end
+    --     timer.onupdate = function(self)
+    --         UpdateCounter(self)
+    --     end
 
-        imps:SetScript("OnEvent",
-        function( self, event, timestamp, eventType, hideCaster,
-            srcGUID, srcName, srcFlags, srcFlags2,
-            dstGUID, dstName, dstFlags, dstFlags2,
-            spellID, spellName, spellSchool, auraType, amount)
+    --     imps:SetScript("OnEvent",
+    --     function( self, event, timestamp, eventType, hideCaster,
+    --         srcGUID, srcName, srcFlags, srcFlags2,
+    --         dstGUID, dstName, dstFlags, dstFlags2,
+    --         spellID, spellName, spellSchool, auraType, amount)
 
-            if (spellID == 104317 or spellID == 196271) and eventType == "SPELL_SUMMON" and
-                (bit_band(srcFlags, AFFILIATION_MINE) == AFFILIATION_MINE) then
+    --         if (spellID == 104317 or spellID == 196271) and eventType == "SPELL_SUMMON" and
+    --             (bit_band(srcFlags, AFFILIATION_MINE) == AFFILIATION_MINE) then
 
-                local now = GetTime()
-                local ts = round(now) + duration
-                if not ImpHistory[ts] then
-                    ImpHistory[ts] = 1
-                else
-                    ImpHistory[ts] = ImpHistory[ts] + 1
-                end
+    --             local now = GetTime()
+    --             local ts = round(now) + duration
+    --             if not ImpHistory[ts] then
+    --                 ImpHistory[ts] = 1
+    --             else
+    --                 ImpHistory[ts] = ImpHistory[ts] + 1
+    --             end
 
-                UpdateCounter(timer)
+    --             UpdateCounter(timer)
 
-                local maxts = 0
-                for k in pairs(ImpHistory) do
-                    if k ~= ts and k > maxts then
-                        maxts = k
-                    end
-                end
+    --             local maxts = 0
+    --             for k in pairs(ImpHistory) do
+    --                 if k ~= ts and k > maxts then
+    --                     maxts = k
+    --                 end
+    --             end
 
-                timer.startTime = now
-                timer.endTime = timer.startTime + hog_opts.duration
-                timer.bar:SetMinMaxValues(timer.startTime, timer.endTime)
+    --             timer.startTime = now
+    --             timer.endTime = timer.startTime + hog_opts.duration
+    --             timer.bar:SetMinMaxValues(timer.startTime, timer.endTime)
 
-                if now < maxts then
-                    timer.opts.recast_mark = timer.endTime - maxts
-                else
-                    timer.opts.recast_mark = nil
-                end
-                timer:UpdateMark()
+    --             if now < maxts then
+    --                 timer.opts.recast_mark = timer.endTime - maxts
+    --             else
+    --                 timer.opts.recast_mark = nil
+    --             end
+    --             timer:UpdateMark()
 
-                timer:Show()
-                NugRunning.active[timer] = true
-                NugRunning:ArrangeTimers()
+    --             timer:Show()
+    --             NugRunning.active[timer] = true
+    --             NugRunning:ArrangeTimers()
 
-            elseif event == "SPELLS_CHANGED" then
-                if GetSpecialization() == 2 then
-                    self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
-                else
-                    self:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
-                end
-            end
+    --         elseif event == "SPELLS_CHANGED" then
+    --             if GetSpecialization() == 2 then
+    --                 self:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+    --             else
+    --                 self:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
+    --             end
+    --         end
 
-        end)
-    end
+    --     end)
+    -- end
 end
 
 

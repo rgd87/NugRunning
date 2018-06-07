@@ -90,6 +90,7 @@ local GetSpellInfo = setmetatable({},{
 local GetSpellCooldown = GetSpellCooldown
 local GetSpellCharges = GetSpellCharges
 local GetSpecialization = GetSpecialization
+local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
 local bit_band = bit.band
 local UnitAura = UnitAura
 local UnitGUID = UnitGUID
@@ -735,6 +736,8 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
 
     timer.timeless = (opts.timeless or opts.charged or override == -1)
 
+    timer:EnableSpark(not opts.timeless)
+
     amount = amount or 1
     if opts.charged then
         timer:ToInfinite()
@@ -774,8 +777,6 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
     else
         timer.effect:Hide()
     end
-
-    timer:EnableSpark(true)
 
     if opts.scale_until then
         if timer:Remains() > opts.scale_until then
@@ -1880,10 +1881,11 @@ NugRunning.Commands = {
     ["debug"] = function()
         if not NugRunning.debug then
             NugRunning.debug = CreateFrame("Frame")
-            NugRunning.debug:SetScript("OnEvent",function( self, event, timestamp, eventType, hideCaster,
-                                                            srcGUID, srcName, srcFlags, srcFlags2,
-                                                            dstGUID, dstName, dstFlags, dstFlags2,
-                                                            spellID, spellName, spellSchool, auraType, amount)
+            NugRunning.debug:SetScript("OnEvent",function( self, event )
+                local timestamp, eventType, hideCaster,
+                srcGUID, srcName, srcFlags, srcFlags2,
+                dstGUID, dstName, dstFlags, dstFlags2,
+                spellID, spellName, spellSchool, auraType, amount = CombatLogGetCurrentEventInfo()
                 local isSrcPlayer = (bit_band(srcFlags, COMBATLOG_OBJECT_AFFILIATION_MINE) == COMBATLOG_OBJECT_AFFILIATION_MINE)
                 if isSrcPlayer then print (spellID, spellName, eventType, srcFlags, srcGUID,"->",dstGUID, amount) end
             end)
@@ -2206,7 +2208,6 @@ function NugRunning:CreateCastbarTimer(timer)
     f:RegisterEvent("UNIT_SPELLCAST_CHANNEL_STOP")
 
     f:SetScript("OnEvent", function(self, event, ...)
-        -- print(event, ...)
         return f[event](self, event, ...)
     end)
 
@@ -2262,12 +2263,12 @@ function NugRunning:CreateCastbarTimer(timer)
     end
 
 
-    function f.UNIT_SPELLCAST_START(self,event, unit, spellName, rank, castID, spellID)
+    function f.UNIT_SPELLCAST_START(self,event, unit, castID, spellID)
         if unit ~= self.unit then return end
         if not config.casts[spellID] then return end
         local opts = config.casts[spellID]
 
-        local name, subText, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible = UnitCastingInfo(unit)
+        local name, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible = UnitCastingInfo(unit)
         self.inverted = false
         self.castID = castID
         self:UpdateCastingInfo(name,texture,startTime,endTime, opts)
@@ -2275,12 +2276,12 @@ function NugRunning:CreateCastbarTimer(timer)
         NugRunning:ArrangeTimers()
     end
     f.UNIT_SPELLCAST_DELAYED = f.UNIT_SPELLCAST_START
-    function f.UNIT_SPELLCAST_CHANNEL_START(self,event, unit, spellName, rank, castID, spellID)
+    function f.UNIT_SPELLCAST_CHANNEL_START(self,event, unit, castID, spellID)
         if unit ~= self.unit then return end
         if not config.casts[spellID] then return end
         local opts = config.casts[spellID]
 
-        local name, subText, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible = UnitChannelInfo(unit)
+        local name, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible = UnitChannelInfo(unit)
         self.inverted = true
         self.castID = castID
         self:UpdateCastingInfo(name,texture,startTime,endTime, opts)
@@ -2289,13 +2290,13 @@ function NugRunning:CreateCastbarTimer(timer)
         NugRunning:ArrangeTimers()
     end
     f.UNIT_SPELLCAST_CHANNEL_UPDATE = f.UNIT_SPELLCAST_CHANNEL_START
-    function f.UNIT_SPELLCAST_STOP(self,event, unit, spellName, rank, castID, spellID)
+    function f.UNIT_SPELLCAST_STOP(self,event, unit, castID, spellID)
         if unit ~= self.unit then return end
         self:Hide()
         NugRunning.active[self] = nil
         NugRunning:ArrangeTimers()
     end
-    function f.UNIT_SPELLCAST_FAILED(self, event, unit, spell, _,castID)
+    function f.UNIT_SPELLCAST_FAILED(self, event, unit,castID)
         if unit ~= self.unit then return end
         if self.castID == castID then self.UNIT_SPELLCAST_STOP(self, event, unit, spell) end
     end
