@@ -298,6 +298,8 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
     -- NugRunning.PLAYER_TALENT_UPDATE = NugRunning.ReInitSpells
     NugRunning.CHARACTER_POINTS_CHANGED = NugRunning.ReInitSpells
     NugRunning:RegisterEvent("CHARACTER_POINTS_CHANGED")
+    NugRunning:RegisterUnitEvent("UNIT_POWER_UPDATE", "player")
+
     NugRunning:ReInitSpells()
 
 
@@ -2308,5 +2310,13 @@ function NugRunning:CreateCastbarTimer(timer)
         local newguid = UnitGUID("target") or UnitGUID("player")
         self.dstGUID = newguid
         NugRunning:ArrangeTimers()
+    end
+end
+
+local Enum_PowerType_ComboPoints = Enum.PowerType.ComboPoints
+function NugRunning.UNIT_POWER_UPDATE(self,event,unit, ptype)
+    if ptype == "COMBO_POINTS" then
+        self.cpWas = self.cpNow or 0
+        self.cpNow = UnitPower("player", Enum_PowerType_ComboPoints)
     end
 end

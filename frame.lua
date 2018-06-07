@@ -69,8 +69,6 @@ function TimerBar.SetTime(self, s,e, fixedoffset, animProgress)
     end
     self._startTimeModified = s
 
-
-
     self.bar:SetMinMaxValues(s,e)
     self:UpdateMark()
 end
