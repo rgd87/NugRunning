@@ -538,7 +538,7 @@ Spell( 1160 ,{ name = "Demoralizing Shout", short = "DemoShout", shine = true, g
 Cooldown( 6572 ,{ name = "Revenge", priority = 5, color = colors.PURPLE, resetable = true, fixedlen = 9, ghost = 1 })
 Activation( 6572, { effect = "JUDGEMENT", priority = 10.1, color = colors.REJUV, scale = 0.5, glowtime = 6, duration = 6, showid = 3127 })
 
--- Spell( 55694 ,{ name = "Enraged Regeneration", short = "Regen", color = colors.LGREEN, duration = 5 })
+Spell( 184364 ,{ name = "Enraged Regeneration", short = "Regen", scale = 0.6, group = "buffs", color = colors.LGREEN, duration = 8 })
 Spell( 132168 ,{ name = "Shockwave", color = colors.CURSE, arrow = colors.LGREEN, duration = 4, maxtimers = 1 , })
 Cooldown( 46968 ,{ name = "Shockwave", fixedlen = 9, ghost = 3, priority = 2, color = colors.DBLUE })
 Cooldown( 107570 ,{ name = "Storm Bolt", fixedlen = 9, ghost = 3, priority = 2, color = colors.DBLUE, scale_until = 9 })
@@ -1390,7 +1390,6 @@ Spell( 187878 ,{ name = "Crash Lightning", duration = 10, color = colors.WOO, sc
 
 Spell( 201898 ,{ name = "Windsong", duration = 20, color = colors.WOO, group = "buffs" })
 
-Spell( 215864 ,{ name = "Rainfall", duration = 10, color = colors.LGREEN, group = "buffs" })
 Spell( 197211 ,{ name = "Fury of Air", timeless = true, duration = 5, color = colors.DPURPLE, priority = -5, scale = 0.8, shine = true })
 Cooldown( 197214 ,{ name = "Sundering", color = colors.DBROWN, ghost = true, scale_until = 10 })
 
