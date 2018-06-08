@@ -769,6 +769,8 @@ end
 
 if class == "DEATHKNIGHT" then
 
+Spell( 207289,{ name = "Unholy Frenzy", color = colors.CURSE, group = "buffs", shine = true, duration = 12 })
+
 Spell( 48265 ,{ name = "Death's Advance", color = colors.PURPLE4, scale = 0.7, group = "buffs", duration = 8 })
 Spell( 206940 ,{ name = "Mark of Blood", color = colors.PINK3, scale = 0.7, duration = 15 })
 
@@ -798,7 +800,7 @@ Cooldown(50842,{ name = "Blood Boil", color = colors.DRED, scale = 0.7,  priorit
 Cooldown( 206931,{ name = "Exsanguinate", color = colors.DRED, ghost = true, minduration = 20 })
 -- Cooldown( 207317,{ name = "Epidemic", color = colors.PURPLE3, ghost = true, minduration = 6 })
 
-Spell( 194310,{ name = "Festering Wound", charged = true, singleTarget = true, ghost = true, maxcharge = 8, color = colors.PINK2, duration = 2000, timeless = true })
+Spell( 194310,{ name = "Festering Wound", charged = true, singleTarget = true, ghost = true, maxcharge = 6, color = colors.PINK2, duration = 2000, timeless = true })
 
 
 Spell( 130736,{ name = "Soul Reaper", priority = -300, color = colors.TEAL3, duration = 5, })
