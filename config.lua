@@ -1344,18 +1344,23 @@ Cooldown( 198670 ,{ name = "Piercing Shot", color = colors.WOO2, scale_until = 7
 end
 
 if class == "SHAMAN" then
+
+local enh_normalize = 8
+
 Cooldown( 205495 ,{ name = "Stormkeeper", ghost = true, color = colors.DTEAL, scale_until = 10 })
 Cooldown( 204945 ,{ name = "Doom Winds", ghost = true, color = colors.DTEAL, scale_until = 10 })
 Spell( 204945 ,{ name = "Doom Winds", shine = true, color = colors.TEAL3, group = "buffs", duration = 6 })
 
 -- Spell( 8056 ,{ name = "Frost Shock", duration = 8, color = colors.CHILL, short = "FrS" })
+Spell( 974 ,{ name = "Earth Shield", duration = 60, timeless = true, charged = true, maxcharge = 9, color = colors.LGREEN })
 
 Spell( 61295 ,{ name = "Riptide", duration = 15, color = colors.FROZEN })
 Spell( 51514 ,{ name = "Hex", duration = 50, pvpduration = 8, color = colors.CURSE })
 Spell( 79206 ,{ name = "Spiritwalker's Grace", duration = 10, color = colors.LGREEN, group = "buffs" })
 
 DotSpell( 188838 ,{ name = "Flame Shock", duration = 21, color = colors.PURPLE, ghost = true }) -- restoration
-Spell( 188389 ,{ name = "Flame Shock", duration = 15, color = colors.PURPLE, ghost = true }) -- elemental
+DotSpell( 188389 ,{ name = "Flame Shock", duration = 18, color = colors.PURPLE, ghost = true }) -- elemental
+Cooldown( 188389 ,{ name = "Flame Shock", color = colors.WOO, ghost = 1, priority = 1, scale = 0.5 })  -- elemental
 
 Spell( 196840 ,{ name = "Frost Shock", duration = 5, color = colors.LBLUE, })
 Spell( 197209 ,{ name = "Lightning Rod", duration = 10, color = colors.DBLUE, shine = true, shinerefresh = true })
@@ -1365,32 +1370,35 @@ Spell( 197209 ,{ name = "Lightning Rod", duration = 10, color = colors.DBLUE, sh
 Spell( 16166 ,{ name = "Elemental Mastery", duration = 20, color = colors.PINKIERED, group = "buffs" })
 Spell( 77762 ,{ name = "Lava Surge", duration = 6, color = colors.TEAL2, priority = 11, scale = .7, shine = true })
 Cooldown( 51505 ,{ name = "Lava Burst", color = colors.CURSE, ghost = true, priority = 10, resetable = true })
-Cooldown( 51490 ,{ name = "Thunderstorm", color = colors.WOO2 })
+-- Cooldown( 51490 ,{ name = "Thunderstorm", color = colors.WOO2, scale_until = 5 })
 Cooldown( 61882 ,{ name = "Earthquake", color = colors.BROWN })
-Cooldown( 117014 ,{ name = "Elemental Blast", priority = 9.5, ghost = 3, color = colors.PURPLE2 })
+Cooldown( 117014 ,{ name = "Elemental Blast", priority = 9, ghost = true, scale = 0.75, color = colors.PINK })
 
 Spell( 108281,{ name = "Ancestral Guidance", duration = 10, color = colors.DPURPLE, shine = true })
 
-Cooldown( 60103 ,{ name = "Lava Lash", color = colors.RED, priority = 9, ghost = true, fixedlen = 10 })
+-- Cooldown( 60103 ,{ name = "Lava Lash", color = colors.RED, priority = 9, ghost = true, fixedlen = enh_normalize })
 
-Spell( 210714 ,{ name = "Icefury", duration = 15, color = colors.FROZEN, group = "buffs" })
+Cooldown( 187837 ,{ name = "Lightning Bolt", color = colors.PINK, minduration = 6, scale = 0.8, priority = 5, ghost = true, fixedlen = enh_normalize })
 
 
-Spell( 194084 ,{ name = "Flametongue", duration = 16, color = colors.RED, group = "buffs" })
+Spell( 210714 ,{ name = "Icefury", duration = 15, color = colors.FROZEN, scale = 0.8, group = "buffs" })
+
+
+Spell( 194084 ,{ name = "Flametongue", duration = 16, color = colors.PINK3, scale = 0.75, fixedlen = enh_normalize, group = "buffs" })
 Spell( 196834 ,{ name = "Frostbrand", duration = 16, color = colors.FROZEN, group = "buffs" })
-Spell( 187878 ,{ name = "Crash Lightning", duration = 10, color = colors.DBLUE, group = "buffs" })
+Spell( 187878 ,{ name = "Crash Lightning", duration = 10, color = colors.WOO, scale = 0.75, fixedlen = enh_normalize,  group = "buffs" })
 
 Spell( 201898 ,{ name = "Windsong", duration = 20, color = colors.WOO, group = "buffs" })
 
 Spell( 215864 ,{ name = "Rainfall", duration = 10, color = colors.LGREEN, group = "buffs" })
-Spell( 197211 ,{ name = "Fury of Air", timeless = true, duration = 5, color = colors.TEAL2, scale = 0.8, shine = true, group = "buffs" })
+Spell( 197211 ,{ name = "Fury of Air", timeless = true, duration = 5, color = colors.DPURPLE, priority = -5, scale = 0.8, shine = true })
 Cooldown( 197214 ,{ name = "Sundering", color = colors.DBROWN, ghost = true, scale_until = 10 })
 
-Spell( 215785 ,{ name = "Hot Hand", duration = 15, glowtime = 14, color = colors.RED, priority = 9.5, shine = true, scale = 0.7 })
+Spell( 215785 ,{ name = "Hot Hand", duration = 15, glowtime = 14, color = colors.RED, priority = 10.6, shine = true, scale = 0.75 })
 
-Spell( 201846 ,{ name = "Stormbringer", duration = 12, glowtime = 11, color = colors.DBLUE, priority = 10.5, shine = true, scale = 0.7 })
-Cooldown( 17364 ,{ name = "Stormstrike", color = colors.CURSE, priority = 10, resetable = true, ghost = 6,  })
-Cooldown( 201897 ,{ name = "Boulderfist", color = colors.WOO, priority = 8, ghost = true })
+Spell( 201846 ,{ name = "Stormbringer", duration = 12, glowtime = 12, color = colors.TEAL3, priority = 10.5, scale = 0.5 })
+Cooldown( 17364 ,{ name = "Stormstrike", color = colors.CURSE, ghosteffect = effects.NIGHTBORNE, fixedlen = enh_normalize, priority = 10, resetable = true, ghost = 9  })
+Cooldown( 193786 ,{ name = "Rockbiter", color = colors.PINKIERED, priority = 9, fixedlen = enh_normalize, ghost = true })
 
 Cooldown( 188089 ,{ name = "Earthen Spike", color = colors.PURPLE3, ghost = true, scale_until = 10 })
 
@@ -1400,9 +1408,9 @@ Spell( 108271 ,{ name = "Astral Shift", duration = 6, color = colors.BLACK })
 
 
 -- TOTEMS
-NugRunningConfig.totems[1] = { name = "Water", group = "buffs", color = { 65/255, 110/255, 1}, hideName = false, priority = -77 }
-NugRunningConfig.totems[2] = { name = "Earth", group = "buffs",  color = {74/255, 142/255, 42/255}, priority = -78 }
-NugRunningConfig.totems[3] = { name = "Fire", group = "buffs",  color = {1,80/255,0}, priority = -79 }
-NugRunningConfig.totems[4] = { name = "Air", group = "buffs",  color = {0.6, 0, 1}, priority = -80 }
+-- NugRunningConfig.totems[1] = { name = "Water", group = "buffs", scale = 0.5, color = { 65/255, 110/255, 1}, hideName = false, priority = -77 }
+-- NugRunningConfig.totems[2] = { name = "Earth", group = "buffs", scale = 0.5,  color = {74/255, 142/255, 42/255}, priority = -78 }
+-- NugRunningConfig.totems[3] = { name = "Fire", group = "buffs", scale = 0.5,  color = {1,80/255,0}, priority = -79 }
+-- NugRunningConfig.totems[4] = { name = "Air", group = "buffs", scale = 0.5,  color = {0.6, 0, 1}, priority = -80 }
 
 end
