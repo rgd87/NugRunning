@@ -1216,13 +1216,28 @@ if class == "DEMONHUNTER" then
 end
 
 if class == "HUNTER" then
+
+Spell( 271049,{ name = "Volatile Wildfire", shine = true, color = colors.TEAL2, group = "buffs", scale = 0.75, duration = 5, maxtimers = 1 }) 
+Spell( 270339,{ name = "Scorching Shrapnel", shine = true, color = colors.BLUE, group = "buffs", scale = 0.75, duration = 5, maxtimers = 1 }) 
+Spell( 270332,{ name = "Scorching Pheromones", shine = true, color = colors.ORANGE, group = "buffs", scale = 0.75, duration = 5, maxtimers = 1 }) 
+
+Cooldown( 269751 ,{ name = "Flanking Strike", ghost = true, color = colors.DTEAL, scale_until = 8, })
+
 Cooldown( 207068 ,{ name = "Titan's Thunder", ghost = true, color = colors.DTEAL, scale_until = 10 })
 Cooldown( 204147 ,{ name = "Windburst", ghost = true, color = colors.DTEAL, scale_until = 8, })
 Cooldown( 203415 ,{ name = "Fury of the Eagle", ghost = true, color = colors.DTEAL, scale_until = 10 })
 helpers.Cast( 203415 ,{ name = "Fury of the Eagle", shine = true, color = colors.DBLUE, priority = 12, })
 
+Cooldown( 19574 ,{ name = "Bestial Wrath", ghost = true, glowtime = 5, effecttime = 5, effect = effects.NIGHTBORNE, color = colors.PINK3, scale = 0.5 })
+
+Spell( 260242 ,{ name = "Precise Shots", duration = 15, scale = 0.6, group = "buffs", color = colors.PINKIERED, priority = -55, shine = true, charged = true, maxcharge = 2 })
+Spell( 257622 ,{ name = "Trick Shots", duration = 20, scale = 0.6, group = "buffs", priority = -60, shine = true, color = colors.DBROWN, })
+
+
+Spell( 266779,{ name = "Coordinated Assault", duration = 20, fixedlen = 20, group = "buffs", target = "player", color = colors.BLACK, shine = true })
+
 -- EventTimer({ spellID = 131894, event = "SPELL_CAST_SUCCESS", name = "A Murder of Crows", duration = 30, color = colors.LBLUE })
-Spell( {199483, 198783},{ name = "Camouflage", duration = 60, target = "player", color = colors.CURSE })
+Spell( 199483,{ name = "Camouflage", duration = 60, target = "player", color = colors.CURSE })
 
 --Spell( 77769 ,{ name = "Trap Launcher", shine = true, timeless = true, duration = 0.1, color = colors.CURSE })
 --Spell( 53220 ,{ name = "Steady Focus", duration = 10, color = colors.BLACK })
@@ -1236,7 +1251,7 @@ Spell( {199483, 198783},{ name = "Camouflage", duration = 60, target = "player",
 Spell( 118455 ,{ name = "Beast Cleave", duration = 4, target = "pet", priority = -6, color = colors.TEAL2 })
 -- Spell( 82654 ,{ name = "Widow Venom", duration = 30, color = { 0.1, 0.75, 0.1} })--removed
 
-Spell( 19574 ,{ name = "Bestial Wrath", duration = 10, priority = -9, color = colors.LRED, target = "player" })
+Spell( 19574 ,{ name = "Bestial Wrath", group = "buffs", duration = 10, priority = -9, color = colors.LRED, target = "player" })
 
 
 
@@ -1248,45 +1263,55 @@ Spell( 206755,{ name = "Ranger's Net", duration = 15, pvpduration = 8, color = c
 
 Spell( 191241,{ name = "Sticky Bomb", duration = 3, shine = true, color = colors.LRED })
 --Spell( 19306 ,{ name = "Counterattack", duration = 5, color = { 192/255, 77/255, 48/255} })l
--- Spell( 118253 ,{ name = "Serpent Sting", duration = 15, color = colors.PURPLE })
+
+-- Surv Ability
+DotSpell( 259491 ,{ name = "Serpent Sting (Surv)", short = "Serpent Sting", duration = 12, color = colors.PURPLE, maxtimers = 1, ghost = true })
+-- MM Talent
+DotSpell( 271788 ,{ name = "Serpent Sting", duration = 12, color = colors.PURPLE, ghost = true })
 Spell( 5116 ,{ name = "Concussive Shot", duration = 6, color = colors.CHILL, init = function(self)self.duration = 4 + Talent(19407) end })
 
 Spell( 24394 ,{ name = "Intimidation", duration = 5, color = colors.RED })
 Spell( 19386 ,{ name = "Wyvern Sting", duration = 30, pvpduration = 8, short = "Wyvern",color = colors.LGREEN })
 
+Spell( 259277 ,{ name = "Bloodseeker", duration = 8, color = colors.RED, scale = 0.8 })
 
 Spell( 3355 ,{ name = "Freezing Trap", duration = 10, pvpduration = 8, color = colors.FROZEN, init = function(self)self.duration = 20 * (1+Talent(19376)*0.1) end })
 
 
-Cooldown( 34026 ,{ name = "Kill Command", color = colors.CURSE, ghost = true, tick = 1.5, overlay = {"tick", "end"}, short = "", fixedlen = 9, priority = 10, resetable = true })
+Cooldown( 34026 ,{ name = "Kill Command (MM)", short = "Kill Command", color = colors.CURSE, ghost = true, tick = 1.5, overlay = {"tick", "end"}, short = "", fixedlen = 9, priority = 10, resetable = true })
+Cooldown( 259489 ,{ name = "Kill Command (Surv)", short = "Kill Command", color = colors.CURSE, ghost = true, tick = 1.5, overlay = {"tick", "end"}, short = "", fixedlen = 9, priority = 10, resetable = true })
 
 -- Cooldown( 53209 ,{ name = "Chimera Shot", color = { 1, 0.2, 1}, ghost = true, short = "", priority = 10, })
 -- Cooldown( 53351 ,{ name = "Kill Shot", color = colors.PINKIERED, ghost = true, priority = 9, resetable = true })
 
-Cooldown( 212431 ,{ name = "Explosive Shot", color = colors.PURPLE, ghost = true, priority = 8, })
+
 Cooldown( 194599,{ name = "Black Arrow", color = colors.PURPLE, ghost = true, priority = 8 })
 
+Cooldown( 212436,{ name = "Butchery", color = colors.PINK, scale = 0.75, ghost = true, priority = 7 })
+Cooldown( 187708,{ name = "Carve", color = colors.PINKIERED, scale = 0.75, ghost = true, priority = 5 })
+
+
+Cooldown( 259391,{ name = "Chakrams", color = colors.WOO2, ghost = true, ghosteffect = effects.JUDGEMENT, scale = 0.8, priority = 5 })
+Cooldown( 259495,{ name = "Wildfire Bomb", color = colors.WOO, ghost = true, ghosteffect = effects.AEGWYNN, scale = 0.8, priority = 5 })
+
+Cooldown( 257044,{ name = "Rapid Fire", color = colors.PURPLE4, ghost = true, effect = effects.AEGWYNN, effecttime = 1.5, priority = 5, scale_until = 5 })
+Cooldown( 212431 ,{ name = "Explosive Shot", color = colors.WOO, effect = effects.JUDGEMENT, effecttime = 1.5, ghost = true, priority = 3, scale_until = 5 })
 
 Spell( 117526,{ name = "Binding Shot Stun", duration = 5, color = colors.RED, multiTarget = true })
 
--- helpers.Cast(19434, {name = "Aimed Shot", color = colors.CURSE, priority = 10 })
+helpers.Cast(257044, {name = "Rapid Fire", scale = 0.5, color = colors.PINKIERED, priority = 10.1 })
+helpers.Cast(19434, {name = "Aimed Shot", scale = 0.5, color = colors.PINKIERED, priority = 10.1 })
+Cooldown( 19434, {name = "Aimed Shot", color = colors.CURSE, tick = 1.5, overlay = {"tick", "end"}, ghost = true, ghosteffect = effects.NIGHTBORNE, priority = 10 })
 EventTimer({ spellID = 185358, event = "SPELL_CAST_SUCCESS", priority = 12, name = "Arcane Shot", duration = 0.5, color = colors.PINK })
 EventTimer({ spellID = 2643, event = "SPELL_CAST_SUCCESS", priority = 12, name = "Multi-Shot", duration = 0.5, color = colors.PINK })
-Spell( 223138 ,{ name = "Marking Targets", duration = 15, scale = 0.8, priority = 11, color = colors.PURPLE4, shine = true, shinerefresh = true})
-Activation( 185901,{ name = "Marked Shot", shine = true, scale = 0.8, color = colors.DRED, priority = 11, glowtime = 10, duration = 10 })
-Spell( 187131,{ name = "Vulnerable", singleTarget = true, duration = 6, scale = 0.8, priority = -999, color = colors.PINK2, shine = true })
 
 Cooldown( 194855,{ name = "Dragonsfire Grenade", color = colors.DRED, scale_until = 7, ghost = true, priority = 3 })
-Cooldown( 206505,{ name = "A Murder of Crows", short = "Crows", scale_until = 10, ghost = true, resetable = true, priority = 3, color = colors.PURPLE3  })
 Cooldown( 131894,{ name = "A Murder of Crows", short = "Crows", scale_until = 10, ghost = true, resetable = true, priority = 3, color = colors.PURPLE3  })
-Cooldown( 162488,{ name = "Steel Trap", color = colors.BLACK, scale_until = 10, ghost = true, priority = 2 })
+Cooldown( 162488,{ name = "Steel Trap", color = colors.BLACK, scale_until = 10, ghost = true })
 Cooldown( 191433,{ name = "Explosive Trap", color = colors.PURPLE, scale_until = 7, ghost = true, priority = 4 })
 Cooldown( 194407,{ name = "Spitting Cobra", color = colors.PINK3, scale = 0.7, ghost = true, priority = 1 })
 
-Cooldown( 202800,{ name = "Flanking Strike", tick = 1.5, overlay = {"tick", "end", .35}, tickshine = true, priority = 9, color = colors.CURSE, ghost = true})
-Cooldown( 212436,{ name = "Butchery", color = colors.PURPLE2, ghost = true, priority = 6 })
-
-Spell( 190931,{ name = "Mongoose Fury", fixedlen = 12, duration = 12, color = colors.PINKIERED, group = "buffs", scale = 0.85, priority = -100, shine = true })
+Spell( 259388,{ name = "Mongoose Fury", fixedlen = 14, duration = 14, color = colors.PINKIERED, group = "buffs", scale = 0.85, priority = -100, shine = true })
 DotSpell( 185855,{ name = "Lacerate", duration = 12, color = colors.RED, priority = -5, ghost = true })
 
 Spell( 201081,{ name = "Mok'Nathal Tactics", duration = 8, group = "buffs", scale = 0.8, priority = -200, color = colors.PINK3, shine = true, shinerefresh = true })
@@ -1297,8 +1322,10 @@ Spell( 186289,{ name = "Aspect of the Eagle", short = "Eagle", group = "buffs", 
 Spell( 193530,{ name = "Aspect of the Wild", short = "Wild", group = "buffs", duration = 10, color = colors.TEAL, shine = true })
 
 Spell( 117526 ,{ name = "Binding Shot", duration = 5, pvpduration = 3, color = colors.RED, multiTarget = true })
-Cooldown( 120679,{ name = "Dire Beast", priority = 6, ghost = true, color = colors.PURPLE, fixedlen = 9, resetable = true })
-Cooldown( 217200,{ name = "Dire Frenzy", priority = 6, ghost = true, color = colors.PURPLE, fixedlen = 9, resetable = true })
+Cooldown( 120679,{ name = "Dire Beast", priority = 6, ghost = true, scale = 0.8, color = colors.PURPLE, fixedlen = 9 })
+Cooldown( 217200,{ name = "Barbed Shot", priority = 6, ghost = true, scale = 0.8, color = colors.PINKIERED, fixedlen = 9, resetable = true })
+Spell( 257946,{ name = "Thrill of the Hunt", group = "buffs", duration = 8, ghost = true, color = colors.PINK3, scale = 0.75, priority = -50 })
+Spell( 217200,{ name = "Barbed Shot", overlay = {0, 1}, recast_mark = 1, duration = 8, ghost = true, color = colors.RED, fixedlen = 9 })
 Cooldown( 53209 ,{ name = "Chimera Shot", color = colors.CHIM, ghost = true, fixedlen = 9 })
 
 Cooldown( 130392 ,{ name = "Blink Strike", color = colors.WOO2 })
@@ -1309,8 +1336,8 @@ Cooldown( 120360 ,{ name = "Barrage", color = colors.WOO, scale_until = 8, ghost
 
 Cooldown( 198670 ,{ name = "Head Shot", color = colors.DBLUE, ghost = true })
 Cooldown( 214579 ,{ name = "Sidewinders", color = colors.DBROWN, ghost = true })
-Spell( 194594,{ name = "Lock and Load", color = colors.TEAL3, shine = true, glowtime = 15, priority = 12, scale = 0.8, duration = 15})
-
+Spell( 194594,{ name = "Lock and Load", color = colors.TEAL3, glowtime = 15, priority = 12, scale = 0.8, duration = 15})
+Cooldown( 198670 ,{ name = "Piercing Shot", color = colors.WOO2, scale_until = 7, ghost = true })
 
 -- helpers.Cast(77767, {name = "Cobra Shot", tick = .5, overlay = {"tick", "end"}, fixedlen = 8, color = colors.GREEN, priority = 15 })
 
