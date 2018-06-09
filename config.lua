@@ -644,8 +644,10 @@ Spell( 152277 ,{ name = "Ravager", color = colors.DRED, group = "buffs", duratio
 end
 
 if class == "MONK" then
+
+local ww_normalize = 10
 -- Cooldown( 205320 ,{ name = "Strike of the Windlord", color = colors.DTEAL, scale_until = 10, ghost = true })
-Cooldown( 261947 ,{ name = "Fist of the White Tiger", short = "Whtie Tiger", color = colors.DTEAL, scale_until = 10, ghost = true })
+Cooldown( 261947 ,{ name = "Fist of the White Tiger", short = "Whtie Tiger", fixedlen = ww_normalize, color = colors.CHIM, scale_until = 10, ghost = true })
 Spell( 214326 ,{ name = "Exlpoding Keg", color = colors.DBLUE, shine = true, multiTarget = true, duration = 3, ghost = true, group = "buffs" })
 
 -- Spell( 120086, { name = "Fists of Fury", color = colors.BLUE, duration = 4 })
@@ -686,9 +688,9 @@ EventTimer({ spellID = 115308, event = "SPELL_CAST_SUCCESS",
  })
 
 
-Spell( 116768 ,{ name = "Blackout Kick", scale = .8, priority = 6, glowtime = 15, color = colors.PINK3, duration = 15 })
+Spell( 116768 ,{ name = "Blackout Kick", scale = 0.6, priority = 6, glowtime = 15, color = colors.PINK, duration = 15 })
 
-Cooldown( 107428, { name = "Rising Sun Kick",tick = -1, overlay = {"tick", "end", .35}, fixedlen = 10, short = "Rising Sun", color = colors.CURSE, priority = 10, ghost = true, resetable = true })
+Cooldown( 107428, { name = "Rising Sun Kick",tick = -1, overlay = {"tick", "end", .35}, fixedlen = ww_normalize, short = "Rising Sun", color = colors.CURSE, priority = 10, ghost = true, resetable = true })
 
 Cooldown( 115098, { name = "Chi Wave", color = { 29/255, 134/255, 83/255 }, fixedlen = 8, color2 = colors.LGREEN, priority = 6, ghost = true })
 
@@ -698,9 +700,9 @@ Spell( 116706 ,{ name = "Root", color = colors.BROWN, duration = 8 })
 
 EventTimer({ event = "SPELL_SUMMON", spellID = 123904, name = "Xuen", group = "buffs", duration = 45, priority = -8, color = colors.CHILL })
 
-helpers.Cast(113656, {name = "Fists of Fury", tick = 1, tickshine = true, overlay = {"tick", "end", .3}, color = colors.CURSE, priority = 10.1 })
-Cooldown( 113656, { name = "Fists of Fury", fixedlen = 10, scale_until = 10, color = colors.WOO2DARK, color2 = colors.LBLUE, priority = 4, ghost =true })
-Cooldown( 152175, { name = "Whirling Dragon Punch", fixedlen = 10, scale_until = 10, color = colors.TEAL2, priority = 3, ghost =true })
+helpers.Cast(113656, {name = "Fists of Fury", fixedlen = ww_normalize, color = colors.PINK3, priority = 10.1 })
+Cooldown( 113656, { name = "Fists of Fury", fixedlen = ww_normalize, scale_until = 10, effect = effects.AEGWYNN, effecttime = 3,  color = colors.PINKIERED, priority = 4, ghost = true })
+Cooldown( 152175, { name = "Whirling Dragon Punch", fixedlen = ww_normalize, scale_until = 10, color = colors.TEAL2, priority = 3, ghost =true })
 
 Spell( 119611 ,{ name = "Renewing Mist", color = colors.LGREEN, target = "player", duration = 18 })
 
