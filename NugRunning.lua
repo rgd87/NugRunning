@@ -743,7 +743,11 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
     amount = amount or 1
     if opts.charged then
         timer:ToInfinite()
-        timer:SetMinMaxCharge(0,opts.maxcharge)
+        local max = opts.maxcharge
+        timer:SetMinMaxCharge(0,max)
+        if opts.color2 then
+            timer:SetColor(helpers.GetGradientColor(opts.color2, opts.color, amount/max))
+        end
         timer:SetCharge(amount)
         timer:UpdateMark()
     elseif timer.timeless then
@@ -844,7 +848,11 @@ function NugRunning.RefreshTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID,
         end
     end
     if amount and opts.charged then
-        timer:SetMinMaxCharge(0, timer.opts.maxcharge)
+        local max = opts.maxcharge
+        timer:SetMinMaxCharge(0,max)
+        if opts.color2 then
+            timer:SetColor(helpers.GetGradientColor(opts.color2, opts.color, amount/max))
+        end
         timer:SetCharge(amount)
     elseif not timer.timeless then
         local now = GetTime()
@@ -917,6 +925,11 @@ function NugRunning.RemoveDose(self,srcGUID,dstGUID, spellID, spellName, timerTy
         and timer.srcGUID == srcGUID
         then
             if timer.opts.charged then
+                local max = opts.maxcharge
+                local opts = timer.opts
+                if opts.color2 then
+                    timer:SetColor(helpers.GetGradientColor(opts.color2, opts.color, amount/max))
+                end
                 timer:SetCharge(amount)
             else
                 timer:SetCount(amount)
@@ -1037,7 +1050,12 @@ function NugRunning.SetUnitAuraValues(self, timer, spellID, name, icon, count, d
             if aura_spellID then
                 if aura_spellID == spellID and NugRunning.UnitAffiliationCheck(caster, timer.opts.affiliation) then
                     if timer.opts.charged then
-                        timer:SetMinMaxCharge(0, timer.opts.maxcharge)
+                        local opts = timer.opts
+                        local max = opts.maxcharge
+                        timer:SetMinMaxCharge(0,max)
+                        if opts.color2 then
+                            timer:SetColor(helpers.GetGradientColor(opts.color2, opts.color, count/max))
+                        end
                         timer:SetCharge(count)
                     elseif not timer.timeless then
                         timer:SetCount(count)
@@ -1105,7 +1123,7 @@ local function GetGradientColor(c1, c2, v)
     local b = c1[3] + v*(c2[3]-c1[3])
     return r,g,b
 end
-NugRunning.GetGradientColor = GetGradientColor
+helpers.GetGradientColor = GetGradientColor
 
 local math_floor = math.floor
 local round = function(v) return math_floor(v+.1) end
