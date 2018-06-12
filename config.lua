@@ -1200,16 +1200,16 @@ end
 
 if class == "DEMONHUNTER" then
 
-    Spell( 204598,{ name = "Sigil of Flame", color = colors.RED, scale = 0.8, duration = 6, ghosteffect = effects.JUDGEMENT, maxtimers = 1 })
+    Spell( 204598,{ name = "Sigil of Flame", short = "", color = colors.PINKIERED, duration = 6, effect = effects.JUDGEMENT, recast_mark = 2, overlay = {0,3}, effecttime = 3, maxtimers = 1 })
 
     Cooldown( 204513,{ name = "Sigil of Flame", color = colors.WOO, scale_until = 5, ghost = true })
     Cooldown( 189110,{ name = "Infernal Strike", color = colors.PURPLE3, scale = 0.8, ghost = true })
 
-    DotSpell( 247456,{ name = "Frailty", color = colors.BURGUNDY, scale = 0.8, duration = 20, glowtime = 3, singleTarget = true })
+    DotSpell( 247456,{ name = "Frailty", color = colors.PURPLE4, scale = 0.9, duration = 20, glowtime = 3, singleTarget = true })
 
     Spell( 263648,{ name = "Soul Barrier", color = colors.CHIM, shine = true, group = "buffs", scale = 0.9, duration = 12 })
     
-    Cooldown( 263642,{ name = "Fracture", tick = 1.5, overlay = {"tick", "tickend"}, color = colors.CURSE, ghost = true, fixedlen = 10,  ghosteffect = effects.AEGWYNN, priority = 11 })
+    Cooldown( 263642,{ name = "Fracture", tick = 1.5, overlay = {"tick", "tickend"}, color = colors.CURSE, ghost = true, fixedlen = 10,  ghosteffect = effects.NIGHTBORNE, priority = 11 })
 
     Spell( 206491,{ name = "Nemesis", color = colors.RED, shine = true, scale = 0.9, duration = 60 })
 
@@ -1221,8 +1221,8 @@ if class == "DEMONHUNTER" then
     Cooldown( 258920,{ name = "Immolation Aura", color = colors.PINKIERED, scale_until = 5, ghosteffect = effects.JUDGEMENT, priority = -1 })
 
     -- vengeance
-    Spell( 178740,{ name = "Immolation Aura", color = colors.TEAL2, scale = 0.75, group = "buffs", priority = 6, duration = 6 })
-    Cooldown( 178740,{ name = "Immolation Aura", color = colors.PINKIERED, scale = 0.65, priority  })
+    Spell( 178740,{ name = "Immolation Aura", color = colors.TEAL3, scale = 0.6, group = "buffs", priority = 6, duration = 6 })
+    Cooldown( 178740,{ name = "Immolation Aura", color = colors.PINKIERED, scale = 0.9 })
     Spell( 207744,{ name = "Fiery Brand",  duration = 8, shine = true, group = "buffs", color = colors.RED })
     Spell( 203819,{ name = "Demon Spikes", ghost = 1, color = colors.PINK3, shine = true, group = "buffs", priority = - 9, duration = 6 })
 
@@ -1240,7 +1240,7 @@ if class == "DEMONHUNTER" then
     helpers.Cast( 258925 ,{ name = "Fel Barrage", color = colors.PINK, priority = 12, })
     
 
-    Cooldown( 195072 ,{ name = "Fel Rush", ghost = true, color = colors.PURPLE3, fixedlen = 10, scale = 0.8, resetable = true })
+    Cooldown( 195072 ,{ name = "Fel Rush", ghost = true, minduration = 3, color = colors.PURPLE3, fixedlen = 10, scale = 0.8, resetable = true })
     Cooldown( 198013 ,{ name = "Eye Beam", ghost = true, color = colors.DPURPLE2, color2 = colors.REJUV, scale_until = 10, resetable = true })
     Cooldown( 212084 ,{ name = "Fel Devastation", ghost = true, color = colors.DTEAL, scale_until = 10 })
     Spell( 179057,{ name = "Chaos Nova",  duration = 5, color = colors.RED, shine = true, maxtimers = 1 })
