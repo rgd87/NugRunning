@@ -52,6 +52,7 @@ colors["GREEN"] = {0.3, 0.9, 0.3}
 colors["DGREEN"] = { 0, 0.35, 0 }
 colors["PURPLE"] = { 187/255, 75/255, 128/255 }
 colors["PURPLE2"] = { 188/255, 37/255, 186/255 }
+colors["BURGUNDY"] = { 102/255, 22/255, 49/255 }
 colors["REJUV"] = { 1, 0.2, 1}
 colors["PURPLE3"] = { 64/255, 48/255, 109/255 }
 colors["PURPLE4"] = { 121/255, 29/255, 57/255 }
@@ -379,6 +380,8 @@ end
 
 
 if class == "ROGUE" then
+
+Spell( 121153 ,{ name = "Blindside", group = "buffs", effect = effects.JUDGEMENT, priority = 13, duration = 10, scale = 0.6, color = colors.PURPLE4 })
 
 Cooldown( 271877 ,{ name = "Blade Rush", ghost = true, scale_until = 7, color = colors.DTEAL, priority = -10 })
 
@@ -1197,9 +1200,16 @@ end
 
 if class == "DEMONHUNTER" then
 
+    Spell( 204598,{ name = "Sigil of Flame", color = colors.RED, scale = 0.8, duration = 6, ghosteffect = effects.JUDGEMENT, maxtimers = 1 })
+
+    Cooldown( 204513,{ name = "Sigil of Flame", color = colors.WOO, scale_until = 5, ghost = true })
+    Cooldown( 189110,{ name = "Infernal Strike", color = colors.PURPLE3, scale = 0.8, ghost = true })
+
+    DotSpell( 247456,{ name = "Frailty", color = colors.BURGUNDY, scale = 0.8, duration = 20, glowtime = 3, singleTarget = true })
+
     Spell( 263648,{ name = "Soul Barrier", color = colors.CHIM, shine = true, group = "buffs", scale = 0.9, duration = 12 })
     
-    Cooldown( 263642,{ name = "Fracture", color = colors.PURPLE, ghost = true, fixedlen = 10,  ghosteffect = effects.AEGWYNN, priority = 6 })
+    Cooldown( 263642,{ name = "Fracture", tick = 1.5, overlay = {"tick", "tickend"}, color = colors.CURSE, ghost = true, fixedlen = 10,  ghosteffect = effects.AEGWYNN, priority = 11 })
 
     Spell( 206491,{ name = "Nemesis", color = colors.RED, shine = true, scale = 0.9, duration = 60 })
 
@@ -1207,7 +1217,7 @@ if class == "DEMONHUNTER" then
     Cooldown( 258860,{ name = "Dark Slash", color = colors.PURPLE4, scale_until = 5, priority = -2 })
 
     -- havoc
-    Spell( 258920,{ name = "Immolation Aura", color = colors.TEAL2, scale = 0.75, group = "buffs", priority = 6, duration = 10 })
+    Spell( 258920,{ name = "Immolation Aura", color = colors.TEAL3, scale = 0.75, group = "buffs", priority = 6, duration = 10 })
     Cooldown( 258920,{ name = "Immolation Aura", color = colors.PINKIERED, scale_until = 5, ghosteffect = effects.JUDGEMENT, priority = -1 })
 
     -- vengeance
@@ -1222,7 +1232,7 @@ if class == "DEMONHUNTER" then
     Spell( 162264,{ name = "Metamorphosis",  duration = 30, group = "buffs", priority = -8, color = colors.CURSE }) -- havoc
     Spell( 212800,{ name = "Blur",  duration = 10, shine = true, group = "buffs", color = colors.PINK })
     Spell( 196555,{ name = "Netherwalk",  duration = 5, group = "buffs", color = colors.PURPLE4, shine = true })
-    Cooldown( 232893,{ name = "Felblade", overlay = {0, "gcd"}, color = colors.CURSE, ghosteffect = effects.NIGHTBORNE, ghost = true, fixedlen = 10, priority = 10, resetable = true})
+    Cooldown( 232893,{ name = "Felblade", color = colors.PURPLE, ghosteffect = effects.NIGHTBORNE, ghost = true, fixedlen = 10, priority = 10, resetable = true})
     Cooldown( 185123,{ name = "Throw Glaive", ghost = true, color = colors.TEAL3, scale = 0.75, priority = 4, resetable = true, })
     Cooldown( 188499,{ name = "Blade Dance",  color = colors.PINKIERED, ghost = 2, fixedlen = 10, priority = 3, resetable = true })
 

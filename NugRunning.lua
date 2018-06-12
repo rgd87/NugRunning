@@ -599,8 +599,8 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
 
     if opts.target and dstGUID ~= UnitGUID(opts.target) then return end
     if timerType == "MISSED" then
-        if override == "IMMUNE" then return end
-        opts = { duration = 3, color = NugRunningConfig.colors.MISSED, scale = .8, priority = opts.priority or 100501, shine = true }
+        if override == "IMMUNE" or override == "ABSORB" then return end
+        opts = { duration = 3, color = NugRunningConfig.colors.MISSED, scale = .8, maxtimers = 1, priority = opts.priority or 100501, shine = true }
     end
 
     if opts.specmask then
