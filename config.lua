@@ -325,7 +325,9 @@ Cast( 15407, { name = "Mind Flay", short = "", priority = 12, tick = 1, overlay 
 -- Spell( 77487 ,{ name = "",duration = 60, charged = true, maxcharge = 3, shine = true, shinerefresh = true, priority = -3, color = colors.WOO })
 
 Cooldown( 47540 ,{ name = "Penance", tick = 1.5, tickshine = true, overlay = {"tick", "end"}, fixedlen = 9, priority = 15, color = colors.CURSE, ghost = true })
-Cooldown( 214621, { name = "Schism", overlay = {0, "gcd", 0.3}, priority = 9, fixedlen = 9, color = colors.PINKIERED, ghost = true })
+
+Spell( 214621, { name = "Schism", color = colors.PINKIERED, arrow = colors.PINKIERED, duration = 9 })
+Cooldown( 214621, { name = "Schism", color = colors.PURPLE4, scale_until = 8, ghost = true })
 Cooldown( 129250, { name = "PW:Solace", fixedlen = 9,  color = colors.WOO, priority = 7, ghost = true })
 
 Cooldown( 205351, { name = "Shadow Word: Void", short = "Void", priority = 9, fixedlen = 9, color = colors.CURSE, resetable = true, ghost = true })
@@ -662,6 +664,9 @@ Spell( 214326 ,{ name = "Exlpoding Keg", color = colors.DBLUE, shine = true, mul
 -- Spell( 120086, { name = "Fists of Fury", color = colors.BLUE, duration = 4 })
 Spell( 120954, { name = "Fortifying Brew", group = "buffs", color = colors.BLACK, duration = 20 })
 Spell( 115078, { name = "Paralysis", color = colors.PURPLE, duration = 30, pvpduration = 8 })
+
+Spell( 115295, { name = "Guard", color = colors.GOLD, group = "buffs", duration = 15 })
+Cooldown( 115295, { name = "Guard", color = colors.DBROWN, scale_until = 10, })
 
 
 -- EventTimer({ spellID = 100780, event = "SPELL_CAST_SUCCESS", priority = 12, name = "Tiger Palm", duration = 0.5, color = colors.PINK, scale = 0.6 })
@@ -1200,6 +1205,8 @@ end
 
 if class == "DEMONHUNTER" then
 
+    Spell( 204490,{ name = "Sigil of Silence", color = colors.LBLUE, maxtimers = 1, duration = 8 })
+
     Spell( 204598,{ name = "Sigil of Flame", short = "", color = colors.PINKIERED, duration = 6, effect = effects.JUDGEMENT, recast_mark = 2, overlay = {0,3}, effecttime = 3, maxtimers = 1 })
 
     Cooldown( 204513,{ name = "Sigil of Flame", color = colors.WOO, scale_until = 5, ghost = true })
@@ -1224,7 +1231,7 @@ if class == "DEMONHUNTER" then
     Spell( 178740,{ name = "Immolation Aura", color = colors.TEAL3, scale = 0.6, group = "buffs", priority = 6, duration = 6 })
     Cooldown( 178740,{ name = "Immolation Aura", color = colors.PINKIERED, scale = 0.9 })
     Spell( 207744,{ name = "Fiery Brand",  duration = 8, shine = true, group = "buffs", color = colors.RED })
-    Spell( 203819,{ name = "Demon Spikes", ghost = 1, color = colors.PINK3, shine = true, group = "buffs", priority = - 9, duration = 6 })
+    Spell( 203819,{ name = "Demon Spikes", ghost = 1, arrow = colors.PINK3, glow2time = 1, color = colors.PINK3, shine = true, group = "buffs", priority = - 9, duration = 6 })
 
     EventTimer({ spellID = 196718, event = "SPELL_CAST_SUCCESS", name = "Darkness", duration = 8, shine = true, color = colors.DPURPLE, scale = 0.8 })
 
