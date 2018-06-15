@@ -925,8 +925,8 @@ function NugRunning.RemoveDose(self,srcGUID,dstGUID, spellID, spellName, timerTy
         and timer.srcGUID == srcGUID
         then
             if timer.opts.charged then
-                local max = opts.maxcharge
                 local opts = timer.opts
+                local max = opts.maxcharge
                 if opts.color2 then
                     timer:SetColor(helpers.GetGradientColor(opts.color2, opts.color, amount/max))
                 end

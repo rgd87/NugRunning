@@ -1,3 +1,5 @@
+local _, helpers = ...
+
 local NugRunning = NugRunning
 local class = select(2,UnitClass("player"))
 
@@ -111,7 +113,7 @@ local function Rampage()
                 -- if timer.shine:IsPlaying() then timer.shine:Stop() end
                 if timer.glow:IsPlaying() then timer.glow:Stop() end
                 timer.bar:SetValue(p)
-                timer:SetColor(NugRunning.GetGradientColor(rampage_opts.color2, rampage_opts.color, (p/rampageCost)^0.7 ))
+                timer:SetColor(helpers.GetGradientColor(rampage_opts.color2, rampage_opts.color, (p/rampageCost)^0.7 ))
             end
 
             if not NugRunning.active[timer] then
