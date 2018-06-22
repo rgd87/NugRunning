@@ -765,7 +765,11 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
     if opts.textfunc and type(opts.textfunc) == "function" then
         nameText = opts.textfunc(timer)
     elseif timerType == "MISSED" then
-        nameText = override:sub(1,1)..override:sub(2):lower()
+        if override then
+            nameText = override:sub(1,1)..override:sub(2):lower()
+        else
+            nameText = "Miss"
+        end
     else
         nameText = NugRunning:MakeName(opts, spellName, dstName)
     end

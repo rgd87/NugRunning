@@ -209,8 +209,8 @@ local normalize_dots_to = nil--26
 Cooldown( 48181 ,{ name = "Haunt", priority = 8, ghost = true, color = colors.TEAL })
 
 --Unstable Affliction
-Spell( 233490 ,{ name = "", duration = 8,  priority = 10, nameplates = true, ghost = True, color = colors.PINK2 }) -- first debuff
-Spell( 233496 ,{ name = "", scale = 0.8, scale_until = 2, duration = 8,  priority = 10.1, nameplates = true, ghost = True, color = colors.PINK2 }) -- subsequent applications
+Spell( 233490 ,{ name = "", duration = 8, overlay = {0, "gcd"},  priority = 10, nameplates = true, ghost = True, color = colors.PINK2 }) -- first debuff
+Spell( 233496 ,{ name = "", scale = 1, overlay = {0, "gcd"}, scale_until = 3, duration = 8,  priority = 10.1, nameplates = true, ghost = True, color = colors.PINK2 }) -- subsequent applications
 Spell( 233497 ,{ name = "", scale = 0.8, scale_until = 2, duration = 8,  priority = 10.2, nameplates = true, ghost = True, color = colors.PINK2 })
 Spell( 233498 ,{ name = "", scale = 0.8, scale_until = 2, duration = 8,  priority = 10.3, nameplates = true, ghost = True, color = colors.PINK2 })
 Spell( 233499 ,{ name = "", scale = 0.8, scale_until = 2, duration = 8,  priority = 10.4, nameplates = true, ghost = True, color = colors.PINK2 })
@@ -656,6 +656,8 @@ end
 
 if class == "MONK" then
 
+EventTimer({ spellID = 116844, event = "SPELL_CAST_SUCCESS", name = "Ring of Peace", duration = 5, group = "buffs", color = colors.WOO })
+
 local ww_normalize = 10
 -- Cooldown( 205320 ,{ name = "Strike of the Windlord", color = colors.DTEAL, scale_until = 10, ghost = true })
 Cooldown( 261947 ,{ name = "Fist of the White Tiger", short = "Whtie Tiger", fixedlen = ww_normalize, color = colors.CHIM, scale_until = 10, ghost = true })
@@ -718,7 +720,8 @@ helpers.Cast(113656, {name = "Fists of Fury", fixedlen = ww_normalize, color = c
 Cooldown( 113656, { name = "Fists of Fury", fixedlen = ww_normalize, scale_until = 10, effect = effects.AEGWYNN, effecttime = 3,  color = colors.PINKIERED, priority = 4, ghost = true })
 Cooldown( 152175, { name = "Whirling Dragon Punch", fixedlen = ww_normalize, scale_until = 10, color = colors.TEAL2, priority = 3, ghost =true })
 
-Spell( 119611 ,{ name = "Renewing Mist", color = colors.LGREEN, target = "player", duration = 18 })
+Spell( 119611 ,{ name = "Renewing Mist", color = colors.LGREEN, target = "player", scale = 0.75, duration = 20 })
+Cooldown( 115151 ,{ name = "Renewing Mist", color = colors.TEAL3, priority = -100, ghost = true, ghosteffect = effects.NIGHTBORNE })
 
 Spell( 202090 ,{ name = "Teachings", color = colors.REJUV, priority = 10.1, scale = 0.7, duration = 18, timeless = true })
 
