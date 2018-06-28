@@ -1590,16 +1590,23 @@ local function MakeGeneralOptions()
                         set = function(info, v) NugRunning.db.nameplates = not NugRunning.db.nameplates end,
                         order = 4,
                     },
-                    nameplateLines = {
-                        name = "Nameplate Lines",
+                    -- nameplateLines = {
+                    --     name = "Nameplate Lines",
+                    --     type = "toggle",
+                    --     desc = "Draw guide lines from nameplates to main timers",
+                    --     get = function(info) return NugRunning.db.nameplateLines end,
+                    --     set = function(info, v)
+                    --         NugRunning.db.nameplateLines = not NugRunning.db.nameplateLines
+                    --         NugRunningNameplates:EnableLines(NugRunning.db.nameplateLines)
+                    --     end,
+                    --     order = 5,
+					-- },
+					cooldowns = {
+                        name = "Cooldowns",
                         type = "toggle",
-                        desc = "Draw guide lines from nameplates to main timers",
-                        get = function(info) return NugRunning.db.nameplateLines end,
-                        set = function(info, v)
-                            NugRunning.db.nameplateLines = not NugRunning.db.nameplateLines
-                            NugRunningNameplates:EnableLines(NugRunning.db.nameplateLines)
-                        end,
-                        order = 5,
+                        get = function(info) return NugRunning.db.cooldownsEnabled end,
+                        set = function(info, v) NugRunning.db.cooldownsEnabled = not NugRunning.db.cooldownsEnabled end,
+                        order = 6,
                     },
                     totems = {
                         name = "Totems",
@@ -1607,7 +1614,7 @@ local function MakeGeneralOptions()
                         desc = "Display timers for totems (or other similar summons)",
                         get = function(info) return NugRunning.db.totems end,
                         set = function(info, v) NugRunning.db.totems = not NugRunning.db.totems end,
-                        order = 6,
+                        order = 7,
                     },
                 },
             },

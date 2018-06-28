@@ -383,6 +383,10 @@ end
 
 if class == "ROGUE" then
 
+Spell( 114018 ,{ name = "Shroud", group = "buffs", duration = 15, color = colors.BLACK })
+
+Spell( 91021 ,{ name = "Find Weakness", group = "buffs", duration = 10, priority = -3, shine = true, shinerefresh = true, color = colors.TEAL2, scale = 0.75 })
+Spell( 51690 ,{ name = "Killing Spree", duration = 2, color = colors.CURSE, priority = 14 })
 Spell( 121153 ,{ name = "Blindside", group = "buffs", effect = effects.JUDGEMENT, priority = 13, duration = 10, scale = 0.6, color = colors.PURPLE4 })
 
 Cooldown( 271877 ,{ name = "Blade Rush", ghost = true, scale_until = 7, color = colors.DTEAL, priority = -10 })
@@ -692,7 +696,7 @@ local function GetBuff(unit, spellID)
 end
 local BlackoutCombo = 228563
 
-local stagger_pause_opts = { name = "Stagger Pause", group = "buffs", priority = -8, showid = 7812, color = colors.DRED, glowtime = 3, shine = true, duration = 3}
+local stagger_pause_opts = { name = "Stagger Pause", group = "buffs", priority = -8, showid = 7812, color = colors.DRED, shine = true, duration = 3}
 EventTimer({ spellID = 115308, event = "SPELL_CAST_SUCCESS",
     action = function(active, srcGUID, dstGUID, spellID, damage )
         local IsBlackoutComboOn = GetBuff("player", BlackoutCombo)
@@ -1000,12 +1004,13 @@ Cooldown( 267798 ,{ name = "Execution Sentence", ghost = true, color = colors.DP
 
 --Spell( 53657 ,{ name = "Judgements of the Pure", short = "JotP", duration = 100500, color = colors.LBLUE })
 Spell( 31884 ,{ name = "Avenging Wrath",duration = 20, group = "buffs", color = colors.PURPLE2 })
-Spell( 498 ,{ name = "Divine Protection",duration = 10, short = "DProt", color = colors.BLACK })
-Spell( 642 ,{ name = "Divine Shield",duration = 8, short = "DShield", color = colors.BLACK })
-Spell( 31850,{ name = "Ardent Defender",duration = 10, color = colors.BLACK})
-Spell( 31821,{ name = "Devotion Aura", duration = 6, multiTarget = true, color = colors.GOLD})
-Spell( 1022 ,{ name = "Blessing of Protection",duration = 10, short = "Protection", color = colors.WOO2 })
-Spell( 1044 ,{ name = "Blessing of Freedom",duration = 6, short = "Freedom", color = colors.BROWN })
+Spell( 498 ,{ name = "Divine Protection",duration = 10, group = "buffs", color = colors.BLACK })
+Spell( 642 ,{ name = "Divine Shield",duration = 8, group = "buffs", color = colors.BLACK })
+Spell( 31850,{ name = "Ardent Defender", duration = 10, color = colors.BLACK, group = "buffs"})
+Spell( 31850,{ name = "Guardian", duration = 8, color = colors.BLACK, group = "buffs"})
+Spell( 31821,{ name = "Devotion Aura", duration = 6, target = "player", color = colors.GOLD, group = "buffs"})
+Spell( 1022 ,{ name = "Blessing of Protection",duration = 10, short = "Protection", color = colors.WOO2, group = "buffs" })
+Spell( 1044 ,{ name = "Blessing of Freedom",duration = 6, short = "Freedom", color = colors.BROWN, group = "buffs", scale = 0.8 })
 
 
 Spell( 152262 ,{ name = "Seraphim", color = colors.PINKIERED, shine = true, shinerefresh = true, group = "buffs", priority = -10, duration = 15 })
@@ -1019,15 +1024,17 @@ Spell( 853 ,{ name = "Hammer of Justice", duration = 6, short = "HoJ", color = c
 
 Spell( 183218 ,{ name = "Hand of Hindrance", duration = 10, short = "Hindrance", color = colors.BROWN })
 
+Cooldown( 20473 ,{ name = "Holy Shock", ghost = true, priority = 9, fixedlen = normalized_length, color = colors.WOO })
+
 Cooldown( 184575 ,{ name = "Blade of Justice", tickshine = true, ghost = true, priority = 9, fixedlen = normalized_length, color = colors.WOO, ghosteffect = "NIGHTBORNE" })
-Cooldown( 35395 ,{ name = "Crusader Strike", tick = 1.5, tickshine = true, overlay = {"tick", "end"}, ghost = true, short = "Crusader", priority = 10, fixedlen = normalized_length, color = colors.CURSE })
+Cooldown( 35395 ,{ name = "Crusader Strike", tick = 1.5, tickshine = true, overlay = {"tick", "end"}, ghost = true, short = "", priority = 10, fixedlen = normalized_length, color = colors.CURSE })
 Cooldown( 217020 ,{ name = "Zeal", tick = 1.5, tickshine = true, overlay = {"tick", "end"}, ghost = true, priority = 10, fixedlen = normalized_length, color = colors.CURSE })
-Cooldown( 204019 ,{ name = "Blessed Hammer", ghost = true, ghosteffect = "AEGWYNN", priority = 10, fixedlen = normalized_length, color = colors.CURSE })
+Cooldown( 204019 ,{ name = "Blessed Hammer", short = "", ghost = true, ghosteffect = "AEGWYNN", priority = 10, fixedlen = normalized_length, color = colors.CURSE })
 
 Spell( 197277,{ name = "Judgement", shine = true, singleTarget = true, priority = -100500, color = colors.PURPLE2, duration = 6 }) --debuff
 Cooldown( 20271 ,{ name = "Judgement", ghost = true, fixedlen = normalized_length, priority = 8, color = colors.PURPLE, ghosteffect = "JUDGEMENT" })
 
-Cooldown( 26573 ,{ name = "Consecration", color = colors.PINKIERED, overlay = {0,"gcd",.3}, priority = 9, scale = 1, ghost = true, fixedlen = normalized_length })
+Cooldown( 26573 ,{ name = "Consecration", color = colors.PINKIERED, overlay = {0,"gcd",.3}, priority = 9, scale = 0.85, ghost = true, fixedlen = normalized_length })
 Cooldown( 24275 ,{ name = "Hammer of Wrath", color = colors.TEAL2, fixedlen = normalized_length, ghost = true, priority = 11 })
 Cooldown( 31935 ,{ name = "Avenger's Shield", resetable = true, fixedlen = normalized_length, priority = 5, scale = 1, ghosteffect = "NIGHTBORNE", color = colors.TEAL, ghost = true })
 
@@ -1464,9 +1471,9 @@ Spell( 108271 ,{ name = "Astral Shift", duration = 6, color = colors.BLACK })
 
 
 -- TOTEMS
--- NugRunningConfig.totems[1] = { name = "Water", group = "buffs", scale = 0.5, color = { 65/255, 110/255, 1}, hideName = false, priority = -77 }
--- NugRunningConfig.totems[2] = { name = "Earth", group = "buffs", scale = 0.5,  color = {74/255, 142/255, 42/255}, priority = -78 }
--- NugRunningConfig.totems[3] = { name = "Fire", group = "buffs", scale = 0.5,  color = {1,80/255,0}, priority = -79 }
--- NugRunningConfig.totems[4] = { name = "Air", group = "buffs", scale = 0.5,  color = {0.6, 0, 1}, priority = -80 }
+NugRunningConfig.totems[1] = { name = "Water", group = "buffs", scale = 0.5, color = { 65/255, 110/255, 1}, hideName = false, priority = -77 }
+NugRunningConfig.totems[2] = { name = "Earth", group = "buffs", scale = 0.5,  color = {74/255, 142/255, 42/255}, priority = -78 }
+NugRunningConfig.totems[3] = { name = "Fire", group = "buffs", scale = 0.5,  color = {1,80/255,0}, priority = -79 }
+NugRunningConfig.totems[4] = { name = "Air", group = "buffs", scale = 0.5,  color = {0.6, 0, 1}, priority = -80 }
 
 end
