@@ -191,7 +191,8 @@ function NugRunningGUI.CreateCommonForm(self)
 		end
 
         local default_opts = NugRunningConfig[category][spellID]
-        if default_opts then
+		if default_opts then
+            clean(opts, default_opts, "short", false)
             clean(opts, default_opts, "ghost", false)
             clean(opts, default_opts, "singleTarget", false)
             clean(opts, default_opts, "multiTarget", false)
@@ -302,7 +303,11 @@ function NugRunningGUI.CreateCommonForm(self)
 	-- short:SetFullWidth(true)
 	short:SetRelativeWidth(0.29)
 	short:SetCallback("OnEnterPressed", function(self, event, value)
-		self.parent.opts["short"] = value
+		if value == "" then
+			self.parent.opts["short"] = false
+		else
+			self.parent.opts["short"] = value
+		end
 	end)
 	-- short.alignoffset = 60
 	-- short:SetHeight(32)
@@ -1605,7 +1610,7 @@ local function MakeGeneralOptions()
                         name = "Cooldowns",
                         type = "toggle",
                         get = function(info) return NugRunning.db.cooldownsEnabled end,
-                        set = function(info, v) NugRunning.db.cooldownsEnabled = not NugRunning.db.cooldownsEnabled end,
+                        set = function(info, v) NugRunning.Commands.cooldowns() end,
                         order = 6,
                     },
                     totems = {
