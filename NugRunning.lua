@@ -597,7 +597,13 @@ local harmful = "HARMFUL"
 function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID, spellName, opts, timerType, override, amount, from_unitaura)  -- duration override
     if opts.disabled then return end
 
-    if opts.target and dstGUID ~= UnitGUID(opts.target) then return end
+    if opts.target then
+        if opts.target == "pvp" then
+            if string_sub(dstGUID,1,6) ~= "Player" then return end
+        else
+            if dstGUID ~= UnitGUID(opts.target) then return end
+        end
+    end
     if timerType == "MISSED" then
         if override == "IMMUNE" or override == "ABSORB" then return end
         opts = { duration = 3, color = NugRunningConfig.colors.MISSED, scale = .8, maxtimers = 1, priority = opts.priority or 100501, shine = true }
@@ -624,7 +630,6 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
         end
         cd_opts.timer = nil
     end
-
 
     local timer, totalTimers = gettimer(active, opts,dstGUID,timerType) -- finding timer by opts table id
     if timer then

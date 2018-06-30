@@ -103,6 +103,12 @@ local DotSpell = function(id, opts)
 end
 helpers.DotSpell = DotSpell
 
+
+local Interrupt = function(id, name, duration)
+    EventTimer({ spellID = id, event = "SPELL_INTERRUPT", short = "Interrupted", name = name, target = "pvp", duration = duration,  scale = 0.75, shine = true, color = colors.LBLUE })
+end
+
+
 local _, race = UnitRace("player")
 -- if race == "Troll" then Spell( 26297 ,{ name = "Berserking", duration = 10 }) end --Troll Racial
 -- if race == "Orc" then Spell({ 33702,33697,20572 },{ name = "Blood Fury", duration = 15 }) end --Orc Racial
@@ -132,10 +138,25 @@ Spell( 230935 ,{ name = "Drums of the Mountain", short = "Drums", group = "buffs
 
 
 if class == "WARLOCK" then
+Interrupt(212619, "Call Felhunter", 6) -- pvp talent
+Interrupt(119910, "Spell Lock", 6) -- Felhunter spell from action bar
+Interrupt(19647, "Spell Lock", 6) -- Felhunter spell from pet bar
+Interrupt(132409, "Spell Lock", 6) -- Command Demon after sacrificing Felhunter
+
 -- [[ ARTIFACTS ]]
 -- Spell( 216708 ,{ name = "Deadwind Harvester", ghost = true, duration = 25, group = "buffs", shine = true, priority = -100, color = colors.PURPLE3 })
 -- Cooldown( 211714 ,{ name = "Thal'kiel's Consumptions", ghost = true, scale_until = 10, color = colors.DBLUE })
 -- Cooldown( 196586 ,{ name = "Dimensional Rift", ghost = true, scale_until = 10, priority = -1, color = colors.PURPLE3 })
+
+
+-- pvp
+Spell( 199890 ,{ name = "Curse of Tongues", duration = 10, scale = 0.8, color = colors.DBROWN })
+Spell( 199892 ,{ name = "Curse of Weakness", duration = 10, scale = 0.8, color = colors.DGREEN })
+Spell( 234877 ,{ name = "Curse of Shadows", duration = 10, scale = 0.8, color = colors.CURSE })
+Spell( 236471 ,{ name = "Soulshatter", duration = 8, group = "buffs", color = colors.PINKIERED })
+Spell( 212295 ,{ name = "Nether Ward", duration = 3, group = "buffs", color = colors.LBLUE })
+Spell( 221715 ,{ name = "Essence Drain", duration = 6, group = "buffs", scale = 0.8, color = colors.CHIM })
+EventTimer({ spellID = 221703, event = "SPELL_CAST_SUCCESS", group = "buffs", name = "Casting Circle", duration = 8,  scale = 0.8, color = colors.WOO })
 
 
 Spell( 264571 ,{ name = "Nightfall", duration = 12, priority = 15, scale = 0.75, color = colors.DPURPLE, glowtime = 12 })
@@ -196,7 +217,7 @@ Spell( 104773,{ name = "Unending Resolve",duration = 12, color = colors.WOO2, gr
 
 Spell( 86211 ,{ name = "Soul Swap", duration = 20, shine = true, color = colors.BLACK })
 
-Spell( 198590 ,{ name = "Drain Soul", tick = 1, overlay = {"tick", "tickend"},  priority = 14, duration = 6, color = colors.CURSE })
+Spell( 198590 ,{ name = "Drain Soul", short = "", tick = 1, overlay = {"tick", "tickend"},  priority = 14, duration = 6, color = colors.CURSE })
 Spell( 234153 ,{ name = "Drain Life", tick = 1, overlay = {"tick", "tickend"},  priority = 14, duration = 6, color = colors.CURSE })
 
 local normalize_dots_to = nil--26
@@ -259,6 +280,8 @@ if class == "PRIEST" then
 -- [[ ARTIFACTS ]]
 -- Cooldown( 205065,{ name = "Void Torrent", color = colors.DTEAL, ghost = true, scale_until = 10 })
 -- Cooldown( 207946,{ name = "Light's Wrath", color = colors.DTEAL, ghost = true, scale_until = 10 })
+
+-- Spell( 196762 ,{ name = "Inner Focus", shine = true, color = colors.LBLUE, group = "buffs", priority = -200, timeless = true, duration = 1 })
 
 Cooldown( 263165,{ name = "Void Torrent", color = colors.DTEAL, ghost = true, scale_until = 10 })
 Cooldown( 2050,{ name = "Serenity", color = colors.LBLUE, priority = -10, ghosteffect = "AEGWYNN", ghost = true, scale = .8 })
@@ -375,11 +398,20 @@ end
 
 
 if class == "ROGUE" then
+Interrupt(1766, "Kick", 5)
+
 -- [[ ARTIFACTS ]]
 -- Cooldown( 209782 ,{ name = "Goremaw's Bite", ghost = true, shine = true, minduration = 10, scale_until = 10, color = colors.DTEAL, priority = -10 })
 -- Spell( 202665 ,{ name = "Curse of the Dreadblades", shine = true, duration = 12, color = colors.DTEAL })
 -- Cooldown( 192759 ,{ name = "Kingsbane", ghost = true, minduration = 10, color = colors.DBLUE, scale_until = 10,  })
 -- Spell( 192759 ,{ name = "Kingsbane", shine = true, duration = 14, color = colors.DGREEN })
+
+EventTimer({ event = "SPELL_CAST_SUCCESS", spellID = 212182, name = "Smoke Bomb", color = colors.BLACK, duration = 5 })
+Cooldown( 269513,{ name = "Death from Above", color = colors.DBROWN, ghost = true, scale_until = 10 })
+Spell( 212150 ,{ name = "Cheatp Tricks", duration = 5, color = colors.LBLUE, scale = 0.75 })
+Spell( 207777 ,{ name = "Dismantle", duration = 6, color = colors.DBROWN, scale = 0.6, shine = true })
+Spell( 197091 ,{ name = "Neurotoxin", duration = 10, color = colors.TEAL3, scale = 0.75 })
+
 
 
 Spell( 114018 ,{ name = "Shroud", group = "buffs", duration = 15, color = colors.BLACK })
@@ -459,7 +491,6 @@ Cooldown( 13750 ,{ name = "Adrenaline Rush", scale_until = 10, minduration = 10,
 Spell( 13877 ,{ name = "Blade Flurry", group = "buffs", priority = -10, duration = 12, scale = 0.8, color = colors.PINKIERED })
 
 Spell( 51690 ,{ name = "Killing Spree", duration = 3, shine = true, color = colors.RED  })
-Cooldown( 152150 ,{ name = "Death from Above", color = colors.DBROWN, ghost = true })
 Cooldown( 280719 ,{ name = "Secret Technique", color = colors.DBLUE, ghost = true, scale_until = 10 })
 Cooldown( 277925 ,{ name = "Shuriken Tornado", color = colors.DBROWN, ghost = true, scale_until = 10 })
 
@@ -480,15 +511,28 @@ Cooldown( 137619 ,{ name = "Marked for Death", ghost = true, color = colors.LRED
 
 
 EventTimer({ event = "SPELL_CAST_SUCCESS", spellID = 1725, name = "Distract", color = colors.PURPLE, duration = 10 })
-EventTimer({ event = "SPELL_CAST_SUCCESS", spellID = 76577, name = "Smoke Bomb", color = colors.BLACK, duration = 5 })
 end
 
 if class == "WARRIOR" then
+Interrupt(6552, "Pummel", 4)
+
 -- [[ ARTIFACTS ]]
 -- Cooldown( 209577 ,{ name = "Warbreaker", ghost = true, color = colors.DTEAL, scale_until = 9, fixedlen = 9 })
 -- helpers.Cast(203524, {name = "Neltharion's Fury", color = colors.REJUV, group = "buffs", priority = -8.5, arrow = colors.LGREEN })
 -- Cooldown( 203524 ,{ name = "Neltharion's Fury", ghost = true, fixedlen = 9, scale_until = 9, color = colors.DTEAL })
 -- Cooldown( 205545 ,{ name = "Odyn's Fury", ghost = true, color = colors.DTEAL, scale_until = 10 })
+
+-- PVP
+EventTimer({ spellID = 236320, event = "SPELL_CAST_SUCCESS", group = "buffs", name = "War Banner", duration = 15,  scale = 0.75,  shine = true, color = colors.RED })
+Spell( 236273 ,{ name = "Duel", color = colors.GOLD, duration = 6 })
+Spell( 199085 ,{ name = "Warpath", color = colors.DRED, duration = 3, maxtimers = 1 })
+-- Spell( 206891 ,{ name = "Intimidated", color = colors.RED, shine = true, duration = 6, scale = 0.6 }) -- Opressor
+Cooldown( 198912 ,{ name = "Shield Bash", priority = 10, fixedlen = 9, scale = .8, ghost = true, color = colors.TEAL3, resetable = true, ghosteffect = effects.AEGWYNN })
+Spell( 236077 ,{ name = "Disarm", color = colors.DBROWN, duration = 4, scale = 0.6, shine = true })
+
+
+Spell( 213858 ,{ name = "Battle Trance", color = colors.LGREEN, group = "buffs", duration = 18, shine = true })
+Spell( 199261 ,{ name = "Death Wish", color = colors.PINKIERED, group = "buffs", duration = 15, shine = true, shinerefresh = true, priority = -100, arrow = colors.PINKIERED, glow2time = 3 })
 
 Spell( 215562 ,{ name = "War Machine", priority = -1, color = colors.RED2, shine = true, shinerefresh = true, duration = 10, group = "buffs" })
 
@@ -645,6 +689,8 @@ Cooldown( 280772 ,{ name = "Siegebreaker", ghost = true, color = colors.DTEAL, s
 end
 
 if class == "MONK" then
+Interrupt(116705, "Spear Hand Strike", 4)
+
 -- [[ ARTIFACTS ]]
 -- Spell( 214326 ,{ name = "Exploding Keg", color = colors.DBLUE, shine = true, multiTarget = true, duration = 3, ghost = true, group = "buffs" })
 -- Cooldown( 205320 ,{ name = "Strike of the Windlord", color = colors.DTEAL, scale_until = 10, ghost = true })
@@ -778,6 +824,8 @@ EventTimer({ spellID = 100787, event = "SPELL_CAST_SUCCESS", priority = 12, name
 end
 
 if class == "DEATHKNIGHT" then
+Interrupt(47528, "Mind Freeze", 3)
+
 -- [[ ARTIFACTS ]]
 -- Cooldown( 205223 ,{ name = "Consumption", color = colors.DBLUE, ghost = true, scale_until = 10 })
 -- Cooldown( 220143 ,{ name = "Apocalypse", color = colors.DBLUE, scale_until = 15, ghost = true })
@@ -836,6 +884,8 @@ Spell( {221562, 108194} ,{ name = "Asphyxiate", color = colors.PINK, duration = 
 end
 
 if class == "MAGE" then
+Interrupt(2139, "Counterspell", 6)
+
 -- [[ ARTIFACTS ]]
 -- Cooldown( 214634 ,{ name = "Ebonbolt", color = colors.DTEAL, scale_until = 10, ghost = true }) -- artifact
 -- Cooldown( 194466 ,{ name = "Phoenix's Flames", color = colors.DTEAL, scale = 0.5, priority = -1, ghost = true })
@@ -942,6 +992,7 @@ Spell( 114923 ,{ name = "Nether Tempest", duration = 12, color = colors.PURPLE }
 end
 
 if class == "PALADIN" then
+Interrupt(96231, "Rebuke", 4)
 
 local normalized_length = 8
 -- [[ ARTIFACTS ]]
@@ -1025,6 +1076,8 @@ Cooldown( 114165 ,{ name = "Holy Prism", color = colors.BLACK })
 end
 
 if class == "DRUID" then
+Interrupt(106839, "Skull Bash", 4)
+
 -- [[ ARTIFACTS ]]
 -- Spell( 208253 ,{ name = "Essence of G'Hanir", duration = 8, color = colors.DBLUE })
 -- Cooldown( 202767 ,{ name = "Moon", ghost = true, color = colors.PINK3 })
@@ -1032,6 +1085,8 @@ if class == "DRUID" then
 -- Spell( 210723 ,{ name = "Ashmane's Frenzy", scale = 0.3, duration = 6, color = colors.PURPLE4 })
 -- Spell( 200851 ,{ name = "Rage of the Sleeper", shine = true, duration = 10, color = colors.DBLUE })
 
+Spell( 209749 ,{ name = "Faerie Swarm", duration = 8, color = colors.DBROWN })
+Spell( 209753 ,{ name = "Cyclone", duration = 6, color = colors.PURPLE4 })
 
 Cooldown( 274837 ,{ name = "Feral Frenzy", scale_until = 10, ghost = true, color = colors.DTEAL })
 Cooldown( 274281 ,{ name = "New Moon", ghost = true, color = colors.PINK3 })
@@ -1173,6 +1228,7 @@ Spell( 16870 ,{ name = "Clearcasting",  duration = 15 })
 end
 
 if class == "DEMONHUNTER" then
+    Interrupt(183752, "Disrupt", 3)
 
     Spell( 204490,{ name = "Sigil of Silence", color = colors.LBLUE, maxtimers = 1, duration = 8 })
 
@@ -1239,6 +1295,9 @@ if class == "DEMONHUNTER" then
 end
 
 if class == "HUNTER" then
+Interrupt(187707, "Muzzle", 3)
+Interrupt(147362, "Counter Shot", 3)
+
 -- [[ ARTIFACTS ]]
 -- Cooldown( 207068 ,{ name = "Titan's Thunder", ghost = true, color = colors.DTEAL, scale_until = 10 })
 -- Cooldown( 204147 ,{ name = "Windburst", ghost = true, color = colors.DTEAL, scale_until = 8, })
@@ -1367,6 +1426,8 @@ Cooldown( 198670 ,{ name = "Piercing Shot", color = colors.WOO2, scale_until = 7
 end
 
 if class == "SHAMAN" then
+Interrupt(57994, "Wind Shear", 3)
+
 -- [[ ARTIFACTS ]]
 -- Cooldown( 205495 ,{ name = "Stormkeeper", ghost = true, color = colors.DTEAL, scale_until = 10 })
 -- Cooldown( 204945 ,{ name = "Doom Winds", ghost = true, color = colors.DTEAL, scale_until = 10 })
