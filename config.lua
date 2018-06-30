@@ -695,6 +695,14 @@ Interrupt(116705, "Spear Hand Strike", 4)
 -- Spell( 214326 ,{ name = "Exploding Keg", color = colors.DBLUE, shine = true, multiTarget = true, duration = 3, ghost = true, group = "buffs" })
 -- Cooldown( 205320 ,{ name = "Strike of the Windlord", color = colors.DTEAL, scale_until = 10, ghost = true })
 
+Spell( 233759 ,{ name = "Grapple Weapon", color = colors.DBROWN, duration = 6, scale = 0.6, shine = true })
+Spell( 248646 ,{ name = "Tigereye Brew", color = colors.DBROWN, group = "buffs", duration = 120, scale = 0.5 })
+Spell( 247483 ,{ name = "Tigereye Brew", color = colors.PINKIERED, shine = true, priority = -5, group = "buffs", duration = 20, target = "player" })
+Spell( 233766 ,{ name = "Control the Mists", color = colors.DTEAL, group = "buffs", fixedlen = 10, duration = 10, scale = 0.6, ghost = true })
+
+Spell( 216113 ,{ name = "Way of the Crane", color = colors.PINKIERED, shine = true, priority = -5, group = "buffs", duration = 15 })
+Spell( 209584 ,{ name = "Zen Focus Tea", color = colors.LBLUE, shine = true, group = "buffs", duration = 5 })
+
 EventTimer({ spellID = 116844, event = "SPELL_CAST_SUCCESS", name = "Ring of Peace", duration = 5, group = "buffs", color = colors.WOO })
 
 local ww_normalize = 10
@@ -1085,7 +1093,8 @@ Interrupt(106839, "Skull Bash", 4)
 -- Spell( 210723 ,{ name = "Ashmane's Frenzy", scale = 0.3, duration = 6, color = colors.PURPLE4 })
 -- Spell( 200851 ,{ name = "Rage of the Sleeper", shine = true, duration = 10, color = colors.DBLUE })
 
-Spell( 209749 ,{ name = "Faerie Swarm", duration = 8, color = colors.DBROWN })
+Spell( 209749 ,{ name = "Faerie Swarm", duration = 8, color = colors.TEAL3 })
+Spell( 236696 ,{ name = "Thors", duration = 12, scale = 0.5, group = "buffs", shine = true, color = colors.DBROWN })
 Spell( 209753 ,{ name = "Cyclone", duration = 6, color = colors.PURPLE4 })
 
 Cooldown( 274837 ,{ name = "Feral Frenzy", scale_until = 10, ghost = true, color = colors.DTEAL })
