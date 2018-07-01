@@ -594,6 +594,7 @@ end
 
 local helpful = "HELPFUL"
 local harmful = "HARMFUL"
+local string_sub = string.sub
 function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID, spellName, opts, timerType, override, amount, from_unitaura)  -- duration override
     if opts.disabled then return end
 

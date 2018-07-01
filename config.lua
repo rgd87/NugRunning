@@ -411,6 +411,7 @@ Cooldown( 269513,{ name = "Death from Above", color = colors.DBROWN, ghost = tru
 Spell( 212150 ,{ name = "Cheatp Tricks", duration = 5, color = colors.LBLUE, scale = 0.75 })
 Spell( 207777 ,{ name = "Dismantle", duration = 6, color = colors.DBROWN, scale = 0.6, shine = true })
 Spell( 197091 ,{ name = "Neurotoxin", duration = 10, color = colors.TEAL3, scale = 0.75 })
+Spell( 198688 ,{ name = "Dagger in the Dark", duration = 10, scale = 0.6, color = colors.PURPLE4, singleTarget = true })
 
 
 
@@ -702,6 +703,7 @@ Spell( 233766 ,{ name = "Control the Mists", color = colors.DTEAL, group = "buff
 
 Spell( 216113 ,{ name = "Way of the Crane", color = colors.PINKIERED, shine = true, priority = -5, group = "buffs", duration = 15 })
 Spell( 209584 ,{ name = "Zen Focus Tea", color = colors.LBLUE, shine = true, group = "buffs", duration = 5 })
+
 
 EventTimer({ spellID = 116844, event = "SPELL_CAST_SUCCESS", name = "Ring of Peace", duration = 5, group = "buffs", color = colors.WOO })
 
