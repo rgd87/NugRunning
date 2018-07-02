@@ -2297,6 +2297,7 @@ function NugRunning:CreateCastbarTimer(timer)
         if unit ~= self.unit then return end
         if not config.casts[spellID] then return end
         local opts = config.casts[spellID]
+        if opts.disabled then return end
 
         local name, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible = UnitCastingInfo(unit)
         self.inverted = false
@@ -2310,6 +2311,7 @@ function NugRunning:CreateCastbarTimer(timer)
         if unit ~= self.unit then return end
         if not config.casts[spellID] then return end
         local opts = config.casts[spellID]
+        if opts.disabled then return end
 
         local name, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible = UnitChannelInfo(unit)
         self.inverted = true
