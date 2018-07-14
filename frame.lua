@@ -510,7 +510,7 @@ NugRunning.ConstructTimerBar = function(width, height)
 
 
     local arrow = f:CreateTexture(nil, "ARTWORK",nil,3)
-    arrow:SetTexture("Interface\\AddOns\\NugRunning\\white")
+    arrow:SetTexture("Interface\\BUTTONS\\WHITE8X8")
     arrow:SetHeight(height)
     arrow:SetWidth(height/4)
     arrow:SetPoint("TOPRIGHT", f, "TOPLEFT",-3, 0)
@@ -542,7 +542,7 @@ NugRunning.ConstructTimerBar = function(width, height)
     -- arrow:Hide()
 
     -- local status = f.bar:CreateTexture(nil, "ARTWORK", nil, 5)
-    -- status:SetTexture("Interface\\AddOns\\NugRunning\\white")
+    -- status:SetTexture("Interface\\BUTTONS\\WHITE8X8")
     -- -- status:SetPoint("TOPRIGHT", f.icon, "TOPLEFT", -2,0)
     -- -- status:SetPoint("BOTTOMLEFT", f.icon, "BOTTOMLEFT",-5,0)
     -- status:SetSize(width/2,height)

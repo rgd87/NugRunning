@@ -5,9 +5,13 @@
 ## SavedVariablesPerCharacter: NRunDB_Char
 ## SavedVariables: NRunDB_Global, NugRunningConfigCustom
 ## Version: @project-version@
+
+## X-WoWI-ID: 10440
+
 Libs\LibStub\LibStub.lua
 Libs\CallbackHandler-1.0\CallbackHandler-1.0.lua
 Libs\LibSharedMedia-3.0\lib.xml
+
 helpers.lua
 config.lua
 NugRunning.lua

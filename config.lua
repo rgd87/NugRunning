@@ -792,14 +792,14 @@ Spell( 115308 ,{ name = "Elusive Brew", duration = 15, group = "buffs", shine = 
 Spell( 215479, { name = "Ironskin Brew", priority = -10, spark = true, fixedlen = 10, arrow = colors.REJUV, group = "buffs", shine = true, glowtime = 1, glow2time = 2, ghost = 1, color = colors.PINK3, duration = 6, })
 Spell( 214373, { name = "Brew-Stache", priority = -9, fixedlen = 10, ghosteffect = "AEGWYNN", arrow = colors.PINK2, group = "buffs", shine = true, ghost = 4, color = colors.REJUV, duration = 4.5, scale = 0.5 })
 
-Cooldown( 119381 ,{ name = "Leg Sweep", color = colors.DBLUE, scale_until = 8, fixedlen = 8 })
-Spell( 119381 ,{ name = "Leg Sweep", duration = 5, color = colors.RED, multiTarget = true })
+-- Cooldown( 119381 ,{ name = "Leg Sweep", color = colors.DBLUE, scale_until = 8, fixedlen = 8 })
+Spell( 119381 ,{ name = "Leg Sweep", duration = 5, color = colors.RED, maxtimers = 1 })
 Spell( 122783 ,{ name = "Diffuse Magic", group = "buffs", shine = true, duration = 6, color = colors.CURSE })
 Spell( 122278 ,{ name = "Dampen Harm", group = "buffs", shine = true, duration = 6, color = colors.CURSE })
 Spell( 152173 ,{ name = "Serenity", duration = 10, color = colors.TEAL2, group = "buffs", priority = -10 })
 
 
-Spell( 228563 ,{ name = "Blackout Combo", group = "buffs", scale = .8, priority = -1, glowtime = 15, shine = true, color = colors.PURPLE3, duration = 15 })
+Spell( 228563 ,{ name = "Blackout Combo", group = "buffs", scale = .8, priority = -1, glowtime = 15, color = colors.PURPLE3, duration = 15 })
 Cooldown( 205523 ,{ name = "Blackout Strike", overlay = {0,1, 0.2}, fixedlen = 8, priority = 9, color = colors.WOO, ghost = true, })
 Cooldown( 119582 ,{ name = "Purifying Brew", scale = 0.5, color = colors.TEAL3, ghost = 6, ghosteffect = "NIGHTBORNE" })
 Cooldown( 115399 ,{ name = "Black Ox Brew", scale_until = 10, ghosteffect = "AEGWYNN", color = colors.REJUV, ghost = 6, priority = -20 })
@@ -1387,13 +1387,14 @@ Cooldown( 187708,{ name = "Carve", color = colors.PINKIERED, scale = 0.75, ghost
 Cooldown( 259391,{ name = "Chakrams", color = colors.WOO2, ghost = true, ghosteffect = effects.JUDGEMENT, scale = 0.8, priority = 5 })
 Cooldown( 259495,{ name = "Wildfire Bomb", color = colors.WOO, ghost = true, ghosteffect = effects.AEGWYNN, scale = 0.8, priority = 5 })
 
-Cooldown( 257044,{ name = "Rapid Fire", color = colors.PURPLE4, ghost = true, effect = effects.AEGWYNN, effecttime = 1.5, priority = 5, scale_until = 5 })
+Cooldown( 257044,{ name = "Rapid Fire", color = colors.PURPLE4, ghost = true, effect = effects.AEGWYNN, effecttime = 1.5, priority = 5 })
 Cooldown( 212431 ,{ name = "Explosive Shot", color = colors.WOO, effect = effects.JUDGEMENT, effecttime = 1.5, ghost = true, priority = 3, scale_until = 5 })
 
 Spell( 117526,{ name = "Binding Shot Stun", duration = 5, color = colors.RED, multiTarget = true })
 
-helpers.Cast(257044, {name = "Rapid Fire", scale = 0.5, color = colors.PINKIERED, priority = 10.1 })
-helpers.Cast(19434, {name = "Aimed Shot", scale = 0.5, color = colors.PINKIERED, priority = 10.1 })
+-- helpers.Cast(257044, {name = "Rapid Fire", scale = 0.5, color = colors.PINKIERED, priority = 10.1 })
+-- helpers.Cast(19434, {name = "Aimed Shot", scale = 0.5, color = colors.PINKIERED, priority = 10.1 })
+-- helpers.Cast(56641, {name = "Steady Shot", scale = 0.5, color = colors.PINKIERED, priority = 10.1 })
 Cooldown( 19434, {name = "Aimed Shot", color = colors.CURSE, tick = 1.5, overlay = {"tick", "end"}, ghost = true, ghosteffect = effects.NIGHTBORNE, priority = 10 })
 EventTimer({ spellID = 185358, event = "SPELL_CAST_SUCCESS", priority = 12, name = "Arcane Shot", duration = 0.5, color = colors.PINK })
 EventTimer({ spellID = 2643, event = "SPELL_CAST_SUCCESS", priority = 12, name = "Multi-Shot", duration = 0.5, color = colors.PINK })
