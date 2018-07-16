@@ -1,3 +1,8 @@
+### 8.0.1
+
+- BfA update for all classes
+- multiTarget option is now deprecated, everything was replaced by maxtimers = 1
+
 ### 7.3.9
 
 - added glow, highlight spin, effecttime options

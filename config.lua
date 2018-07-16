@@ -267,7 +267,7 @@ Spell( 6358 ,{ name = "Seduction",duration = 30, pvpduration = 8 })
 Spell( 89766 ,{ name = "Axe Toss", color = colors.BROWN, duration = 4 })
 
 Spell( 6789 ,{ name = "Mortal Coil", duration = 3 })
-Spell( 5484 ,{ name = "Howl of Terror", duration = 20, pvpduration = 8, multiTarget = true })
+Spell( 5484 ,{ name = "Howl of Terror", duration = 20, pvpduration = 8, maxtimers = 1 })
 Spell( 108416 ,{ name = "Dark Pact", duration = 10, group = "buffs", color = colors.DPURPLE })
 Spell( 30283 ,{ name = "Shadowfury", duration = 3, maxtimers = 1 })
 
@@ -331,9 +331,9 @@ Spell( 15487 ,{ name = "Silence",duration = 5, color = colors.PINK })
 
 Spell( 64044 ,{ name = "Psychic Horror", duration = 3, pvpduration = 4 })
 Spell( 8122 ,{ name = "Psychic Scream", duration = 8, maxtimers = 1 })
-Spell( 205369,{ name = "Mind Bomb", duration = 4, multiTarget = true })
+Spell( 205369,{ name = "Mind Bomb", duration = 4, maxtimers = 1 })
 Spell( 47536,{ name = "Rapture", duration = 11, color = colors.LBLUE, shine = true })
--- Spell( 64044 ,{ name = "Psychic Horror",duration = 1, multiTarget = true })
+-- Spell( 64044 ,{ name = "Psychic Horror",duration = 1, maxtimers = 1 })
 
 Cast( 15407, { name = "Mind Flay", short = "", priority = 12, tick = 1, overlay = {"tick", "tickend"}, color = colors.PURPLE2, priority = 11, duration = 3, scale = 0.8 })
 
@@ -693,7 +693,7 @@ if class == "MONK" then
 Interrupt(116705, "Spear Hand Strike", 4)
 
 -- [[ ARTIFACTS ]]
--- Spell( 214326 ,{ name = "Exploding Keg", color = colors.DBLUE, shine = true, multiTarget = true, duration = 3, ghost = true, group = "buffs" })
+-- Spell( 214326 ,{ name = "Exploding Keg", color = colors.DBLUE, shine = true, maxtimers = 1, duration = 3, ghost = true, group = "buffs" })
 -- Cooldown( 205320 ,{ name = "Strike of the Windlord", color = colors.DTEAL, scale_until = 10, ghost = true })
 
 Spell( 233759 ,{ name = "Grapple Weapon", color = colors.DBROWN, duration = 6, scale = 0.6, shine = true })
@@ -818,7 +818,7 @@ Cooldown( 121253, { name = "", fixedlen = 8, spark = true, overlay = {1.1, 4.1, 
             end
         end })
 Cooldown( 115181 ,{ name = "Breath of Fire", priority = 4, color = colors.RED, ghost = true, ghosteffect = "JUDGEMENT" })
--- Spell( 123725 ,{ name = "Breath of Fire",  priority = 11, shine = true, color = colors.RED, multiTarget = true, duration = 8 })
+-- Spell( 123725 ,{ name = "Breath of Fire",  priority = 11, shine = true, color = colors.RED, maxtimers = 1, duration = 8 })
 Spell( 116847, { name = "Rushing Jade Wind", short = "", scale = .7, fixedlen = 8, color = colors.DTEAL, ghost = true, duration = 7, priority = 6 })
 -- Windwalker RJW
 Spell( 261715, { name = "Rushing Jade Wind", short = "", scale = .7, color = colors.DTEAL, duration = 7, timeless = true, priority = 2 })
@@ -945,8 +945,8 @@ Spell( 31589 ,{ name = "Slow", duration = 15, pvpduration = 8 })
 --FIRE
 
 Spell( 199786,{ name = "Glacial Spike", color = colors.CHIM, duration = 5, shine = true })
-Spell( 31661 ,{ name = "Dragon's Breath", duration = 5, color = colors.ORANGE, short = "Breath", multiTarget = true })
-Spell( 2120 ,{ name = "Flamestrike", duration = 8, color = colors.PURPLE, multiTarget = true })
+Spell( 31661 ,{ name = "Dragon's Breath", duration = 5, color = colors.ORANGE, short = "Breath", maxtimers = 1 })
+Spell( 2120 ,{ name = "Flamestrike", duration = 8, color = colors.PURPLE, maxtimers = 1 })
 
 Spell( 269651 ,{ name = "Pyroclasm", priority = 5.1, shine = true, scale = 0.75, glowtime = 5, duration = 15, color = colors.PURPLE4 })
 
@@ -982,7 +982,7 @@ Spell( 195418 ,{ name = "Chain Reaction", duration = 6, color = colors.PURPLE, g
 
 
 Spell( 45438 ,{ name = "Ice Block",duration = 10, color = colors.CHIM })
-Spell( 120 ,{ name = "Cone of Cold", duration = 8, color = colors.CHILL, short = "CoC", multiTarget = true })
+Spell( 120 ,{ name = "Cone of Cold", duration = 8, color = colors.CHILL, short = "CoC", maxtimers = 1 })
 Cooldown( 153595, { name = "Comet Storm", color = colors.PURPLE2})
 Cooldown( 84714, { name = "Frozen Orb", color = colors.WOO, scale_until = 10, ghost = true})
 
@@ -1008,7 +1008,7 @@ local normalized_length = 8
 -- [[ ARTIFACTS ]]
 -- Cooldown( 205273 ,{ name = "Wake of Ashes", ghost = true, color = colors.DBLUE, scale_until = 8, fixedlen = normalized_length })
 -- Spell( 200652 ,{ name = "Tyr's Deliverance", duration = 10, color = colors.DBLUE })
--- Spell( 209202 ,{ name = "Eye of Tyr", duration = 9, multiTarget = true, color = colors.DBLUE })
+-- Spell( 209202 ,{ name = "Eye of Tyr", duration = 9, maxtimers = 1, color = colors.DBLUE })
 
 Spell( 205191 ,{ name = "Eye for an Eye", duration = 10, group = "buffs", color = colors.LRED })
 Spell( 184662 ,{ name = "Shield of Vengeance", duration = 15, group = "buffs", color = colors.GOLD })
@@ -1080,7 +1080,7 @@ Spell( 157048 ,{ name = "Final Verdict", duration = 30, color = colors.DPURPLE, 
 -- EventTimer({ spellID = 53600 , event = "SPELL_CAST_SUCCESS", priority = 13, name = "SHOTR", duration = 0.5, color = colors.PINK })
 
 
-Spell( 105421 ,{ name = "Blinding Light", duration = 6, multiTarget = true })
+Spell( 105421 ,{ name = "Blinding Light", duration = 6, maxtimers = 1 })
 Spell( 105809 ,{ name = "Holy Avenger", color = colors.GOLD, group = "buffs",  duration = 20 })
 Cooldown( 114165 ,{ name = "Holy Prism", color = colors.BLACK })
 end
@@ -1207,7 +1207,7 @@ Spell( 69369,{ name = "Predatory Swiftness", priority = -20, duration = 12, colo
 Spell( 22812 ,{ name = "Barkskin",duration = 12, color = colors.WOO2, priority = -9 })
 Spell( 99 ,{ name = "Incapacitating Roar", duration = 3, maxtimers = 1 })
 -- Spell( 6795 ,{ name = "Taunt", duration = 3 })
--- Spell( 5209 ,{ name = "Challenging Roar", shine = true, duration = 6, multiTarget = true })
+-- Spell( 5209 ,{ name = "Challenging Roar", shine = true, duration = 6, maxtimers = 1 })
 Spell( 5211 ,{ name = "Bash",duration = 5, shine = true, color = colors.PINK })
 -- guardian's thrash
 Cooldown( 77758, { name = "Thrash", priority = 8, color = colors.PINKIERED, fixedlen = 9, overlay = {0, "gcd", 0.3}, ghost = true })
@@ -1234,7 +1234,7 @@ Spell( 774 ,{ name = "Rejuvenation", scale = 0.7, priority = 5, duration = 18, c
 Spell( 155777 ,{ name = "Germination", scale = 0.5, priority = 5.2, duration = 18, color = colors.PURPLE2 })
 -- Spell( 8936 ,{ name = "Regrowth",duration = 6, specmask = 0xFF0F, color = { 198/255, 233/255, 80/255} })
 Spell( 33763 ,{ name = "Lifebloom", shinerefresh = true, recast_mark = 3, duration = 15, color = { 0.5, 1, 0.5} })
-Spell( 48438 ,{ name = "Wild Growth", duration = 7, multiTarget = true, color = colors.LGREEN })
+Spell( 48438 ,{ name = "Wild Growth", duration = 7, maxtimers = 1, color = colors.LGREEN })
 Spell( 16870 ,{ name = "Clearcasting",  duration = 15 })
 end
 
@@ -1390,7 +1390,7 @@ Cooldown( 259495,{ name = "Wildfire Bomb", color = colors.WOO, ghost = true, gho
 Cooldown( 257044,{ name = "Rapid Fire", color = colors.PURPLE4, ghost = true, effect = effects.AEGWYNN, effecttime = 1.5, priority = 5 })
 Cooldown( 212431 ,{ name = "Explosive Shot", color = colors.WOO, effect = effects.JUDGEMENT, effecttime = 1.5, ghost = true, priority = 3, scale_until = 5 })
 
-Spell( 117526,{ name = "Binding Shot Stun", duration = 5, color = colors.RED, multiTarget = true })
+Spell( 117526,{ name = "Binding Shot Stun", duration = 5, color = colors.RED, maxtimers = 1 })
 
 -- helpers.Cast(257044, {name = "Rapid Fire", scale = 0.5, color = colors.PINKIERED, priority = 10.1 })
 -- helpers.Cast(19434, {name = "Aimed Shot", scale = 0.5, color = colors.PINKIERED, priority = 10.1 })
@@ -1415,7 +1415,7 @@ Spell( 186265,{ name = "Aspect of the Turtle", short = "Turtle", group = "buffs"
 Spell( 186289,{ name = "Aspect of the Eagle", short = "Eagle", group = "buffs", duration = 10, color = colors.TEAL, shine = true })
 Spell( 193530,{ name = "Aspect of the Wild", short = "Wild", group = "buffs", duration = 10, color = colors.TEAL, shine = true })
 
-Spell( 117526 ,{ name = "Binding Shot", duration = 5, pvpduration = 3, color = colors.RED, multiTarget = true })
+Spell( 117526 ,{ name = "Binding Shot", duration = 5, pvpduration = 3, color = colors.RED, maxtimers = 1 })
 Cooldown( 120679,{ name = "Dire Beast", priority = 6, ghost = true, scale = 0.8, color = colors.PURPLE, fixedlen = 9 })
 Cooldown( 217200,{ name = "Barbed Shot", priority = 6, ghost = true, scale = 0.8, color = colors.PINKIERED, fixedlen = 9, resetable = true })
 Spell( 257946,{ name = "Thrill of the Hunt", group = "buffs", duration = 8, ghost = true, color = colors.PINK3, scale = 0.75, priority = -50 })
