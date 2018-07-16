@@ -1,6 +1,7 @@
 ### 8.0.1
 
 - BfA update for all classes
+- Timers for interrupt duration in pvp if successful
 - multiTarget option is now deprecated, everything was replaced by maxtimers = 1
 
 ### 7.3.9
