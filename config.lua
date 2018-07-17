@@ -1243,6 +1243,8 @@ end
 if class == "DEMONHUNTER" then
     Interrupt(183752, "Disrupt", 3)
 
+    Spell( 205630,{ name = "Illidan's Grasp", color = colors.PURPLE4, duration = 6 })
+
     Spell( 204490,{ name = "Sigil of Silence", color = colors.LBLUE, maxtimers = 1, duration = 8 })
 
     Spell( 204598,{ name = "Sigil of Flame", short = "", color = colors.PINKIERED, duration = 6, effect = effects.JUDGEMENT, recast_mark = 2, overlay = {0,3}, effecttime = 3, maxtimers = 1 })

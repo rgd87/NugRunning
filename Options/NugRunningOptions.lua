@@ -1646,9 +1646,29 @@ end
 
 
 
+local function MakeHelp()
+	local opt = {
+        type = 'group',
+        name = "Help",
+        order = 1,
+        args = {
+			msg = {
+				name = "NugRunning provides commands to list spellIDs of all current auras.\n/nrun listauras target\n/nrun listauras player\n/nrun debug - toggle combat log event display in chat\nSpell ID next to SPELL_CAST_SUCCESS is the one to use for cooldowns",
+				type = "description",
+				fontSize = "medium",
+                width = "full",
+                order = 1,
+            },
+		},
+	}
+	local AceConfigRegistry = LibStub("AceConfigRegistry-3.0")
+    AceConfigRegistry:RegisterOptionsTable("NugRunningHelp", opt)
 
+    local AceConfigDialog = LibStub("AceConfigDialog-3.0")
+    local panelFrame = AceConfigDialog:AddToBlizOptions("NugRunningHelp", "Help", "NugRunning")
 
-
+	return panelFrame
+end
 
 
 
@@ -1657,7 +1677,8 @@ do
     f.name = "NugRunning"
     InterfaceOptions_AddCategory(f);
 
-    f.general = MakeGeneralOptions()
+	f.general = MakeGeneralOptions()
+	f.help = MakeHelp()
 
     NugRunningGUI.frame = NugRunningGUI:Create("Spell List", "NugRunning")
     f.spell_list = NugRunningGUI.frame.frame
