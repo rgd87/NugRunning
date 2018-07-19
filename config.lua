@@ -227,6 +227,12 @@ local normalize_dots_to = nil--26
 --Haunt
 Cooldown( 48181 ,{ name = "Haunt", priority = 8, ghost = true, color = colors.TEAL })
 
+local creeping_death = function(self)
+    local duration = IsPlayerSpell(264000) and self.duration*0.85 or self.duration
+    self.overlay[2] = duration*0.3
+    self.recast_mark = duration*0.3
+end
+
 --Unstable Affliction
 Spell( 233490 ,{ name = "", duration = 8, overlay = {0, "gcd"},  priority = 10, nameplates = true, ghost = True, color = colors.PINK2 }) -- first debuff
 Spell( 233496 ,{ name = "", scale = 1, overlay = {0, "gcd"}, scale_until = 3, duration = 8,  priority = 10.1, nameplates = true, ghost = True, color = colors.PINK2 }) -- subsequent applications
@@ -234,9 +240,9 @@ Spell( 233497 ,{ name = "", scale = 0.8, scale_until = 2, duration = 8,  priorit
 Spell( 233498 ,{ name = "", scale = 0.8, scale_until = 2, duration = 8,  priority = 10.3, nameplates = true, ghost = True, color = colors.PINK2 })
 Spell( 233499 ,{ name = "", scale = 0.8, scale_until = 2, duration = 8,  priority = 10.4, nameplates = true, ghost = True, color = colors.PINK2 })
 --Agony
-Spell( 980 ,{ name = "", duration = 18, recast_mark = 5.4, overlay = {0, 5.4, 0.2},  fixedlen = normalize_dots_to, nameplates = true, _ignore_applied_dose = true, ghost = true, priority = 6, color = colors.WOO })
+Spell( 980 ,{ name = "", duration = 18, recast_mark = 5.4, overlay = {0, 5.4, 0.2},  fixedlen = normalize_dots_to, nameplates = true, _ignore_applied_dose = true, ghost = true, priority = 6, color = colors.WOO, init = creeping_death })
 --Corruption
-Spell( 146739 ,{ name = "", maxtimers = 5, duration = 1, recast_mark = 4.2, overlay = {0,4.2, 0.2}, priority = 9, fixedlen = normalize_dots_to, nameplates = true, ghost = true, color = colors.PINKIERED,
+Spell( 146739 ,{ name = "", maxtimers = 5, duration = 14, recast_mark = 4.2, overlay = {0,4.2, 0.2}, priority = 9, fixedlen = normalize_dots_to, nameplates = true, ghost = true, color = colors.PINKIERED,
     init = function(self)
         if IsPlayerSpell(196103) then -- Absolute Corruption
             self.scale = 0.7
@@ -247,9 +253,10 @@ Spell( 146739 ,{ name = "", maxtimers = 5, duration = 1, recast_mark = 4.2, over
             self.priority = 9
             self.timeless = false
         end
+        creeping_death(self)
     end})
 --Siphon Life
-Spell( 63106 ,{ name = "", duration = 15, recast_mark = 4.5, overlay = {0, 4.5, 0.2}, priority = 5, fixedlen = normalize_dots_to, nameplates = true, ghost = true, color = colors.DTEAL })
+Spell( 63106 ,{ name = "", duration = 15, recast_mark = 4.5, overlay = {0, 4.5, 0.2}, priority = 5, fixedlen = normalize_dots_to, nameplates = true, ghost = true, color = colors.DTEAL, init = creeping_death })
 
 
 Spell( 27243 ,{ name = "Seed of Corruption",duration = 18, nameplates = true,  color = colors.DBLUE, short = "SoC" })
@@ -1188,7 +1195,7 @@ Cooldown( 202060, { name = "Elune's Guidance", color = colors.PURPLE3, ghost = t
 Spell( 52610,{ name = "Savage Roar", group = "buffs", priority = -10, overlay = {0, 10.8}, color = colors.PURPLE, duration = 36 })
 Spell( 1850 ,{ name = "Dash", duration = 15 })
 
-Spell( 145152,{ name = "Bloodtalons", duration = 30, color = colors.DRED, priority = -25, scale = 0.75, group = "buffs", shine = true, })
+Spell( 145152,{ name = "Bloodtalons", short = "", duration = 30, color = colors.DRED, charged = true, maxcharge = 2, priority = -25, group = "buffs", shine = true, })
 Spell( 69369,{ name = "Predatory Swiftness", priority = -20, duration = 12, color = colors.PURPLE4, color2 = colors.REJUV, scale = 0.5, glowtime = 12, group = "buffs",
     init = function(self)
         if IsPlayerSpell(155672) then -- Bloodtalons
