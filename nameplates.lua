@@ -99,8 +99,8 @@ function NugRunningNameplates:CreateNameplateTimer(frame)
     -- local yo = confignp.y_offset
     local w = NugRunning.db.np_width
     local h = NugRunning.db.np_height
-    local xo = NugRunning.db.np_xoffset
-    local yo = NugRunning.db.np_yoffset
+    np_xoffset = NugRunning.db.np_xoffset
+    np_yoffset = NugRunning.db.np_yoffset
     f:SetWidth(w)
     f:SetHeight(h)
 
@@ -128,7 +128,7 @@ function NugRunningNameplates:CreateNameplateTimer(frame)
     f:SetScript("OnUpdate", MiniOnUpdate)
 
     if not next(frame.timers) then
-        f:SetPoint("BOTTOM", frame, "TOP", 0+xo,-7+yo)
+        f:SetPoint("BOTTOM", frame, "TOP", 0+np_xoffset,-7+np_yoffset)
     else
         local prev = frame.timers[#frame.timers]
         f:SetPoint("BOTTOM", prev, "TOP", 0,1)
