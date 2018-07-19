@@ -1064,7 +1064,8 @@ Cooldown( 204019 ,{ name = "Blessed Hammer", short = "", ghost = true, ghosteffe
 Spell( 197277,{ name = "Judgement", shine = true, singleTarget = true, priority = -100500, color = colors.PURPLE2, duration = 6 }) --debuff
 Cooldown( 20271 ,{ name = "Judgement", ghost = true, fixedlen = normalized_length, priority = 8, color = colors.PURPLE, ghosteffect = "JUDGEMENT" })
 
-Cooldown( 26573 ,{ name = "Consecration", color = colors.PINKIERED, overlay = {0,"gcd",.3}, priority = 9, scale = 0.85, ghost = true, fixedlen = normalized_length })
+EventTimer({ spellID = 26573 , event = "SPELL_CAST_SUCCESS", specmask = 0x0FF, name = "Consecration", duration = 11, color = colors.PINKIERED, overlay = {0,"gcd",.3}, priority = 9, scale = 0.85, ghost = true, fixedlen = normalized_length })
+Cooldown( 26573 ,{ name = "Consecration", minduration = 6, color = colors.PINKIERED, overlay = {0,"gcd",.3}, priority = 9, scale = 0.85, ghost = true, fixedlen = normalized_length })
 Cooldown( 24275 ,{ name = "Hammer of Wrath", color = colors.TEAL2, fixedlen = normalized_length, ghost = true, priority = 11 })
 Cooldown( 31935 ,{ name = "Avenger's Shield", resetable = true, fixedlen = normalized_length, priority = 5, scale = 1, ghosteffect = "NIGHTBORNE", color = colors.TEAL, ghost = true })
 
