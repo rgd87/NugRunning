@@ -1067,13 +1067,12 @@ function NugRunning.SetUnitAuraValues(self, timer, spellID, name, icon, count, d
                                 -- else
                                 --     timer.tickPeriod = nil
                                 -- end
+                                local plevel = self:GetPowerLevel()
+                                timer.powerLevel = plevel
+                                self:UpdateTimerPower(timer, plevel)
 
                                 NugRunning:ArrangeTimers()
                             end
-
-                            local plevel = self:GetPowerLevel()
-                            timer.powerLevel = plevel
-                            self:UpdateTimerPower(timer, plevel)
                         end
                         timer:SetCount(count)
                     else
