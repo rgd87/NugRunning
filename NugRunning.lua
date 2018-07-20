@@ -1443,17 +1443,6 @@ function NugRunning.PLAYER_TARGET_CHANGED(self)
 end
 
 
-function NugRunning:UpdateTimerPower(timer, plevel)
-    local treshold = 1500
-    if timer.powerLevel > plevel+treshold then
-        timer:SetPowerStatus("HIGH", timer.powerLevel-plevel)
-    elseif timer.powerLevel+treshold < plevel then
-        timer:SetPowerStatus("LOW", timer.powerLevel-plevel)
-    else
-        timer:SetPowerStatus(nil)
-    end
-end
-
 do
     local currentPowerLevel = 0
     function NugRunning:GetPowerLevel()
