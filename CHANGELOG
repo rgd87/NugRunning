@@ -1,3 +1,7 @@
+### 8.0.4
+
+- Snapshotting support restored from 5.0 for feral druids. /nrun dotpower to disable
+
 ### 8.0.3
 
 - fixed nameplate offsets bug
