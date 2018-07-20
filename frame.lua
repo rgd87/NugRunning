@@ -334,22 +334,22 @@ function TimerBar.Resize(self, width, height)
     self.shine:GetParent():SetHeight(height*1.8)
 end
 
--- function TimerBar.SetPowerStatus(self, status, powerdiff)
---     if status == "HIGH" then
---         self.status:SetTextColor(.5,1,.5)
---         self.status:SetText("+"..powerdiff)
---         self.status:Show()
---         self.status.bg:Show()
---     elseif status == "LOW" then
---         self.status:SetTextColor(1,.1,.1)
---         self.status:SetText(powerdiff)
---         self.status:Show()
---         self.status.bg:Show()
---     else
---         self.status:Hide()
---         self.status.bg:Hide()
---     end
--- end
+function TimerBar.SetPowerStatus(self, status, powerdiff)
+    if status == "HIGH" then
+        self.status:SetTextColor(.5,1,.5)
+        self.status:SetText("+"..powerdiff.."%")
+        self.status:Show()
+        self.status.bg:Show()
+    elseif status == "LOW" then
+        self.status:SetTextColor(1,.1,.1)
+        self.status:SetText(powerdiff.."%")
+        self.status:Show()
+        self.status.bg:Show()
+    else
+        self.status:Hide()
+        self.status.bg:Hide()
+    end
+end
 
 function TimerBar.ShowOverlayGlow(self)
     local self = self.iconframe
@@ -554,18 +554,16 @@ NugRunning.ConstructTimerBar = function(width, height)
 
     -- local status = CreateFrame("Frame", nil, f.bar)
 
-    -- local powertext = f.bar:CreateFontString()
-    -- powertext:SetFont(NugRunningConfig.dotpowerFont.font,
-    --                   NugRunningConfig.dotpowerFont.size,
-    --                   NugRunningConfig.dotpowerFont.flags)
-    -- powertext:SetPoint("BOTTOMLEFT", f.bar, "BOTTOMLEFT",13,0)
+    local powertext = f.bar:CreateFontString()
+    powertext:SetFont(nameFont, nameSize)
+    powertext:SetPoint("BOTTOMLEFT", f.bar, "BOTTOMLEFT",13,0)
 
-    -- local sbg = f.bar:CreateTexture(nil, "ARTWORK", nil, 5)
-    -- sbg:SetTexture("Interface\\Tooltips\\UI-Tooltip-Background")
-    -- sbg:SetVertexColor(0,0,0, NugRunningConfig.dotpowerFont.alpha)
-    -- sbg:SetAllPoints(powertext)
-    -- powertext.bg = sbg
-    -- f.status = powertext
+    local sbg = f.bar:CreateTexture(nil, "ARTWORK", nil, 5)
+    sbg:SetTexture("Interface\\Tooltips\\UI-Tooltip-Background")
+    sbg:SetVertexColor(0,0,0, 0.6)
+    sbg:SetAllPoints(powertext)
+    powertext.bg = sbg
+    f.status = powertext
 
 
     local at = ic:CreateTexture(nil,"OVERLAY")

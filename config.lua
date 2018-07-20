@@ -22,6 +22,7 @@ local _,class = UnitClass("player")
 -- NugRunningConfig.nameFont = { font = "Interface\\AddOns\\NugRunning\\Calibri.ttf", size = 10, alpha = 0.5 }
 -- NugRunningConfig.timeFont = { font = "Interface\\AddOns\\NugRunning\\Calibri.ttf", size = 8, alpha = 1 }
 -- NugRunningConfig.stackFont = { font = "Interface\\AddOns\\NugRunning\\Calibri.ttf", size = 12 }
+-- NugRunningConfig.dotpowerFont = { font = "Interface\\AddOns\\NugRunning\\Calibri.ttf", size = 10, alpha = .6 }
 
 NugRunningConfig.nameplates.parented = true
 
@@ -90,8 +91,6 @@ effects["AEGWYNN"] = {
     x = -6, y = 0,
 }
 NugRunningConfig.effects = effects
-
-
 
 local DotSpell = function(id, opts)
     if type(opts.duration) == "number" then
@@ -1170,18 +1169,18 @@ Spell( 106951 ,{ name = "Berserk", duration = 15, shine = true, color = colors.T
 Spell( 163505 ,{ name = "Rake Stun", duration = 4, scale = 0.5, priority = 6.2, color = colors.PINK })
 
 local bleed_normalize = nil
-Spell( 155722 ,{ name = "Rake", duration = 15, priority = 6, nameplates = true, ghost = 4, overlay = {0, 15*0.3, 0.2}, fixedlen = bleed_normalize, color = colors.PINKIERED,
+Spell( 155722 ,{ name = "Rake", duration = 15, showpower = true, priority = 6, nameplates = true, ghost = 4, overlay = {0, 15*0.3, 0.2}, fixedlen = bleed_normalize, color = colors.PINKIERED,
         init = function(self)
             self.overlay[2] = IsPlayerSpell(202032) and 15*0.8*0.3 or 15*0.3
         end})
-Spell( 1079 ,{ name = "Rip", duration = 24, priority = 5, ghost = 4, nameplates = true, overlay = {0, 24*0.3, 0.2}, fixedlen = bleed_normalize, color = colors.RED,
+Spell( 1079 ,{ name = "Rip", duration = 24, showpower = true, priority = 5, ghost = 4, nameplates = true, overlay = {0, 24*0.3, 0.2}, fixedlen = bleed_normalize, color = colors.RED,
         init = function(self)
             self.overlay[2] = IsPlayerSpell(202032) and 24*0.8*0.3 or 24*0.3
         end })
 
 -- Spell( 210705 ,{ name = "Ashamane's Rip", duration = 24, priority = 4, scale = 0.75, fixedlen = 24, color = colors.PURPLE })
 -- feral's thrash
-Spell( 106830, { name = "Thrash", fixedlen = bleed_normalize, nameplates = true, overlay = {0, 15*0.3, 0.2}, singleTarget = true, color = colors.PURPLE, duration = 15, ghost = true, 
+Spell( 106830, { name = "Thrash", showpower = true, fixedlen = bleed_normalize, nameplates = true, overlay = {0, 15*0.3, 0.2}, maxtimers = 1, color = colors.PURPLE, duration = 15, ghost = true, 
         init = function(self)
             self.overlay[2] = IsPlayerSpell(202032) and 15*0.8*0.3 or 15*0.3
         end})

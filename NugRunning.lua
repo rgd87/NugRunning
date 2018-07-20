@@ -100,12 +100,6 @@ local AFFILIATION_MINE = COMBATLOG_OBJECT_AFFILIATION_MINE
 local AFFILIATION_PARTY_OR_RAID = COMBATLOG_OBJECT_AFFILIATION_RAID + COMBATLOG_OBJECT_AFFILIATION_PARTY
 local AFFILIATION_OUTSIDER = COMBATLOG_OBJECT_AFFILIATION_OUTSIDER
 
-
-local ssSnapshot = {}
-local ssPending = {}
-local ssPendingTarget
-local ssPendingTimestamp = GetTime()
-
 local lastCastSpellID
 
 NugRunning.active = active
@@ -356,11 +350,10 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
     free[cbt] = nil
     NugRunning:CreateCastbarTimer(cbt)
 
-    -- local _,class = UnitClass("player")
-    -- if (class == "WARLOCK" or class == "PRIEST") and NRunDB.dotpower then
-    --     Scouter = LibStub("LibScouter-1.0")
-    --     Scouter.RegisterCallback(NugRunning, "POWER_LEVEL_CHANGED", NugRunning.POWER_LEVEL_CHANGED)
-    -- end
+    local _,class = UnitClass("player")
+    if (class == "DRUID") and NRunDB.dotpower then
+        NugRunning.dotpowerFrame:RegisterUnitEvent("UNIT_AURA", "player")
+    end
 
     SLASH_NUGRUNNING1= "/nugrunning"
     SLASH_NUGRUNNING2= "/nrun"
@@ -681,16 +674,9 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
             timer.tickPeriod = nil
         end
 
-        -- local plevel = self:GetPowerLevel()
-        -- if ssPendingTimestamp > GetTime() - 0.3 and ssPendingTarget == dstGUID and ssPending[spellID] then
-        --     timer.powerLevel = ssPending[spellID].powerLevel
-        --     timer.tickPeriod = ssPending[spellID].tickPeriod
-        --     ssPending[spellID] = nil
-        -- else
-        --     timer.powerLevel = plevel
-        -- end
-
-        -- self:UpdateTimerPower(timer, plevel)
+        local plevel = self:GetPowerLevel()
+        timer.powerLevel = plevel
+        self:UpdateTimerPower(timer, plevel)
     end
     timer.srcGUID = srcGUID
     timer.dstGUID = dstGUID
@@ -880,15 +866,9 @@ function NugRunning.RefreshTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID,
             timer.tickPeriod = nil
         end
 
-        -- local plevel = self:GetPowerLevel()
-        -- if ssPendingTimestamp > GetTime() - 0.3 and ssPendingTarget == dstGUID and ssPending[spellID] then
-        --     timer.powerLevel = ssPending[spellID].powerLevel
-        --     timer.tickPeriod = ssPending[spellID].tickPeriod
-        --     ssPending[spellID] = nil
-        -- else
-        --     timer.powerLevel = plevel
-        -- end
-        -- self:UpdateTimerPower(timer, plevel)
+        local plevel = self:GetPowerLevel()
+        timer.powerLevel = plevel
+        self:UpdateTimerPower(timer, plevel)
     end
 
     if opts.scale_until then
@@ -1088,19 +1068,12 @@ function NugRunning.SetUnitAuraValues(self, timer, spellID, name, icon, count, d
                                 --     timer.tickPeriod = nil
                                 -- end
 
-                            NugRunning:ArrangeTimers()
-                        end
+                                NugRunning:ArrangeTimers()
+                            end
 
-                            -- local plevel = self:GetPowerLevel()
-                            -- if ssPendingTimestamp > GetTime() - 0.3 and ssPendingTarget == dstGUID and ssPending[spellID] then
-                            --     timer.powerLevel = ssPending[spellID].powerLevel
-                            --     timer.tickPeriod = ssPending[spellID].tickPeriod
-                            --     ssPending[spellID] = nil
-                            -- else
-                            --     timer.powerLevel = plevel
-                            -- end
-
-                            -- self:UpdateTimerPower(timer, plevel)
+                            local plevel = self:GetPowerLevel()
+                            timer.powerLevel = plevel
+                            self:UpdateTimerPower(timer, plevel)
                         end
                         timer:SetCount(count)
                     else
@@ -1265,7 +1238,7 @@ end
 local TimerBecomeGhost = function(self)
     self.expiredGhost = nil
     self.isGhost = true
-    -- self:SetPowerStatus(nil)
+    self:SetPowerStatus(nil)
     self.arrow:Hide()
     self:ToGhost()
     local opts = self.opts
@@ -1469,30 +1442,61 @@ function NugRunning.PLAYER_TARGET_CHANGED(self)
     self:ArrangeTimers()
 end
 
--- function NugRunning:GetPowerLevel()
---     return Scouter and Scouter:GetPowerLevel(true) or 0
--- end
--- function NugRunning:UpdateTimerPower(timer, plevel)
---     local treshold = 1500
---     if timer.powerLevel > plevel+treshold then
---         timer:SetPowerStatus("HIGH", timer.powerLevel-plevel)
---     elseif timer.powerLevel+treshold < plevel then
---         timer:SetPowerStatus("LOW", timer.powerLevel-plevel)
---     else
---         timer:SetPowerStatus(nil)
---     end
--- end
--- function NugRunning.POWER_LEVEL_CHANGED(event, plevelfull)
---     local plevel = NugRunning:GetPowerLevel() -- without damage multipliers
---     for timer in pairs(active) do
---         if timer.opts.showpower and timer.powerLevel and not timer.isGhost then
---             -- timer:SetName(timer.powerLevel)
---             NugRunning:UpdateTimerPower(timer, plevel)
---         else
---             timer:SetPowerStatus(nil)
---         end
---     end
--- end
+
+function NugRunning:UpdateTimerPower(timer, plevel)
+    local treshold = 1500
+    if timer.powerLevel > plevel+treshold then
+        timer:SetPowerStatus("HIGH", timer.powerLevel-plevel)
+    elseif timer.powerLevel+treshold < plevel then
+        timer:SetPowerStatus("LOW", timer.powerLevel-plevel)
+    else
+        timer:SetPowerStatus(nil)
+    end
+end
+
+do
+    local currentPowerLevel = 0
+    function NugRunning:GetPowerLevel()
+        return currentPowerLevel
+    end
+    function NugRunning:UpdateTimerPower(timer, plevel)
+        if timer.powerLevel > plevel then
+            timer:SetPowerStatus("HIGH", timer.powerLevel-plevel)
+        elseif timer.powerLevel < plevel then
+            timer:SetPowerStatus("LOW", timer.powerLevel-plevel)
+        else
+            timer:SetPowerStatus(nil)
+        end
+    end
+
+    local function UpdatePowerLevel()
+        currentPowerLevel = 0
+        for i=1, 100 do
+            local name, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, nameplateShowPersonal, spellID = UnitAura("player", i, "HELPFUL")
+            if not name then return currentPowerLevel end
+            if spellID == 5217 then -- Tiger's fury
+                currentPowerLevel = currentPowerLevel + 15
+            elseif spellID == 145152 then -- Bloodtalons
+                currentPowerLevel = currentPowerLevel + 25
+            end
+        end
+        return currentPowerLevel
+    end
+
+    local dotpowerFrame = CreateFrame("Frame", nil, UIParent)
+    NugRunning.dotpowerFrame = dotpowerFrame
+    dotpowerFrame:SetScript("OnEvent", function()
+        local plevel = UpdatePowerLevel()
+        for timer in pairs(active) do
+            if timer.opts.showpower and timer.powerLevel and not timer.isGhost then
+                -- timer:SetName(timer.powerLevel)
+                NugRunning:UpdateTimerPower(timer, plevel)
+            else
+                timer:SetPowerStatus(nil)
+            end
+        end
+    end)
+end
 
 function NugRunning.ReInitSpells(self,event,arg1)
     for id,opts in pairs(spells) do
@@ -2190,30 +2194,6 @@ do
     --     NugRunning.OnAuraEvent(nil, "UNIT_AURA", "mouseover")
     -- end)
 end
-
-
-function NugRunning:SoulSwapStore(active, srcGUID, dstGUID, spellID )
-    table_wipe(ssSnapshot)
-    for timer in pairs(active) do
-        if timer.dstGUID == dstGUID then
-            if timer.opts.showpower and timer.powerLevel and not timer.isGhost then
-                ssSnapshot[timer.spellID] = {}
-                ssSnapshot[timer.spellID].powerLevel = timer.powerLevel
-                ssSnapshot[timer.spellID].tickPeriod= timer.tickPeriod
-            end
-        end
-    end
-end
-
-function NugRunning:SoulSwapUsed(active, srcGUID, dstGUID, spellID )
-    for spellID, tbl in pairs(ssSnapshot) do
-        ssPending[spellID] = tbl
-    end
-    table_wipe(ssSnapshot)
-    ssPendingTimestamp = GetTime()
-    ssPendingTarget = dstGUID
-end
-
 
 
 function NugRunning:CreateCastbarTimer(timer)
