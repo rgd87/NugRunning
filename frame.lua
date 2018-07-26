@@ -530,7 +530,6 @@ NugRunning.ConstructTimerBar = function(width, height)
     f.arrowglow = glow2
     f.arrow = arrow
 
-
     -- local arrow = f.bar:CreateTexture(nil, "ARTWORK", nil, 5)
     -- arrow:SetSize(11, 10)
     -- arrow:SetTexture("Interface\\AddOns\\NugRunning\\arrows")

@@ -14,6 +14,7 @@ local Anchor = helpers.Anchor
 local Talent = helpers.Talent
 local Glyph = helpers.Glyph
 local GetCP = helpers.GetCP
+local SPECS = helpers.SPECS
 local _,class = UnitClass("player")
 
 -- NugRunningConfig.overrideTexture = true
@@ -173,7 +174,7 @@ Spell( 278350, { name = "Vile Taint", duration = 10, color = colors.PURPLE4, sca
 
 Spell( 111400 ,{ name = "Burning Rush",duration = 20, timeless = true, color = colors.PURPLE2 })
 --Immolate
-Spell( 157736,{ name = "", recast_mark = 5.3, overlay = {0, 5.3, 0.2}, maxtimers = 4, duration = 18, nameplates = true, priority = 10, ghost = true, color = colors.RED })
+Spell( 157736,{ name = "", preghost = true, recast_mark = 5.3, overlay = {0, 5.3, 0.2}, maxtimers = 4, duration = 18, nameplates = true, priority = 10, ghost = true, color = colors.RED })
 
 
 Spell( 117828 ,{ name = "Backdraft", duration = 15, shine = true, priority = -4, shinerefresh = true, color = colors.PURPLE3, scale = 0.5 })
@@ -238,9 +239,9 @@ Spell( 233497 ,{ name = "", scale = 0.8, scale_until = 2, duration = 8,  priorit
 Spell( 233498 ,{ name = "", scale = 0.8, scale_until = 2, duration = 8,  priority = 10.3, nameplates = true, ghost = True, color = colors.PINK2 })
 Spell( 233499 ,{ name = "", scale = 0.8, scale_until = 2, duration = 8,  priority = 10.4, nameplates = true, ghost = True, color = colors.PINK2 })
 --Agony
-Spell( 980 ,{ name = "", duration = 18, recast_mark = 5.4, overlay = {0, 5.4, 0.2},  fixedlen = normalize_dots_to, nameplates = true, _ignore_applied_dose = true, ghost = true, priority = 6, color = colors.WOO, init = creeping_death })
+Spell( 980 ,{ name = "", preghost = true, duration = 18, recast_mark = 5.4, overlay = {0, 5.4, 0.2},  fixedlen = normalize_dots_to, nameplates = true, _ignore_applied_dose = true, ghost = true, priority = 6, color = colors.WOO, init = creeping_death })
 --Corruption
-Spell( 146739 ,{ name = "", maxtimers = 5, duration = 14, recast_mark = 4.2, overlay = {0,4.2, 0.2}, priority = 9, fixedlen = normalize_dots_to, nameplates = true, ghost = true, color = colors.PINKIERED,
+Spell( 146739 ,{ name = "", preghost = true, maxtimers = 5, duration = 14, recast_mark = 4.2, overlay = {0,4.2, 0.2}, priority = 9, fixedlen = normalize_dots_to, nameplates = true, ghost = true, color = colors.PINKIERED,
     init = function(self)
         if IsPlayerSpell(196103) then -- Absolute Corruption
             self.scale = 0.7
@@ -309,9 +310,11 @@ Spell( 586 ,{ name = "Fade",duration = 10 })
 -- Spell( 89485 ,{ name = "Inner Focus", shine = true, color = colors.LBLUE, timeless = true, duration = 0.1 })
 -- Spell( 49694,59000 ,{ name = "Improved Spirit Tap",duration = 8 })
 -- Spell( 15271 ,{ name = "Spirit Tap",duration = 15 })
-DotSpell( 204213 ,{ name = "Purge the Wicked", short = "", duration = 20, ghost = true, nameplates = true, priority = 9, color = colors.PURPLE, maxtimers = 5 })
-DotSpell( 589 ,{ name = "Shadow Word: Pain", short = "", duration = 16, ghost = true, nameplates = true, fixedlen = 16, priority = 9, color =colors.PURPLE, })
-DotSpell( 34914 ,{ name = "Vampiric Touch", short = "", ghost = true, nameplates = true, fixedlen = 21, priority = 10, duration = 21, color = colors.RED,  })
+DotSpell( 204213 ,{ name = "Purge the Wicked", short = "", preghost = true, duration = 20, ghost = true, nameplates = true, priority = 9, color = colors.PURPLE, maxtimers = 5,
+                isknowncheck = function() return IsPlayerSpell(204197) end })
+DotSpell( 589 ,{ name = "Shadow Word: Pain", short = "", preghost = true, duration = 16, ghost = true, nameplates = true, fixedlen = 16, priority = 9, color =colors.PURPLE,
+                isknowncheck = function() return IsPlayerSpell(589) and not IsPlayerSpell(204197) end, })
+DotSpell( 34914 ,{ name = "Vampiric Touch", short = "", preghost = true, ghost = true, nameplates = true, fixedlen = 21, priority = 10, duration = 21, color = colors.RED,  })
 
 Cooldown( 200174,{ name = "Mindbender", color = colors.BLACK, ghost = true, scale_until = 10 })
 
@@ -321,7 +324,7 @@ EventTimer({ event = "SPELL_SUMMON", spellID = 34433, name = "Shadowfiend", grou
 Spell( 47585 ,{ name = "Dispersion",duration = 6, color = colors.PURPLE })
 -- Spell( 15286 ,{ name = "Vampiric Embrace",duration = 15, color = colors.CURSE, short = "VampEmbrace" })
 
-Spell( 123254, { name = "Twist of Fate", duration = 10, group = "buffs", priority = -10, color = colors.CURSE, specmask = 0x0FF })
+Spell( 123254, { name = "Twist of Fate", duration = 10, group = "buffs", priority = -10, color = colors.CURSE, specmask = SPECS(1,2) })
 Spell( 10060, { name = "Power Infusion", duration = 20, group = "buffs", color = colors.TEAL3 })
 Cooldown( 10060, { name = "Power Infusion", color = colors.DBROWN, scale_until = 10, })
 -- Spell( 205372, { name = "Void Ray", duration = 6, group = "buffs", priority = -20, scale = 0.5, color = colors.PINK3 })
@@ -457,10 +460,14 @@ Spell( 2094  ,{ name = "Blind",duration = 60, pvpduration = 8, color = {0.20, 0.
 -- Spell( 51722 ,{ name = "Dismantle",duration = 10,color = colors.LRED }) --removed
 Spell( 6770  ,{ name = "Sap",duration = 60, color = colors.LBLUE })
 
-Spell( 1943  ,{ name = "Rupture", shinerefresh = true, nameplates = true, overlay = {0, 24*0.3, 0.2}, color = colors.RED, duration = 24,
+local bleed_normalize = 24
+--Garrote
+DotSpell( 703,{ name = "", nameplates = true, scale = 0.85, fixedlen = bleed_normalize, recast_mark = 18*0.3-0.2, color = colors.PINKIERED, duration = 18 })
+--Rupture
+Spell( 1943  ,{ name = "Rupture", short = "", shinerefresh = true, fixedlen = bleed_normalize, nameplates = true, overlay = {0, 24*0.3, 0.2}, color = colors.PINK2, duration = 24, preghost = true,  ghost = 7,
     init = function(self)
         self.overlay[2] = IsPlayerSpell(193531) and 28*0.3 or 24*0.3 --Deeper Stratagem
-        -- self.recast_mark = self.overlay[2]
+        self.recast_mark = self.overlay[2]
     end
 })
 
@@ -471,7 +478,7 @@ Spell( 121411, { name = "Crimson Tempest", overlay = {0, 12*0.3, 0.2}, color = c
 })
 --Nightblade
 Spell( 195452  ,{ name = "", ghost = true, nameplates = true, shinerefresh = true, overlay = {0, 4.8, 0.15}, recast_mark = 4.8, fixedlen = 16, color = colors.CURSE, duration = 16})
-DotSpell( 703,{ name = "Garrote", nameplates = true, color = colors.PINKIERED, duration = 18 })
+
 -- Spell( 1330  ,{ name = "Silence", color = colors.PINK, duration = 3 })
 
 -- Spell( 200803 ,{ name = "Agonizing Poison", color = { 192/255, 77/255, 48/255}, duration = 12, short = "Agonizing" })
@@ -598,7 +605,7 @@ Cooldown( 107570 ,{ name = "Storm Bolt", fixedlen = 9, ghost = 3, priority = 2, 
 --can't use with_cooldown on shockwave, because without effect applied first it's not working.
 --but shockwave still needs to be used on cooldown
 --old enrage Spell( 85288, { name = "Enraged", shine = true, showid = 14202, color = colors.RED, duration = 10 })
-Spell( 184362,{ name = "Enrage", color = colors.PURPLE4, shine = true, shinerefresh = true, scale = 0.6, group = "buffs", specmask = 0x0FF, priority = 1, duration = 4 })
+Spell( 184362,{ name = "Enrage", color = colors.PURPLE4, shine = true, shinerefresh = true, scale = 0.6, group = "buffs", specmask = SPECS(2), priority = 1, duration = 4 })
 -- Spell( 215572,{ name = "Frothing Berserker", short = "Frothing", color = colors.DRED, group = "buffs", priority = 2, scale = 0.6, shine = true, shinerefresh = true, duration = 6 })
 
 Cooldown( 845 ,{ name = "Cleave", priority = 8, color = colors.TEAL3, fixedlen = 9, ghost = true, scale = 0.75 })
@@ -687,7 +694,7 @@ Spell( 871, { name = "Shield Wall", color = colors.WOO2, duration = 12, group = 
 Cooldown( 23922, { name = "Shield Slam", tick = 1.5, tickshine = true, overlay = {"tick", "end"}, short = "", priority = 10, fixedlen = 9, ghost = true, ghosteffect = "NIGHTBORNE", color = colors.CURSE, resetable = true })
 
 -- Cooldown( 78, { name = "Heroic Strike", short = "Heroic", fixedlen = 6, ghost = true })
-Cooldown( 6343, { name = "Thunder Clap", ghost = true, short = "", scale = 0.7,overlay = {0,"gcd",.3}, specmask = 0xF00, color = colors.PINKIERED, fixedlen = 9, priority = 9.5 })
+Cooldown( 6343, { name = "Thunder Clap", ghost = true, short = "", scale = 0.7,overlay = {0,"gcd",.3}, specmask = SPECS(3), color = colors.PINKIERED, fixedlen = 9, priority = 9.5 })
 Spell( 32216, { name = "Victory Rush", group = "buffs", priority = -9, color = colors.PURPLE, duration = 20})
 
 Spell( 152277 ,{ name = "Ravager", color = colors.DRED, group = "buffs", duration = 11 })
@@ -702,6 +709,7 @@ Interrupt(116705, "Spear Hand Strike", 4)
 -- [[ ARTIFACTS ]]
 -- Spell( 214326 ,{ name = "Exploding Keg", color = colors.DBLUE, shine = true, maxtimers = 1, duration = 3, ghost = true, group = "buffs" })
 -- Cooldown( 205320 ,{ name = "Strike of the Windlord", color = colors.DTEAL, scale_until = 10, ghost = true })
+Spell( 115080 ,{ name = "Touch of Death", color = colors.RED2, duration = 8, scale = 0.8, shine = true })
 
 Spell( 233759 ,{ name = "Grapple Weapon", color = colors.DBROWN, duration = 6, scale = 0.6, shine = true })
 Spell( 248646 ,{ name = "Tigereye Brew", color = colors.DBROWN, group = "buffs", duration = 120, scale = 0.5 })
@@ -1062,7 +1070,7 @@ Cooldown( 204019 ,{ name = "Blessed Hammer", short = "", ghost = true, ghosteffe
 Spell( 197277,{ name = "Judgement", shine = true, singleTarget = true, priority = -100500, color = colors.PURPLE2, duration = 6 }) --debuff
 Cooldown( 20271 ,{ name = "Judgement", ghost = true, fixedlen = normalized_length, priority = 8, color = colors.PURPLE, ghosteffect = "JUDGEMENT" })
 
-EventTimer({ spellID = 26573 , event = "SPELL_CAST_SUCCESS", specmask = 0x0FF, name = "Consecration", duration = 12, color = colors.PINKIERED, overlay = {0,"gcd",.3}, priority = 9, scale = 0.85, ghost = true, fixedlen = normalized_length })
+EventTimer({ spellID = 26573 , event = "SPELL_CAST_SUCCESS", specmask = SPECS(1,2), name = "Consecration", duration = 12, color = colors.PINKIERED, overlay = {0,"gcd",.3}, priority = 9, scale = 0.85, ghost = true, fixedlen = normalized_length })
 Cooldown( 26573 ,{ name = "Consecration", minduration = 6, color = colors.PINKIERED, overlay = {0,"gcd",.3}, priority = 9, scale = 0.85, ghost = true, fixedlen = normalized_length })
 Cooldown( 24275 ,{ name = "Hammer of Wrath", color = colors.TEAL2, fixedlen = normalized_length, ghost = true, priority = 11 })
 Cooldown( 31935 ,{ name = "Avenger's Shield", resetable = true, fixedlen = normalized_length, priority = 5, scale = 1, ghosteffect = "NIGHTBORNE", color = colors.TEAL, ghost = true })
@@ -1124,7 +1132,7 @@ Spell( 22842 ,{ name = "Frenzied Regeneration", duration = 5, color = colors.TEA
 -- Spell( 48518 ,{ name = "Lunar Eclipse", timeless = true, duration = 0.1, short = "Lunar", color = colors.LBLUE }) -- Starfire boost
 Spell( 78675,{ name = "Solar Beam", duration = 10, color = colors.GOLD, target = "player" })
 Spell( 33786 ,{ name = "Cyclone", duration = 6 })
-DotSpell( 164812 ,{ name = "Moonfire",duration = 16, nameplates = true, priority = 10, ghost = true, color = colors.PURPLE,
+DotSpell( 164812 ,{ name = "Moonfire", duration = 16, preghost = true, nameplates = true, priority = 10, ghost = true, color = colors.PURPLE,
         init = function(self)
             local duration = 16
             if GetSpecialization() == 1 then duration = duration + 6 end -- balance druid thing
@@ -1132,23 +1140,25 @@ DotSpell( 164812 ,{ name = "Moonfire",duration = 16, nameplates = true, priority
             self.overlay[2] = duration*0.3
 
             if GetSpecialization() == 3 then
-                self.singleTarget = true
-                self.scale = 0.6
+                -- self.maxtimers = 1
+                self.scale = 0.7
             else
-                self.singleTarget = nil
+                -- self.maxtimers = nil
                 self.scale = 1
             end
-        end
+        end,
+        isknowncheck = function() return IsPlayerSpell(8921) end
         })
 Spell( 164547 ,{ name = "Lunar Empowerment", short = "", group = "buffs", priority = -25, duration = 30, scale = 0.8, ghost = true, color = colors.REJUV, charged = true, maxcharge = 3})
 Spell( 164545 ,{ name = "Solar Empowerment", short = "", group = "buffs", priority = -24, duration = 30, scale = 0.8, ghost = true, color = colors.ORANGE2, charged = true, maxcharge = 3})
-DotSpell( 164815 ,{ name = "Sunfire",duration = 12, nameplates = true, priority = 9, ghost = true, color = colors.ORANGE, maxtimers = 1,
+DotSpell( 164815 ,{ name = "Sunfire",duration = 12, preghost = true, nameplates = true, priority = 9, ghost = true, color = colors.ORANGE, maxtimers = 1,
         init = function(self)
             local duration = 12
             if GetSpecialization() == 1 then duration = duration + 6 end -- balance druid thing
             self.duration = duration
             self.overlay[2] = duration*0.3
-        end})
+        end,
+        isknowncheck = function() return IsPlayerSpell(93402) end }) -- Sunfire button spell id
 -- Spell( 93400 ,{ name = "Shooting Stars", shine = true, duration = 12, color = colors.CURSE })
 -- Spell( 48505 ,{ name = "Starfall", shine = true, duration = 10, color = colors.WOO2 })
 -- Cooldown( 78674 ,{ name = "Starsurge", resetable = true, priority = 6, ghost = true, color = colors.CURSE })
@@ -1168,11 +1178,11 @@ Spell( 106951 ,{ name = "Berserk", duration = 15, shine = true, color = colors.T
 Spell( 163505 ,{ name = "Rake Stun", duration = 4, scale = 0.5, priority = 6.2, color = colors.PINK })
 
 local bleed_normalize = nil
-Spell( 155722 ,{ name = "Rake", duration = 15, showpower = true, priority = 6, nameplates = true, ghost = 4, overlay = {0, 15*0.3, 0.2}, fixedlen = bleed_normalize, color = colors.PINKIERED,
+Spell( 155722 ,{ name = "Rake", duration = 15, showpower = true, priority = 6, preghost = true, nameplates = true, ghost = 4, overlay = {0, 15*0.3, 0.2}, fixedlen = bleed_normalize, color = colors.PINKIERED,
         init = function(self)
             self.overlay[2] = IsPlayerSpell(202032) and 15*0.8*0.3 or 15*0.3
         end})
-Spell( 1079 ,{ name = "Rip", duration = 24, showpower = true, priority = 5, ghost = 4, nameplates = true, overlay = {0, 24*0.3, 0.2}, fixedlen = bleed_normalize, color = colors.RED,
+Spell( 1079 ,{ name = "Rip", duration = 24, preghost = true, showpower = true, priority = 5, ghost = 4, nameplates = true, overlay = {0, 24*0.3, 0.2}, fixedlen = bleed_normalize, color = colors.RED,
         init = function(self)
             self.overlay[2] = IsPlayerSpell(202032) and 24*0.8*0.3 or 24*0.3
         end })

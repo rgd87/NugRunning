@@ -95,6 +95,7 @@ local bit_band = bit.band
 local UnitAura = UnitAura
 local UnitGUID = UnitGUID
 local table_wipe = table.wipe
+local CheckSpec = helpers.CheckSpec
 local COMBATLOG_OBJECT_AFFILIATION_MASK = COMBATLOG_OBJECT_AFFILIATION_MASK
 local AFFILIATION_MINE = COMBATLOG_OBJECT_AFFILIATION_MINE
 local AFFILIATION_PARTY_OR_RAID = COMBATLOG_OBJECT_AFFILIATION_RAID + COMBATLOG_OBJECT_AFFILIATION_PARTY
@@ -152,6 +153,7 @@ local defaults = {
     leaveGhost = false,
     nameplates = true,
     nameplateLines = false,
+    preghost = true,
     dotpower = true,
     dotticks = true,
     textureName = "Aluminium",
@@ -606,8 +608,7 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
     if opts.specmask then
         local spec = GetSpecialization()
         if spec then
-            spec = 0xF*math.pow(0x10, spec-1)
-            if bit_band(opts.specmask, spec) ~= spec then return end
+            if not CheckSpec(opts.specmask, spec) then return end
         end
     end
     local multiTargetGUID
@@ -1232,6 +1233,10 @@ function NugRunning.GhostFunc(self,time)
             and not self.ghost_noleave
             ) then return end
 
+    -- if self.isPreghosting then
+        -- return
+    -- end
+
     NugRunning.GhostExpire(self)
 end
 local TimerBecomeGhost = function(self)
@@ -1437,7 +1442,63 @@ do
     end
 end
 
+
+local IsPlayerSpell = IsPlayerSpell
+local IsUsableSpell = IsUsableSpell
+local function IsOriginalSpell(spellID)
+    local replacedTexture, originalTexture = GetSpellTexture(spellID)
+    return replacedTexture == originalTexture
+end
+
+local function IsAvailable(spellID)
+    return IsPlayerSpell(spellID) and IsUsableSpell(spellID)
+end
+
+local previous_projections = {}
+function NugRunning:PreGhost()
+    for timer in pairs(previous_projections) do
+        -- timer.isPreghosting = nil
+        if timer.isGhost then
+            self.GhostExpire(timer)
+        end
+        previous_projections[timer] = nil
+    end
+    if UnitExists("target") and UnitAffectingCombat("player") then
+        local spec = GetSpecialization()
+        for spellID, opts in pairs(spells) do
+            if opts.preghost then
+                local checkfunc = opts.isknowncheck or IsAvailable
+                if checkfunc(spellID) then
+                    local timer = gettimer(active, spellID, UnitGUID("target"), "DEBUFF")
+                    if not timer then
+                        timer = self:ActivateTimer(playerGUID, UnitGUID("target"), UnitName("target"), nil, spellID, GetSpellInfo(spellID), opts, "DEBUFF", opts.duration, nil, true)
+                        timer:BecomeGhost()
+                    elseif not timer.isGhost then
+                        local opts = timer.opts
+                        local overlay = opts.overlay
+                        local rm = opts.recast_mark or (overlay and overlay[2])
+                        if rm then
+                            local endTime = timer.endTime
+                            local beforeEnd = endTime - GetTime()
+
+                            if beforeEnd < rm then
+                                timer.arrow:Show()
+                                UIFrameFlash(timer.arrow, 0.15, 0.15, 1.2, false)
+                            end
+                        end
+                    end
+
+                    -- timer.isPreghosting = true
+                    previous_projections[timer] = true
+
+                end
+            end
+        end
+    end
+end
+
 function NugRunning.PLAYER_TARGET_CHANGED(self)
+    if NRunDB.preghost then self:PreGhost() end
     self:ArrangeTimers()
 end
 

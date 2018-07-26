@@ -170,7 +170,20 @@ helpers.RemoveAll = function()
 end
 
 
-
+local bit_band = bit.band
+local math_pow = math.pow
+helpers.SPECS = function(...)
+    local mask = 0
+    for i, spec in ipairs({...}) do
+        mask = mask + 0xF*math_pow(0x10, spec-1)
+    end
+    return mask
+end
+helpers.CheckSpec = function(specmask, spec)
+    if not specmask then return true end
+    local s = 0xF*math_pow(0x10, spec-1)
+    return bit_band(specmask, s) == s
+end
 
 
 local ItemSetsRegistered = {}
