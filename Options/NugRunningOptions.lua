@@ -193,7 +193,8 @@ function NugRunningGUI.CreateCommonForm(self)
         local default_opts = NugRunningConfig[category][spellID]
 		if default_opts then
             clean(opts, default_opts, "short", false)
-            clean(opts, default_opts, "ghost", false)
+			clean(opts, default_opts, "ghost", false)
+			clean(opts, default_opts, "preghost", false)
             clean(opts, default_opts, "singleTarget", false)
             clean(opts, default_opts, "multiTarget", false)
             clean(opts, default_opts, "scale", 1)
@@ -526,17 +527,27 @@ function NugRunningGUI.CreateCommonForm(self)
 
 	local ghost = AceGUI:Create("CheckBox")
 	ghost:SetLabel("Ghost")
-	ghost:SetRelativeWidth(0.32)
+	ghost:SetRelativeWidth(0.24)
 	ghost:SetCallback("OnValueChanged", function(self, event, value)
 		self.parent.opts["ghost"] = value
 	end)
 	Form.controls.ghost = ghost
 	Form:AddChild(ghost)
-    AddTooltip(ghost, "Timer remains for a short time after expiring")
+	AddTooltip(ghost, "Timer remains for a short time after expiring")
+	
+	local preghost = AceGUI:Create("CheckBox")
+	preghost:SetLabel("PreGhost")
+	preghost:SetRelativeWidth(0.24)
+	preghost:SetCallback("OnValueChanged", function(self, event, value)
+		self.parent.opts["preghost"] = value
+	end)
+	Form.controls.preghost = preghost
+	Form:AddChild(preghost)
+    AddTooltip(preghost, "Create empty bar when switching to target without existing timer")
 
 	local shine = AceGUI:Create("CheckBox")
 	shine:SetLabel("Shine")
-	shine:SetRelativeWidth(0.32)
+	shine:SetRelativeWidth(0.24)
 	shine:SetCallback("OnValueChanged", function(self, event, value)
 		self.parent.opts["shine"] = value
 	end)
@@ -546,7 +557,7 @@ function NugRunningGUI.CreateCommonForm(self)
 
 	local shinerefresh = AceGUI:Create("CheckBox")
 	shinerefresh:SetLabel("On Refresh")
-	shinerefresh:SetRelativeWidth(0.32)
+	shinerefresh:SetRelativeWidth(0.24)
 	shinerefresh:SetCallback("OnValueChanged", function(self, event, value)
 		self.parent.opts["shinerefresh"] = value
 	end)
@@ -913,6 +924,7 @@ function NugRunningGUI.FillForm(self, Form, class, category, id, opts, isEmptyFo
 	else
 		controls.ghost:SetValue(false)
 	end
+	controls.preghost:SetValue(opts.preghost)
 	controls.maxtimers:SetText(opts.maxtimers)
 	controls.singleTarget:SetValue(opts.singleTarget)
 	controls.multiTarget:SetValue(opts.multiTarget)

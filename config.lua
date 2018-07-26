@@ -421,7 +421,7 @@ Cooldown( 269513,{ name = "Death from Above", color = colors.DBROWN, ghost = tru
 Spell( 212150 ,{ name = "Cheatp Tricks", duration = 5, color = colors.LBLUE, scale = 0.75 })
 Spell( 207777 ,{ name = "Dismantle", duration = 6, color = colors.DBROWN, scale = 0.6, shine = true })
 Spell( 197091 ,{ name = "Neurotoxin", duration = 10, color = colors.TEAL3, scale = 0.75 })
-Spell( 198688 ,{ name = "Dagger in the Dark", duration = 10, scale = 0.6, color = colors.PURPLE4, singleTarget = true })
+-- Spell( 198688 ,{ name = "Dagger in the Dark", duration = 10, scale = 0.6, color = colors.PURPLE4, singleTarget = true })
 
 
 
@@ -462,9 +462,9 @@ Spell( 6770  ,{ name = "Sap",duration = 60, color = colors.LBLUE })
 
 local bleed_normalize = 24
 --Garrote
-DotSpell( 703,{ name = "", nameplates = true, scale = 0.85, fixedlen = bleed_normalize, recast_mark = 18*0.3-0.2, color = colors.PINKIERED, duration = 18 })
+DotSpell( 703,{ name = "", nameplates = true, scale = 0.85, fixedlen = bleed_normalize, color = colors.PINKIERED, duration = 18 })
 --Rupture
-Spell( 1943  ,{ name = "Rupture", short = "", shinerefresh = true, fixedlen = bleed_normalize, nameplates = true, overlay = {0, 24*0.3, 0.2}, color = colors.PINK2, duration = 24, preghost = true,  ghost = 7,
+Spell( 1943  ,{ name = "Rupture", short = "", shinerefresh = true, fixedlen = bleed_normalize, nameplates = true, overlay = {0, 24*0.3, 0.2}, color = colors.PURPLE5, duration = 24, preghost = true,  ghost = 7,
     init = function(self)
         self.overlay[2] = IsPlayerSpell(193531) and 28*0.3 or 24*0.3 --Deeper Stratagem
         self.recast_mark = self.overlay[2]
@@ -477,7 +477,7 @@ Spell( 121411, { name = "Crimson Tempest", overlay = {0, 12*0.3, 0.2}, color = c
     end
 })
 --Nightblade
-Spell( 195452  ,{ name = "", ghost = true, nameplates = true, shinerefresh = true, overlay = {0, 4.8, 0.15}, recast_mark = 4.8, fixedlen = 16, color = colors.CURSE, duration = 16})
+Spell( 195452  ,{ name = "", ghost = true, nameplates = true, shinerefresh = true, overlay = {0, 4.8, 0.15}, recast_mark = 4.8, fixedlen = 16, color = colors.PURPLE5, duration = 16})
 
 -- Spell( 1330  ,{ name = "Silence", color = colors.PINK, duration = 3 })
 
@@ -487,7 +487,7 @@ Spell( 195452  ,{ name = "", ghost = true, nameplates = true, shinerefresh = tru
 Spell( 32645 ,{ name = "Envenom", color = colors.DTEAL, duration = function() return (1+GetCP()) end })
 Spell( 79140 ,{ name = "Vendetta", shine = true, color = colors.CURSE, duration = 20 })
 Cooldown( 79140 ,{ name = "Vendetta", color = colors.CURSE, scale_until = 10 })
-Cooldown( 703 ,{ name = "Garrote", ghost = true, ghosteffect = "NIGHTBORNE", color = colors.DRED, scale = 0.6, priority = -20, resetable = true })
+Cooldown( 703 ,{ name = "Garrote", ghost = true, ghosteffect = "NIGHTBORNE", color = colors.PINK, scale = 0.6, priority = -20, resetable = true })
 Spell( 193538 ,{ name = "Alacrity", shinerefresh = true, priority = -2, scale_until = 5, color = colors.WOO2DARK, color2 = colors.WOO2, duration = 20 })
 
 Spell( 195627,{ name = "Opportunity", shine = true, shinerefresh = true, priority = 11, color = colors.PINKIERED, duration = 10 })
