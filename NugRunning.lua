@@ -427,7 +427,7 @@ function NugRunning.COMBAT_LOG_EVENT_UNFILTERED( self, event )
                         if opts.action then
                             opts.action(active, srcGUID, dstGUID, spellID, auraType) --  auraType = damage amount for SPELL_DAMAGE
                         else
-                            self:ActivateTimer(playerGUID, playerGUID, dstName, nil, spellID, spellName, opts, "EVENT", opts.duration)
+                            self:ActivateTimer(playerGUID, dstGUID, dstName, nil, spellID, spellName, opts, "EVENT", opts.duration)
                             break
                         end
                     end
