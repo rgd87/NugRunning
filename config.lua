@@ -1066,6 +1066,7 @@ Cooldown( 20473 ,{ name = "Holy Shock", ghost = true, priority = 9, fixedlen = n
 Cooldown( 184575 ,{ name = "Blade of Justice", tickshine = true, ghost = true, priority = 9, fixedlen = normalized_length, color = colors.WOO, ghosteffect = "NIGHTBORNE" })
 Cooldown( 35395 ,{ name = "Crusader Strike", tick = 1.5, tickshine = true, overlay = {"tick", "end"}, ghost = true, short = "", priority = 10, fixedlen = normalized_length, color = colors.CURSE })
 Cooldown( 204019 ,{ name = "Blessed Hammer", short = "", ghost = true, ghosteffect = "AEGWYNN", priority = 10, fixedlen = normalized_length, color = colors.CURSE })
+Cooldown( 53595 ,{ name = "Hammer of the Righteous", short = "", ghost = true, ghosteffect = "AEGWYNN", priority = 10, fixedlen = normalized_length, color = colors.CURSE })
 
 Spell( 197277,{ name = "Judgement", shine = true, singleTarget = true, priority = -100500, color = colors.PURPLE2, duration = 6 }) --debuff
 Cooldown( 20271 ,{ name = "Judgement", ghost = true, fixedlen = normalized_length, priority = 8, color = colors.PURPLE, ghosteffect = "JUDGEMENT" })
@@ -1147,7 +1148,7 @@ DotSpell( 164812 ,{ name = "Moonfire", duration = 16, preghost = true, nameplate
                 self.scale = 1
             end
         end,
-        isknowncheck = function() return IsPlayerSpell(8921) end
+        isknowncheck = function() return GetSpecialization() == 1 end
         })
 Spell( 164547 ,{ name = "Lunar Empowerment", short = "", group = "buffs", priority = -25, duration = 30, scale = 0.8, ghost = true, color = colors.REJUV, charged = true, maxcharge = 3})
 Spell( 164545 ,{ name = "Solar Empowerment", short = "", group = "buffs", priority = -24, duration = 30, scale = 0.8, ghost = true, color = colors.ORANGE2, charged = true, maxcharge = 3})
@@ -1158,7 +1159,7 @@ DotSpell( 164815 ,{ name = "Sunfire",duration = 12, preghost = true, nameplates 
             self.duration = duration
             self.overlay[2] = duration*0.3
         end,
-        isknowncheck = function() return IsPlayerSpell(93402) end }) -- Sunfire button spell id
+        isknowncheck = function() return GetSpecialization() == 1 end }) -- Sunfire button spell id
 -- Spell( 93400 ,{ name = "Shooting Stars", shine = true, duration = 12, color = colors.CURSE })
 -- Spell( 48505 ,{ name = "Starfall", shine = true, duration = 10, color = colors.WOO2 })
 -- Cooldown( 78674 ,{ name = "Starsurge", resetable = true, priority = 6, ghost = true, color = colors.CURSE })
@@ -1181,7 +1182,8 @@ local bleed_normalize = nil
 Spell( 155722 ,{ name = "Rake", duration = 15, showpower = true, priority = 6, preghost = true, nameplates = true, ghost = 4, overlay = {0, 15*0.3, 0.2}, fixedlen = bleed_normalize, color = colors.PINKIERED,
         init = function(self)
             self.overlay[2] = IsPlayerSpell(202032) and 15*0.8*0.3 or 15*0.3
-        end})
+        end,
+        isknowncheck = function() return IsPlayerSpell(1822) and IsUsableSpell(1822) end })
 Spell( 1079 ,{ name = "Rip", duration = 24, preghost = true, showpower = true, priority = 5, ghost = 4, nameplates = true, overlay = {0, 24*0.3, 0.2}, fixedlen = bleed_normalize, color = colors.RED,
         init = function(self)
             self.overlay[2] = IsPlayerSpell(202032) and 24*0.8*0.3 or 24*0.3

@@ -1,3 +1,7 @@
+### 8.0.6
+
+- fixed the issue with interrupt timer showing up on pve targets
+
 ### 8.0.5
 
 - PreGhost feature, enabled for main dots on multidotting spec
