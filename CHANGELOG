@@ -1,6 +1,7 @@
 ### 8.0.6
 
-- fixed the issue with interrupt timer showing up on pve targets
+- fixed preghost moonfire/sunfire on non-balance druids
+- fixed interrupt timers showing up on pve targets
 
 ### 8.0.5
 

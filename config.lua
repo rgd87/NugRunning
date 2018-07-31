@@ -15,6 +15,8 @@ local Talent = helpers.Talent
 local Glyph = helpers.Glyph
 local GetCP = helpers.GetCP
 local SPECS = helpers.SPECS
+local IsPlayerSpell = IsPlayerSpell
+local IsUsableSpell = IsUsableSpell
 local _,class = UnitClass("player")
 
 -- NugRunningConfig.overrideTexture = true
