@@ -557,6 +557,7 @@ Spell( 85739 ,{ name = "Whirlwind", short = "", glowtime = 20, group = "buffs", 
 -- Spell( 6673 ,{ name = "Battle Shout", target = "player", glowtime = 10, priority = -10, color = colors.DPURPLE, duration = 120 })
 -- Spell( 469 ,{ name = "Commanding Shout", target = "player", priority = -10, glowtime = 10, short = "CommShout", color = colors.DPURPLE, duration = 120 })
 Spell( 132404 ,{ name = "Shield Block", color = colors.WOO2, shine = true, group = "buffs", priority = - 9, duration = 6, arrow = colors.LGREEN })
+Spell( 12975, { name = "Last Stand", color = colors.PURPLE3, duration = 20, group = "buffs", priority = -8, arrow = colors.LGREEN })
 -- Spell( 169667 ,{ name = "Shield Charge", shine = true, color = colors.PURPLE2, group = "buffs", priority = - 9, duration = 6 })
 Cooldown( 2565 ,{ name = "", priority = 9.9, fixedlen = 9, scale = .5, ghost = true, color = colors.DPURPLE, }) -- shield block cd
 -- Cooldown( 156321 ,{ name = "", priority = 9.9, fixedlen = 9, scale = .5, ghost = true, color = colors.DPURPLE, }) -- shield charge cd
@@ -689,7 +690,7 @@ Cooldown( 118000 ,{ name = "Dragon Roar", fixedlen = 9, ghost = 3, priority = 8,
                                                                             -- end
                                                                                 -- })
 
-Spell( 12975, { name = "Last Stand", color = colors.BLACK, duration = 20, group = "buffs" })
+
 Spell( 97463, { name = "Commanding Shout", color = colors.BLACK, target = "player", duration = 10, group = "buffs" })
 Spell( 118038, { name = "Die by the Sword", short = "DbtS", color = colors.BLACK, duration = 8, group = "buffs" })
 Spell( 871, { name = "Shield Wall", color = colors.WOO2, duration = 12, group = "buffs" })
@@ -778,7 +779,7 @@ Spell( 116095 ,{ name = "Disable", ghost = true, color = colors.PURPLE, duration
 Spell( 116706 ,{ name = "Root", color = colors.BROWN, duration = 8 })
 
 
-EventTimer({ event = "SPELL_SUMMON", spellID = 123904, name = "Xuen", group = "buffs", duration = 45, priority = -8, color = colors.CHILL })
+EventTimer({ event = "SPELL_SUMMON", spellID = 123904, name = "Xuen", group = "buffs", duration = 20, priority = -8, color = colors.CHILL })
 
 helpers.Cast(113656, {name = "Fists of Fury", fixedlen = ww_normalize, color = colors.PINK3, priority = 10.1 })
 Cooldown( 113656, { name = "Fists of Fury", fixedlen = ww_normalize, scale_until = 10, effect = effects.AEGWYNN, effecttime = 3,  color = colors.PINKIERED, priority = 4, ghost = true })
@@ -961,7 +962,6 @@ Spell( 116267 ,{ name = "Incanter's Flow", duration = 100500, group = "buffs", p
 Spell( 31589 ,{ name = "Slow", duration = 15, pvpduration = 8 })
 --FIRE
 
-Spell( 199786,{ name = "Glacial Spike", color = colors.CHIM, duration = 5, shine = true })
 Spell( 31661 ,{ name = "Dragon's Breath", duration = 5, color = colors.ORANGE, short = "Breath", maxtimers = 1 })
 Spell( 2120 ,{ name = "Flamestrike", duration = 8, color = colors.PURPLE, maxtimers = 1 })
 
@@ -987,11 +987,13 @@ EventTimer({ spellID = 12654, event = "SPELL_PERIODIC_DAMAGE",
         end
     end})
 
+Spell( 198111 ,{ name = "Temporal Shield",duration = 6, color = colors.CHIM, group = "buffs" })
+
 --FROST
 Spell( 12472 ,{ name = "Icy Veins", group = "buffs", duration = 20, color = colors.PINK3 })
 Spell( 82691 ,{ name = "Ring of Frost", shine = true, color = colors.FROZEN, maxtimers = 1, duration = 12, pvpduration = 8 }) -- it's not multi target, but... it can spam
 Spell( 122 ,{ name = "Frost Nova",duration = 8, color = colors.FROZEN, maxtimers = 1 })
-Spell( 228600 ,{ name = "Glacial Spike",duration = 4, color = colors.FROZEN })
+Spell( 228600 ,{ name = "Glacial Spike",duration = 4, color = colors.FROZEN, maxtimers = 1 })
 Spell( 33395 ,{ name = "Freeze",duration = 8, color = colors.FROZEN })
 Spell( 44544 ,{ name = "Fingers of Frost", shine = true, shinerefresh = true, priority = 10, scale = 0.8, duration = 15, color = colors.PURPLE3 })
 Spell( 190446 ,{ name = "Brain Freeze", priority = 12, duration = 15, scale = 0.8, glowtime = 15, shine = true, shinerefresh = true, color = colors.DBLUE })
