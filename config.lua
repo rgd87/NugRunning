@@ -1184,21 +1184,12 @@ Spell( 163505 ,{ name = "Rake Stun", duration = 4, scale = 0.5, priority = 6.2, 
 
 local bleed_normalize = nil
 Spell( 155722 ,{ name = "Rake", duration = 15, showpower = true, priority = 6, preghost = true, nameplates = true, ghost = 4, overlay = {0, 15*0.3, 0.2}, fixedlen = bleed_normalize, color = colors.PINKIERED,
-        init = function(self)
-            self.overlay[2] = IsPlayerSpell(202032) and 15*0.8*0.3 or 15*0.3
-        end,
         isknowncheck = function() return IsPlayerSpell(1822) and IsUsableSpell(1822) end })
-Spell( 1079 ,{ name = "Rip", duration = 24, preghost = true, showpower = true, priority = 5, ghost = 4, nameplates = true, overlay = {0, 24*0.3, 0.2}, fixedlen = bleed_normalize, color = colors.RED,
-        init = function(self)
-            self.overlay[2] = IsPlayerSpell(202032) and 24*0.8*0.3 or 24*0.3
-        end })
+Spell( 1079 ,{ name = "Rip", duration = 24, preghost = true, showpower = true, priority = 5, ghost = 4, nameplates = true, maxtimers = 4, overlay = {0, 24*0.3, 0.2}, fixedlen = bleed_normalize, color = colors.RED, })
 
 -- Spell( 210705 ,{ name = "Ashamane's Rip", duration = 24, priority = 4, scale = 0.75, fixedlen = 24, color = colors.PURPLE })
 -- feral's thrash
-Spell( 106830, { name = "Thrash", showpower = true, fixedlen = bleed_normalize, nameplates = true, overlay = {0, 15*0.3, 0.2}, maxtimers = 1, color = colors.PURPLE, duration = 15, ghost = true, 
-        init = function(self)
-            self.overlay[2] = IsPlayerSpell(202032) and 15*0.8*0.3 or 15*0.3
-        end})
+Spell( 106830, { name = "Thrash", showpower = true, fixedlen = bleed_normalize, nameplates = true, overlay = {0, 15*0.3, 0.2}, maxtimers = 1, color = colors.PURPLE, duration = 15, ghost = true })
 
 Cooldown( 202028, { name = "Brutal Slash", priority = 10, ghost = true, color = colors.CURSE })
 
