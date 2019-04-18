@@ -76,19 +76,24 @@ colors["MISSED"] = { .15, .15, .15}
 colors["DEFAULT_DEBUFF"] = { 0.8, 0.1, 0.7}
 colors["DEFAULT_BUFF"] = { 1, 0.4, 0.2}
 
+
+-- [1398449] = "spells/7fx_nightborne_missile_streak.m2"
+-- [1261307] = "spells/7fx_paladin_judgement_missile.m2"
+-- [1414253] = "spells/7fx_mage_aegwynnsascendance_statehand.m2"
+
 local effects = {}
 effects["NIGHTBORNE"] = {
-    path = [[spells/7fx_nightborne_missile_streak.m2]],
+    path = 1398449,
     scale = 4,
     x = 0, y = 1,
 }
 effects["JUDGEMENT"] = {
-    path = [[spells/7fx_paladin_judgement_missile.m2]],
+    path = 1261307,
     scale = 2.7,
     x = 0, y = 5,
 }
 effects["AEGWYNN"] = {
-    path = [[spells/7fx_mage_aegwynnsascendance_statehand.m2]],
+    path = 1414253,
     scale = 3,
     x = -6, y = 0,
 }
