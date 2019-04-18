@@ -380,11 +380,8 @@ local Redraw = function(self)
     self:SetModelScale(1)
     self:SetPosition(0,0,0)
 
-    if type(self.model_path) == "number" then
-        self:SetDisplayInfo(self.model_path)
-    else
-        self:SetModel(self.model_path)
-    end
+    self:SetModel(self.model_path)
+
     self:SetModelScale(self.model_scale)
     self:SetPosition(self.ox, self.oy, self.oz)
 end
