@@ -1315,7 +1315,6 @@ if class == "DEMONHUNTER" then
     Spell( 208628,{ name = "Momentum",  duration = 6, group = "buffs", ghost = 1, priority = -9999, shine = true, shinerefresh = true, color = colors.REJUV, scale = 0.8 })
     Spell( 203650,{ name = "Prepared", group = "buffs", color = colors.DPURPLE, scale = 0.8, duration = 10 })
 
-    Spell( 227225,{ name = "Soul Barrier", group = "buffs", duration = 8, color = colors.WOO2, shine = true })
     Spell( 207811,{ name = "Nether Bond", group = "buffs", duration = 15, color = colors.WOO2, shine = true })
 
     Cooldown( 211881,{ name = "Fel Eruption", color = colors.DBROWN, ghost = true,  resetable = true, scale_until = 10, fixedlen = 10})
