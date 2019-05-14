@@ -1487,9 +1487,9 @@ Spell( 61295 ,{ name = "Riptide", duration = 15, color = colors.FROZEN })
 Spell( 51514 ,{ name = "Hex", duration = 50, pvpduration = 8, color = colors.CURSE })
 Spell( 79206 ,{ name = "Spiritwalker's Grace", duration = 10, color = colors.LGREEN, group = "buffs" })
 
-DotSpell( 188838 ,{ name = "Flame Shock", duration = 21, color = colors.PURPLE, ghost = true }) -- restoration
-DotSpell( 188389 ,{ name = "Flame Shock", duration = 18, color = colors.PURPLE, ghost = true }) -- elemental
-Cooldown( 188389 ,{ name = "Flame Shock", color = colors.WOO, ghost = 1, priority = 1, scale = 0.5 })  -- elemental
+DotSpell( 188838 ,{ name = "Flame Shock", duration = 21, color = colors.RED, ghost = true }) -- restoration
+DotSpell( 188389 ,{ name = "Flame Shock", duration = 18, color = colors.RED, ghost = true }) -- elemental
+Cooldown( 188389 ,{ name = "Flame Shock", color = colors.DTEAL, ghost = 1, priority = 1, scale = 1 })  -- elemental
 
 Spell( 196840 ,{ name = "Frost Shock", duration = 5, color = colors.LBLUE, })
 Spell( 197209 ,{ name = "Lightning Rod", duration = 10, color = colors.DBLUE, shine = true, shinerefresh = true })
@@ -1497,7 +1497,7 @@ Spell( 197209 ,{ name = "Lightning Rod", duration = 10, color = colors.DBLUE, sh
 
 
 Spell( 16166 ,{ name = "Elemental Mastery", duration = 20, color = colors.PINKIERED, group = "buffs" })
-Spell( 77762 ,{ name = "Lava Surge", duration = 6, color = colors.TEAL2, priority = 11, scale = .7, shine = true })
+Spell( 77762 ,{ name = "Lava Surge", duration = 6, color = colors.TEAL2, glowtime = 6, effect = effects.JUDGEMENT, priority = 11, scale = .7, shine = true })
 Cooldown( 51505 ,{ name = "Lava Burst", color = colors.CURSE, ghost = true, priority = 10, resetable = true })
 -- Cooldown( 51490 ,{ name = "Thunderstorm", color = colors.WOO2, scale_until = 5 })
 Cooldown( 61882 ,{ name = "Earthquake", color = colors.BROWN })
@@ -1511,6 +1511,7 @@ Cooldown( 187837 ,{ name = "Lightning Bolt", color = colors.PINK, minduration = 
 
 
 Spell( 210714 ,{ name = "Icefury", duration = 15, color = colors.FROZEN, scale = 0.8, group = "buffs" })
+Cooldown( 210714 ,{ name = "Icefury", duration = 15, ghost = true, scale_until = 5, color = colors.TEAL })
 
 
 Spell( 194084 ,{ name = "Flametongue", duration = 16, color = colors.PINK3, scale = 0.75, fixedlen = enh_normalize, group = "buffs" })
@@ -1532,13 +1533,28 @@ Cooldown( 188089 ,{ name = "Earthen Spike", color = colors.PURPLE3, ghost = true
 
 
 Spell({ 114050, 114051, 114052} ,{ name = "Ascendance", duration = 15, color = colors.PINK }) --ele, enh, resto
-Spell( 108271 ,{ name = "Astral Shift", duration = 6, color = colors.BLACK })
+Spell( 108271 ,{ name = "Astral Shift", group = "buffs", duration = 6, shine = true, color = colors.PURPLE3 })
+Spell( 58875 ,{ name = "Spirit Walk", group = "buffs", duration = 8, shine = true })
 
 
+EventTimer({ spellID = 51533, event = "SPELL_CAST_SUCCESS", group = "buffs", name = "Feral Spirit", duration = 15, scale = 0.6, color = colors.WOO2 })
+EventTimer({ spellID = 192222, event = "SPELL_SUMMON", group = "buffs", name = "Liquid Magma Totem", duration = 15, scale = 0.6, color = colors.WOO })
+EventTimer({ spellID = 157299, event = "SPELL_SUMMON", group = "buffs", name = "Storm Elemental", duration = 30, scale = 0.6, color = colors.WOO2 })
+EventTimer({ spellID = 188592, event = "SPELL_SUMMON", group = "buffs", name = "Fire Elemental", duration = 30, scale = 0.6, color = colors.ORANGE2 })
+EventTimer({ spellID = 8143, event = "SPELL_SUMMON", group = "buffs", name = "Tremor Totem", duration = 10, color = colors.DPURPLE })
+EventTimer({ spellID = 157153, event = "SPELL_SUMMON", group = "buffs", name = "Cloudburst Totem", duration = 15, color = colors.LGREEN })
+EventTimer({ spellID = 192058, event = "SPELL_SUMMON", group = "buffs", name = "Capacitor Totem", duration = 2, color = colors.LBLUE })
+Spell( 118905 ,{ name = "Static Charge", duration = 3, color = colors.BLACK, maxtimers = 1 })
+Spell( 64695 ,{ name = "Earthgrab Root", duration = 8, color = colors.BROWN, scale = 0.7, maxtimers = 1 })
+--pvp
+Spell( 208963, { name = "Skyfury Totem", timeless = true, group = "buffs", duration = 15, scale = 0.7, color = colors.PURPLE4 })
+Spell( 208997, { name = "Counterstrike Totem", timeless = true, maxtimers = 1, group = "buffs", duration = 15, scale = 0.7, color = colors.DBLUE })
+EventTimer({ spellID = 204336, event = "SPELL_SUMMON", name = "Grounding Totem", group = "buffs", duration = 3, scale = 0.7, shine = true, color = colors.CURSE })
+Spell( 210918 ,{ name = "Ethereal Form", group = "buffs", duration = 15, shine = true, color = colors.CHIM })
 -- TOTEMS
-NugRunningConfig.totems[1] = { name = "Water", group = "buffs", scale = 0.5, color = { 65/255, 110/255, 1}, hideName = false, priority = -77 }
-NugRunningConfig.totems[2] = { name = "Earth", group = "buffs", scale = 0.5,  color = {74/255, 142/255, 42/255}, priority = -78 }
-NugRunningConfig.totems[3] = { name = "Fire", group = "buffs", scale = 0.5,  color = {1,80/255,0}, priority = -79 }
-NugRunningConfig.totems[4] = { name = "Air", group = "buffs", scale = 0.5,  color = {0.6, 0, 1}, priority = -80 }
+-- NugRunningConfig.totems[1] = { name = "Water", group = "buffs", scale = 0.5, color = { 65/255, 110/255, 1}, hideName = false, priority = -77 }
+-- NugRunningConfig.totems[2] = { name = "Earth", group = "buffs", scale = 0.5,  color = {74/255, 142/255, 42/255}, priority = -78 }
+-- NugRunningConfig.totems[3] = { name = "Fire", group = "buffs", scale = 0.5,  color = {1,80/255,0}, priority = -79 }
+-- NugRunningConfig.totems[4] = { name = "Air", group = "buffs", scale = 0.5,  color = {0.6, 0, 1}, priority = -80 }
 
 end
