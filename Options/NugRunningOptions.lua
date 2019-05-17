@@ -226,6 +226,15 @@ function NugRunningGUI.CreateCommonForm(self)
 		local delta = CopyTable(opts)
         delta.timer = nil -- important, clears runtime data
 
+		-- remove clones of the previous version of the spell
+		local oldOriginalSpell = NugRunningConfigMerged[category][spellID]
+		if oldOriginalSpell.clones then
+			for i, additionalSpellID in ipairs(oldOriginalSpell.clones) do
+				NugRunningConfigMerged[category][additionalSpellID] = nil
+				NugRunningConfigMerged.spellClones[additionalSpellID] = nil
+			end
+		end
+		----------
 
 		if default_opts then
             NugRunning.RemoveDefaults(delta, default_opts)
@@ -238,13 +247,16 @@ function NugRunningGUI.CreateCommonForm(self)
 		else
 			NugRunningConfigMerged[category][spellID] = delta
 		end
-		--fill up spell rank ids
+
+		-- fill up spell clones of the new version
 		local originalSpell = NugRunningConfigMerged[category][spellID]
 		if originalSpell.clones then
 			for i, additionalSpellID in ipairs(originalSpell.clones) do
 				NugRunningConfigMerged[category][additionalSpellID] = originalSpell
+				NugRunningConfigMerged.spellClones[additionalSpellID] = true
 			end
 		end
+		----------
 
 		NugRunningConfigCustom[class] = NugRunningConfigCustom[class] or {}
 		NugRunningConfigCustom[class][category] = NugRunningConfigCustom[class][category] or {}
