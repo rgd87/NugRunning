@@ -220,11 +220,12 @@ function NugRunningGUI.CreateCommonForm(self)
 			clean(opts, default_opts, "glowtime", false)
 			clean(opts, default_opts, "glow2time", false)
 			clean(opts, default_opts, "effecttime", false)
+			clean(opts, default_opts, "clones", false)
         end
         if opts.overlay and (not default_opts or not default_opts.overlay) and (not opts.overlay[1] or not opts.overlay[2]) then opts.overlay = nil end
 		-- PRESAVE = p.opts
 		local delta = CopyTable(opts)
-        delta.timer = nil -- important, clears runtime data
+		delta.timer = nil -- important, clears runtime data
 
 		-- remove clones of the previous version of the spell
 		local oldOriginalSpell = NugRunningConfigMerged[category][spellID]
@@ -235,8 +236,10 @@ function NugRunningGUI.CreateCommonForm(self)
 			end
 		end
 		----------
+		-- DELTA = delta
 
 		if default_opts then
+			NugRunning.RemoveDefaultsPreserve(delta.clones, default_opts.clones)
             NugRunning.RemoveDefaults(delta, default_opts)
 			NugRunningConfigMerged[category][spellID] = CopyTable(default_opts)
             -- if delta.disabled then
@@ -278,7 +281,6 @@ function NugRunningGUI.CreateCommonForm(self)
 		local category = p.category
 		local spellID = p.id
 		-- local opts = p.opts
-		print(spellID or "nil", category, class)
 		if NugRunningConfigCustom[class][category] then
 			NugRunningConfigCustom[class][category][spellID] = nil
 		end
@@ -885,7 +887,26 @@ function NugRunningGUI.CreateCommonForm(self)
 	end)
 	Form.controls.effecttime = effecttime
 	Form:AddChild(effecttime)
-    AddTooltip(effecttime, "Time when 3D effect starts being shown")
+	AddTooltip(effecttime, "Time when 3D effect starts being shown")
+	
+	local clones = AceGUI:Create("EditBox")
+	clones:SetLabel("Additional Spell IDs")
+	clones:SetRelativeWidth(0.9)
+	clones:SetCallback("OnEnterPressed", function(self, event, value)
+		local cloneList = {}
+		for spellID in string.gmatch(value, "%d+") do
+			table.insert(cloneList, tonumber(spellID))
+		end
+        if next(cloneList) then
+            self.parent.opts["clones"] = cloneList
+        else
+            self.parent.opts["clones"] = false
+            self:SetText("")
+        end
+	end)
+	Form.controls.clones = clones
+	Form:AddChild(clones)
+    AddTooltip(clones, "Spell ID list of clones / spell ranks" )
 
     -- Frame:AddChild(Form)
     -- Frame.top = Form
@@ -975,7 +996,14 @@ function NugRunningGUI.FillForm(self, Form, class, category, id, opts, isEmptyFo
 	end
 
     controls.effect:SetValue(opts.effect or "NONE")
-    controls.ghosteffect:SetValue(opts.ghosteffect or "NONE")
+	controls.ghosteffect:SetValue(opts.ghosteffect or "NONE")
+	
+	local clonesText
+	if opts.clones then
+		clonesText = table.concat(opts.clones, ", ")
+	end
+	controls.clones:SetText(clonesText)
+	
 
 	if id and not NugRunningConfig[category][id] then
 		controls.delete:SetDisabled(false)
@@ -996,7 +1024,8 @@ function NugRunningGUI.FillForm(self, Form, class, category, id, opts, isEmptyFo
 		controls.multiTarget:SetDisabled(false)
 		controls.affiliation:SetDisabled(false)
 		controls.nameplates:SetDisabled(false)
-        controls.hide_until:SetDisabled(true)
+		controls.hide_until:SetDisabled(true)
+		controls.clones:SetDisabled(false)
 	else
 		controls.duration:SetDisabled(true)
 		controls.maxtimers:SetDisabled(true)
@@ -1004,7 +1033,8 @@ function NugRunningGUI.FillForm(self, Form, class, category, id, opts, isEmptyFo
 		controls.multiTarget:SetDisabled(true)
 		controls.affiliation:SetDisabled(true)
 		controls.nameplates:SetDisabled(true)
-        controls.hide_until:SetDisabled(false)
+		controls.hide_until:SetDisabled(false)
+		controls.clones:SetDisabled(true)
 	end
 
 	if category == "itemcooldowns" then
