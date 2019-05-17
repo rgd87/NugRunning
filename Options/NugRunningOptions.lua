@@ -1659,17 +1659,6 @@ local function MakeGeneralOptions()
                         set = function(info, v) NugRunning.db.nameplates = not NugRunning.db.nameplates end,
                         order = 4,
                     },
-                    -- nameplateLines = {
-                    --     name = "Nameplate Lines",
-                    --     type = "toggle",
-                    --     desc = "Draw guide lines from nameplates to main timers",
-                    --     get = function(info) return NugRunning.db.nameplateLines end,
-                    --     set = function(info, v)
-                    --         NugRunning.db.nameplateLines = not NugRunning.db.nameplateLines
-                    --         NugRunningNameplates:EnableLines(NugRunning.db.nameplateLines)
-                    --     end,
-                    --     order = 5,
-					-- },
 					cooldowns = {
                         name = "Cooldowns",
                         type = "toggle",

@@ -11,7 +11,6 @@ local next = next
 local table_remove = table.remove
 
 local makeicon = true
-local enableLines = true
 local confignp = NugRunningConfig.nameplates
 
 local np_xoffset = 0
@@ -66,10 +65,6 @@ local MiniOnUpdate = function(self, time)
     local beforeEnd = endTime - GetTime()
 
     self:SetValue(beforeEnd + self.startTime)
-end
-
-function NugRunningNameplates:EnableLines(state)
-    enableLines = state
 end
 
 local backdrop = {
@@ -135,19 +130,6 @@ function NugRunningNameplates:CreateNameplateTimer(frame)
     end
     table.insert(frame.timers, f)
     return f
-end
-
-function NugRunningNameplates:CreateNameplateLine(frame)
-    local line = frame:CreateLine(nil, "ARTWORK")
-    line:SetTexture("Interface\\AddOns\\NugRunning\\white")
-    line:SetStartPoint("CENTER", frame.UnitFrame.healthBar, 0,0)
-    line:SetEndPoint("CENTER", UIParent, 100,200)
-    line:SetThickness(0.5)
-    line:SetVertexColor(1,0.3,0.3)
-    line:Hide()
-
-    frame.nrunLine = line
-    return line
 end
 
 function NugRunningNameplates:Resize()
@@ -235,29 +217,10 @@ function NugRunningNameplates:UpdateNPTimers(np, nrunTimers, nameplateUnit)
             end
 
         end
-
-        if np ~= playerNameplate and enableLines then
-            local line = np.nrunLine or self:CreateNameplateLine(np)
-            local guidFirstTimer = nrunTimers[1]
-            -- GUIDFIRST = guidFirstTimer
-            line:SetEndPoint("LEFT", guidFirstTimer, 0,0)
-            line:Show()
-            if nameplateUnit == "target" then
-                line:SetThickness(1)
-                line:SetVertexColor(1,0,0)
-            else
-                line:SetThickness(.5)
-                line:SetVertexColor(1,.3,.3)
-            end
-            if not guidFirstTimer then line:Hide() end
-        elseif np.nrunLine then
-            np.nrunLine:Hide()
-        end
     else
         for _, timer in ipairs(np.timers) do
             timer:Hide()
         end
-        if np.nrunLine then np.nrunLine:Hide() end
     end
 end
 
