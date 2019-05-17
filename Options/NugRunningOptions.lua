@@ -236,7 +236,6 @@ function NugRunningGUI.CreateCommonForm(self)
 			end
 		end
 		----------
-		-- DELTA = delta
 
 		if default_opts then
 			NugRunning.RemoveDefaultsPreserve(delta.clones, default_opts.clones)

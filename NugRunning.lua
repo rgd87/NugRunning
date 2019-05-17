@@ -1609,6 +1609,12 @@ end
 function NugRunning.Unlock(self)
     local prev
     local i = 0
+    local colorNames = {}
+    local colors = NugRunningConfig.colors
+    for color,v in pairs(colors) do
+        table.insert(colorNames, color)
+    end
+
     for timer in pairs(free) do
         i = i+1
         if i > 7 then break end
@@ -1617,9 +1623,12 @@ function NugRunning.Unlock(self)
         timer.startTime = GetTime();
         timer.endTime = GetTime()+130-(i*10);
         timer:SetIcon("Interface\\Icons\\inv_misc_questionmark")
-        timer:SetName("Test timer")
-        timer:SetColor(0.4, 0.4, 0.4)
-        timer:SetCount(5)
+
+        local randColorIndex = math.random(#colorNames)
+        local c = colors[colorNames[randColorIndex]]
+        timer:SetName(colorNames[randColorIndex])
+        timer:SetColor(unpack(c))
+        timer:SetCount(math.random(3))
         timer:Show()
         local point, to
         local xOffset, yOffset, ySign = 0, 4, 1
