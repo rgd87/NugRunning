@@ -28,32 +28,34 @@ function NugRunningGUI.GenerateCategoryTree(self, isGlobal, category)
 
 	local t = {}
 	for spellID, opts in pairs(NugRunningConfigMerged[category]) do
-		if (isGlobal and opts.global) or (not isGlobal and not opts.global) then
-			local name = (opts.name == "" or not opts.name) and (GetSpellInfo(spellID) or "Unknown") or opts.name
-			local custom_opts = custom[category] and custom[category][spellID]
-			local status
-			local order = 5
-			-- print(opts.name, custom_opts)
-			if not custom_opts or not next(custom_opts) then
-				status = nil
-			elseif custom_opts.disabled then
-				status = "|cffff0000[D] |r"
-				order = 6
-			elseif not NugRunningConfig[category][spellID] then
-				status = "|cff33ff33[A] |r"
-				order = 1
-			else
-				status = "|cffffaa00[M] |r"
-				order = 2
+		if not NugRunningConfigMerged.spellClones[spellID] then
+			if (isGlobal and opts.global) or (not isGlobal and not opts.global) then
+				local name = (opts.name == "" or not opts.name) and (GetSpellInfo(spellID) or "Unknown") or opts.name
+				local custom_opts = custom[category] and custom[category][spellID]
+				local status
+				local order = 5
+				-- print(opts.name, custom_opts)
+				if not custom_opts or not next(custom_opts) then
+					status = nil
+				elseif custom_opts.disabled then
+					status = "|cffff0000[D] |r"
+					order = 6
+				elseif not NugRunningConfig[category][spellID] then
+					status = "|cff33ff33[A] |r"
+					order = 1
+				else
+					status = "|cffffaa00[M] |r"
+					order = 2
+				end
+				local text = status and status..name or name
+				local texture = opts.isItem and select(5,GetItemInfoInstant(spellID)) or  GetSpellTexture(spellID)
+				table.insert(t, {
+					value = spellID,
+					text = text,
+					icon = texture,
+					order = order,
+				})
 			end
-			local text = status and status..name or name
-			local texture = opts.isItem and select(5,GetItemInfoInstant(spellID)) or  GetSpellTexture(spellID)
-			table.insert(t, {
-				value = spellID,
-				text = text,
-				icon = texture,
-				order = order,
-			})
 		end
 	end
 	table.sort(t, sortfunc)
@@ -236,6 +238,13 @@ function NugRunningGUI.CreateCommonForm(self)
 		else
 			NugRunningConfigMerged[category][spellID] = delta
 		end
+		--fill up spell rank ids
+		local originalSpell = NugRunningConfigMerged[category][spellID]
+		if originalSpell.clones then
+			for i, additionalSpellID in ipairs(originalSpell.clones) do
+				NugRunningConfigMerged[category][additionalSpellID] = originalSpell
+			end
+		end
 
 		NugRunningConfigCustom[class] = NugRunningConfigCustom[class] or {}
 		NugRunningConfigCustom[class][category] = NugRunningConfigCustom[class][category] or {}
@@ -257,8 +266,10 @@ function NugRunningGUI.CreateCommonForm(self)
 		local category = p.category
 		local spellID = p.id
 		-- local opts = p.opts
-
-		NugRunningConfigCustom[class][category][spellID] = nil
+		print(spellID or "nil", category, class)
+		if NugRunningConfigCustom[class][category] then
+			NugRunningConfigCustom[class][category][spellID] = nil
+		end
 		NugRunningConfigMerged[category][spellID] = NugRunningConfig[category][spellID]
 
 		NugRunningGUI.frame.tree:UpdateSpellTree()

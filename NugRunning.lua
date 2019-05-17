@@ -273,6 +273,18 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
     cooldowns = config.cooldowns
     itemcooldowns = config.itemcooldowns
     event_timers = config.event_timers
+
+    -- filling up ranks
+    local cloneIDs = {}
+    for spellID, originalSpell in pairs(spells) do
+        if not cloneIDs[spellID] and originalSpell.clones then
+			for i, additionalSpellID in ipairs(originalSpell.clones) do
+                spells[additionalSpellID] = originalSpell
+                cloneIDs[additionalSpellID] = true
+			end
+		end
+    end
+    config.spellClones = cloneIDs
     -- for _, timerType in ipairs(categories) do
         -- for k, opts in pairs(classConfig[timerType]) do
             -- NugRunningConfigMerged[timerType]

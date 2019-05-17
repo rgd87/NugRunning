@@ -128,17 +128,17 @@ Spell( 256740 ,{ name = "Drums of the Maelstrom", short = "Drums", group = "buff
 
 
 -- Essences
-Spell( 297108, { name = "Blood of the Enemy", duration = 15, maxtimers = 1, scale = 0.8, arrow = colors.PINKIERED, glow2time = 5, shine = true, priority = -999999, color = colors.PINKIERED })
-Spell( 295838, { name = "Condensed Life-Force", duration = 6, maxtimers = 1, group = "buffs", shine = true, priority = -999999, color = colors.PINKIERED })
-Spell( 298357, { name = "Memory of Lucid Dreams", duration = 12, group = "buffs", shine = true, priority = -999999, color = colors.PINKIERED })
+Spell( 297108, { name = "Blood of the Enemy", global = true, duration = 15, maxtimers = 1, scale = 0.8, arrow = colors.PINKIERED, glow2time = 5, shine = true, priority = -999999, color = colors.PINKIERED })
+Spell( 295838, { name = "Condensed Life-Force", global = true, duration = 6, maxtimers = 1, group = "buffs", shine = true, priority = -999999, color = colors.PINKIERED })
+Spell( 298357, { name = "Memory of Lucid Dreams", global = true, duration = 12, group = "buffs", shine = true, priority = -999999, color = colors.PINKIERED })
 
-Spell( 299624, { name = "The Ever-Rising Tide", duration = 10, group = "buffs", shine = true, scale = 1, priority = -999998, color = colors.PINKIERED })
-Spell( 296072, { name = "The Ever-Rising Tide", duration = 10, group = "buffs", shine = true, scale = 0.5, priority = -999999, color = colors.PURPLE3})
+Spell( 299624, { name = "The Ever-Rising Tide", global = true, duration = 10, group = "buffs", shine = true, scale = 1, priority = -999998, color = colors.PINKIERED })
+Spell( 296072, { name = "The Ever-Rising Tide", global = true, duration = 10, group = "buffs", shine = true, scale = 0.5, priority = -999999, color = colors.PURPLE3})
 
-Spell( 295762, { name = "Engine of Haste", duration = 30, charged = true, maxcharge = 10, scale = 0.5, group = "buffs", priority = 11, color = colors.LGREEN })
-Spell( 295767, { name = "Engine of Mastery", duration = 30, charged = true, maxcharge = 10, scale = 0.5, group = "buffs", priority = 12, color = colors.LBLUE })
-Spell( 295764, { name = "Engine of Crit", duration = 30, charged = true, maxcharge = 10, scale = 0.5, group = "buffs", priority = 13, color = colors.PINKIERED })
-Spell( 295783, { name = "Ceaseless Progress", duration = 8, group = "buffs", shine = true, priority = -999999, glowtime = 8, color = colors.PINK })
+Spell( 295762, { name = "Engine of Haste", global = true, duration = 30, charged = true, maxcharge = 10, scale = 0.5, group = "buffs", priority = 11, color = colors.LGREEN })
+Spell( 295767, { name = "Engine of Mastery", global = true, duration = 30, charged = true, maxcharge = 10, scale = 0.5, group = "buffs", priority = 12, color = colors.LBLUE })
+Spell( 295764, { name = "Engine of Crit", global = true, duration = 30, charged = true, maxcharge = 10, scale = 0.5, group = "buffs", priority = 13, color = colors.PINKIERED })
+Spell( 295783, { name = "Ceaseless Progress", global = true, duration = 8, group = "buffs", shine = true, priority = -999999, glowtime = 8, color = colors.PINK })
 
 -- local CASTER_POTIONS = function(specmask)
 --         Spell( 105702 ,{ name = "Potion", specmask = specmask, group = "procs", color = colors.GREEN, duration = 25 }) -- Intellect

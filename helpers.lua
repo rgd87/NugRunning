@@ -14,6 +14,17 @@ local AFFILIATION_PARTY_OR_RAID = COMBATLOG_OBJECT_AFFILIATION_RAID + COMBATLOG_
 local AFFILIATION_OUTSIDER = COMBATLOG_OBJECT_AFFILIATION_OUTSIDER
 
 
+
+-- local isLegion = select(4,GetBuildInfo()) < 80000
+-- if isLegion then
+--     helpers.CompatUnitAura = function(...)
+--         local name, _, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, nameplateShowPersonal, spellId, canApplyAura, isBossDebuff, isCastByPlayer, nameplateShowAll, timeMod = UnitAura(...)
+--         return name, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, nameplateShowPersonal, spellId, canApplyAura, isBossDebuff, isCastByPlayer, nameplateShowAll, timeMod
+--     end
+-- else
+-- end
+
+
 helpers.Talent = function (spellID)
     -- local spellName
     -- if type(spellID) == "number" then
@@ -65,15 +76,13 @@ helpers.Spell = function(id, opts)
     if opts.affiliation == "any" then opts.affiliation = AFFILIATION_OUTSIDER end
     if type(id) == "table" then
         -- opts.idgroup = {}
-        for _, i in ipairs(id) do
-            if opts and not GetSpellInfo(i) then print(string.format("nrun: misssing spell #%d (%s)",i,opts.name)) return end
-            NugRunningConfig.spells[i] = opts
-            -- opts.idgroup[i] = true
-        end
-    else
-        if opts and not GetSpellInfo(id) then print(string.format("nrun: misssing spell #%d (%s)",id,opts.name)) return end
-        NugRunningConfig.spells[id] = opts
+        local clones = id
+        id = table.remove(clones, 1) -- extract first spell id from the last as original
+        opts.clones = clones
     end
+        
+    if opts and not GetSpellInfo(id) then print(string.format("nrun: misssing spell #%d (%s)",id,opts.name)) return end
+    NugRunningConfig.spells[id] = opts
 end
 helpers.AddSpell = helpers.Spell
 helpers.ModSpell = function(id, mods)
