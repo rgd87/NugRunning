@@ -111,7 +111,7 @@ helpers.DotSpell = DotSpell
 
 
 local Interrupt = function(id, name, duration)
-    EventTimer({ spellID = id, event = "SPELL_INTERRUPT", short = "Interrupted", name = name, target = "pvp", duration = duration,  scale = 0.75, shine = true, color = colors.LBLUE })
+    EventTimer(id, { event = "SPELL_INTERRUPT", short = "Interrupted", name = name, target = "pvp", duration = duration,  scale = 0.75, shine = true, color = colors.LBLUE })
 end
 
 
@@ -473,8 +473,6 @@ Spell( 199804   ,{ name = "Between the Eyes", shine = true, duration = function(
 Spell( 1776  ,{ name = "Gouge", color = colors.PINK, duration = 4 })
 Spell( 2094  ,{ name = "Blind",duration = 60, pvpduration = 8, color = {0.20, 0.80, 0.2} })
 
--- Spell( 113746 ,{ name = "Weakened Armor", short = "WeakArmor", priority = -10, anySource = true, singleTarget = true, color = colors.BROWN, duration = 30 })
-
 -- Spell( 51722 ,{ name = "Dismantle",duration = 10,color = colors.LRED }) --removed
 Spell( 6770  ,{ name = "Sap",duration = 60, color = colors.LBLUE })
 
@@ -543,7 +541,7 @@ Spell( 245389,{ name = "Toxic Blade", color = colors.PURPLE2, shine = true, grou
 Cooldown( 137619 ,{ name = "Marked for Death", ghost = true, color = colors.LRED, scale_until = 10 })
 
 
-EventTimer({ event = "SPELL_CAST_SUCCESS", spellID = 1725, name = "Distract", color = colors.PURPLE, duration = 10 })
+EventTimer({ event = "SPELL_CAST_SUCCESS", spellID = 1725, name = "Distract", color = colors.PURPLE5, duration = 10 })
 end
 
 if class == "WARRIOR" then
@@ -963,8 +961,6 @@ Cooldown( 198929,{ name = "Cinderstorm", color = colors.PINKIERED, ghost = true 
 -- Cooldown( 153561,{ name = "Meteor", color = colors.PINKIERED, ghost = true })
 -- Cooldown( 205029,{ name = "Flame On", color = colors.DPURPLE2, scale = 0.7 })
 
-
-EventTimer({ event = "SPELL_SUMMON", spellID = 152087, name = "Prismatic Crystal", group = "buffs", priority = -20, duration = 10, color = colors.CHIM })
 -- not shown in combat log
 Spell( 116267 ,{ name = "Incanter's Flow", duration = 100500, group = "buffs", priority = -0.1, timeless = true, charged = true, maxcharge = 5, color = colors.LRED, stackcolor = {
                                                                             [1] = { .3, 0, 0},
@@ -995,7 +991,7 @@ Cooldown( 44457, { name = "Living Bomb", color = colors.RED, ghost = true })
 Cooldown( 108853, { name = "Fire Blast", color = colors.LRED, ghost = true, resetable = true })
 --Cooldown( 2136, { name = "Fire Blast", resetable = true, color = colors.LRED})
 EventTimer({ spellID = 153561, event = "SPELL_CAST_SUCCESS", name = "Meteor", duration = 2.9, color = colors.FIRE })
-EventTimer({ spellID = 12654, event = "SPELL_PERIODIC_DAMAGE",
+EventTimer({ spellID = 12654, event = "SPELL_PERIODIC_DAMAGE", name = "Ignite",
     action = function(active, srcGUID, dstGUID, spellID, damage )
         local ignite_timer = NugRunning.gettimer(active, spellID, dstGUID, "DEBUFF")
         if ignite_timer then

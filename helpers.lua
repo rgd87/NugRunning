@@ -71,7 +71,6 @@ end
 helpers.Spell = function(id, opts)
     if not opts then NugRunningConfig[id] = opts; return end
     if opts.singleTarget then opts.target = "target" end
-    if opts.anySource then opts.affiliation = AFFILIATION_PARTY_OR_RAID end
     if opts.affiliation == "raid" then opts.affiliation = AFFILIATION_PARTY_OR_RAID end
     if opts.affiliation == "any" then opts.affiliation = AFFILIATION_OUTSIDER end
     if type(id) == "table" then
@@ -144,15 +143,26 @@ helpers.ModActivation = function(id, mods)
     apply_overrides(NugRunningConfig.activations[id], mods)
 end
 
-helpers.EventTimer = function( opts )
+helpers.EventTimer = function( id, opts )
+    if type(id) == "table" and opts == nil then
+        opts = id
+        id = opts.spellID
+        opts.spellID = nil
+    end
+    
     if not opts.event then print(string.format("nrun: missing combat log event (#%s)", opts.spellID)); return end
     if not opts.duration and not opts.action then print(string.format("nrun: duration is required for event timers(#%s)", opts.spellID)); return end
     if not opts.name then opts.name = "" end
-    if opts.anySource then opts.affiliation = AFFILIATION_PARTY_OR_RAID end
     if opts.affiliation == "raid" then opts.affiliation = AFFILIATION_PARTY_OR_RAID end
     if opts.affiliation == "any" then opts.affiliation = AFFILIATION_OUTSIDER end
-    if not NugRunningConfig.event_timers[opts.event] then NugRunningConfig.event_timers[opts.event] = {} end
-    table.insert(NugRunningConfig.event_timers[opts.event], opts)
+
+    if type(id) == "table" then
+        local clones = id
+        id = table.remove(clones, 1) -- extract first spell id from the last as original
+        opts.clones = clones
+    end
+    if opts and not GetSpellInfo(id) then print(string.format("nrun: misssing spell #%d (%s)",id,opts.name)) return end
+    NugRunningConfig.event_timers[id] = opts
 end
 helpers.AddEventTimer = helpers.EventTimer
 
@@ -194,7 +204,7 @@ helpers.CheckSpec = function(specmask, spec)
     return bit_band(specmask, s) == s
 end
 
-
+--[[
 local ItemSetsRegistered = {}
 
 local function TrackItemSet(tiername, itemArray)
@@ -282,3 +292,4 @@ function setwatcher:UNIT_INVENTORY_CHANGED(event, unit)
         end
     end
 end
+]]

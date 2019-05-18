@@ -440,19 +440,19 @@ function NugRunning.COMBAT_LOG_EVENT_UNFILTERED( self, event )
     end
 
     if check_event_timers then
-        if event_timers[eventType] then
-            local affiliationStatus = (bit_band(srcFlags, AFFILIATION_MINE) == AFFILIATION_MINE)
-            local evs = event_timers[eventType]
-            for i, opts in ipairs(evs) do
+        if event_timers[spellID] then
+            local opts = event_timers[spellID]
+            if opts.event == eventType then
+                local affiliationStatus = (bit_band(srcFlags, AFFILIATION_MINE) == AFFILIATION_MINE)
                 if affiliationStatus or (opts.affiliation and bit_band(srcFlags, COMBATLOG_OBJECT_AFFILIATION_MASK) <= opts.affiliation ) then
-                    if spellID == opts.spellID then
-                        if opts.action then
+                    -- if spellID == opts.spellID then
+                        if opts.action and not opts.disabled then
                             opts.action(active, srcGUID, dstGUID, spellID, auraType) --  auraType = damage amount for SPELL_DAMAGE
                         else
                             self:ActivateTimer(playerGUID, dstGUID, dstName, nil, spellID, spellName, opts, "EVENT", opts.duration)
-                            break
+                            -- break
                         end
-                    end
+                    -- end
                 end
             end
         end
@@ -1576,12 +1576,10 @@ function NugRunning.ReInitSpells(self,event,arg1)
             opts.init_done = true
         end
     end
-    for event, timers in pairs(event_timers) do
-        for _, opts in pairs(timers) do
-            if opts.init then
-                opts:init()
-                opts.init_done = true
-            end
+    for id, opts in pairs(event_timers) do
+        if opts.init then
+            opts:init()
+            opts.init_done = true
         end
     end
     for id,opts in pairs(cooldowns) do

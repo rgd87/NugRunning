@@ -22,11 +22,13 @@ local sortfunc = function(a,b)
 		return a.order < b.order
 	end
 end
+
 function NugRunningGUI.GenerateCategoryTree(self, isGlobal, category)
 	local _,class = UnitClass("player")
 	local custom = isGlobal and NugRunningConfigCustom["GLOBAL"] or NugRunningConfigCustom[class]
 
 	local t = {}
+
 	for spellID, opts in pairs(NugRunningConfigMerged[category]) do
 		if not NugRunningConfigMerged.spellClones[spellID] then
 			if (isGlobal and opts.global) or (not isGlobal and not opts.global) then
@@ -34,7 +36,6 @@ function NugRunningGUI.GenerateCategoryTree(self, isGlobal, category)
 				local custom_opts = custom[category] and custom[category][spellID]
 				local status
 				local order = 5
-				-- print(opts.name, custom_opts)
 				if not custom_opts or not next(custom_opts) then
 					status = nil
 				elseif custom_opts.disabled then
@@ -125,7 +126,16 @@ function NugRunningGUI.CreateNewTimerForm(self)
 		self.parent:ShowNewTimer("casts")
 	end)
 	Form:AddChild(newcast)
-    Form.controls.newcast = newcast
+	Form.controls.newcast = newcast
+	
+	local newevent = AceGUI:Create("Button")
+	newevent:SetText("New Event Timer")
+	newevent:SetFullWidth(true)
+	newevent:SetCallback("OnClick", function(self, event)
+		self.parent:ShowNewTimer("event_timers")
+	end)
+	Form:AddChild(newevent)
+    Form.controls.newevent = newevent
 
 	return Form
 end
@@ -189,7 +199,15 @@ function NugRunningGUI.CreateCommonForm(self)
 			if category == "spells" and not opts.duration then
 				opts.duration = 3
 			end
+			if category == "event_timers" and not opts.duration then
+				opts.duration = 3
+			end
+			
 			opts.spellID = nil
+		end
+
+		if category == "event_timers" and (opts.event == "" or not opts.event) then
+			return
 		end
 
         local default_opts = NugRunningConfig[category][spellID]
@@ -221,6 +239,7 @@ function NugRunningGUI.CreateCommonForm(self)
 			clean(opts, default_opts, "glow2time", false)
 			clean(opts, default_opts, "effecttime", false)
 			clean(opts, default_opts, "clones", false)
+			clean(opts, default_opts, "event", false)
         end
         if opts.overlay and (not default_opts or not default_opts.overlay) and (not opts.overlay[1] or not opts.overlay[2]) then opts.overlay = nil end
 		-- PRESAVE = p.opts
@@ -229,7 +248,7 @@ function NugRunningGUI.CreateCommonForm(self)
 
 		-- remove clones of the previous version of the spell
 		local oldOriginalSpell = NugRunningConfigMerged[category][spellID]
-		if oldOriginalSpell.clones then
+		if oldOriginalSpell and oldOriginalSpell.clones then
 			for i, additionalSpellID in ipairs(oldOriginalSpell.clones) do
 				NugRunningConfigMerged[category][additionalSpellID] = nil
 				NugRunningConfigMerged.spellClones[additionalSpellID] = nil
@@ -267,7 +286,6 @@ function NugRunningGUI.CreateCommonForm(self)
 
 		NugRunningGUI.frame.tree:UpdateSpellTree()
 		NugRunningGUI.frame.tree:SelectByPath(class, category, spellID)
-		-- POSTSAVE = delta
 	end)
 	Form:AddChild(save)
 
@@ -905,7 +923,21 @@ function NugRunningGUI.CreateCommonForm(self)
 	end)
 	Form.controls.clones = clones
 	Form:AddChild(clones)
-    AddTooltip(clones, "Spell ID list of clones / spell ranks" )
+	AddTooltip(clones, "Spell ID list of clones / spell ranks" )
+	
+	local event = AceGUI:Create("EditBox")
+	event:SetLabel("Combat Log Event")
+	event:SetRelativeWidth(0.9)
+	event:SetCallback("OnEnterPressed", function(self, event, value)
+		if value == "" then
+			self.parent.opts["event"] = false
+		else
+			self.parent.opts["event"] = value
+		end
+	end)
+	Form.controls.event = event
+	Form:AddChild(event)
+    AddTooltip(event, "Combat Log Event to track for a given ID. Ex:\n- SPELL_CAST_SUCCESS\n- SPELL_SUMMON" )
 
     -- Frame:AddChild(Form)
     -- Frame.top = Form
@@ -973,7 +1005,6 @@ function NugRunningGUI.FillForm(self, Form, class, category, id, opts, isEmptyFo
 	controls.multiTarget:SetValue(opts.multiTarget)
 
 	controls.color:SetColor(fillAlpha(opts.color or {0.8, 0.1, 0.7} ))
-	-- print(fillAlpha(opts.color2))
 	controls.color2:SetColor(fillAlpha(opts.color2 or {1,1,1,0} ))
 	controls.arrow:SetColor(fillAlpha(opts.arrow or {1,1,1,0} ))
 
@@ -1002,6 +1033,8 @@ function NugRunningGUI.FillForm(self, Form, class, category, id, opts, isEmptyFo
 		clonesText = table.concat(opts.clones, ", ")
 	end
 	controls.clones:SetText(clonesText)
+
+	controls.event:SetText(opts.event)
 	
 
 	if id and not NugRunningConfig[category][id] then
@@ -1034,6 +1067,15 @@ function NugRunningGUI.FillForm(self, Form, class, category, id, opts, isEmptyFo
 		controls.nameplates:SetDisabled(true)
 		controls.hide_until:SetDisabled(false)
 		controls.clones:SetDisabled(true)
+	end
+
+	if category == "event_timers" then
+		controls.event:SetDisabled(false)
+		controls.clones:SetDisabled(false)
+		controls.duration:SetDisabled(false)
+		controls.affiliation:SetDisabled(false)
+	else
+		controls.event:SetDisabled(true)
 	end
 
 	if category == "itemcooldowns" then
@@ -1249,12 +1291,12 @@ function NugRunningGUI.Create(self, name, parent )
 						icon = "Interface\\Icons\\spell_deathvortex",
 						children = NugRunningGUI:GenerateCategoryTree(false,"casts")
 					},
-					-- {
-					-- 	value = "event_timers",
-					-- 	text = "Events",
-					-- 	icon = "ability_deathwing_sealarmorbreachtga",
-					-- 	children = NugRunningGUI:GenerateCategoryTree("casts")
-					-- }
+					{
+						value = "event_timers",
+						text = "Events",
+						icon = "Interface\\Icons\\ability_deathwing_sealarmorbreachtga",
+						children = NugRunningGUI:GenerateCategoryTree(false, "event_timers")
+					}
 				}
 			},
 		}
@@ -1269,7 +1311,7 @@ function NugRunningGUI.Create(self, name, parent )
 
 
 
-	local categories = {"spells", "cooldowns", "itemcooldowns", "casts"}
+	local categories = {"spells", "cooldowns", "itemcooldowns", "casts", "event_timers"}
 	for i,group in ipairs(t) do -- expand all groups
 		if group.value ~= "GLOBAL" then
 			treegroup.localstatus.groups[group.value] = true
