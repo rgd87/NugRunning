@@ -596,13 +596,12 @@ Spell( 52437 ,{ name = "Sudden Death", glowtime = 10, effect = effects.AEGWYNN, 
 Spell( 280776 ,{ name = "Sudden Death", glowtime = 10, effect = effects.AEGWYNN, priority = 13, duration = 10, scale = 0.8, color = colors.LRED, glowtime = 10 })
 
 -- Spell( 7384 ,{ name = "Overpower", group = "buffs", shine = true, shinerefresh = true, priority = -100501, color = colors.WOO, duration = 15, charged = true, maxcharge = 2, scale = 0.6 })
-Cooldown( 7384,{ name = "Overpower", shine = true, resetable = true, color = colors.PURPLE, priority = 7 })
+Cooldown( 7384,{ name = "Overpower", shine = true, resetable = true, ghost = true, ghosteffect = "JUDGEMENT", color = colors.PURPLE, priority = 7 })
 DotSpell( 772 ,{ name = "Rend", color = colors.RED, duration = 12, ghost = true })
 Spell( 208086 ,{ name = "Colossus Smash", singleTarget = true, shine = true, priority = -100500, color = colors.PURPLE2, duration = 6 }) --debuff
 
 --different versions of spell for arms and fury
 Cooldown( 167105,{ name = "Colossus Smash", scale_until = 10, ghost = true, effect = effects.JUDGEMENT, effecttime = 1.5, color = colors.PINKIERED, resetable = true })
-Activation( 167105, { for_cd = 167105, effect = "NIGHTBORNE" })
 -- Cooldown( 86346 ,{ name = "Colossus Smash", priority = 9.5, overlay = {0,"gcd",.3}, scale = .7, check_known = true, ghost = true, color = colors.PINKIERED, resetable = true, duration = 20 })
 
 -- Spell( 676  ,{ name = "Disarm", color = colors.BROWN, duration = 10 }) --removed
@@ -615,7 +614,7 @@ Spell( 1715 ,{ name = "Hamstring", ghost = true, color = colors.PURPLE, duration
 Spell( 1160 ,{ name = "Demoralizing Shout", short = "DemoShout", shine = true, group = "buffs", color = colors.DPURPLE, duration = 8, maxtimers = 1 })
 
 Cooldown( 6572 ,{ name = "Revenge", priority = 5, color = colors.PURPLE, resetable = true, fixedlen = 9, ghost = 1 })
-Activation( 6572, { effect = "JUDGEMENT", priority = 10.1, color = colors.REJUV, scale = 0.5, glowtime = 6, duration = 6, showid = 3127 })
+Activation( 6572, { for_cd = true, effect = "JUDGEMENT", ghost = 6 })
 
 Spell( 184364 ,{ name = "Enraged Regeneration", short = "Regen", scale = 0.6, group = "buffs", color = colors.LGREEN, duration = 8 })
 Spell( 132168 ,{ name = "Shockwave", color = colors.CURSE, arrow = colors.LGREEN, duration = 4, maxtimers = 1 , })

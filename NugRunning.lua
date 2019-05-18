@@ -476,18 +476,22 @@ function NugRunning.SPELL_ACTIVATION_OVERLAY_GLOW_SHOW(self,event, spellID)
             if opts.showid then spellID = opts.showid end
             self:ActivateTimer(UnitGUID("player"),UnitGUID("player"), UnitName("player"), nil, spellID, opts.localname, opts, "ACTIVATION", opts.duration)
         else
-            local timer = gettimer(active,spellID,UnitGUID("player"),"COOLDOWN")
-            if timer then
-                if opts.effect then
-                    timer.effect:SetEffect(opts.effect)
-                    timer.effect:Show()
-                end
-                local arrow = opts.arrow
-                if arrow then
-                    local color = arrow[3] and arrow or {1,0,0}
-                    timer.arrow:SetVertexColor(unpack(color))
-                    timer.arrow:Show()
-                end
+            local cd_opts = cooldowns[spellID]
+            local timer = gettimer(active,spellID, playerGUID, "COOLDOWN")
+            if not timer then
+                timer = self:ActivateTimer(playerGUID, playerGUID, UnitName("player"), nil, spellID, GetSpellInfo(spellID), cd_opts, "COOLDOWN", 5)
+                timer:BecomeGhost(opts.ghost) -- overriding the normal ghost length with the one in activation's opts
+            end
+
+            if opts.effect then
+                timer.effect:SetEffect(opts.effect)
+                timer.effect:Show()
+            end
+            local arrow = opts.arrow
+            if arrow then
+                local color = arrow[3] and arrow or {1,0,0}
+                timer.arrow:SetVertexColor(unpack(color))
+                timer.arrow:Show()
             end
         end
     end
@@ -499,6 +503,7 @@ function NugRunning.SPELL_ACTIVATION_OVERLAY_GLOW_HIDE(self,event, spellID)
             if opts.showid then spellID = opts.showid end
             self:DeactivateTimer(UnitGUID("player"),UnitGUID("player"), spellID, nil, opts, "ACTIVATION")
         else
+            -- local cd_opts = cooldowns[spellID]
             local timer = gettimer(active,spellID,UnitGUID("player"),"COOLDOWN")
             if timer then
                 if opts.effect then
@@ -1261,15 +1266,16 @@ function NugRunning.GhostFunc(self,time)
 
     NugRunning.GhostExpire(self)
 end
-local TimerBecomeGhost = function(self)
+local TimerBecomeGhost = function(self, override_ghost_duration)
     self.expiredGhost = nil
     self.isGhost = true
     self:SetPowerStatus(nil)
     self.arrow:Hide()
     self:ToGhost()
     local opts = self.opts
-    if type(opts.ghost) == "number" then
-        self.ghost_duration = opts.ghost
+    local ghost_value = override_ghost_duration or opts.ghost
+    if type(ghost_value) == "number" then
+        self.ghost_duration = ghost_value
         self.ghost_noleave = true
     else
         self.ghost_duration = 3
