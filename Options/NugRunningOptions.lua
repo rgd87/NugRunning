@@ -257,7 +257,7 @@ function NugRunningGUI.CreateCommonForm(self)
 		----------
 
 		if default_opts then
-			NugRunning.RemoveDefaultsPreserve(delta.clones, default_opts.clones)
+			if delta.clones then NugRunning.RemoveDefaultsPreserve(delta.clones, default_opts.clones) end
             NugRunning.RemoveDefaults(delta, default_opts)
 			NugRunningConfigMerged[category][spellID] = CopyTable(default_opts)
             -- if delta.disabled then

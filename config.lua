@@ -113,7 +113,9 @@ helpers.DotSpell = DotSpell
 local Interrupt = function(id, name, duration)
     EventTimer(id, { event = "SPELL_INTERRUPT", short = "Interrupted", name = name, target = "pvp", duration = duration,  scale = 0.75, shine = true, color = colors.LBLUE })
 end
+helpers.Interrupt = Interrupt
 
+if select(4,GetBuildInfo()) < 80000 then return end
 
 local _, race = UnitRace("player")
 -- if race == "Troll" then Spell( 26297 ,{ name = "Berserking", duration = 10 }) end --Troll Racial
