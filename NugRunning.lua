@@ -7,6 +7,11 @@ NugRunning:SetScript("OnEvent", function(self, event, ...)
     return self[event](self, event, ...)
 end)
 
+--- Compatibility with Classic
+local isClassic = select(4,GetBuildInfo()) <= 19999
+local UnitSpellHaste = isClassic and function() return 0 end or _G.UnitSpellHaste
+local GetSpecialization = isClassic and function() return nil end or _G.GetSpecialization
+
 local NRunDB = nil
 local config = NugRunningConfig
 local spells = config.spells
@@ -75,21 +80,21 @@ local gettimer = function(self,spellID,dstGUID,timerType)
     return foundTimer, spellActiveTimers
 end
 local IsPlayerSpell = IsPlayerSpell
-local GetSpellInfo_ = GetSpellInfo
-local GetSpellInfo = setmetatable({},{
-    __call = function(self, id)
-    local info = self[id]
-    if not info then
-        info = { GetSpellInfo_(id) }
-        self[id] = info
-    end
-    return unpack(info)
-    end
-})
+local GetSpellInfo = GetSpellInfo
+-- local GetSpellInfo_ = GetSpellInfo
+-- local GetSpellInfo = setmetatable({},{
+--     __call = function(self, id)
+--     local info = self[id]
+--     if not info then
+--         info = { GetSpellInfo_(id) }
+--         self[id] = info
+--     end
+--     return unpack(info)
+--     end
+-- })
 
 local GetSpellCooldown = GetSpellCooldown
 local GetSpellCharges = GetSpellCharges
-local GetSpecialization = GetSpecialization
 local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
 local bit_band = bit.band
 local UnitAura = UnitAura
@@ -1492,7 +1497,6 @@ function NugRunning:PreGhost()
         previous_projections[timer] = nil
     end
     if UnitExists("target") and UnitAffectingCombat("player") then
-        local spec = GetSpecialization()
         for spellID, opts in pairs(spells) do
             if opts.preghost then
                 local checkfunc = opts.isknowncheck or IsAvailable
