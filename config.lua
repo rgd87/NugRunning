@@ -799,6 +799,8 @@ EventTimer({ event = "SPELL_SUMMON", spellID = 123904, name = "Xuen", group = "b
 helpers.Cast(113656, {name = "Fists of Fury", fixedlen = ww_normalize, color = colors.PINK3, priority = 10.1 })
 Cooldown( 113656, { name = "Fists of Fury", fixedlen = ww_normalize, scale_until = 10, effect = effects.AEGWYNN, effecttime = 3,  color = colors.PINKIERED, priority = 4, ghost = true })
 Cooldown( 152175, { name = "Whirling Dragon Punch", fixedlen = ww_normalize, scale_until = 10, color = colors.TEAL2, priority = 3, ghost =true })
+Activation( 152175, { for_cd = true, effect = "JUDGEMENT", ghost = 6 })
+helpers.OnUsableTrigger(152175)
 
 Spell( 119611 ,{ name = "Renewing Mist", color = colors.LGREEN, target = "player", scale = 0.75, duration = 20 })
 Cooldown( 115151 ,{ name = "Renewing Mist", color = colors.TEAL3, priority = -100, ghost = true, ghosteffect = effects.NIGHTBORNE })
@@ -860,10 +862,8 @@ Spell( 196725, { name = "Refreshing Jade Wind", short = "", scale = .7, color = 
 
 
 -- Cooldown( 115072, { name = "Expel Harm", color = colors.LGREEN, resetable = true, ghost = true })
-
-EventTimer({ spellID = 108557, event = "SPELL_CAST_SUCCESS", priority = 12, name = "Jab", duration = 0.5, color = colors.PINK3 })
-EventTimer({ spellID = 100784, event = "SPELL_CAST_SUCCESS", priority = 12, name = "Blackout Kick", duration = 0.5, color = colors.REJUV })
-EventTimer({ spellID = 100787, event = "SPELL_CAST_SUCCESS", priority = 12, name = "Tiger Palm", duration = 0.5, color = colors.PINK })
+-- EventTimer({ spellID = 100784, event = "SPELL_CAST_SUCCESS", priority = 12, name = "Blackout Kick", duration = 0.5, color = colors.REJUV })
+-- EventTimer({ spellID = 100780, event = "SPELL_CAST_SUCCESS", priority = 12, name = "Tiger Palm", duration = 0.5, color = colors.PINK })
 end
 
 if class == "DEATHKNIGHT" then
@@ -980,8 +980,8 @@ Spell( 2120 ,{ name = "Flamestrike", duration = 8, color = colors.PURPLE, maxtim
 
 Spell( 269651 ,{ name = "Pyroclasm", priority = 5.1, shine = true, scale = 0.75, glowtime = 5, duration = 15, color = colors.PURPLE4 })
 
-Spell( 48107 ,{ name = "Heating Up", priority = 5.2, shine = true, scale = 0.75, glowtime = 7, duration = 10, color = colors.DPURPLE })
-Spell( 48108 ,{ name = "Hot Streak", priority = 5, duration = 15, shine = true, color = colors.REJUV })
+Spell( 48107 ,{ name = "Heating Up", priority = 5.2, effect = "AEGWYNN", shine = true, scale = 0.75, glowtime = 7, duration = 10, color = colors.DPURPLE })
+Spell( 48108 ,{ name = "Hot Streak", priority = 5, effect = "JUDGEMENT", duration = 15, shine = true, color = colors.REJUV })
 --Pyroblast
 DotSpell( 11366 ,{ name = "", ghost = true, duration = 18, priority = 8, color = colors.PURPLE, singleTarget = true })
 --Living Bomb

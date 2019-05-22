@@ -9,6 +9,7 @@ NugRunningConfig.activations = {}
 NugRunningConfig.event_timers = {}
 NugRunningConfig.totems = {}
 NugRunningConfig.casts = {}
+NugRunningConfig.usableTriggerSpells = {}
 local AFFILIATION_MINE = COMBATLOG_OBJECT_AFFILIATION_MINE
 local AFFILIATION_PARTY_OR_RAID = COMBATLOG_OBJECT_AFFILIATION_RAID + COMBATLOG_OBJECT_AFFILIATION_PARTY
 local AFFILIATION_OUTSIDER = COMBATLOG_OBJECT_AFFILIATION_OUTSIDER
@@ -141,6 +142,12 @@ end
 helpers.AddActivation = helpers.Activation
 helpers.ModActivation = function(id, mods)
     apply_overrides(NugRunningConfig.activations[id], mods)
+end
+
+helpers.OnUsableTrigger = function( id, defaultState )
+    if not GetSpellInfo(id) then print("nrun: misssing spell #"..id) return end
+    if not defaultState then defaultState = false end
+    NugRunningConfig.usableTriggerSpells[id] = defaultState
 end
 
 helpers.EventTimer = function( id, opts )
