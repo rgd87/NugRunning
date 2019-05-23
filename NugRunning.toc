@@ -13,7 +13,7 @@ Libs\CallbackHandler-1.0\CallbackHandler-1.0.lua
 Libs\LibSharedMedia-3.0\lib.xml
 
 helpers.lua
-config.lua
+classic.config.lua
 NugRunning.lua
 frame.lua
 special.lua
