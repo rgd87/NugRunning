@@ -152,8 +152,17 @@ Spell({ 6789, 17925, 17926 }, { name = "Death Coil", duration = 3, color = color
 
 Spell({ 18265, 18879, 18880, 18881}, { name = "Siphon Life", duration = 30, priority = 5, fixedlen = normalize_dots_to, nameplates = true, ghost = true, color = colors.DTEAL })
 Spell({ 980, 6217, 11711, 11712, 11713 }, { name = "Curse of Agony", duration = 24, fixedlen = normalize_dots_to, nameplates = true, ghost = true, priority = 6, color = colors.CURSE })
-Spell({ 172, 6222, 6223, 7648, 11671, 11672, 25311 }, { name = "Corruption", preghost = true, duration = 18, priority = 9, fixedlen = normalize_dots_to, nameplates = true, ghost = true, color = colors.PINKIERED })
-Spell({ 348, 707, 1094, 2941, 11665, 11667, 11668, 25309 },{ name = "Immolate", preghost = true, recast_mark = 1.5, tick = 3, overlay = {"tick", "end", 0.2}, duration = 15, nameplates = true, priority = 10, ghost = true, color = colors.RED })
+Spell({ 172, 6222, 6223, 7648, 11671, 11672, 25311 }, { name = "Corruption", preghost = true, tick = 3, overlay = {"tick", "end", 0.35}, priority = 9, fixedlen = normalize_dots_to, nameplates = true, ghost = true, color = colors.PINKIERED,
+    duration = function(timer, opts)
+        if timer.spellID == 172 then
+            return 12
+        elseif timer.spellID == 6222 then
+            return 15
+        else
+            return 18
+        end
+    end })
+Spell({ 348, 707, 1094, 2941, 11665, 11667, 11668, 25309 },{ name = "Immolate", preghost = true, recast_mark = 1.5, overlay = {0, 1.5, 0.3}, duration = 15, nameplates = true, priority = 10, ghost = true, color = colors.RED })
 
 -- Spell( 26385, { name = "Shadowburn", duration = 5, scale = 0.5, color = colors.DPURPLE }) -- Soul Shard debuff
 
@@ -325,7 +334,7 @@ Spell( 22959 ,{ name = "Fire Vulnerability", duration = 30, scale = 0.5, priorit
 
 Spell({ 11113, 13018, 13019, 13020, 13021 }, { name = "Blast Wave", duration = 6, scale = 0.6,  color = colors.DBROWN, maxtimers = 1 })
 Spell({ 120, 8492, 10159, 10160, 10161 }, { name = "Cone of Cold", duration = 8, scale = 0.6,  color = colors.CHILL, maxtimers = 1 })
-Spell({ 116, 205, 837, 7322, 8406, 8407, 8408, 10179, 10180, 10181, 25304 }, { name = "Frostbolt", duration = 9, scale = 0.6, color = colors.CHILL, maxtimers = 1 }) -- varies
+Spell({ 116, 205, 837, 7322, 8406, 8407, 8408, 10179, 10180, 10181, 25304 }, { name = "Frostbolt", duration = 9, scale = 0.6, color = colors.CHILL }) -- varies
 
 
 Spell( 12494 ,{ name = "Frostbite", duration = 5, color = colors.FROZEN, shine = true })
@@ -358,7 +367,13 @@ Spell({ 586, 9578, 9579, 9592, 10941, 10942 }, { name = "Fade", duration = 10, s
 Cooldown( 8092, { name = "Mind Blast", priority = 9, recast_mark = 1.5, color = colors.CURSE, ghosteffect = "NIGHTBORNE", ghost = true })
 
 Spell({ 8122, 8124, 10888, 10890 }, { name = "Psychic Scream", duration = 8, shine = true, maxtimers = 1 })
-Spell({ 589, 594, 970, 992, 2767, 10892, 10893, 10894 }, { name = "Shadow Word: Pain", short = "Pain", duration = 18, ghost = true, nameplates = true, priority = 8, color = colors.PURPLE }) -- varies by talents
+Spell({ 589, 594, 970, 992, 2767, 10892, 10893, 10894 }, { name = "Shadow Word: Pain", short = "Pain", ghost = true, nameplates = true, priority = 8, color = colors.PURPLE,
+    duration = function(timer, opts)
+        local duration = 18
+        -- Improved SWP, 2 ranks: Increases the duration of your Shadow Word: Pain spell by 3 sec.
+        return duration + 3*helpers.Talent(15275) + 3*helpers.Talent(15317)
+    end
+ }) -- varies by talents
 
 Spell( 15269 ,{ name = "Blackout", duration = 3, shine = true, color = colors.PURPLE3 })
 -- Cast( 15407, { name = "Mind Flay", short = "", priority = 12, tick = 1, overlay = {"tick", "tickend"}, color = colors.PURPLE2, priority = 11, duration = 3, scale = 0.8 })
@@ -384,9 +399,21 @@ Spell( 2094 , { name = "Blind", duration = 10, color = colors.WOO })
 
 Spell({ 8647, 8649, 8650, 11197, 11198 }, { name = "Expose Armor", duration = 30, color = colors.WOO2 })
 Spell({ 703, 8631, 8632, 8633, 11289, 1129 }, { name = "Garrote", color = colors.PINK3, duration = 18 })
-Spell({ 408, 8643 }, { name = "Kidney Shot", shine = true, duration = 6, color = colors.LRED })
-Spell({ 1943, 8639, 8640, 11273, 11274, 11275 }, { name = "Rupture", tick = 2, tickshine = true, overlay = {"tick", "end"}, shine = true, duration = 16, color = colors.RED }) -- varies very
-Spell({ 5171, 6774 }, { name = "Slice and Dice", shinerefresh = true, duration = 21, color = colors.PURPLE }) -- varies
+Spell({ 408, 8643 }, { name = "Kidney Shot", shine = true, color = colors.LRED,
+    duration = function(timer)
+        local duration = timer.spellID == 8643 and 1 or 0 -- if Rank 2, add 1s
+        return duration + GetCP()
+    end,
+})
+Spell({ 1943, 8639, 8640, 11273, 11274, 11275 }, { name = "Rupture", tick = 2, tickshine = true, overlay = {"tick", "end"}, shine = true, color = colors.RED, 
+    duration = function() return (6 + GetCP()*2) end,
+}) -- varies
+Spell({ 5171, 6774 }, { name = "Slice and Dice", shinerefresh = true, color = colors.PURPLE,
+    duration = function(timer)
+        local mul = 1 + 0.15*helpers.Talent(14165) + 0.15*helpers.Talent(14166) + 0.15*helpers.Talent(14167)
+        return (6 + GetCP()*3)*mul
+    end
+}) -- varies
 
 Spell({ 2983, 8696, 11305 }, { name = "Sprint", group = "buffs", shine = true, duration = 8 })
 Spell( 5277 ,{ name = "Evasion", group = "buffs", color = colors.PINK, duration = 15 })

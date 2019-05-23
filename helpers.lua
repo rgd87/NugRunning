@@ -47,7 +47,7 @@ helpers.Talent = function (spellID)
     -- return 0
 end
 helpers.GetCP = function()
-    if not NugRunning.cpNow then return GetComboPoints("player") end
+    if not NugRunning.cpNow then return GetComboPoints("player", "target") end
     return NugRunning.cpWas > NugRunning.cpNow and NugRunning.cpWas or NugRunning.cpNow
 end
 helpers.Glyph = function (gSpellID)

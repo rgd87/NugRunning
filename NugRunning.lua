@@ -801,7 +801,6 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
         timer:UpdateMark()
         timer:SetCount(amount)
     else
-        print(now, now + time, timer.fixedoffset)
         timer:SetTime(now, now + time, timer.fixedoffset)
         timer:SetCount(amount)
     end
@@ -1525,12 +1524,13 @@ function NugRunning:PreGhost()
                 if checkfunc(spellID) then
                     local timer = gettimer(active, spellID, UnitGUID("target"), "DEBUFF")
                     if not timer then
-                        timer = self:ActivateTimer(playerGUID, UnitGUID("target"), UnitName("target"), nil, spellID, GetSpellInfo(spellID), opts, "DEBUFF", opts.duration, nil, true)
+                        local tempTime = 10
+                        timer = self:ActivateTimer(playerGUID, UnitGUID("target"), UnitName("target"), nil, spellID, GetSpellInfo(spellID), opts, "DEBUFF", tempTime, nil, true)
                         timer:BecomeGhost()
                     elseif not timer.isGhost then
                         local opts = timer.opts
                         local overlay = opts.overlay
-                        local rm = opts.recast_mark or (overlay and overlay[2])
+                        local rm = opts.recast_mark or (overlay and type(overlay[2]) == "number" and overlay[2])
                         if rm then
                             local endTime = timer.endTime
                             local beforeEnd = endTime - GetTime()
@@ -2436,6 +2436,7 @@ local Enum_PowerType_ComboPoints = Enum.PowerType.ComboPoints
 function NugRunning.UNIT_POWER_UPDATE(self,event,unit, ptype)
     if ptype == "COMBO_POINTS" then
         self.cpWas = self.cpNow or 0
-        self.cpNow = UnitPower("player", Enum_PowerType_ComboPoints)
+        -- self.cpNow = UnitPower("player", Enum_PowerType_ComboPoints)
+        self.cpNow = GetComboPoints("player", "target")
     end
 end
