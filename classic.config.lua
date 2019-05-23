@@ -15,6 +15,7 @@ local Talent = helpers.Talent
 local Glyph = helpers.Glyph
 local GetCP = helpers.GetCP
 local SPECS = helpers.SPECS
+local GotSpell = helpers.Talent
 local IsPlayerSpell = IsPlayerSpell
 local IsUsableSpell = IsUsableSpell
 local _,class = UnitClass("player")
@@ -82,21 +83,21 @@ colors["DEFAULT_BUFF"] = { 1, 0.4, 0.2}
 -- [1414253] = "spells/7fx_mage_aegwynnsascendance_statehand.m2"
 
 local effects = {}
-effects["NIGHTBORNE"] = {
-    path = 1398449,
-    scale = 4,
-    x = 0, y = 1,
-}
-effects["JUDGEMENT"] = {
-    path = 1261307,
-    scale = 2.7,
-    x = 0, y = 5,
-}
-effects["AEGWYNN"] = {
-    path = 1414253,
-    scale = 3,
-    x = -6, y = 0,
-}
+-- effects["NIGHTBORNE"] = {
+--     path = 1398449,
+--     scale = 4,
+--     x = 0, y = 1,
+-- }
+-- effects["JUDGEMENT"] = {
+--     path = 1261307,
+--     scale = 2.7,
+--     x = 0, y = 5,
+-- }
+-- effects["AEGWYNN"] = {
+--     path = 1414253,
+--     scale = 3,
+--     x = -6, y = 0,
+-- }
 NugRunningConfig.effects = effects
 
 local DotSpell = function(id, opts)
@@ -144,9 +145,23 @@ Spell( 17941 ,{ name = "Shadow Trance", duration = 10, shine = true, priority = 
 
 
 Spell( 6358, { name = "Seduction", duration = 20, color = colors.PURPLE4 })
-Spell({ 5484, 17928 }, { name = "Howl of Terror", duration = 15, shine = true, maxtimers = 1 })
-Spell({ 5782, 6213, 6215 }, { name = "Fear", duration = 20 })
-Spell({ 710, 18647 }, { name = "Banish", nameplates = true, duration = 30, color = colors.TEAL3 })
+Spell({ 5484, 17928 }, { name = "Howl of Terror", duration = 15, shine = true, maxtimers = 1,
+    duration = function(timer)
+        return timer.spellID == 5484 and 10 or 15
+    end
+})
+Spell({ 5782, 6213, 6215 }, { name = "Fear",
+    duration = function(timer)
+        if timer.spellID == 5782 then return 10
+        elseif timer.spellID == 6213 then return 15
+        else return 20 end
+    end
+})
+Spell({ 710, 18647 }, { name = "Banish", nameplates = true, color = colors.TEAL3,
+    duration = function(timer)
+        return timer.spellID == 710 and 20 or 30
+    end
+})
 Spell({ 6789, 17925, 17926 }, { name = "Death Coil", duration = 3, color = colors.DTEAL })
 
 
@@ -196,7 +211,13 @@ end
 if class == "PALADIN" then
 
 Spell( 20066 ,{ name = "Repentance", duration = 6 })
-Spell({ 2878, 5627, 5627 }, { name = "Turn Undead", duration = 20 })
+Spell({ 2878, 5627, 5627 }, { name = "Turn Undead",
+    duration = function(timer)
+        if timer.spellID == 2878 then return 10
+        elseif timer.spellID == 5627 then return 15
+        else return 20 end
+    end
+})
 Cooldown( 879 ,{ name = "Exorcism", color = colors.ORANGE, ghost = true, priority = 8, })
 Cooldown( 24275 ,{ name = "Hammer of Wrath", color = colors.TEAL2, ghost = true, priority = 11 })
 
@@ -218,7 +239,14 @@ Spell({ 20185, 20344, 20345, 20346 }, { name = "Judgement of Light", short = "Li
 Spell({ 20186, 20354, 20355 }, { name = "Judgement of Wisdom", short = "Wisdom", duration = 10, color = colors.LBLUE })
 Spell( 20184 , { name = "Judgement of Justice", short = "Justice", duration = 10, color = colors.BLACK })
 
-Spell({ 853, 5588, 5589, 10308 }, { name = "Hammer of Justice", duration = 6, short = "Hammer", color = colors.FROZEN })
+Spell({ 853, 5588, 5589, 10308 }, { name = "Hammer of Justice", short = "Hammer", color = colors.FROZEN,
+    duration = function(timer)
+        if timer.spellID == 853 then return 3
+        elseif timer.spellID == 5588 then return 4
+        elseif timer.spellID == 5589 then return 5
+        else return 6 end
+    end
+}) -- varies
 
 Spell( 20216 ,{ name = "Divine Favor", shine = true, duration = 15, priority = 12, timeless = true, scale = 0.7, color = colors.DPURPLE })
 Cooldown( 26573 ,{ name = "Consecration", color = colors.PINKIERED, priority = 9, scale = 0.85, ghost = true })
@@ -249,7 +277,13 @@ helpers.OnUsableTrigger(19306)
 
 Spell({ 13812, 14314, 14315 }, { name = "Explosive Trap", duration = 20, maxtimers = 1, color = colors.RED, ghost = 1 })
 Spell({ 13797, 14298, 14299, 14300, 14301 }, { name = "Immolation Trap", duration = 20, color = colors.RED, ghost = 1 })
-Spell({ 3355, 14308, 14309 }, { name = "Freezing Trap", duration = 20, color = colors.FROZEN })
+Spell({ 3355, 14308, 14309 }, { name = "Freezing Trap", color = colors.FROZEN,
+    duration = function(timer)
+        if timer.spellID == 3355 then return 10
+        elseif timer.spellID == 14308 then return 15
+        else return 20 end
+    end
+})
 
 Spell( 19503 , { name = "Scatter Shot", duration = 4, color = colors.PINK3, shine = true })
 
@@ -270,12 +304,33 @@ if class == "DRUID" then
 Interrupt(16979, "Feral Charge", 4)
 
 Spell( 22812 ,{ name = "Barkskin", duration = 15, color = colors.WOO2, group = "buffs" })
-Spell({ 339, 1062, 5195, 5196, 9852, 9853 }, { name = "Entangling Roots", duration = 27, color = colors.DBROWN }) -- varies
+Spell({ 339, 1062, 5195, 5196, 9852, 9853 }, { name = "Entangling Roots", color = colors.DBROWN,
+    duration = function(timer)
+        if timer.spellID == 339 then return 12
+        elseif timer.spellID == 1062 then return 15
+        elseif timer.spellID == 5195 then return 18
+        elseif timer.spellID == 5196 then return 21
+        elseif timer.spellID == 9852 then return 24
+        else return 27 end
+    end
+}) -- varies
 -- includes Faerie Fire (Feral) ranks
 Spell({ 770, 778, 9749, 9907, 17390, 17391, 17392 }, { name = "Faerie Fire", duration = 40, color = colors.PURPLE5 })
-Spell({ 2637, 18657, 18658 }, { name = "Hibernate", duration = 40, color = colors.PURPLE4, nameplates = true, }) -- varies
+Spell({ 2637, 18657, 18658 }, { name = "Hibernate", color = colors.PURPLE4, nameplates = true,
+    duration = function(timer)
+        if timer.spellID == 2637 then return 20
+        elseif timer.spellID == 18657 then return 30
+        else return 40 end
+    end
+}) -- varies
 Spell({ 99, 1735, 9490, 9747, 9898 }, { name = "Demoralizing Roar", duration = 30, color = colors.DTEAL, shinerefresh = true })
-Spell({ 5211, 6798, 8983 }, { name = "Bash", duration = 4, color = colors.RED }) -- varies
+Spell({ 5211, 6798, 8983 }, { name = "Bash", color = colors.RED,
+    duration = function(timer)
+        if timer.spellID == 5211 then return 2
+        elseif timer.spellID == 6798 then return 3
+        else return 4 end
+    end
+}) -- varies
 
 Spell( 5209 , { name = "Challenging Roar", duration = 6, maxtimers = 1 })
 Spell( 6795 ,{ name = "Taunt", duration = 3 })
@@ -309,7 +364,14 @@ if class == "MAGE" then
 Interrupt(2139, "Counterspell", 10)
 
 Spell( 18469 ,{ name = "Silence", duration = 4, color = colors.CHIM }) -- Improved Counterspell
-Spell({ 118, 12824, 12825, 12826, 28270, 28271, 28272 },{ name = "Polymorph", duration = 50, glowtime = 5, ghost = 1, ghosteffect = "NIGHTBORNE", color = colors.LGREEN }) -- varies
+Spell({ 118, 12824, 12825, 12826, 28270, 28271, 28272 },{ name = "Polymorph", glowtime = 5, ghost = 1, ghosteffect = "NIGHTBORNE", color = colors.LGREEN,
+    duration = function(timer)
+        if timer.spellID == 118 then return 20
+        elseif timer.spellID == 12824 then return 30
+        elseif timer.spellID == 12825 then return 40
+        else return 50 end
+    end
+}) -- varies
 
 Spell({ 11426, 13031, 13032, 13033 }, { name = "Ice Barrier", duration = 60, ghost = 1, group = "buffs", color = colors.TEAL3 })
 Spell({ 543, 8457, 8458, 10223, 10225 }, { name = "Fire Ward", duration = 30, group = "buffs", scale = 0.7, color = colors.ORANGE })
@@ -334,7 +396,18 @@ Spell( 22959 ,{ name = "Fire Vulnerability", duration = 30, scale = 0.5, priorit
 
 Spell({ 11113, 13018, 13019, 13020, 13021 }, { name = "Blast Wave", duration = 6, scale = 0.6,  color = colors.DBROWN, maxtimers = 1 })
 Spell({ 120, 8492, 10159, 10160, 10161 }, { name = "Cone of Cold", duration = 8, scale = 0.6,  color = colors.CHILL, maxtimers = 1 })
-Spell({ 116, 205, 837, 7322, 8406, 8407, 8408, 10179, 10180, 10181, 25304 }, { name = "Frostbolt", duration = 9, scale = 0.6, color = colors.CHILL }) -- varies
+Spell({ 116, 205, 837, 7322, 8406, 8407, 8408, 10179, 10180, 10181, 25304 }, { name = "Frostbolt", scale = 0.6, color = colors.CHILL,
+    duration = function(timer)
+        if timer.spellID == 116 then return 5
+        elseif timer.spellID == 205 then return 6
+        elseif timer.spellID == 837 then return 6
+        elseif timer.spellID == 7322 then return 7
+        elseif timer.spellID == 8406 then return 7
+        elseif timer.spellID == 8407 then return 8
+        elseif timer.spellID == 8408 then return 8
+        else return 9 end
+    end
+}) -- varies
 
 
 Spell( 12494 ,{ name = "Frostbite", duration = 5, color = colors.FROZEN, shine = true })
@@ -354,7 +427,13 @@ Spell({ 10797, 19296, 19299, 19302, 19303, 19304, 19305 }, { name = "Starshards"
 Spell({ 2944, 19276, 19277, 19278, 19279, 19280 }, { name = "Devouring Plague", duration = 24, priority = 9, color = colors.PURPLE4 })
 
 
-Spell({ 9484, 9485, 10955 }, { name = "Shackle Undead", duration = 50, glowtime = 5, nameplates = true, color = colors.PURPLE3, ghost = 1, ghosteffect = "NIGHTBORNE" }) -- varies
+Spell({ 9484, 9485, 10955 }, { name = "Shackle Undead", glowtime = 5, nameplates = true, color = colors.PURPLE3, ghost = 1, ghosteffect = "NIGHTBORNE",
+    duration = function(timer)
+        if timer.spellID == 9484 then return 30
+        elseif timer.spellID == 9485 then return 40
+        else return 50 end
+    end
+}) -- varies
 Spell( 10060, { name = "Power Infusion", duration = 15, group = "buffs", color = colors.TEAL2 })
 -- make charged to 20?
 Spell({ 588, 602, 1006, 7128, 10951, 10952 }, { name = "Inner Fire", duration = 600, priority = -100, color = colors.GOLD })
@@ -417,7 +496,11 @@ Spell({ 5171, 6774 }, { name = "Slice and Dice", shinerefresh = true, color = co
 
 Spell({ 2983, 8696, 11305 }, { name = "Sprint", group = "buffs", shine = true, duration = 8 })
 Spell( 5277 ,{ name = "Evasion", group = "buffs", color = colors.PINK, duration = 15 })
-Spell({ 1776, 1777, 8629, 11285, 11286 }, { name = "Gouge", shine = true, duration = 4, color = colors.PINK3 })
+Spell({ 1776, 1777, 8629, 11285, 11286 }, { name = "Gouge", effect = "JUDGEMENT", shine = true, color = colors.PINK3,
+    duration = function(timer)
+        return 4 + 0.5*GotSpell(13741) + 0.5*GotSpell(13793) + 0.5*GotSpell(13792)
+    end
+})
 
 Spell( 14177 ,{ name = "Cold Blood", shine = true, duration = 15, group = "buffs", priority = -12, timeless = true, scale = 0.7, color = colors.DTEAL })
 Spell({ 14143, 14149 }, { name = "Remorseless", group = "buffs", scale = 0.75, duration = 20, color = colors.TEAL3 })
@@ -442,7 +525,15 @@ Spell( 871, { name = "Shield Wall", group = "buffs", shine = true, duration = 10
 Spell( 12976, { name = "Last Stand", group = "buffs", color = colors.PURPLE3, duration = 20, priority = -8 })
 Spell( 12328, { name = "Death Wish", group = "buffs", shine = true, duration = 30, color = colors.PINKIERED })
 
-Spell({ 772, 6546, 6547, 6548, 11572, 11573, 11574 }, { name = "Rend", tick = 3, overlay = {"tick", "end"}, color = colors.RED, duration = 21, ghost = true }) -- varies
+Spell({ 772, 6546, 6547, 6548, 11572, 11573, 11574 }, { name = "Rend", tick = 3, overlay = {"tick", "end"}, color = colors.RED, ghost = true,
+    duration = function(timer)
+        if timer.spellID == 772 then return 9
+        elseif timer.spellID == 6546 then return 12
+        elseif timer.spellID == 6547 then return 15
+        elseif timer.spellID == 6548 then return 18
+        else return 21 end
+    end
+}) -- varies
 Spell({ 1715, 7372, 7373 }, { name = "Hamstring", ghost = true, color = colors.PURPLE4, duration = 15 })
 Spell( 23694 , { name = "Immobilized", shine = true, color = colors.BLACK, duration = 5 }) -- Improved Hamstring
 
@@ -463,7 +554,11 @@ Spell({ 20253, 20614, 20615 }, { name = "Intercept", duration = 3, shine = true,
 Spell( 12323, { name = "Piercing Howl", maxtimers = 1, duration = 6, color = colors.DBROWN })
 Spell( 5246 ,{ name = "Intimidating Shout", duration = 8, maxtimers = 1 })
 
-Spell( 676 ,{ name = "Disarm", color = colors.PINK3, duration = 10, scale = 0.8, shine = true }) -- varies
+Spell( 676 ,{ name = "Disarm", color = colors.PINK3, scale = 0.8, shine = true,
+    duration = function(timer)
+        return 10 + GotSpell(12313) + GotSpell(12804) + GotSpell(12807)
+    end,
+}) -- varies
 -- Spell( 29131 ,{ name = "Bloodrage", color = colors.WOO, duration = 10, scale = 0.5, shine = true })
 
 Cooldown( 6572 ,{ name = "Revenge", priority = 5, color = colors.PURPLE, resetable = true, fixedlen = 6, ghost = 1 })

@@ -1,4 +1,4 @@
-## Interface: 80000
+## Interface: 11302
 ## Title: NugRunningOptions
 ## Notes: Options for NugRunning
 ## Author: d87

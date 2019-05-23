@@ -609,6 +609,7 @@ NugRunning.ConstructTimerBar = function(width, height)
         if type(effect) == "string" then
             effect = NugRunningConfig.effects[effect]
         end
+        if not effect then return self:Hide() end
         self.model_path = effect.path
         local scale = effect.scale or 1
         self:SetSize(height*scale, height*scale)
