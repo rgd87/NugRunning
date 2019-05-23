@@ -626,7 +626,7 @@ end
 local lastCooldownUpdateTime = GetTime()
 function NugRunning.SPELL_UPDATE_COOLDOWN(self,event, periodic)
     if periodic and GetTime() - lastCooldownUpdateTime < 0.9 then return end
-    gcdDuration = select(2,GetSpellCooldown(61304)) -- gcd spell
+    gcdDuration = UnitPowerType("player") == 3 and 1 or 1.5 -- If energy then 1
 
     for spellID,opts in pairs(cooldowns) do
         if not opts.check_known or IsPlayerSpell(spellID) then
@@ -753,8 +753,7 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
     elseif override then time = override
     else
         time = NugRunning.SetDefaultDuration(dstFlags, opts, timer)
-        -- print( "DEFAULT TIME", spellName, time, timerType)
-        if timerType == "BUFF" or timerType == "DEBUFF" then
+        if timerType == "BUFF" then --or timerType == "DEBUFF" then
             local _guid = multiTargetGUID or dstGUID
             NugRunning.QueueAura(spellID, _guid, timerType, timer)
         end
@@ -802,6 +801,7 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
         timer:UpdateMark()
         timer:SetCount(amount)
     else
+        print(now, now + time, timer.fixedoffset)
         timer:SetTime(now, now + time, timer.fixedoffset)
         timer:SetCount(amount)
     end
@@ -888,7 +888,7 @@ function NugRunning.RefreshTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID,
         if dstGUID and not ignore_applied_dose then
             time = NugRunning.SetDefaultDuration(dstFlags, opts, timer)
         end
-        if timerType == "BUFF" or timerType == "DEBUFF" then
+        if timerType == "BUFF" then -- or timerType == "DEBUFF" then
             if not dstGUID then
                 if timer.queued and GetTime() < timer.queued + 0.9 then
                     return
@@ -2285,9 +2285,9 @@ do
         end
     end
     h:SetScript("OnEvent", NugRunning.OnAuraEvent)
-    h:RegisterEvent("UNIT_AURA")
-    h:RegisterEvent("UPDATE_MOUSEOVER_UNIT")
-    h:RegisterEvent("PLAYER_TARGET_CHANGED")
+    -- h:RegisterEvent("UNIT_AURA")
+    -- h:RegisterEvent("UPDATE_MOUSEOVER_UNIT")
+    -- h:RegisterEvent("PLAYER_TARGET_CHANGED")
 
 
     -- h._elapsed = 0

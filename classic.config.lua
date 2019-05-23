@@ -153,9 +153,9 @@ Spell({ 6789, 17925, 17926 }, { name = "Death Coil", duration = 3, color = color
 Spell({ 18265, 18879, 18880, 18881}, { name = "Siphon Life", duration = 30, priority = 5, fixedlen = normalize_dots_to, nameplates = true, ghost = true, color = colors.DTEAL })
 Spell({ 980, 6217, 11711, 11712, 11713 }, { name = "Curse of Agony", duration = 24, fixedlen = normalize_dots_to, nameplates = true, ghost = true, priority = 6, color = colors.CURSE })
 Spell({ 172, 6222, 6223, 7648, 11671, 11672, 25311 }, { name = "Corruption", preghost = true, duration = 18, priority = 9, fixedlen = normalize_dots_to, nameplates = true, ghost = true, color = colors.PINKIERED })
-Spell( 157736,{ name = "Immolate", preghost = true, recast_mark = 1.5, overlay = {0, 1.5, 0.2}, duration = 15, nameplates = true, priority = 10, ghost = true, color = colors.RED })
+Spell({ 348, 707, 1094, 2941, 11665, 11667, 11668, 25309 },{ name = "Immolate", preghost = true, recast_mark = 1.5, tick = 3, overlay = {"tick", "end", 0.2}, duration = 15, nameplates = true, priority = 10, ghost = true, color = colors.RED })
 
-Spell( 26385, { name = "Shadowburn", duration = 5, scale = 0.5, color = colors.DPURPLE }) -- Soul Shard debuff
+-- Spell( 26385, { name = "Shadowburn", duration = 5, scale = 0.5, color = colors.DPURPLE }) -- Soul Shard debuff
 
 Cooldown( 17962, { name = "Conflagrate", ghost = true, priority = 5, color = colors.PINK })
 
