@@ -292,15 +292,18 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
     event_timers = config.event_timers
     usableTriggerSpells = config.usableTriggerSpells
 
-    -- filling up ranks
+    -- filling up ranks for spells and casts
     local cloneIDs = {}
-    for spellID, originalSpell in pairs(spells) do
-        if not cloneIDs[spellID] and originalSpell.clones then
-			for i, additionalSpellID in ipairs(originalSpell.clones) do
-                spells[additionalSpellID] = originalSpell
-                cloneIDs[additionalSpellID] = true
-			end
-		end
+    local rankCategories = { "spells", "casts" }
+    for _, category in ipairs(rankCategories) do
+        for spellID, originalSpell in pairs(config[category]) do
+            if not cloneIDs[spellID] and originalSpell.clones then
+                for i, additionalSpellID in ipairs(originalSpell.clones) do
+                    config[category][additionalSpellID] = originalSpell
+                    cloneIDs[additionalSpellID] = true
+                end
+            end
+        end
     end
     config.spellClones = cloneIDs
     -- for _, timerType in ipairs(categories) do
@@ -343,8 +346,8 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
                     else
                         self:SPELL_ACTIVATION_OVERLAY_GLOW_HIDE(event, spellID)
                     end
+                    usableTriggerSpells[spellID] = newState
                 end
-                usableTriggerSpells[spellID] = newState
             end
         end
     end

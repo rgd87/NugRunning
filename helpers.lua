@@ -124,6 +124,13 @@ end
 
 
 helpers.Cast = function(id, opts)
+    if type(id) == "table" then
+        -- opts.idgroup = {}
+        local clones = id
+        id = table.remove(clones, 1) -- extract first spell id from the last as original
+        opts.clones = clones
+    end
+
     if opts then
         opts.localname = GetSpellInfo(id)
         if not opts.localname then print("nrun: misssing spell #"..id) return end
