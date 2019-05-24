@@ -321,7 +321,7 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
 
 
     NugRunning:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
-    NugRunning:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
+    if not isClassic then NugRunning:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED") end
     NugRunning.ACTIVE_TALENT_GROUP_CHANGED = NugRunning.ReInitSpells
     -- NugRunning:RegisterEvent("PLAYER_TALENT_UPDATE")
     -- NugRunning.PLAYER_TALENT_UPDATE = NugRunning.ReInitSpells
@@ -374,8 +374,10 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
     end
 
     --NugRunning:RegisterEvent("SPELL_UPDATE_USABLE")
-    NugRunning:RegisterEvent("SPELL_ACTIVATION_OVERLAY_GLOW_SHOW")
-    NugRunning:RegisterEvent("SPELL_ACTIVATION_OVERLAY_GLOW_HIDE")
+    if not isClassic then
+        NugRunning:RegisterEvent("SPELL_ACTIVATION_OVERLAY_GLOW_SHOW")
+        NugRunning:RegisterEvent("SPELL_ACTIVATION_OVERLAY_GLOW_HIDE")
+    end
 
 
     if next(event_timers) then check_event_timers = true end
