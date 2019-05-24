@@ -1282,19 +1282,19 @@ function NugRunningGUI.Create(self, name, parent )
 					{
 						value = "itemcooldowns",
 						text = "Item Cooldowns",
-						icon = "Interface\\Icons\\inv_potionc_5",
+						icon = 135882,
 						children = NugRunningGUI:GenerateCategoryTree(false,"itemcooldowns")
 					},
 					{
 						value = "casts",
 						text = "Casts",
-						icon = "Interface\\Icons\\spell_deathvortex",
+						icon = 135951,
 						children = NugRunningGUI:GenerateCategoryTree(false,"casts")
 					},
 					{
 						value = "event_timers",
 						text = "Events",
-						icon = "Interface\\Icons\\ability_deathwing_sealarmorbreachtga",
+						icon = 132096,
 						children = NugRunningGUI:GenerateCategoryTree(false, "event_timers")
 					}
 				}
@@ -1490,7 +1490,7 @@ local function MakeGeneralOptions()
                         get = function(info) return NugRunning.db.np_width end,
                         set = function(info, v)
                             NugRunning.db.np_width = v
-                            NugRunningNameplates:Resize()
+                            if NugRunningNameplates then NugRunningNameplates:Resize() end
                         end,
                         min = 50,
                         max = 200,
@@ -1503,7 +1503,7 @@ local function MakeGeneralOptions()
                         get = function(info) return NugRunning.db.np_height end,
                         set = function(info, v)
                             NugRunning.db.np_height = v
-                            NugRunningNameplates:Resize()
+                            if NugRunningNameplates then NugRunningNameplates:Resize() end
                         end,
                         min = 3,
                         max = 50,
@@ -1516,7 +1516,7 @@ local function MakeGeneralOptions()
                         get = function(info) return NugRunning.db.np_xoffset end,
                         set = function(info, v)
                             NugRunning.db.np_xoffset = v
-                            NugRunningNameplates:Resize()
+                            if NugRunningNameplates then NugRunningNameplates:Resize() end
                         end,
                         min = -100,
                         max = 100,
@@ -1529,7 +1529,7 @@ local function MakeGeneralOptions()
                         get = function(info) return NugRunning.db.np_yoffset end,
                         set = function(info, v)
                             NugRunning.db.np_yoffset = v
-                            NugRunningNameplates:Resize()
+                            if NugRunningNameplates then NugRunningNameplates:Resize() end
                         end,
                         min = -100,
                         max = 100,
@@ -1696,9 +1696,14 @@ local function MakeGeneralOptions()
                     nameplates = {
                         name = "Nameplate Timers",
                         type = "toggle",
-                        desc = "Mirror flagged spell timers on nameplates",
+						desc = "Mirror flagged spell timers on nameplates",
+						confirm = true,
+						confirmText = "Warning: Requires UI reloading.",
                         get = function(info) return NugRunning.db.nameplates end,
-                        set = function(info, v) NugRunning.db.nameplates = not NugRunning.db.nameplates end,
+						set = function(info, v)
+							NugRunning.db.nameplates = not NugRunning.db.nameplates
+							ReloadUI()
+						end,
                         order = 4,
                     },
 					cooldowns = {

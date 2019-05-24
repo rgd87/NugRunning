@@ -2186,7 +2186,8 @@ do
             -- end
             table_wipe(present_spells)
 
-            for _, filter in ipairs(filters) do
+            -- for _, filter in ipairs(filters) do
+                local filter = "HELPFUL"
                 local timerType = filter == "HELPFUL" and "BUFF" or "DEBUFF"
                 for i=1,200 do
                     local name, icon, count, dispelType, duration, expirationTime, caster, isStealable, shouldConsolidate, aura_spellID = UnitAura(unit, i, filter)
@@ -2210,12 +2211,12 @@ do
                         present_spells[aura_spellID] = true
                     end
                 end
-            end
+            -- end
             for timer in pairs(active) do
                 if  timer.dstGUID == unitGUID and
                     timer.srcGUID == playerGUID and
                     not present_spells[timer.spellID] and
-                    (timer.timerType == "BUFF" or timer.timerType == "DEBUFF")
+                    (timer.timerType == "BUFF") -- or timer.timerType == "DEBUFF")
                 then
                     free[timer] = true
                     NugRunning:ArrangeTimers()
@@ -2250,7 +2251,8 @@ do
                 end
             end
 
-            for _, filter in ipairs(filters) do
+            -- for _, filter in ipairs(filters) do
+                local filter = "HELPFUL"
                 for i=1,100 do
                     local name, _, count, _, duration, expirationTime, caster, _,_, aura_spellID = UnitAura("target", i, filter)
                     if not name then break end
@@ -2281,11 +2283,11 @@ do
                         end
                     end
                 end
-            end
+            -- end
         end
     end
     h:SetScript("OnEvent", NugRunning.OnAuraEvent)
-    -- h:RegisterEvent("UNIT_AURA")
+    h:RegisterEvent("UNIT_AURA")
     -- h:RegisterEvent("UPDATE_MOUSEOVER_UNIT")
     -- h:RegisterEvent("PLAYER_TARGET_CHANGED")
 

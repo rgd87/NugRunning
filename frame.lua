@@ -4,6 +4,9 @@ local LSM = LibStub("LibSharedMedia-3.0")
 LSM:Register("statusbar", "Aluminium", [[Interface\AddOns\NugRunning\statusbar.tga]])
 LSM:Register("font", "ClearFont", [[Interface\AddOns\NugRunning\Calibri.ttf]], GetLocale() ~= "enUS" and 15)
 
+local isClassic = select(4,GetBuildInfo()) <= 19999
+local UnitSpellHaste = isClassic and function() return 0 end or _G.UnitSpellHaste
+
 local getStatusbar = function()
 	if not NugRunningConfig.overrideTexture then
 		return LSM:Fetch("statusbar", NugRunning.db.textureName)
@@ -611,6 +614,10 @@ NugRunning.ConstructTimerBar = function(width, height)
         end
         if not effect then return self:Hide() end
         self.model_path = effect.path
+        self.model_scale = effect.model_scale or 1
+        self.ox = effect.ox or 0
+        self.oy = effect.oy or 0
+        self.oz = effect.oz or 0
         local scale = effect.scale or 1
         self:SetSize(height*scale, height*scale)
         local x = effect.x or 0

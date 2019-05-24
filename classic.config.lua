@@ -77,27 +77,48 @@ colors["MISSED"] = { .15, .15, .15}
 colors["DEFAULT_DEBUFF"] = { 0.8, 0.1, 0.7}
 colors["DEFAULT_BUFF"] = { 1, 0.4, 0.2}
 
-
--- [1398449] = "spells/7fx_nightborne_missile_streak.m2"
--- [1261307] = "spells/7fx_paladin_judgement_missile.m2"
--- [1414253] = "spells/7fx_mage_aegwynnsascendance_statehand.m2"
-
 local effects = {}
--- effects["NIGHTBORNE"] = {
---     path = 1398449,
---     scale = 4,
---     x = 0, y = 1,
--- }
--- effects["JUDGEMENT"] = {
---     path = 1261307,
---     scale = 2.7,
---     x = 0, y = 5,
--- }
--- effects["AEGWYNN"] = {
---     path = 1414253,
---     scale = 3,
---     x = -6, y = 0,
--- }
+-- I stopped at M
+effects["UNHOLY"] = {
+    path = "spells/enchantments/skullballs.m2",
+    scale = 4,
+    x = 0, y = -2,
+}
+effects["PURPLESWIPE"] = {
+    path = "spells/enchantments/shaman_purple.m2",
+    scale = 4,
+    x = -10, y = -3,
+}
+effects["JUDGEMENT"] = {
+    path = "spells/fireshot_missile.m2",
+    scale = 4,
+    x = -3, y = -4,
+}
+effects["AEGWYNN"] = {
+    path = "spells/Gouge_precast_state_hand.m2",
+    scale = 4,
+    x = -1, y = -1,
+}
+effects["HOLY"] = {
+    path = "spells/layonhands_low_chest.m2",
+    scale = 2.6,
+    x = -10, y = -1,
+}
+effects["NIGHTBORNE"] = {
+    path = "spells/magic_cast_hand.m2",
+    scale = 3,
+    x = -12, y = -1,
+}
+effects["LIGHTNING"] = {
+    path = "spells/lightning_precast_low_hand.m2",
+    scale = 5,
+    x = -1, y = 0,
+}
+effects["BACKSTAB"] = {
+    path = "spells/backstab_impact_chest.m2",
+    scale = 3,
+    x = -5, y = -2,
+}
 NugRunningConfig.effects = effects
 
 local DotSpell = function(id, opts)
@@ -525,7 +546,7 @@ Spell( 871, { name = "Shield Wall", group = "buffs", shine = true, duration = 10
 Spell( 12976, { name = "Last Stand", group = "buffs", color = colors.PURPLE3, duration = 20, priority = -8 })
 Spell( 12328, { name = "Death Wish", group = "buffs", shine = true, duration = 30, color = colors.PINKIERED })
 
-Spell({ 772, 6546, 6547, 6548, 11572, 11573, 11574 }, { name = "Rend", tick = 3, overlay = {"tick", "end"}, color = colors.RED, ghost = true,
+Spell({ 772, 6546, 6547, 6548, 11572, 11573, 11574 }, { name = "Rend", tick = 3, tickshine = true, overlay = {"tick", "end"}, color = colors.RED, ghost = true,
     duration = function(timer)
         if timer.spellID == 772 then return 9
         elseif timer.spellID == 6546 then return 12
@@ -545,8 +566,8 @@ Cooldown( 7384, { name = "Overpower", shine = true, color = colors.LBLUE, scale 
 Activation( 7384, { for_cd = true, effect = "NIGHTBORNE", ghost = 6 })
 helpers.OnUsableTrigger(7384)
 
-Cooldown( 6343, { name = "Thunder Clap", ghost = true, scale = 0.8, overlay = {0, "gcd",.3}, color = colors.PINKIERED, priority = 9.5 })
-Spell({ 5242, 6192, 6673, 11549, 11550, 11551, 25289 }, { name = "Battle Shout", ghost = true, scale_until = 20, priority = -300, effect = effects.JUDGEMENT, effecttime = 10, color = colors.DPURPLE, duration = 120 })
+Cooldown( 6343, { name = "Thunder Clap", ghost = true, scale = 0.8, color = colors.PINKIERED, priority = 9.5 })
+Spell({ 5242, 6192, 6673, 11549, 11550, 11551, 25289 }, { name = "Battle Shout", ghost = true, scale_until = 20, glow2time = 10, priority = -300, effect = effects.JUDGEMENT, effecttime = 10, color = colors.DPURPLE, duration = 120 })
 Spell({ 1160, 6190, 11554, 11555, 11556 }, { name = "Demoralizing Shout", duration = 30, color = colors.DTEAL, shinerefresh = true })
 Spell( 18499, { name = "Berserker Rage", color = colors.REJUV, shine = true, scale = 0.6, group = "buffs", duration = 10 })
 Spell({ 20253, 20614, 20615 }, { name = "Intercept", duration = 3, shine = true, color = colors.DRED })
