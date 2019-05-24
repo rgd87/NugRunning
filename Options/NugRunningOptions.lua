@@ -1696,8 +1696,8 @@ local function MakeGeneralOptions()
                     nameplates = {
                         name = "Nameplate Timers",
                         type = "toggle",
-						desc = "Mirror flagged spell timers on nameplates",
-						confirm = true,
+                        desc = "Mirror flagged spell timers on nameplates",
+                        confirm = true,
 						confirmText = "Warning: Requires UI reloading.",
                         get = function(info) return NugRunning.db.nameplates end,
 						set = function(info, v)
