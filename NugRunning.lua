@@ -292,15 +292,18 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
     event_timers = config.event_timers
     usableTriggerSpells = config.usableTriggerSpells
 
-    -- filling up ranks
+    -- filling up ranks for spells and casts
     local cloneIDs = {}
-    for spellID, originalSpell in pairs(spells) do
-        if not cloneIDs[spellID] and originalSpell.clones then
-			for i, additionalSpellID in ipairs(originalSpell.clones) do
-                spells[additionalSpellID] = originalSpell
-                cloneIDs[additionalSpellID] = true
-			end
-		end
+    local rankCategories = { "spells", "casts" }
+    for _, category in ipairs(rankCategories) do
+        for spellID, originalSpell in pairs(config[category]) do
+            if not cloneIDs[spellID] and originalSpell.clones then
+                for i, additionalSpellID in ipairs(originalSpell.clones) do
+                    config[category][additionalSpellID] = originalSpell
+                    cloneIDs[additionalSpellID] = true
+                end
+            end
+        end
     end
     config.spellClones = cloneIDs
     -- for _, timerType in ipairs(categories) do
@@ -2390,7 +2393,7 @@ function NugRunning:CreateCastbarTimer(timer)
         local opts = config.casts[spellID]
         if opts.disabled then return end
 
-        local name, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible = UnitCastingInfo(unit)
+        local name, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible = CastingInfo()
         self.inverted = false
         self.castID = castID
         self:UpdateCastingInfo(name,texture,startTime,endTime, opts)
@@ -2404,7 +2407,7 @@ function NugRunning:CreateCastbarTimer(timer)
         local opts = config.casts[spellID]
         if opts.disabled then return end
 
-        local name, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible = UnitChannelInfo(unit)
+        local name, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible = ChannelInfo()
         self.inverted = true
         self.castID = castID
         self:UpdateCastingInfo(name,texture,startTime,endTime, opts)

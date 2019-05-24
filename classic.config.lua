@@ -145,6 +145,10 @@ Spell( 20594 ,{ name = "Stoneform", global = true, duration = 8, shine = true, g
 Spell( 20549 ,{ name = "War Stomp", global = true, duration = 2, maxtimers = 1, color = colors.DRED })
 Spell( 7744 ,{ name = "Will of the Forsaken", global = true, duration = 5, group = "buffs", color = colors.PURPLE5 })
 
+-- Cast({ 746, 1159, 3267, 3268, 7926, 7927, 10838, 10839, 18608, 18610, 23567, 23568, 23569, 23696, 24412, 24413, 24414 },
+    -- { name = "First Aid", global = true, tick = 1, tickshine = true, overlay = {"tick", "tickend", 0.4 }, color = colors.LGREEN })
+
+
 
 if class == "WARLOCK" then
 -- Interrupt(119910, "Spell Lock", 6) -- Felhunter spell from action bar
@@ -474,6 +478,7 @@ if class == "PRIEST" then
 
 Spell( 15487 ,{ name = "Silence", duration = 5, color = colors.PINK })
 
+Cast({ 17311, 17312, 17313, 17314, 18807 }, { name = "Mind Flay", short = "", priority = 13, tick = 1, overlay = {"tick", "tickend"}, color = colors.PURPLE2, priority = 11, duration = 3, scale = 0.8 })
 Spell({ 10797, 19296, 19299, 19302, 19303, 19304, 19305 }, { name = "Starshards", duration = 6, priority = 9, color = colors.CHIM })
 Spell({ 2944, 19276, 19277, 19278, 19279, 19280 }, { name = "Devouring Plague", duration = 24, priority = 9, color = colors.PURPLE4 })
 
@@ -605,8 +610,8 @@ Cooldown( 7384, { name = "Overpower", shine = true, color = colors.LBLUE, scale 
 Activation( 7384, { for_cd = true, effect = "NIGHTBORNE", ghost = 6 })
 helpers.OnUsableTrigger(7384)
 
-Cooldown( 6343, { name = "Thunder Clap", ghost = true, scale = 0.8, color = colors.PINKIERED, priority = 9.5 })
-Spell({ 5242, 6192, 6673, 11549, 11550, 11551, 25289 }, { name = "Battle Shout", ghost = true, scale_until = 20, glow2time = 10, priority = -300, effect = effects.JUDGEMENT, effecttime = 10, color = colors.DPURPLE, duration = 120 })
+Cooldown( 6343, { name = "Thunder Clap", ghost = 1, scale = 0.8, color = colors.PINKIERED, priority = 9.5 })
+Spell({ 5242, 6192, 6673, 11549, 11550, 11551, 25289 }, { name = "Battle Shout", ghost = true, scale_until = 20, priority = -300, glow2time = 10, color = colors.DPURPLE, duration = 120 })
 Spell({ 1160, 6190, 11554, 11555, 11556 }, { name = "Demoralizing Shout", duration = 30, color = colors.DTEAL, shinerefresh = true })
 Spell( 18499, { name = "Berserker Rage", color = colors.REJUV, shine = true, scale = 0.6, group = "buffs", duration = 10 })
 Spell({ 20253, 20614, 20615 }, { name = "Intercept", duration = 3, shine = true, color = colors.DRED })
