@@ -561,7 +561,7 @@ Spell({ 5171, 6774 }, { name = "Slice and Dice", shinerefresh = true, color = co
 
 Spell({ 2983, 8696, 11305 }, { name = "Sprint", group = "buffs", shine = true, duration = 8 })
 Spell( 5277 ,{ name = "Evasion", group = "buffs", color = colors.PINK, duration = 15 })
-Spell({ 1776, 1777, 8629, 11285, 11286 }, { name = "Gouge", effect = "JUDGEMENT", shine = true, color = colors.PINK3,
+Spell({ 1776, 1777, 8629, 11285, 11286 }, { name = "Gouge", shine = true, color = colors.PINK3,
     duration = function(timer)
         return 4 + 0.5*GotSpell(13741) + 0.5*GotSpell(13793) + 0.5*GotSpell(13792)
     end
