@@ -119,10 +119,10 @@ helpers.Interrupt = Interrupt
 if select(4,GetBuildInfo()) > 19999 then return end
 
 -- RACIALS
-Spell( 23234 ,{ name = "Blood Fury", duration = 15, scale = 0.75, group = "buffs" })
-Spell( 20594 ,{ name = "Stoneform", duration = 8, shine = true, group = "buffs" })
-Spell( 20549 ,{ name = "War Stomp", duration = 2, maxtimers = 1, color = colors.DRED })
-Spell( 7744 ,{ name = "Will of the Forsaken", duration = 5, group = "buffs", color = colors.PURPLE5 })
+Spell( 23234 ,{ name = "Blood Fury", global = true, duration = 15, scale = 0.75, group = "buffs" })
+Spell( 20594 ,{ name = "Stoneform", global = true, duration = 8, shine = true, group = "buffs" })
+Spell( 20549 ,{ name = "War Stomp", global = true, duration = 2, maxtimers = 1, color = colors.DRED })
+Spell( 7744 ,{ name = "Will of the Forsaken", global = true, duration = 5, group = "buffs", color = colors.PURPLE5 })
 
 
 if class == "WARLOCK" then
@@ -578,7 +578,7 @@ Cooldown( 23881, { name = "Bloodthirst", tick = 1.5, tickshine = true, overlay =
 -- Make Charges?
 Spell({ 7386, 7405, 8380, 11596, 11597 }, { name = "Sunder Armor", duration = 30, color = colors.DBROWN })
 Spell( 12809 ,{ name = "Concussion Blow", color = colors.TEAL2, shine = true, duration = 5 })
-Spell( 260708 ,{ name = "Sweeping Strikes", group = "buffs", shine = true, priority = -100503, color = colors.LRED, duration = 20, scale = 0.8 })
+Spell( 12292 ,{ name = "Sweeping Strikes", group = "buffs", shine = true, priority = -100503, color = colors.LRED, duration = 20, scale = 0.8 })
 Spell({ 12880, 14201, 14202, 14203, 14204 }, { name = "Enrage", color = colors.PURPLE4, shine = true, shinerefresh = true, scale = 0.75, group = "buffs", priority = -3, duration = 12 })
 Spell({ 12966, 12967, 12968, 12969, 12970 }, { name = "Flurry", color = colors.PURPLE5, shinerefresh = true, scale = 0.5, group = "buffs", priority = -1, duration = 15 })
 
