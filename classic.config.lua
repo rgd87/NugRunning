@@ -606,7 +606,7 @@ Spell({ 694, 7400, 7402, 20559, 20560 }, { name = "Mocking Blow", color = colors
 Spell( 1161 ,{ name = "Challenging Shout", duration = 6, maxtimers = 1 })
 Spell( 355 ,{ name = "Taunt", duration = 3 })
 
-Cooldown( 7384, { name = "Overpower", shine = true, priority = 9, color = colors.TEAL2, priority = 7 })
+Cooldown( 7384, { name = "Overpower", shine = true, priority = 9, color = colors.TEAL3, priority = 7, isknowncheck = function() return GetShapeshiftForm() ~= 2 end })
 Activation( 7384, { for_cd = true, effect = "JUDGEMENT", ghost = 6 })
 -- helpers.OnUsableTrigger(7384)
 
@@ -626,7 +626,7 @@ Spell( 676 ,{ name = "Disarm", color = colors.PINK3, scale = 0.8, shine = true,
 }) -- varies
 -- Spell( 29131 ,{ name = "Bloodrage", color = colors.WOO, duration = 10, scale = 0.5, shine = true })
 
-Cooldown( 6572 ,{ name = "Revenge", priority = 5, color = colors.PURPLE, resetable = true, fixedlen = 6, ghost = 1 })
+Cooldown( 6572 ,{ name = "Revenge", priority = 5, color = colors.PURPLE, resetable = true, fixedlen = 6, ghost = 1, isknowncheck = function() return GetShapeshiftForm() == 2 end })
 Activation( 6572, { for_cd = true, effect = "JUDGEMENT", ghost = 6 })
 -- There's no spell activation overlay in classic, so using SPELL_UPDATE_USABLE to emulate it
 helpers.OnUsableTrigger(6572)

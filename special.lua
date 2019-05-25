@@ -22,8 +22,10 @@ local function Overpower()
         end
     end
 
+    local IsInBattleStance = function() return GetShapeshiftForm() == 1 end
+
     local function OnDodge()
-        if IsShieldEquipped() then
+        if not IsShieldEquipped() or IsInBattleStance() then
             NugRunning:SPELL_ACTIVATION_OVERLAY_GLOW_SHOW(nil, 7384)
         end
     end
@@ -49,7 +51,7 @@ local function Overpower()
                     missedType = arg4
                 end
                 if missedType == "DODGE" then
-                    -- print("----------------->DODGED", eveцntType, "from", srcName, bit_band(srcFlags, AFFILIATION_MINE) == AFFILIATION_MINE)
+                    -- print("----------------->DODGED", eventType, "from", srcName, bit_band(srcFlags, AFFILIATION_MINE) == AFFILIATION_MINE)
                     OnDodge()
                 end
 
