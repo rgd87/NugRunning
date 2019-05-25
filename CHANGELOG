@@ -1,3 +1,11 @@
+### 8.2-classic4
+
+- Smart Overpower trigger
+- Separated Revenge and Overpower shared cooldowns
+- Battle Shout restricted to player
+- Demoralizing shout now marked as multi target
+- All the spells that were using "maxtimers = 1", now use old multiTarget option
+
 ### 8.2-classic3
 
 - fixed Cast timers
