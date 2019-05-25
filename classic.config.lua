@@ -611,7 +611,7 @@ Activation( 7384, { for_cd = true, effect = "NIGHTBORNE", ghost = 6 })
 helpers.OnUsableTrigger(7384)
 
 Cooldown( 6343, { name = "Thunder Clap", ghost = 1, scale = 0.8, color = colors.PINKIERED, priority = 9.5 })
-Spell({ 5242, 6192, 6673, 11549, 11550, 11551, 25289 }, { name = "Battle Shout", ghost = true, scale_until = 20, priority = -300, glow2time = 10, color = colors.DPURPLE, duration = 120 })
+Spell({ 5242, 6192, 6673, 11549, 11550, 11551, 25289 }, { name = "Battle Shout", ghost = true, target = "player", scale_until = 20, priority = -300, glow2time = 10, color = colors.DPURPLE, duration = 120 })
 Spell({ 1160, 6190, 11554, 11555, 11556 }, { name = "Demoralizing Shout", duration = 30, color = colors.DTEAL, shinerefresh = true })
 Spell( 18499, { name = "Berserker Rage", color = colors.REJUV, shine = true, scale = 0.6, group = "buffs", duration = 10 })
 Spell({ 20253, 20614, 20615 }, { name = "Intercept", duration = 3, shine = true, color = colors.DRED })
