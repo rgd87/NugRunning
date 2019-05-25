@@ -588,7 +588,11 @@ function CheckCooldown(spellID, opts, startTime, duration, enabled, charges, max
                     local mdur = opts.minduration
                     local time_remains = (duration + startTime) - GetTime()
                     local mrem = opts.hide_until
-                    if (not mdur or duration > mdur) and (not mrem or time_remains < mrem) then
+                    local isKnown = true
+                    if opts.isknowncheck then
+                        isKnown = opts.isknowncheck()
+                    end
+                    if isKnown and (not mdur or duration > mdur) and (not mrem or time_remains < mrem) then
                         timer = NugRunning:ActivateTimer(UnitGUID("player"),UnitGUID("player"), UnitName("player"), nil, spellID, opts.localname, opts, cdType, time_remains)
                     else
                         if timer and timer.isGhost then
