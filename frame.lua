@@ -381,17 +381,23 @@ local Redraw = function(self)
     if not self.model_path then return end
 
     self:SetModelScale(1)
+    -- self:ClearTransform()
     self:SetPosition(0,0,0)
 
     self:SetModel(self.model_path)
 
     self:SetModelScale(self.model_scale)
     self:SetPosition(self.ox, self.oy, self.oz)
+    -- if self.transform then
+    --     -- it's not working, probably because of the nextframe bullshit
+    --     self:SetTransform(unpack(self.transform))
+    -- end
 end
 
 local ResetTransformations = function(self)
     -- print(self:GetName(), "hiding", self:GetCameraDistance(), self:GetCameraPosition())
     self:SetModelScale(1)
+    -- self:ClearTransform()
     self:SetPosition(0,0,0)
 end
 
@@ -618,6 +624,7 @@ NugRunning.ConstructTimerBar = function(width, height)
         self.ox = effect.ox or 0
         self.oy = effect.oy or 0
         self.oz = effect.oz or 0
+        -- self.transform = effect.transform
         local scale = effect.scale or 1
         self:SetSize(height*scale, height*scale)
         local x = effect.x or 0
