@@ -606,9 +606,9 @@ Spell({ 694, 7400, 7402, 20559, 20560 }, { name = "Mocking Blow", color = colors
 Spell( 1161 ,{ name = "Challenging Shout", duration = 6, maxtimers = 1 })
 Spell( 355 ,{ name = "Taunt", duration = 3 })
 
-Cooldown( 7384, { name = "Overpower", shine = true, color = colors.LBLUE, scale = 0.75, priority = 7 })
-Activation( 7384, { for_cd = true, effect = "NIGHTBORNE", ghost = 6 })
-helpers.OnUsableTrigger(7384)
+Cooldown( 7384, { name = "Overpower", shine = true, priority = 9, color = colors.TEAL2, priority = 7 })
+Activation( 7384, { for_cd = true, effect = "JUDGEMENT", ghost = 6 })
+-- helpers.OnUsableTrigger(7384)
 
 Cooldown( 6343, { name = "Thunder Clap", ghost = 1, scale = 0.8, color = colors.PINKIERED, priority = 9.5 })
 Spell({ 5242, 6192, 6673, 11549, 11550, 11551, 25289 }, { name = "Battle Shout", ghost = true, target = "player", scale_until = 20, priority = -300, glow2time = 10, color = colors.DPURPLE, duration = 120 })
