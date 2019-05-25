@@ -142,7 +142,7 @@ if select(4,GetBuildInfo()) > 19999 then return end
 -- RACIALS
 Spell( 23234 ,{ name = "Blood Fury", global = true, duration = 15, scale = 0.75, group = "buffs" })
 Spell( 20594 ,{ name = "Stoneform", global = true, duration = 8, shine = true, group = "buffs" })
-Spell( 20549 ,{ name = "War Stomp", global = true, duration = 2, maxtimers = 1, color = colors.DRED })
+Spell( 20549 ,{ name = "War Stomp", global = true, duration = 2, multiTarget = true, color = colors.DRED })
 Spell( 7744 ,{ name = "Will of the Forsaken", global = true, duration = 5, group = "buffs", color = colors.PURPLE5 })
 
 -- Cast({ 746, 1159, 3267, 3268, 7926, 7927, 10838, 10839, 18608, 18610, 23567, 23568, 23569, 23696, 24412, 24413, 24414 },
@@ -170,7 +170,7 @@ Spell( 17941 ,{ name = "Shadow Trance", duration = 10, shine = true, priority = 
 
 
 Spell( 6358, { name = "Seduction", duration = 20, color = colors.PURPLE4 }) -- varies, Improved Succubus
-Spell({ 5484, 17928 }, { name = "Howl of Terror", duration = 15, shine = true, maxtimers = 1,
+Spell({ 5484, 17928 }, { name = "Howl of Terror", duration = 15, shine = true, multiTarget = true,
     duration = function(timer)
         return timer.spellID == 5484 and 10 or 15
     end
@@ -314,7 +314,7 @@ Cooldown( 19306 ,{ name = "Counterattack", ghost = 1, priority = 5, color = colo
 Activation( 19306, { for_cd = true, effect = "JUDGEMENT", ghost = 5 })
 helpers.OnUsableTrigger(19306)
 
-Spell({ 13812, 14314, 14315 }, { name = "Explosive Trap", duration = 20, maxtimers = 1, color = colors.RED, ghost = 1 })
+Spell({ 13812, 14314, 14315 }, { name = "Explosive Trap", duration = 20, multiTarget = true, color = colors.RED, ghost = 1 })
 Spell({ 13797, 14298, 14299, 14300, 14301 }, { name = "Immolation Trap", duration = 20, color = colors.RED, ghost = 1 })
 Spell({ 3355, 14308, 14309 }, { name = "Freezing Trap", color = colors.FROZEN,
     duration = function(timer)
@@ -373,7 +373,7 @@ Spell({ 5211, 6798, 8983 }, { name = "Bash", color = colors.RED,
     end
 }) -- varies
 
-Spell( 5209 , { name = "Challenging Roar", duration = 6, maxtimers = 1 })
+Spell( 5209 , { name = "Challenging Roar", duration = 6, multiTarget = true })
 Spell( 6795 ,{ name = "Taunt", duration = 3 })
 
 Spell({ 1850, 9821 }, { name = "Dash", duration = 15 })
@@ -443,8 +443,8 @@ Spell( 22959 ,{ name = "Fire Vulnerability", duration = 30, scale = 0.5, priorit
 -- Reserved to Flamestrike
 -- EventTimer({ spellID = 153561, event = "SPELL_CAST_SUCCESS", name = "Meteor", duration = 2.9, color = colors.FIRE })
 
-Spell({ 11113, 13018, 13019, 13020, 13021 }, { name = "Blast Wave", duration = 6, scale = 0.6,  color = colors.DBROWN, maxtimers = 1 })
-Spell({ 120, 8492, 10159, 10160, 10161 }, { name = "Cone of Cold", scale = 0.6,  color = colors.CHILL, maxtimers = 1,
+Spell({ 11113, 13018, 13019, 13020, 13021 }, { name = "Blast Wave", duration = 6, scale = 0.6,  color = colors.DBROWN, multiTarget = true })
+Spell({ 120, 8492, 10159, 10160, 10161 }, { name = "Cone of Cold", scale = 0.6,  color = colors.CHILL, multiTarget = true,
     duration = function(timer)
         local permafrost = GotSpell(11175) + GotSpell(12569) + GotSpell(12571)
         return 8 + permafrost
@@ -466,7 +466,7 @@ Spell({ 116, 205, 837, 7322, 8406, 8407, 8408, 10179, 10180, 10181, 25304 }, { n
 
 
 Spell( 12494 ,{ name = "Frostbite", duration = 5, color = colors.FROZEN, shine = true })
-Spell({ 122, 865, 6131, 10230 } ,{ name = "Frost Nova", duration = 8, color = colors.FROZEN, maxtimers = 1 })
+Spell({ 122, 865, 6131, 10230 } ,{ name = "Frost Nova", duration = 8, color = colors.FROZEN, multiTarget = true })
 
 Spell( 12536 ,{ name = "Clearcasting", shine = true, group = "buffs", duration = 15, color = colors.CHIM })
 Spell( 12043 ,{ name = "Presence of Mind", shine = true, duration = 15, group = "buffs", priority = -12, timeless = true, scale = 0.7, color = colors.WOO2DARK })
@@ -502,7 +502,7 @@ Spell({ 139, 6074, 6075, 6076, 6077, 6078, 10927, 10928, 10929, 25315 }, { name 
 Spell({ 586, 9578, 9579, 9592, 10941, 10942 }, { name = "Fade", duration = 10, scale = 0.6, shine = true, color = colors.CHILL })
 Cooldown( 8092, { name = "Mind Blast", priority = 9, recast_mark = 1.5, color = colors.CURSE, ghosteffect = "NIGHTBORNE", ghost = true })
 
-Spell({ 8122, 8124, 10888, 10890 }, { name = "Psychic Scream", duration = 8, shine = true, maxtimers = 1 })
+Spell({ 8122, 8124, 10888, 10890 }, { name = "Psychic Scream", duration = 8, shine = true, multiTarget = true })
 Spell({ 589, 594, 970, 992, 2767, 10892, 10893, 10894 }, { name = "Shadow Word: Pain", short = "Pain", ghost = true, nameplates = true, priority = 8, color = colors.PURPLE,
     duration = function(timer, opts)
         local duration = 18
@@ -603,7 +603,7 @@ Spell({ 1715, 7372, 7373 }, { name = "Hamstring", ghost = true, color = colors.P
 Spell( 23694 , { name = "Immobilized", shine = true, color = colors.BLACK, duration = 5 }) -- Improved Hamstring
 
 Spell({ 694, 7400, 7402, 20559, 20560 }, { name = "Mocking Blow", color = colors.LRED, duration = 6, shine = true })
-Spell( 1161 ,{ name = "Challenging Shout", duration = 6, maxtimers = 1 })
+Spell( 1161 ,{ name = "Challenging Shout", duration = 6, multiTarget = true })
 Spell( 355 ,{ name = "Taunt", duration = 3 })
 
 Cooldown( 7384, { name = "Overpower", shine = true, priority = 9, color = colors.TEAL3, priority = 7, isknowncheck = function() return GetShapeshiftForm() ~= 2 end })
@@ -612,11 +612,11 @@ Activation( 7384, { for_cd = true, effect = "JUDGEMENT", ghost = 6 })
 
 Cooldown( 6343, { name = "Thunder Clap", ghost = 1, scale = 0.8, color = colors.PINKIERED, priority = 9.5 })
 Spell({ 5242, 6192, 6673, 11549, 11550, 11551, 25289 }, { name = "Battle Shout", ghost = true, target = "player", scale_until = 20, priority = -300, glow2time = 10, color = colors.DPURPLE, duration = 120 })
-Spell({ 1160, 6190, 11554, 11555, 11556 }, { name = "Demoralizing Shout", duration = 30, color = colors.DTEAL, shinerefresh = true })
+Spell({ 1160, 6190, 11554, 11555, 11556 }, { name = "Demoralizing Shout", duration = 30, color = colors.DTEAL, multiTarget = true, shinerefresh = true })
 Spell( 18499, { name = "Berserker Rage", color = colors.REJUV, shine = true, scale = 0.6, group = "buffs", duration = 10 })
 Spell({ 20253, 20614, 20615 }, { name = "Intercept", duration = 3, shine = true, color = colors.DRED })
 
-Spell( 12323, { name = "Piercing Howl", maxtimers = 1, duration = 6, color = colors.DBROWN })
+Spell( 12323, { name = "Piercing Howl", multiTarget = true, duration = 6, color = colors.DBROWN })
 Spell( 5246 ,{ name = "Intimidating Shout", duration = 8, maxtimers = 1 })
 
 Spell( 676 ,{ name = "Disarm", color = colors.PINK3, scale = 0.8, shine = true,
