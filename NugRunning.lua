@@ -892,7 +892,7 @@ function NugRunning.RefreshTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID,
     local time
     if override then time = override
     else
-        if dstGUID and not ignore_applied_dose then
+        if not ignore_applied_dose then -- why was it ignoring multi target?
             time = NugRunning.SetDefaultDuration(dstFlags, opts, timer)
         end
         if timerType == "BUFF" or timerType == "DEBUFF" then
