@@ -567,15 +567,23 @@ function NugRunningGUI.CreateCommonForm(self)
     Form:AddChild(hide_until)
     AddTooltip(hide_until, "Hide until duration is less than X\n(Only for cooldowns)")
 
-	local ghost = AceGUI:Create("CheckBox")
-	ghost:SetLabel("Ghost")
-	ghost:SetRelativeWidth(0.24)
-	ghost:SetCallback("OnValueChanged", function(self, event, value)
-		self.parent.opts["ghost"] = value
-	end)
-	Form.controls.ghost = ghost
-	Form:AddChild(ghost)
-	AddTooltip(ghost, "Timer remains for a short time after expiring")
+	local ghost = AceGUI:Create("EditBox")
+    ghost:SetLabel("Ghost")
+    ghost:SetRelativeWidth(0.17)
+    ghost:DisableButton(true)
+    ghost:SetCallback("OnTextChanged", function(self, event, value)
+        local v = tonumber(value)
+        if v then
+			self.parent.opts["ghost"] = v
+			if v == 3 then self.parent.opts["ghost"] = true end
+        elseif value == "" then
+            self.parent.opts["ghost"] = false
+            self:SetText("")
+        end
+    end)
+    Form.controls.ghost = ghost
+    Form:AddChild(ghost)
+    AddTooltip(ghost, "Timer remains for X seconds after expiring")
 	
 	local preghost = AceGUI:Create("CheckBox")
 	preghost:SetLabel("PreGhost")
@@ -995,9 +1003,10 @@ function NugRunningGUI.FillForm(self, Form, class, category, id, opts, isEmptyFo
 	controls.shinerefresh:SetValue(opts.shinerefresh)
 
 	if opts.ghost then
-		controls.ghost:SetValue(true)
+		local numeric = opts.ghost == true and 3 or opts.ghost
+		controls.ghost:SetText(numeric)
 	else
-		controls.ghost:SetValue(false)
+		controls.ghost:SetText()
 	end
 	controls.preghost:SetValue(opts.preghost)
 	controls.maxtimers:SetText(opts.maxtimers)
