@@ -39,7 +39,7 @@ setmetatable(free,{ __newindex = function(t,k,v)
             config.cooldowns[cd_opts.id] = cd_opts
             NugRunning:SPELL_UPDATE_COOLDOWN()
         else
-            if k.opts.ghost and not k.isGhost then return k:BecomeGhost() end
+            if (k.opts.ghost or k.scheduledGhost) and not k.isGhost then return k:BecomeGhost() end
             if k.isGhost and not k.expiredGhost then return end
             k.isGhost = nil
             k.expiredGhost = nil
@@ -1287,11 +1287,7 @@ end
 function NugRunning.GhostFunc(self,time)
     self._elapsed = self._elapsed + time
     if self._elapsed < self.ghost_duration then return end
-    if leaveGhost and (
-            UnitAffectingCombat("player")
-            and (self.dstGUID == UnitGUID("target") or self.dstGUID == playerGUID)
-            and not self.ghost_noleave
-            ) then return end
+    -- if leaveGhost then return end
 
     -- if self.isPreghosting then
         -- return
@@ -1307,12 +1303,14 @@ local TimerBecomeGhost = function(self, override_ghost_duration)
     self:ToGhost()
     local opts = self.opts
     local ghost_value = override_ghost_duration or opts.ghost
+    if self.scheduledGhost then
+        ghost_value = self.scheduledGhost
+        self.scheduledGhost = nil
+    end
     if type(ghost_value) == "number" then
         self.ghost_duration = ghost_value
-        self.ghost_noleave = true
     else
         self.ghost_duration = 3
-        self.ghost_noleave = nil
     end
     if opts.ghosteffect then
         self.effect:SetEffect(opts.ghosteffect)
