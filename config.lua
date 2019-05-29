@@ -1559,8 +1559,8 @@ effects["GOUGE"] = {
 }
 effects["FIRESHOT"] = {
     path = 166158, --"spells/fireshot_missile.m2",
-    scale = 5,
-    x = -3, y = 2,
+    scale = 4,
+    x = -3, y = -4,
 }
 effects["UNHOLY"] = {
     path = 166024, --"spells/enchantments/skullballs.m2",
