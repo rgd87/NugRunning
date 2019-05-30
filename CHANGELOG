@@ -1,3 +1,9 @@
+### 1.13.1
+
+- Demoralizing Roar is now multitarget
+- fixed unpredictable behaviour of spell ranks
+- Support consecutive activations of Revenge and Overpower
+
 ### 8.2-classic4
 
 - Smart Overpower trigger
