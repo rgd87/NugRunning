@@ -49,7 +49,7 @@ local function Overpower()
             local spellID = 7384
             local playerGUID = UnitGUID("player")
             local timer = gettimer(active,spellID, playerGUID, "COOLDOWN")
-            if timer then
+            if timer and not timer.isGhost then
                 timer.scheduledGhost = 5
             end
             NugRunning:SPELL_ACTIVATION_OVERLAY_GLOW_SHOW(nil, 7384)
@@ -66,7 +66,7 @@ local function Overpower()
             local spellID = 6572
             local playerGUID = UnitGUID("player")
             local timer = gettimer(active,spellID, playerGUID, "COOLDOWN")
-            if timer then
+            if timer and not timer.isGhost then
                 timer.scheduledGhost = 5
             end
             NugRunning:SPELL_ACTIVATION_OVERLAY_GLOW_SHOW(nil, 6572)
@@ -83,7 +83,7 @@ local function Overpower()
         local timestamp, eventType, hideCaster,
         srcGUID, srcName, srcFlags, srcFlags2,
         dstGUID, dstName, dstFlags, dstFlags2,
-        arg1, arg2, arg3, arg4 = CombatLogGetCurrentEventInfo()
+        arg1, arg2, arg3, arg4, arg5 = CombatLogGetCurrentEventInfo()
 
         if (bit_band(srcFlags, AFFILIATION_MINE) == AFFILIATION_MINE) then
             if eventType == "SWING_MISSED" or eventType == "SPELL_MISSED" then
@@ -121,6 +121,12 @@ local function Overpower()
                     missedType = arg4
                 end
                 if missedType == "BLOCK" or missedType == "DODGE" or missedType == "PARRY" then
+                    OnRevengeActivate()
+                end
+            end
+            if eventType == "SWING_DAMAGE" then
+                local blocked = arg5
+                if blocked then
                     OnRevengeActivate()
                 end
             end
