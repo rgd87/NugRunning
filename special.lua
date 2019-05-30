@@ -4,8 +4,9 @@ local NugRunning = NugRunning
 local class = select(2,UnitClass("player"))
 
 
--- local active = NugRunning.active
--- local free = NugRunning.free
+local active = NugRunning.active
+local free = NugRunning.free
+local gettimer = NugRunning.gettimer
 local UnitGUID = UnitGUID
 local bit_band = bit.band
 local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
@@ -26,6 +27,12 @@ local function Overpower()
 
     local function OnDodge()
         if not IsShieldEquipped() or IsInBattleStance() then
+            local spellID = 7384
+            local playerGUID = UnitGUID("player")
+            local timer = gettimer(active,spellID, playerGUID, "COOLDOWN")
+            if timer then
+                timer.scheduledGhost = 5
+            end
             NugRunning:SPELL_ACTIVATION_OVERLAY_GLOW_SHOW(nil, 7384)
         end
     end
