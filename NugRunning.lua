@@ -295,14 +295,19 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
     -- filling up ranks for spells and casts
     local cloneIDs = {}
     local rankCategories = { "spells", "casts" }
+    local tempTable = {}
     for _, category in ipairs(rankCategories) do
-        for spellID, originalSpell in pairs(config[category]) do
-            if not cloneIDs[spellID] and originalSpell.clones then
-                for i, additionalSpellID in ipairs(originalSpell.clones) do
-                    config[category][additionalSpellID] = originalSpell
+        table.wipe(tempTable)
+        for spellID, opts in pairs(config[category]) do
+            if not cloneIDs[spellID] and opts.clones then
+                for i, additionalSpellID in ipairs(opts.clones) do
+                    tempTable[additionalSpellID] = opts
                     cloneIDs[additionalSpellID] = true
                 end
             end
+        end
+        for spellID, opts in pairs(tempTable) do
+            config[category][spellID] = opts
         end
     end
     config.spellClones = cloneIDs
