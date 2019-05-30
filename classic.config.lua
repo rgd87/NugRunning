@@ -320,7 +320,7 @@ Spell({ 2637, 18657, 18658 }, { name = "Hibernate", color = colors.PURPLE4, name
         else return 40 end
     end
 }) -- varies
-Spell({ 99, 1735, 9490, 9747, 9898 }, { name = "Demoralizing Roar", duration = 30, color = colors.DTEAL, shinerefresh = true })
+Spell({ 99, 1735, 9490, 9747, 9898 }, { name = "Demoralizing Roar", duration = 30, color = colors.DTEAL, multiTarget = true, shinerefresh = true })
 Spell({ 5211, 6798, 8983 }, { name = "Bash", color = colors.RED,
     duration = function(timer)
         if timer.spellID == 5211 then return 2
