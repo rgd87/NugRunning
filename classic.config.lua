@@ -563,8 +563,7 @@ Spell( 1161 ,{ name = "Challenging Shout", duration = 6, multiTarget = true })
 Spell( 355 ,{ name = "Taunt", duration = 3 })
 
 Cooldown( 7384, { name = "Overpower", shine = true, priority = 9, color = colors.TEAL3, priority = 7, isknowncheck = function() return GetShapeshiftForm() ~= 2 end })
-Activation( 7384, { for_cd = true, effect = "FIRESHOT", ghost = 6 })
--- helpers.OnUsableTrigger(7384)
+Activation( 7384, { for_cd = true, effect = "FIRESHOT", ghost = 5 })
 
 Cooldown( 6343, { name = "Thunder Clap", ghost = 1, scale = 0.8, color = colors.PINKIERED, priority = 9.5 })
 Spell({ 5242, 6192, 6673, 11549, 11550, 11551, 25289 }, { name = "Battle Shout", ghost = 7, target = "player", scale_until = 20, priority = -300, effect = "BLOODBOIL", effecttime = 10, glowtime = 10, affiliation = "raid", color = colors.DPURPLE, duration = 120 })
@@ -582,10 +581,9 @@ Spell( 676 ,{ name = "Disarm", color = colors.PINK3, scale = 0.8, shine = true,
 }) -- varies
 -- Spell( 29131 ,{ name = "Bloodrage", color = colors.WOO, duration = 10, scale = 0.5, shine = true })
 
-Cooldown( 6572 ,{ name = "Revenge", priority = 5, color = colors.PURPLE, resetable = true, fixedlen = 6, ghost = 1, isknowncheck = function() return GetShapeshiftForm() == 2 end })
-Activation( 6572, { for_cd = true, effect = "FIRESHOT", ghost = 6 })
+Cooldown( 6572 ,{ name = "Revenge", priority = 5, color = colors.PURPLE, resetable = true, fixedlen = 6, isknowncheck = function() return GetShapeshiftForm() == 2 end })
+Activation( 6572, { for_cd = true, effect = "FIRESHOT", ghost = 5 })
 -- There's no spell activation overlay in classic, so using SPELL_UPDATE_USABLE to emulate it
-helpers.OnUsableTrigger(6572)
 
 Spell( 12798 , { name = "Revenge Stun", duration = 3, shine = true, color = colors.DRED })
 

@@ -23,9 +23,28 @@ local function Overpower()
         end
     end
 
-    local IsInBattleStance = function() return GetShapeshiftForm() == 1 end
+    local RevengeIDs = {
+        [6572] = true,
+        [6574] = true,
+        [7379] = true,
+        [11600] = true,
+        [11601] = true,
+        [25288] = true,
+    }
 
-    local function OnDodge()
+    local OverpowerIDs = {
+        [7384] = true,
+        [7887] = true,
+        [11584] = true,
+        [11585] = true,
+    }
+
+
+    local IsInBattleStance = function() return GetShapeshiftForm() == 1 end
+    local IsInDefensiveStance = function() return GetShapeshiftForm() == 2 end
+
+    local function OnOverpowerActivate()
+        if UnitLevel("player") < 12 then return end
         if not IsShieldEquipped() or IsInBattleStance() then
             local spellID = 7384
             local playerGUID = UnitGUID("player")
@@ -37,8 +56,25 @@ local function Overpower()
         end
     end
     
-    local function OnSpent()
+    local function OnOverpowerSpent()
         NugRunning:SPELL_ACTIVATION_OVERLAY_GLOW_HIDE(nil, 7384)
+    end
+
+    local function OnRevengeActivate()
+        if UnitLevel("player") < 14 then return end
+        if IsInDefensiveStance() then
+            local spellID = 6572
+            local playerGUID = UnitGUID("player")
+            local timer = gettimer(active,spellID, playerGUID, "COOLDOWN")
+            if timer then
+                timer.scheduledGhost = 5
+            end
+            NugRunning:SPELL_ACTIVATION_OVERLAY_GLOW_SHOW(nil, 6572)
+        end
+    end
+
+    local function OnRevengeSpent()
+        NugRunning:SPELL_ACTIVATION_OVERLAY_GLOW_HIDE(nil, 6572)
     end
 
     local f = CreateFrame("Frame", nil)
@@ -59,13 +95,34 @@ local function Overpower()
                 end
                 if missedType == "DODGE" then
                     -- print("----------------->DODGED", eventType, "from", srcName, bit_band(srcFlags, AFFILIATION_MINE) == AFFILIATION_MINE)
-                    OnDodge()
+                    OnOverpowerActivate()
                 end
 
             end
 
-            if arg1 == 7384 and eventType == "SPELL_CAST_SUCCESS" then
-                OnSpent()
+            if eventType == "SPELL_CAST_SUCCESS" then
+                if OverpowerIDs[arg1] then
+                    OnOverpowerSpent()
+                end
+
+                if RevengeIDs[arg1] then
+                    OnRevengeSpent()
+                end
+            end
+        end
+
+
+        if dstGUID == UnitGUID("player") then
+            if eventType == "SWING_MISSED" or eventType == "SPELL_MISSED" then
+                local missedType
+                if eventType == "SWING_MISSED" then
+                    missedType = arg1
+                elseif eventType == "SPELL_MISSED" then
+                    missedType = arg4
+                end
+                if missedType == "BLOCK" or missedType == "DODGE" or missedType == "PARRY" then
+                    OnRevengeActivate()
+                end
             end
         end
     end)
