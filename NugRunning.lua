@@ -19,7 +19,6 @@ local activations = config.activations
 local cooldowns = config.cooldowns
 local itemcooldowns = config.itemcooldowns
 local event_timers = config.event_timers
-local usableTriggerSpells = config.usableTriggerSpells
 local nameplates
 local MAX_TIMERS = 20
 local check_event_timers
@@ -290,7 +289,6 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
     cooldowns = config.cooldowns
     itemcooldowns = config.itemcooldowns
     event_timers = config.event_timers
-    usableTriggerSpells = config.usableTriggerSpells
 
     -- filling up ranks for spells and casts
     local cloneIDs = {}
@@ -339,24 +337,6 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
 
     NugRunning:RegisterEvent("PLAYER_TARGET_CHANGED")
     -- NugRunning:RegisterEvent("UNIT_AURA")
-
-    if isClassic then
-        NugRunning:RegisterEvent("SPELL_UPDATE_USABLE")
-        NugRunning.SPELL_UPDATE_USABLE = function(self, event)
-            for spellID, oldState in pairs(usableTriggerSpells) do
-                local newState = IsUsableSpell(spellID)
-                if newState ~= oldState then
-                    if newState == true then
-                        self:SPELL_ACTIVATION_OVERLAY_GLOW_SHOW(event, spellID)
-                    else
-                        self:SPELL_ACTIVATION_OVERLAY_GLOW_HIDE(event, spellID)
-                    end
-                    usableTriggerSpells[spellID] = newState
-                end
-            end
-        end
-    end
-
 
     if NRunDB.cooldownsEnabled then
         NugRunning:RegisterEvent("SPELL_UPDATE_COOLDOWN")

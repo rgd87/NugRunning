@@ -267,7 +267,6 @@ Spell({ 19306, 20909, 20910 }, { name = "Counterattack", shine = true, duration 
 
 Cooldown( 19306 ,{ name = "Counterattack", ghost = 1, priority = 5, color = colors.PURPLE4 })
 Activation( 19306, { for_cd = true, effect = "FIRESHOT", ghost = 5 })
-helpers.OnUsableTrigger(19306)
 
 Spell({ 13812, 14314, 14315 }, { name = "Explosive Trap", duration = 20, multiTarget = true, color = colors.RED, ghost = 1 })
 Spell({ 13797, 14298, 14299, 14300, 14301 }, { name = "Immolation Trap", duration = 20, color = colors.RED, ghost = 1 })
@@ -526,7 +525,7 @@ Spell( 14177 ,{ name = "Cold Blood", shine = true, duration = 15, group = "buffs
 Spell({ 14143, 14149 }, { name = "Remorseless", group = "buffs", scale = 0.75, duration = 20, color = colors.TEAL3 })
 Cooldown( 14251, { name = "Riposte", color = colors.PURPLE2, scale = 0.8 })
 Activation( 14251, { for_cd = true, effect = "FIRESHOT", ghost = 6 })
-helpers.OnUsableTrigger(14251)
+
 Cooldown( 14278, { name = "Ghostly Strike", color = colors.WOO, ghost = true, scale_until = 5, })
 
 EventTimer({ event = "SPELL_CAST_SUCCESS", spellID = 1725, name = "Distract", color = colors.WOO2DARK, duration = 10 })
