@@ -11,11 +11,10 @@ local EventTimer = helpers.EventTimer
 local Cast = helpers.Cast
 local Item = helpers.Item
 local Anchor = helpers.Anchor
-local Talent = helpers.Talent
+local Talent = helpers.ClassicTalent
 local Glyph = helpers.Glyph
 local GetCP = helpers.GetCP
 local SPECS = helpers.SPECS
-local GotSpell = helpers.Talent
 local IsPlayerSpell = IsPlayerSpell
 local IsUsableSpell = IsUsableSpell
 local _,class = UnitClass("player")
@@ -274,7 +273,7 @@ Spell({ 13812, 14314, 14315 }, { name = "Explosive Trap", duration = 20, multiTa
 Spell({ 13797, 14298, 14299, 14300, 14301 }, { name = "Immolation Trap", duration = 20, color = colors.RED, ghost = 1 })
 Spell({ 3355, 14308, 14309 }, { name = "Freezing Trap", color = colors.FROZEN,
     duration = function(timer)
-        local mul = 1 + 0.15*GotSpell(19239) + 0.15*GotSpell(19245)
+        local mul = 1 + 0.15*Talent(19239, 19245) -- Clever Traps
         if timer.spellID == 3355 then return 10*mul
         elseif timer.spellID == 14308 then return 15*mul
         else return 20*mul end
@@ -402,13 +401,13 @@ Spell( 22959 ,{ name = "Fire Vulnerability", duration = 30, scale = 0.5, priorit
 Spell({ 11113, 13018, 13019, 13020, 13021 }, { name = "Blast Wave", duration = 6, scale = 0.6,  color = colors.DBROWN, multiTarget = true })
 Spell({ 120, 8492, 10159, 10160, 10161 }, { name = "Cone of Cold", scale = 0.6,  color = colors.CHILL, multiTarget = true,
     duration = function(timer)
-        local permafrost = GotSpell(11175) + GotSpell(12569) + GotSpell(12571)
+        local permafrost = Talent(11175, 12569, 12571)
         return 8 + permafrost
     end
 })
 Spell({ 116, 205, 837, 7322, 8406, 8407, 8408, 10179, 10180, 10181, 25304 }, { name = "Frostbolt", scale = 0.6, color = colors.CHILL,
     duration = function(timer)
-        local permafrost = GotSpell(11175) + GotSpell(12569) + GotSpell(12571)
+        local permafrost = Talent(11175, 12569, 12571)
         if timer.spellID == 116 then return 5 + permafrost
         elseif timer.spellID == 205 then return 6 + permafrost
         elseif timer.spellID == 837 then return 6 + permafrost
@@ -463,7 +462,7 @@ Spell({ 589, 594, 970, 992, 2767, 10892, 10893, 10894 }, { name = "Shadow Word: 
     duration = function(timer, opts)
         local duration = 18
         -- Improved SWP, 2 ranks: Increases the duration of your Shadow Word: Pain spell by 3 sec.
-        return duration + 3*helpers.Talent(15275) + 3*helpers.Talent(15317)
+        return duration + 3*Talent(15275, 15317)
     end
  }) -- varies by talents
 
@@ -510,7 +509,7 @@ Spell({ 1943, 8639, 8640, 11273, 11274, 11275 }, { name = "Rupture", tick = 2, t
 }) -- varies
 Spell({ 5171, 6774 }, { name = "Slice and Dice", shinerefresh = true, color = colors.PURPLE,
     duration = function(timer)
-        local mul = 1 + 0.15*helpers.Talent(14165) + 0.15*helpers.Talent(14166) + 0.15*helpers.Talent(14167)
+        local mul = 1 + 0.15*Talent(14165, 14166, 14167)
         return (6 + GetCP()*3)*mul
     end
 }) -- varies
@@ -519,7 +518,7 @@ Spell({ 2983, 8696, 11305 }, { name = "Sprint", group = "buffs", shine = true, d
 Spell( 5277 ,{ name = "Evasion", group = "buffs", color = colors.PINK, duration = 15 })
 Spell({ 1776, 1777, 8629, 11285, 11286 }, { name = "Gouge", shine = true, color = colors.PINK3,
     duration = function(timer)
-        return 4 + 0.5*GotSpell(13741) + 0.5*GotSpell(13793) + 0.5*GotSpell(13792)
+        return 4 + 0.5*Talent(13741, 13793, 13792)
     end
 })
 
@@ -576,7 +575,7 @@ Spell( 5246 ,{ name = "Intimidating Shout", duration = 8, maxtimers = 1 })
 
 Spell( 676 ,{ name = "Disarm", color = colors.PINK3, scale = 0.8, shine = true,
     duration = function(timer)
-        return 10 + GotSpell(12313) + GotSpell(12804) + GotSpell(12807)
+        return 10 + Talent(12313, 12804, 12807)
     end,
 }) -- varies
 -- Spell( 29131 ,{ name = "Bloodrage", color = colors.WOO, duration = 10, scale = 0.5, shine = true })
