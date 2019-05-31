@@ -27,25 +27,38 @@ local AFFILIATION_OUTSIDER = COMBATLOG_OBJECT_AFFILIATION_OUTSIDER
 
 
 helpers.Talent = function (spellID)
-    -- local spellName
-    -- if type(spellID) == "number" then
-    --     spellName = GetSpellInfo(spellID)
-    -- elseif type(spellID) == "string" then
-    --     spellName = spellID
-    -- end
     return IsSpellKnown(spellID) and 1 or 0
-    -- local numTabs = GetNumTalentTabs()
-    -- for t=1, numTabs do
-    --     local numTalents = GetNumTalents(t)
-    --     for i=1, numTalents do
-    --         local name, _,_,_, rank = GetTalentInfo(t, i)
-    --         if spellName == name then
-    --             return rank
-    --         end
-    --     end
-    -- end
-    -- return 0
 end
+helpers.ClassicTalent = function (...)
+    for i=1, 5 do
+        local spellID = select(i, ...)
+        if not spellID then break end
+        if IsPlayerSpell(spellID) then return i end
+    end
+    return 0
+end
+helpers.ClassicTalentByEnum = function (spellID)
+    local spellName
+    if type(spellID) == "number" then
+        spellName = GetSpellInfo(spellID)
+    elseif type(spellID) == "string" then
+        spellName = spellID
+    end
+
+    local numTabs = GetNumTalentTabs()
+    for tab=1, numTabs do
+        local numTalents = GetNumTalents(tab)
+        for i=1, numTalents do
+            local name, _,_,_, rank = GetTalentInfo(tab, i)
+            if spellName == name then
+                return rank
+            end
+        end
+    end
+    return 0
+end
+
+
 helpers.GetCP = function()
     if not NugRunning.cpNow then return GetComboPoints("player", "target") end
     return NugRunning.cpWas > NugRunning.cpNow and NugRunning.cpWas or NugRunning.cpNow
