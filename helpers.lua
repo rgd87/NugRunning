@@ -164,12 +164,6 @@ helpers.ModActivation = function(id, mods)
     apply_overrides(NugRunningConfig.activations[id], mods)
 end
 
-helpers.OnUsableTrigger = function( id, defaultState )
-    if not GetSpellInfo(id) then print("nrun: misssing spell #"..id) return end
-    if not defaultState then defaultState = false end
-    NugRunningConfig.usableTriggerSpells[id] = defaultState
-end
-
 helpers.EventTimer = function( id, opts )
     if type(id) == "table" and opts == nil then
         opts = id
