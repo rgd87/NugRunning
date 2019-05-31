@@ -1,3 +1,9 @@
+### 1.13.3
+
+- fixed talent info for durations
+- removed activation for riposte and counterattack
+- fixed activations for disabled cooldowns causing error
+
 ### 1.13.2
 
 - Revenge trigger wasn't detecting partial blocks
