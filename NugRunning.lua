@@ -515,6 +515,7 @@ function NugRunning.SPELL_ACTIVATION_OVERLAY_GLOW_SHOW(self,event, spellID)
             local timer = gettimer(active,spellID, playerGUID, "COOLDOWN")
             if not timer then
                 timer = self:ActivateTimer(playerGUID, playerGUID, UnitName("player"), nil, spellID, GetSpellInfo(spellID), cd_opts, "COOLDOWN", 5)
+                if not timer then return end
                 timer:BecomeGhost(opts.ghost) -- overriding the normal ghost length with the one in activation's opts
             end
 
