@@ -414,11 +414,9 @@ function NugRunning.PLAYER_LOGOUT(self, event)
     RemoveDefaults(NRunDB, defaults)
 end
 
-local DRList = LibStub("DRList-1.0")
-
-local DRSpellList = DRList.spellList
-
-local DRResetTime = DRList:GetResetTime("default")
+local DR_CategoryBySpellID = helpers.DR_CategoryBySpellID
+local DR_TypesPVE = helpers.DR_TypesPVE
+local DRResetTime = 18.4
 
 local DRInfo = setmetatable({}, { __mode = "k" })
 local COMBATLOG_OBJECT_TYPE_PLAYER = COMBATLOG_OBJECT_TYPE_PLAYER
@@ -451,7 +449,7 @@ local function clearDRs(dstGUID)
     DRInfo[dstGUID] = nil
 end
 local function getDRMul(dstGUID, spellID)
-    local category = DRSpellList[spellID]
+    local category = DR_CategoryBySpellID[spellID]
     if not category then return 1 end
 
     local guitTable = DRInfo[dstGUID]
@@ -473,11 +471,13 @@ end
 local function CountDiminishingReturns(eventType, srcGUID, srcFlags, dstGUID, dstFlags, spellID, auraType)
     if auraType == "DEBUFF" then
         if eventType == "SPELL_AURA_REMOVED" or eventType == "SPELL_AURA_REFRESH" then
-            local category = DRSpellList[spellID]
+            local category = DR_CategoryBySpellID[spellID]
             if not category then return end
 
             local isDstPlayer = bit_band(dstFlags, COMBATLOG_OBJECT_TYPE_PLAYER) > 0
             local isFriendly = bit_band(dstFlags, COMBATLOG_OBJECT_REACTION_FRIENDLY) > 0
+
+            if isFriendly then return end
 
             -- -- not doing in depth Mind Control bullshit for now
             -- if not isDstPlayer then
@@ -492,10 +492,8 @@ local function CountDiminishingReturns(eventType, srcGUID, srcFlags, dstGUID, ds
             --     if category == "taunt" then return end
             -- end
 
-            if isDstPlayer then
-                if category == "taunt" then return end
-            else
-                if not DRList:IsPvECategory(category) then return end
+            if not isDstPlayer then
+                if not DR_TypesPVE[category] then return end
             end
 
             addDRLevel(dstGUID, category)
