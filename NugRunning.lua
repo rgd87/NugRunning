@@ -81,6 +81,7 @@ local gettimer = function(self,spellID,dstGUID,timerType)
 end
 local IsPlayerSpell = IsPlayerSpell
 local GetSpellInfo = GetSpellInfo
+local string_sub = string.sub
 -- local GetSpellInfo_ = GetSpellInfo
 -- local GetSpellInfo = setmetatable({},{
 --     __call = function(self, id)
@@ -413,6 +414,98 @@ function NugRunning.PLAYER_LOGOUT(self, event)
     RemoveDefaults(NRunDB, defaults)
 end
 
+local DRList = LibStub("DRList-1.0")
+
+local DRSpellList = DRList.spellList
+
+local DRResetTime = DRList:GetResetTime("default")
+
+local DRInfo = setmetatable({}, { __mode = "k" })
+local COMBATLOG_OBJECT_TYPE_PLAYER = COMBATLOG_OBJECT_TYPE_PLAYER
+local COMBATLOG_OBJECT_REACTION_FRIENDLY = COMBATLOG_OBJECT_REACTION_FRIENDLY
+
+local DRMultipliers = { 0.5, 0.25, 0}
+local function addDRLevel(dstGUID, category)
+    local guitTable = DRInfo[dstGUID]
+    if not guidTable then
+        DRInfo[dstGUID] = {}
+        guidTable = DRInfo[dstGUID]
+    end
+
+    local catTable = guidTable[category]
+    if not catTable then
+        guidTable[category] = {}
+        catTable = guidTable[category]
+    end
+
+    local now = GetTime()
+    local isExpired = (catTable.expires or 0) <= now
+    if isExpired then
+        catTable.level = 1
+        catTable.expires = now + DRResetTime
+    else
+        catTable.level = catTable.level + 1
+    end
+end
+local function clearDRs(dstGUID)
+    DRInfo[dstGUID] = nil
+end
+local function getDRMul(dstGUID, spellID)
+    local category = DRSpellList[spellID]
+    if not category then return 1 end
+
+    local guitTable = DRInfo[dstGUID]
+    if guidTable then
+        local catTable = guidTable[category]
+        if catTable then
+            local now = GetTime()
+            local isExpired = (catTable.expires or 0) <= now
+            if isExpired then
+                return 1
+            else
+                return DRMultipliers[catTable.level]
+            end
+        end
+    end
+    return 1
+end
+
+local function CountDiminishingReturns(eventType, srcGUID, srcFlags, dstGUID, dstFlags, spellID, auraType)
+    if auraType == "DEBUFF" then
+        if eventType == "SPELL_AURA_REMOVED" or eventType == "SPELL_AURA_REFRESH" then
+            local category = DRSpellList[spellID]
+            if not category then return end
+
+            local isDstPlayer = bit_band(dstFlags, COMBATLOG_OBJECT_TYPE_PLAYER) > 0
+            local isFriendly = bit_band(dstFlags, COMBATLOG_OBJECT_REACTION_FRIENDLY) > 0
+
+            -- -- not doing in depth Mind Control bullshit for now
+            -- if not isDstPlayer then
+            --     if string_sub(dstGUID,1,6) ~= "Player" then
+            --         -- Players have same bitmask as player pets when they're mindcontrolled and MC aura breaks, so we need to distinguish these
+            --         -- so we can ignore the player pets but not actual players
+            --         isMindControlled = true
+            --     end
+            --     if not isMindControlled then return end
+            -- else
+            --     -- Ignore taunts for players
+            --     if category == "taunt" then return end
+            -- end
+
+            if isDstPlayer then
+                if category == "taunt" then return end
+            else
+                if not DRList:IsPvECategory(category) then return end
+            end
+
+            addDRLevel(dstGUID, category)
+        end
+        if eventType == "UNIT_DIED" then
+            clearDRs(dstGUID)
+        end
+    end
+end
+
 
 
 
@@ -426,6 +519,8 @@ function NugRunning.COMBAT_LOG_EVENT_UNFILTERED( self, event )
     dstGUID, dstName, dstFlags, dstFlags2,
     spellID, spellName, spellSchool, auraType, amount = CombatLogGetCurrentEventInfo()
 
+    CountDiminishingReturns(eventType, srcGUID, srcFlags, dstGUID, dstFlags, spellID, auraType)
+
     if spells[spellID] then
         local affiliationStatus = (bit_band(srcFlags, AFFILIATION_MINE) == AFFILIATION_MINE)
         local opts = spells[spellID]
@@ -435,7 +530,7 @@ function NugRunning.COMBAT_LOG_EVENT_UNFILTERED( self, event )
         if opts.target and dstGUID ~= UnitGUID(opts.target) then return end
         if affiliationStatus then
             if eventType == "SPELL_AURA_REFRESH" then
-                self:RefreshTimer(srcGUID, dstGUID, dstName, dstFlags, spellID, spellName, opts, auraType, nil, amount)
+                self:RefreshTimer(srcGUID, dstGUID, dstName, dstFlags, spellID, spellName, opts, auraType, nil, amount, nil)
             elseif eventType == "SPELL_AURA_APPLIED_DOSE" then
                 self:RefreshTimer(srcGUID, dstGUID, dstName, dstFlags, spellID, spellName, opts, auraType, nil, amount, opts._ignore_applied_dose)
             elseif eventType == "SPELL_AURA_APPLIED" then
@@ -636,7 +731,6 @@ end
 
 local helpful = "HELPFUL"
 local harmful = "HARMFUL"
-local string_sub = string.sub
 function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID, spellName, opts, timerType, override, amount, from_unitaura)  -- duration override
     if opts.disabled then return end
 
@@ -749,6 +843,11 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
         if timerType == "BUFF" then --or timerType == "DEBUFF" then
             local _guid = multiTargetGUID or dstGUID
             NugRunning.QueueAura(spellID, _guid, timerType, timer)
+        elseif timerType == "DEBUFF" then
+            if not multiTargetGUID then
+                local mul = getDRMul(dstGUID, spellID)                
+                time = time * mul
+            end
         end
     end
     if timerType == "BUFF"
@@ -888,6 +987,11 @@ function NugRunning.RefreshTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID,
             end
             local _guid = dstGUID or multiTargetGUID
             timer.queued = NugRunning.QueueAura(spellID, _guid, timerType, timer)
+        elseif timerType == "DEBUFF" then
+            if not multiTargetGUID then
+                local mul = getDRMul(dstGUID, spellID)                
+                time = time * mul
+            end
         end
     end
     if amount and opts.charged then
