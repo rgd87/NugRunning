@@ -114,7 +114,7 @@ Spell( 24259 ,{ name = "Silence", duration = 3, color = colors.PINK }) -- Spell 
 local normalize_dots_to = nil--26
 
 Spell({ 1714, 11719 }, { name = "Curse of Tongues", duration = 30, color = colors.CURSE })
-Spell({ 702, 1108, 6205, 7646, 11707, 11708 },{  name = "Curse of Weakness", duration = 120, color = colors.CUR })
+Spell({ 702, 1108, 6205, 7646, 11707, 11708 },{  name = "Curse of Weakness", duration = 120, color = colors.CURSE })
 Spell({ 17862, 17937 }, { name = "Curse of Shadows", duration = 300, glowtime = 15, color = colors.CURSE })
 Spell({ 1490, 11721, 11722 }, { name = "Curse of Elements", duration = 300, glowtime = 15, color = colors.CURSE })
 Spell({ 704, 7658, 7659, 11717 }, { name = "Curse of Recklessness", duration = 120, shine = true, color = colors.CURSE })
