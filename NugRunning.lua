@@ -838,9 +838,11 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
     elseif override then time = override
     else
         time = NugRunning.SetDefaultDuration(dstFlags, opts, timer)
-        if timerType == "BUFF" then --or timerType == "DEBUFF" then
+        if timerType == "BUFF" or timerType == "DEBUFF" then
             local _guid = multiTargetGUID or dstGUID
-            NugRunning.QueueAura(spellID, _guid, timerType, timer)
+            if _guid == playerGUID then -- you can only see duration on player, even for buffs
+                NugRunning.QueueAura(spellID, _guid, timerType, timer)
+            end
         elseif timerType == "DEBUFF" then
             if not multiTargetGUID then
                 local mul = getDRMul(dstGUID, spellID)                
@@ -977,14 +979,16 @@ function NugRunning.RefreshTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID,
         if not ignore_applied_dose then -- why was it ignoring multi target?
             time = NugRunning.SetDefaultDuration(dstFlags, opts, timer)
         end
-        if timerType == "BUFF" then -- or timerType == "DEBUFF" then
+        if timerType == "BUFF" or timerType == "DEBUFF" then
             if not dstGUID then
                 if timer.queued and GetTime() < timer.queued + 0.9 then
                     return
                 end
             end
             local _guid = dstGUID or multiTargetGUID
-            timer.queued = NugRunning.QueueAura(spellID, _guid, timerType, timer)
+            if _guid == playerGUID then
+                timer.queued = NugRunning.QueueAura(spellID, _guid, timerType, timer)
+            end
         elseif timerType == "DEBUFF" then
             if not multiTargetGUID then
                 local mul = getDRMul(dstGUID, spellID)                
@@ -2255,16 +2259,10 @@ do
     local last_taget_update = 0
     local present_spells = {}
     local function UpdateUnitAuras(unit)
-            local up = hUnits[unit]
-            if not up then
-                if string.sub(unit, 1, 9) == "nameplate" then
-                    up = 2
-                end
-            end
-            if not up then return end
-            local unitGUID = UnitGUID(unit)
-            if up == 2 and UnitGUID("target") == unitGUID then return end
+            if unit ~= "player" then return end
 
+            local unitGUID = UnitGUID(unit)
+            
             local now = GetTime()
             -- if up == 1 then --throttle target updates
                 -- if now - last_taget_update < 200 then return end
@@ -2279,8 +2277,7 @@ do
             -- end
             table_wipe(present_spells)
 
-            -- for _, filter in ipairs(filters) do
-                local filter = "HELPFUL"
+            for _, filter in ipairs(filters) do
                 local timerType = filter == "HELPFUL" and "BUFF" or "DEBUFF"
                 for i=1,200 do
                     local name, icon, count, dispelType, duration, expirationTime, caster, isStealable, shouldConsolidate, aura_spellID = UnitAura(unit, i, filter)
@@ -2304,7 +2301,7 @@ do
                         present_spells[aura_spellID] = true
                     end
                 end
-            -- end
+            end
             for timer in pairs(active) do
                 if  timer.dstGUID == unitGUID and
                     timer.srcGUID == playerGUID and
@@ -2321,6 +2318,7 @@ do
     function NugRunning.OnAuraEvent(self, event, unit)
         if event == "UNIT_AURA" then
             return UpdateUnitAuras(unit)
+            --[[
         elseif event == "UPDATE_MOUSEOVER_UNIT" then
             return UnitExists("mouseover") and UpdateUnitAuras("mouseover")
         elseif event == "PLAYER_TARGET_CHANGED" then
@@ -2343,9 +2341,8 @@ do
                     end
                 end
             end
-
-            -- for _, filter in ipairs(filters) do
-                local filter = "HELPFUL"
+            
+            for _, filter in ipairs(filters) do
                 for i=1,100 do
                     local name, _, count, _, duration, expirationTime, caster, _,_, aura_spellID = UnitAura("target", i, filter)
                     if not name then break end
@@ -2376,11 +2373,12 @@ do
                         end
                     end
                 end
-            -- end
+            end
+            ]]
         end
     end
     h:SetScript("OnEvent", NugRunning.OnAuraEvent)
-    h:RegisterEvent("UNIT_AURA")
+    h:RegisterUnitEvent("UNIT_AURA", "player")
     -- h:RegisterEvent("UPDATE_MOUSEOVER_UNIT")
     -- h:RegisterEvent("PLAYER_TARGET_CHANGED")
 
