@@ -337,7 +337,7 @@ Spell({ 22842, 22895, 22896 }, { name = "Frenzied Regeneration", duration = 10, 
 Spell( 16922, { name = "Starfire Stun", duration = 3, shine = true, color = colors.RED })
 Spell({ 9005, 9823, 9827 }, { name = "Pounce", duration = 2, priority = -20, color = colors.RED })
 Spell({ 9007, 9824, 9826 }, { name = "Pounce Bleed", duration = 18, priority = 4, color = colors.PINK3 })
-Spell({ 8921, 8924, 8925, 8926, 8927, 8928, 8929, 9833, 9834, 9835 }, { name = "Moonfire", duration = 12, priority = 5, ghost = true, color = colors.PURPLE, nameplates = true,
+Spell({ 8921, 8924, 8925, 8926, 8927, 8928, 8929, 9833, 9834, 9835 }, { name = "Moonfire", priority = 5, ghost = true, color = colors.PURPLE, nameplates = true,
 duration = function(timer)
     if timer.spellID == 8921 then return 9
     else return 12 end
