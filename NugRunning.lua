@@ -845,7 +845,7 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
             end
         elseif timerType == "DEBUFF" then
             if not multiTargetGUID then
-                local mul = getDRMul(dstGUID, spellID)                
+                local mul = getDRMul(dstGUID, spellID)
                 time = time * mul
             end
         end
