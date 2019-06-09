@@ -549,7 +549,7 @@ local function GetSpellCooldownCharges(spellID)
 end
 
 local gcdDuration = 1.5
-function CheckCooldown(spellID, opts, startTime, duration, enabled, charges, maxCharges, isItem)
+local function CheckCooldown(spellID, opts, startTime, duration, enabled, charges, maxCharges, isItem)
     local cdType = isItem and "ITEMCOOLDOWN" or "COOLDOWN"
     local timer
     local old_timer = opts.timer
@@ -1443,7 +1443,7 @@ do
             ySign = ( growth == "down" and -1 ) or 1
             local prev
             local gap = 0
-            for _, gopts in pairs(aopts) do 
+            for _, gopts in pairs(aopts) do
                 local gname = gopts.name
                 local alpha = gopts.alpha
                 if gname == "offtargets" then
@@ -1861,12 +1861,12 @@ NugRunning.Commands = {
                 hdr = hdr .. string.format(" : growth=%s", opts.growth)
             end
             print(hdr)
-            
+
             if opts.groups then
                 for i, g in ipairs(opts.groups) do
                     local color = "ffffff"
                     if protectedGroups[g.name] then color = "888888" end
-                    
+
                     print(string.format("    <%d> %s : gap=%d alpha=%.2f",i, Colorize(color,g.name), g.gap, g.alpha))
                 end
             end
@@ -1909,7 +1909,7 @@ NugRunning.Commands = {
         local p = ParseOpts(v)
         local anchor = p.anchor
         local group = p.group
-        
+
         if findGroup(group) then
             print(string.format("Group '%s' already exists", group))
             return
