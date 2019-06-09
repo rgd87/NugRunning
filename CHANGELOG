@@ -1,3 +1,7 @@
+### 1.13.7
+
+- fixed typo that was breaking DRs
+
 ### 1.13.6
 
 - split Warrior's shared MS/BT/SS cooldowns
