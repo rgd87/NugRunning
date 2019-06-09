@@ -503,7 +503,7 @@ Spell({ 408, 8643 }, { name = "Kidney Shot", shine = true, color = colors.LRED,
         return duration + GetCP()
     end,
 }) -- varies
-Spell({ 1943, 8639, 8640, 11273, 11274, 11275 }, { name = "Rupture", tick = 2, tickshine = true, overlay = {"tick", "end"}, shine = true, color = colors.RED, 
+Spell({ 1943, 8639, 8640, 11273, 11274, 11275 }, { name = "Rupture", tick = 2, tickshine = true, overlay = {"tick", "end"}, shine = true, color = colors.RED,
     duration = function() return (6 + GetCP()*2) end,
 }) -- varies
 Spell({ 5171, 6774 }, { name = "Slice and Dice", shinerefresh = true, color = colors.PURPLE,
@@ -564,9 +564,19 @@ Cooldown( 7384, { name = "Overpower", shine = true, priority = 9, color = colors
 Activation( 7384, { for_cd = true, effect = "FIRESHOT", ghost = 5 })
 
 Cooldown( 1680, { name = "Whirlwind", ghost = true, color = colors.PINKIERED, priority = 9.5 })
+Spell({ 6343, 8198, 8204, 8205, 11580, 11581 }, { name = "Thunder Clap", multiTarget = true, color = colors.DBLUE, scale = 0.6, affiliation = "raid",
+    duration = function(spellID)
+        if spellID == 6343 then return 10
+        elseif spellID == 8198 then return 14
+        elseif spellID == 8204 then return 18
+        elseif spellID == 8205 then return 22
+        elseif spellID == 11580 then return 26
+        else return 30 end
+    end
+}) -- Thunder Clap
 -- Cooldown( 6343, { name = "Thunder Clap", ghost = 1, scale = 0.8, color = colors.PINKIERED, priority = 9.5 })
 Spell({ 5242, 6192, 6673, 11549, 11550, 11551, 25289 }, { name = "Battle Shout", ghost = 7, target = "player", scale_until = 20, priority = -300, effect = "BLOODBOIL", effecttime = 10, glowtime = 10, affiliation = "raid", color = colors.DPURPLE, duration = 120 })
-Spell({ 1160, 6190, 11554, 11555, 11556 }, { name = "Demoralizing Shout", duration = 30, color = colors.DTEAL, multiTarget = true, shinerefresh = true })
+Spell({ 1160, 6190, 11554, 11555, 11556 }, { name = "Demoralizing Shout", duration = 30, scale = 0.85, color = colors.DTEAL, affiliation = "raid", multiTarget = true, shinerefresh = true })
 Spell( 18499, { name = "Berserker Rage", color = colors.REJUV, shine = true, scale = 0.6, group = "buffs", duration = 10 })
 Spell({ 20253, 20614, 20615 }, { name = "Intercept", duration = 3, shine = true, color = colors.DRED })
 
@@ -597,8 +607,8 @@ Cooldown( 23881, { name = "Bloodthirst", priority = 10, short = "", fixedlen = 6
 Spell({ 7386, 7405, 8380, 11596, 11597 }, { name = "Sunder Armor", duration = 30, color = colors.DBROWN })
 Spell( 12809 ,{ name = "Concussion Blow", color = colors.TEAL2, shine = true, duration = 5 })
 Spell( 12292 ,{ name = "Sweeping Strikes", group = "buffs", shine = true, priority = -100503, color = colors.LRED, duration = 20, scale = 0.8 })
-Spell({ 12880, 14201, 14202, 14203, 14204 }, { name = "Enrage", color = colors.PURPLE4, shine = true, shinerefresh = true, scale = 0.75, group = "buffs", priority = -3, duration = 12 })
-Spell({ 12966, 12967, 12968, 12969, 12970 }, { name = "Flurry", color = colors.PURPLE5, shinerefresh = true, scale = 0.5, group = "buffs", priority = -1, duration = 15 })
+Spell({ 12880, 14201, 14202, 14203, 14204 }, { name = "Enrage", color = colors.PURPLE4, shine = true, shinerefresh = true, scale = 1, group = "buffs", priority = -3, duration = 12 })
+Spell({ 12966, 12967, 12968, 12969, 12970 }, { name = "Flurry", color = colors.PURPLE5, shinerefresh = true, shine = true, scale = 0.7, group = "buffs", priority = -1, duration = 15 })
 
 end
 
@@ -660,6 +670,7 @@ local OPENER_STUN = "OPENER_STUN"
 local RANDOM_STUN = "RANDOM_STUN"
 local RANDOM_ROOT = "RANDOM_ROOT"
 local FROST_SHOCK = "FROST_SHOCK"
+local ROOT = "ROOT"
 
 helpers.DR_TypesPVE = {
     [OPENER_STUN] = true,
@@ -808,6 +819,7 @@ helpers.DR_CategoryBySpellID = {
     [12809] = STUN, -- Concussion Blow
     [12798] = RANDOM_STUN, -- Improved Revenge
     [5246] = FEAR, -- Intimidating Shout
+    [7922] = STUN, -- Charge
 
     [20253] = STUN, -- Intercept Stun 3 ranks
     [20614] = STUN,

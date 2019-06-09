@@ -424,7 +424,7 @@ local COMBATLOG_OBJECT_REACTION_FRIENDLY = COMBATLOG_OBJECT_REACTION_FRIENDLY
 
 local DRMultipliers = { 0.5, 0.25, 0}
 local function addDRLevel(dstGUID, category)
-    local guitTable = DRInfo[dstGUID]
+    local guidTable = DRInfo[dstGUID]
     if not guidTable then
         DRInfo[dstGUID] = {}
         guidTable = DRInfo[dstGUID]
@@ -452,7 +452,7 @@ local function getDRMul(dstGUID, spellID)
     local category = DR_CategoryBySpellID[spellID]
     if not category then return 1 end
 
-    local guitTable = DRInfo[dstGUID]
+    local guidTable = DRInfo[dstGUID]
     if guidTable then
         local catTable = guidTable[category]
         if catTable then
@@ -991,7 +991,7 @@ function NugRunning.RefreshTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID,
             end
         elseif timerType == "DEBUFF" then
             if not multiTargetGUID then
-                local mul = getDRMul(dstGUID, spellID)                
+                local mul = getDRMul(dstGUID, spellID)
                 time = time * mul
             end
         end
@@ -1547,7 +1547,7 @@ do
             ySign = ( growth == "down" and -1 ) or 1
             local prev
             local gap = 0
-            for _, gopts in pairs(aopts) do 
+            for _, gopts in pairs(aopts) do
                 local gname = gopts.name
                 local alpha = gopts.alpha
                 if gname == "offtargets" then
@@ -1966,12 +1966,12 @@ NugRunning.Commands = {
                 hdr = hdr .. string.format(" : growth=%s", opts.growth)
             end
             print(hdr)
-            
+
             if opts.groups then
                 for i, g in ipairs(opts.groups) do
                     local color = "ffffff"
                     if protectedGroups[g.name] then color = "888888" end
-                    
+
                     print(string.format("    <%d> %s : gap=%d alpha=%.2f",i, Colorize(color,g.name), g.gap, g.alpha))
                 end
             end
@@ -2014,7 +2014,7 @@ NugRunning.Commands = {
         local p = ParseOpts(v)
         local anchor = p.anchor
         local group = p.group
-        
+
         if findGroup(group) then
             print(string.format("Group '%s' already exists", group))
             return
@@ -2262,7 +2262,7 @@ do
             if unit ~= "player" then return end
 
             local unitGUID = UnitGUID(unit)
-            
+
             local now = GetTime()
             -- if up == 1 then --throttle target updates
                 -- if now - last_taget_update < 200 then return end
@@ -2341,7 +2341,7 @@ do
                     end
                 end
             end
-            
+
             for _, filter in ipairs(filters) do
                 for i=1,100 do
                     local name, _, count, _, duration, expirationTime, caster, _,_, aura_spellID = UnitAura("target", i, filter)
@@ -2481,9 +2481,9 @@ function NugRunning:CreateCastbarTimer(timer)
         local opts = config.casts[spellID]
         if opts.disabled then return end
 
-        local name, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible = CastingInfo()
+        local name, text, texture, startTime, endTime, isTradeSkill, castID2, notInterruptible = CastingInfo()
         self.inverted = false
-        self.castID = castID
+        self.castID = castID2
         self:UpdateCastingInfo(name,texture,startTime,endTime, opts)
         NugRunning.active[self] = true
         NugRunning:ArrangeTimers()
@@ -2495,9 +2495,9 @@ function NugRunning:CreateCastbarTimer(timer)
         local opts = config.casts[spellID]
         if opts.disabled then return end
 
-        local name, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible = ChannelInfo()
+        local name, text, texture, startTime, endTime, isTradeSkill, castID2, notInterruptible = ChannelInfo()
         self.inverted = true
-        self.castID = castID
+        self.castID = castID2
         self:UpdateCastingInfo(name,texture,startTime,endTime, opts)
 
         NugRunning.active[self] = true
@@ -2512,7 +2512,7 @@ function NugRunning:CreateCastbarTimer(timer)
     end
     function f.UNIT_SPELLCAST_FAILED(self, event, unit,castID)
         if unit ~= self.unit then return end
-        if self.castID == castID then self.UNIT_SPELLCAST_STOP(self, event, unit, spell) end
+        if self.castID == castID then self.UNIT_SPELLCAST_STOP(self, event, unit) end
     end
     f.UNIT_SPELLCAST_INTERRUPTED = f.UNIT_SPELLCAST_STOP
     f.UNIT_SPELLCAST_CHANNEL_STOP = f.UNIT_SPELLCAST_STOP
