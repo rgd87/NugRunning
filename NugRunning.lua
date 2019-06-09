@@ -641,7 +641,7 @@ local function GetSpellCooldownCharges(spellID)
 end
 
 local gcdDuration = 1.5
-function CheckCooldown(spellID, opts, startTime, duration, enabled, charges, maxCharges, isItem)
+local function CheckCooldown(spellID, opts, startTime, duration, enabled, charges, maxCharges, isItem)
     local cdType = isItem and "ITEMCOOLDOWN" or "COOLDOWN"
     local timer
     local old_timer = opts.timer
