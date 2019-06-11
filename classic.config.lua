@@ -394,7 +394,8 @@ EventTimer({ spellID = 12654, event = "SPELL_PERIODIC_DAMAGE",
     end})
 Spell( 22959 ,{ name = "Fire Vulnerability", duration = 30, scale = 0.5, priority = -10, glowtime = 4, affiliation = "raid", ghost = true, ghosteffect = "GOUGE", color = colors.BROWN })
 
--- Reserved to Flamestrike
+Spell({ 2120, 2121, 8422, 8423, 10215, 10216 }, { name = "Flamestrike", duration = 8, color = colors.PURPLE, multiTarget = true })
+
 -- EventTimer({ spellID = 153561, event = "SPELL_CAST_SUCCESS", name = "Meteor", duration = 2.9, color = colors.FIRE })
 
 Spell({ 11113, 13018, 13019, 13020, 13021 }, { name = "Blast Wave", duration = 6, scale = 0.6,  color = colors.DBROWN, multiTarget = true })
@@ -404,6 +405,24 @@ Spell({ 120, 8492, 10159, 10160, 10161 }, { name = "Cone of Cold", scale = 0.6, 
         return 8 + permafrost
     end
 })
+
+-- Imp Blizzard
+Spell({ 12484, 12485, 12486 }, { name = "Chilled", scale = 0.6,  color = colors.CHILL, multiTarget = true,
+    duration = function(timer)
+        local permafrost = Talent(11175, 12569, 12571)
+        return 1.5 + permafrost
+    end
+})
+
+-- Frost Armor
+Spell( 6136 , { name = "Chilled", scale = 0.6,  color = colors.CHILL, multiTarget = true,
+    duration = function(timer)
+        local permafrost = Talent(11175, 12569, 12571)
+        return 5 + permafrost
+    end
+})
+
+
 Spell({ 116, 205, 837, 7322, 8406, 8407, 8408, 10179, 10180, 10181, 25304 }, { name = "Frostbolt", scale = 0.6, color = colors.CHILL,
     duration = function(timer)
         local permafrost = Talent(11175, 12569, 12571)

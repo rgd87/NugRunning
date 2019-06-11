@@ -1649,6 +1649,7 @@ function NugRunning:PreGhost()
 end
 
 function NugRunning.PLAYER_TARGET_CHANGED(self)
+    self:UNIT_POWER_UPDATE(nil, "player", "COMBO_POINTS")
     if NRunDB.preghost then self:PreGhost() end
     self:ArrangeTimers()
 end
@@ -2529,7 +2530,6 @@ local Enum_PowerType_ComboPoints = Enum.PowerType.ComboPoints
 function NugRunning.UNIT_POWER_UPDATE(self,event,unit, ptype)
     if ptype == "COMBO_POINTS" then
         self.cpWas = self.cpNow or 0
-        -- self.cpNow = UnitPower("player", Enum_PowerType_ComboPoints)
-        self.cpNow = GetComboPoints("player", "target")
+        self.cpNow = GetComboPoints(unit, "target")
     end
 end
