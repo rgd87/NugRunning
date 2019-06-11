@@ -712,7 +712,7 @@ end
 local lastCooldownUpdateTime = GetTime()
 function NugRunning.SPELL_UPDATE_COOLDOWN(self,event, periodic)
     if periodic and GetTime() - lastCooldownUpdateTime < 0.9 then return end
-    gcdDuration = UnitPowerType("player") == 3 and 1 or 1.5 -- If energy then 1
+    -- gcdDuration = UnitPowerType("player") == 3 and 1 or 1.5 -- If energy then 1
 
     for spellID,opts in pairs(cooldowns) do
         if not opts.check_known or IsPlayerSpell(spellID) then
