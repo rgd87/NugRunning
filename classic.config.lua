@@ -12,6 +12,7 @@ local Cast = helpers.Cast
 local Item = helpers.Item
 local Anchor = helpers.Anchor
 local Talent = helpers.ClassicTalent
+local Totem = helpers.Totem
 local Glyph = helpers.Glyph
 local GetCP = helpers.GetCP
 local SPECS = helpers.SPECS
@@ -176,17 +177,48 @@ if class == "SHAMAN" then
 Interrupt({ 8042, 8044, 8045, 8046, 10412, 10413, 10414 }, "Earth Shock", 2)
 
 -- Spell( 3600 ,{ name = "Earthbind", maxtimers = 1, duration = 5, timeless = true, color = colors.BROWN, scale = 0.7 })
-Spell({ 16257, 16277, 16278, 16279, 16280 }, { name = "Flurry", duration = 15, scale = 0.7, group = "buffs", shine = true, shinerefresh = true, color = colors.DPURPLE })
+Spell({ 16257, 16277, 16278, 16279, 16280 }, { name = "Flurry", duration = 15, scale = 0.8, group = "buffs", shine = true, shinerefresh = true, color = colors.DPURPLE })
 Spell({ 8056, 8058, 10472, 10473 }, { name = "Frost Shock", duration = 8, color = colors.LBLUE })
 Spell({ 8050, 8052, 8053, 10447, 10448, 29228 }, { name = "Flame Shock", duration = 12, color = colors.RED, ghost = true })
-Cooldown( 8042 ,{ name = "Shock", color = colors.DTEAL, ghost = 1, priority = 1, scale = 0.8 })
+Cooldown( 8042 ,{ name = "Shock", color = colors.TEAL3, ghost = 2, priority = 1, ghosteffect = "MAGICCAST", scale = 0.9 })
 Cooldown( 17364 ,{ name = "Stormstrike", color = colors.CURSE, priority = 10, scale_until = 5, ghost = true  })
 Spell( 29063 ,{ name = "Focused Casting", shine = true, duration = 6, color = colors.PURPLE4, group = "buffs" })
 Spell( 16246 ,{ name = "Clearcasting", shine = true, duration = 15, color = colors.CHIM, group = "buffs" })
-Spell( 16166 ,{ name = "Elemental Mastery", shine = true, duration = 15, priority = 12, timeless = true, scale = 0.7, color = colors.DPURPLE })
-Spell( 16188 ,{ name = "Nature's Swiftness", shine = true, duration = 15, group = "buffs", priority = -12, timeless = true, scale = 0.7, color = colors.WOO2DARK })
+Spell( 16166 ,{ name = "Elemental Mastery", shine = true, duration = 15, priority = 12, timeless = true, color = colors.DPURPLE })
+Spell( 16188 ,{ name = "Nature's Swiftness", shine = true, duration = 15, group = "buffs", priority = -12, timeless = true, color = colors.WOO2DARK })
 Spell( 29203 ,{ name = "Healing Way", maxtimers = 2, duration = 15, scale = 0.7, color = colors.LGREEN })
 
+-- TOTEMS
+local PRIO_FIRE = -77
+local PRIO_EARTH = -78
+local PRIO_WATER = -79
+local PRIO_AIR = -80
+Totem(136102, { name = "Earthbind Totem", spellID = 2484, group = "buffs", ghost = 1, color = colors.DBROWN, shine = true, tick = 3, overlay = {"tick", "tickend"}, priority = PRIO_EARTH })
+Totem(136097, { name = "Stoneclaw Totem", spellID = 5730, group = "buffs", color = colors.WOO2, shine = true, priority = PRIO_EARTH })
+Totem(136098, { name = "Stoneskin Totem", spellID = 8071, group = "buffs", color = colors.WOO, ghost = 1, scale = 0.7, priority = PRIO_EARTH })
+Totem(136023, { name = "Strength of the Earth Totem", short = "Strength", spellID = 8075, group = "buffs", color = colors.DTEAL, scale = 0.7, ghost = 1, priority = PRIO_EARTH })
+Totem(136108, { name = "Tremor Totem", spellID = 8143, group = "buffs", color = colors.PINK, ghost = 1, priority = PRIO_EARTH })
+
+Totem(135824, { name = "Fire Nova Totem", spellID = 1535, group = "buffs", color = colors.LRED, shine = true, priority = PRIO_FIRE })
+Totem(135826, { name = "Magma Totem", spellID = 8190, group = "buffs", color = colors.DRED, tick = 2, overlay = {"tick", "end", 0.3}, priority = PRIO_FIRE })
+Totem(135825, { name = "Searing Totem", spellID = 3599, group = "buffs", color = colors.RED, priority = PRIO_FIRE, ghost = 1 })
+Totem(136040, { name = "Flametongue Totem", spellID = 8227, group = "buffs", color = colors.PURPLE4, priority = PRIO_FIRE, scale = 0.7, ghost = 1 })
+Totem(135866, { name = "Frost Resistance Totem", short = "Frost Res", spellID = 8181, group = "buffs", color = colors.LRED, ghost = 1, scale = 0.5, priority = PRIO_FIRE })
+
+Totem(135832, { name = "Fire Resistance Totem", short = "Fire Res", spellID = 8184, group = "buffs", color = colors.FROZEN, ghost = 1, scale = 0.5, priority = PRIO_WATER })
+Totem(135127, { name = "Healing Stream Totem", short = "Healing Stream", spellID = 5394, group = "buffs", color = colors.LGREEN, ghost = 3, scale = 0.7, priority = PRIO_WATER })
+Totem(136053, { name = "Mana Spring Totem", short = "Mana Spring", spellID = 5675, group = "buffs", color = colors.PURPLE, ghost = 3, scale = 0.7, priority = PRIO_WATER })
+Totem(136070, { name = "Poison Cleansing Totem", short = "Poison Cleanse", spellID = 8166, group = "buffs", color = colors.GREEN, ghost = 1, scale = 0.7, priority = PRIO_WATER })
+Totem(136019, { name = "Disease Cleansing Totem", short = "Disease Cleanse", spellID = 8166, group = "buffs", color = colors.BROWN, ghost = 1, scale = 0.7, priority = PRIO_WATER })
+Totem(135861, { name = "Mana Tide Totem", short = "Mana Tide", spellID = 16190, group = "buffs", effect = "UNHOLY", color = colors.TEAL2, ghost = 1, priority = PRIO_WATER })
+
+Totem(136039, { name = "Grounding Totem", spellID = 8177, group = "buffs", color = colors.CURSE, shine = true, tick = 10, overlay = {"tick", "end", 0.35}, priority = PRIO_AIR, ghost = 1, ghosteffect = "SLICENDICE" })
+Totem(136114, { name = "Windfury Totem", spellID = 8512, group = "buffs", color = colors.PINK3, shine = true, scale = 0.7, ghosteffect = "FIRESHOT", priority = PRIO_AIR, ghost = 3 })
+Totem(136046, { name = "Grace of Air Totem", short = "Agility", spellID = 8835, group = "buffs", color = colors.PURPLE5, ghost = 1, scale = 0.7, priority = PRIO_AIR })
+Totem(136061, { name = "Nature Resistance Totem", short = "Nature Res", spellID = 10595, group = "buffs", color = colors.TEAL3, ghost = 1, scale = 0.5, priority = PRIO_AIR })
+Totem(136022, { name = "Windwall Totem", spellID = 15107, group = "buffs", color = colors.BLACK, scale = 0.7, priority = PRIO_AIR, ghost = 1 })
+Totem(136013, { name = "Tranquil Air Totem", short = "Tranquil Air", spellID = 25908, group = "buffs", color = colors.LBLUE, scale = 0.5, priority = PRIO_AIR, ghost = 1 })
+-- Totem(136082, { name = "Sentry Totem", spellID = 6495, group = "buffs", color = colors.CURSE, ghost = 1, priority = PRIO_AIR })
 end
 
 if class == "PALADIN" then
