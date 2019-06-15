@@ -134,6 +134,9 @@ helpers.Item = function(id, opts)
     NugRunningConfig.itemcooldowns[id] = opts
 end
 
+helpers.Totem = function(id, opts)
+    NugRunningConfig.totems[id] = opts
+end
 
 helpers.Cast = function(id, opts)
     if type(id) == "table" then
