@@ -2,62 +2,76 @@
 if not next(NugRunningConfig.totems) then return end
 
 NugRunning.InitTotems = function(self)
-    
+
     local active = NugRunning.active
     local free = NugRunning.free
-    
+
     local totems = NugRunningConfig.totems
-    
-    local UpdateTotem = function( id, opts, name, startTime, duration, icon )
-        local timer = opts.timer
 
-        if duration == 0 then
-            timer:ToInfinite()
-            duration = 1
-            opts.timeless = true
-        else
-            opts.timeless = false
-        end
-
-        timer:SetTime(startTime,startTime+duration)
-        if not opts.hideName then
-            opts.name = name
-            timer:SetName(name)
-        else
-            timer:SetName(opts.name)
-        end
-        timer:SetColor(unpack(opts.color))
-        timer.icon:SetTexture(icon)
-        active[timer] = true
-        timer:Show()
-    end
+    local totemState = {
+        { false, "", 0, 0, "" }, -- Fire
+        { false, "", 0, 0, "" }, -- Earth
+        { false, "", 0, 0, "" }, -- Water
+        { false, "", 0, 0, "" }, -- Air
+    }
 
     NugRunning.totems = CreateFrame("Frame",nil, NugRunning)
 
-    -- NugRunning.totems.PLAYER_TOTEM_UPDATE = function (self, event) 
+    local playerGUID = UnitGUID("player")
+
+    -- NugRunning.totems.PLAYER_TOTEM_UPDATE = function (self, event)
     NugRunning.totems:SetScript("OnEvent", function(self,event)
-        for id, opts in ipairs(totems) do
-            local haveTotem, name, startTime, duration, icon = GetTotemInfo(id)
-            -- print(haveTotem, name, startTime, duration, icon)
-            if haveTotem then
-                UpdateTotem(id, opts, name, startTime, duration, icon)
-            else
-                active[opts.timer] = nil
-                opts.timer:Hide()
+        for index, totemInfo in ipairs(totemState) do
+            local isActive, name, startTime, duration, iconID = GetTotemInfo(index)
+
+            local wasActive, oldName, oldStartTime, oldDuration, oldIconID = unpack(totemInfo)
+
+            -- print(isActive, name, startTime, duration, iconID)
+            if wasActive ~= isActive then
+                -- ACTIVATION/DEACTIVATION
+                if isActive then
+                    local opts = totems[iconID]
+                    if opts then
+                        local timer = NugRunning:ActivateTimer(playerGUID, playerGUID, UnitName("player"), nil, opts.spellID, name, opts, "TOTEM", duration)
+                        timer:SetTime(startTime, startTime + duration)
+                    end
+                elseif wasActive then
+                    local opts = totems[oldIconID]
+                    if opts then
+                        NugRunning:DeactivateTimer(playerGUID, playerGUID, opts.spellID, name, opts, "TOTEM")
+                    end
+                end
+            elseif iconID ~= oldIconID or name ~= oldName then
+                -- SWAP
+                if oldIconID ~= "" then
+                    local opts = totems[oldIconID]
+                    if opts then
+                        NugRunning:DeactivateTimer(playerGUID, playerGUID, opts.spellID, name, opts, "TOTEM")
+                    end
+
+                    opts = totems[iconID]
+                    if opts then
+                        local timer = NugRunning:ActivateTimer(playerGUID, playerGUID, UnitName("player"), nil, opts.spellID, name, opts, "TOTEM", duration)
+                        timer:SetTime(startTime, startTime + duration)
+                    end
+                end
+            elseif startTime ~= oldStartTime or duration ~= oldDuration then
+                -- REFRESH
+                local opts = totems[iconID]
+                if opts then
+                    local timer = NugRunning:RefreshTimer(playerGUID, playerGUID, UnitName("player"), nil, opts.spellID, name, opts, "TOTEM", duration)
+                    timer:SetTime(startTime, startTime + duration)
+                end
             end
+
+            totemInfo[1] = isActive
+            totemInfo[2] = name
+            totemInfo[3] = startTime
+            totemInfo[4] = duration
+            totemInfo[5] = iconID
         end
-        NugRunning:ArrangeTimers()
     end)
-    -- end
-    
-    -- reserving timers for totems
-    for id, opts in ipairs(totems) do
-        opts.timer = next(free)
-        free[opts.timer] = nil
-        opts.timer.dontfree = true
-        opts.timer.opts = opts
-        opts.timer.priority = opts.priority or 0
-    end
+
     NugRunning.totems:RegisterEvent("PLAYER_TOTEM_UPDATE")
     NugRunning.totems:RegisterEvent("PLAYER_ENTERING_WORLD")
 
