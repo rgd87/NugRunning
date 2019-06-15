@@ -2331,7 +2331,7 @@ function NugRunning:CreateCastbarTimer(timer)
 
         self:SetColor(unpack(opts.color or { 0.6, 0, 1 }))
         self.icon:SetTexture(texture)
-        self.spellText:SetText(opts.name or opts.localname)
+        self.spellText:SetText(NugRunning:MakeName(opts, name))
 
         if opts.tick and NRunDB.dotticks then
             timer.tickPeriod = opts.tick > 0 and (opts.tick/(1+(UnitSpellHaste("player")/100))) or math.abs(opts.tick)
