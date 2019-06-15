@@ -238,6 +238,7 @@ Spell({ 853, 5588, 5589, 10308 }, { name = "Hammer of Justice", short = "Hammer"
 Spell( 20216 ,{ name = "Divine Favor", shine = true, duration = 15, priority = 12, timeless = true, scale = 0.7, color = colors.DPURPLE })
 Cooldown( 26573 ,{ name = "Consecration", color = colors.PINKIERED, priority = 9, scale = 0.85, ghost = true })
 Cooldown( 20473 ,{ name = "Holy Shock", ghost = 1, priority = 5, scale_until = 5, color = colors.WOO })
+Cooldown( 20271 ,{ name = "Judgement", ghost = true, priority = 8, color = colors.PURPLE })
 
 Spell({ 20925, 20927, 20928 }, { name = "Holy Shield", duration = 10, priority = 7, scale = 1, ghost = true, arrow = colors.PINK2, color = colors.PINK3 })
 
