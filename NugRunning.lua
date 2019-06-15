@@ -2199,14 +2199,14 @@ do
                                 end
                             end
 
-                        present_spells[aura_spellID] = true
+                        present_spells[opts] = true
                     end
                 end
             end
             for timer in pairs(active) do
                 if  timer.dstGUID == unitGUID and
                     timer.srcGUID == playerGUID and
-                    not present_spells[timer.spellID] and
+                    not present_spells[timer.opts] and
                     (timer.timerType == "BUFF" or timer.timerType == "DEBUFF")
                 then
                     free[timer] = true

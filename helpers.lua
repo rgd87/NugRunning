@@ -88,12 +88,11 @@ helpers.Spell = function(id, opts)
     if opts.affiliation == "raid" then opts.affiliation = AFFILIATION_PARTY_OR_RAID end
     if opts.affiliation == "any" then opts.affiliation = AFFILIATION_OUTSIDER end
     if type(id) == "table" then
-        -- opts.idgroup = {}
         local clones = id
         id = table.remove(clones, 1) -- extract first spell id from the last as original
         opts.clones = clones
     end
-        
+
     if opts and not GetSpellInfo(id) then print(string.format("nrun: misssing spell #%d (%s)",id,opts.name)) return end
     NugRunningConfig.spells[id] = opts
 end
@@ -170,7 +169,7 @@ helpers.EventTimer = function( id, opts )
         id = opts.spellID
         opts.spellID = nil
     end
-    
+
     if not opts.event then print(string.format("nrun: missing combat log event (#%s)", opts.spellID)); return end
     if not opts.duration and not opts.action then print(string.format("nrun: duration is required for event timers(#%s)", opts.spellID)); return end
     if not opts.name then opts.name = "" end
