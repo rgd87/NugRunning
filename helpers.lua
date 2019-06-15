@@ -87,7 +87,6 @@ helpers.Spell = function(id, opts)
     if opts.affiliation == "raid" then opts.affiliation = AFFILIATION_PARTY_OR_RAID end
     if opts.affiliation == "any" then opts.affiliation = AFFILIATION_OUTSIDER end
     if type(id) == "table" then
-        -- opts.idgroup = {}
         local clones = id
         id = table.remove(clones, 1) -- extract first spell id from the last as original
         opts.clones = clones

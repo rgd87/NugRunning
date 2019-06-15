@@ -2299,15 +2299,15 @@ do
                                 end
                             end
 
-                        present_spells[aura_spellID] = true
+                        present_spells[opts] = true
                     end
                 end
             end
             for timer in pairs(active) do
                 if  timer.dstGUID == unitGUID and
                     timer.srcGUID == playerGUID and
-                    not present_spells[timer.spellID] and
-                    (timer.timerType == "BUFF") -- or timer.timerType == "DEBUFF")
+                    not present_spells[timer.opts] and
+                    (timer.timerType == "BUFF" or timer.timerType == "DEBUFF")
                 then
                     free[timer] = true
                     NugRunning:ArrangeTimers()
@@ -2433,7 +2433,7 @@ function NugRunning:CreateCastbarTimer(timer)
 
         self:SetColor(unpack(opts.color or { 0.6, 0, 1 }))
         self.icon:SetTexture(texture)
-        self.spellText:SetText(opts.name or opts.localname)
+        self.spellText:SetText(NugRunning:MakeName(opts, name))
 
         if opts.tick and NRunDB.dotticks then
             timer.tickPeriod = opts.tick > 0 and (opts.tick/(1+(UnitSpellHaste("player")/100))) or math.abs(opts.tick)
