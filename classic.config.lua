@@ -148,7 +148,7 @@ Spell({ 6789, 17925, 17926 }, { name = "Death Coil", duration = 3, color = color
 
 Spell({ 18265, 18879, 18880, 18881}, { name = "Siphon Life", duration = 30, priority = 5, fixedlen = normalize_dots_to, nameplates = true, ghost = true, color = colors.DTEAL })
 Spell({ 980, 1014, 6217, 11711, 11712, 11713 }, { name = "Curse of Agony", duration = 24, fixedlen = normalize_dots_to, nameplates = true, ghost = true, priority = 6, color = colors.CURSE })
-Spell({ 172, 6222, 6223, 7648, 11671, 11672, 25311 }, { name = "Corruption", preghost = true, tick = 3, overlay = {"tick", "end", 0.35}, priority = 9, fixedlen = normalize_dots_to, nameplates = true, ghost = true, color = colors.PINK3,
+Spell({ 172, 6222, 6223, 7648, 11671, 11672, 25311 }, { name = "Corruption", tick = 3, overlay = {"tick", "end", 0.35}, priority = 9, fixedlen = normalize_dots_to, nameplates = true, ghost = true, color = colors.PINK3,
     duration = function(timer, opts)
         if timer.spellID == 172 then
             return 12
@@ -158,7 +158,7 @@ Spell({ 172, 6222, 6223, 7648, 11671, 11672, 25311 }, { name = "Corruption", pre
             return 18
         end
     end })
-Spell({ 348, 707, 1094, 2941, 11665, 11667, 11668, 25309 },{ name = "Immolate", preghost = true, recast_mark = 1.5, overlay = {0, 1.5, 0.3}, duration = 15, nameplates = true, priority = 10, ghost = true, color = colors.RED })
+Spell({ 348, 707, 1094, 2941, 11665, 11667, 11668, 25309 },{ name = "Immolate", recast_mark = 1.5, overlay = {0, 1.5, 0.3}, duration = 15, nameplates = true, priority = 10, ghost = true, color = colors.RED })
 
 Spell({ 17877, 18867, 18868, 18869, 18870, 18871 }, { name = "Shadowburn", duration = 5, scale = 0.5, color = colors.DPURPLE }) -- Soul Shard debuff
 
@@ -291,7 +291,7 @@ Spell({ 1513, 14326, 14327 }, { name = "Scare Beast",
     end
 })
 
-Spell({ 1978, 13549, 13550, 13551, 13552, 13553, 13554, 13555, 25295 }, { name = "Serpent Sting", duration = 15, color = colors.PURPLE, ghost = true, preghost = true, })
+Spell({ 1978, 13549, 13550, 13551, 13552, 13553, 13554, 13555, 25295 }, { name = "Serpent Sting", duration = 15, color = colors.PURPLE, ghost = true, })
 Spell({ 3043, 14275, 14276, 14277 }, { name = "Scorpid Sting", duration = 20, color = colors.TEAL })
 Spell({ 3034, 14279, 14280 }, { name = "Viper Sting", duration = 8, color = colors.DBLUE })
 Spell({ 19386, 24132, 24133 }, { name = "Wyvern Sting", duration = 12, color = colors.GREEN })
