@@ -449,14 +449,6 @@ Spell({ 120, 8492, 10159, 10160, 10161 }, { name = "Cone of Cold", scale = 0.6, 
     end
 })
 
--- Imp Blizzard
-Spell({ 12484, 12485, 12486 }, { name = "Chilled", scale = 0.6,  color = colors.CHILL, multiTarget = true,
-    duration = function(timer)
-        local permafrost = Talent(11175, 12569, 12571)
-        return 1.5 + permafrost
-    end
-})
-
 -- Frost Armor
 Spell( 6136 , { name = "Chilled", scale = 0.6,  color = colors.CHILL, multiTarget = true,
     duration = function(timer)
