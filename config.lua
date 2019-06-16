@@ -12,6 +12,7 @@ local Cast = helpers.Cast
 local Item = helpers.Item
 local Anchor = helpers.Anchor
 local Talent = helpers.Talent
+local Totem = helpers.Totem
 local Glyph = helpers.Glyph
 local GetCP = helpers.GetCP
 local SPECS = helpers.SPECS
@@ -1115,7 +1116,7 @@ Cooldown( 274281 ,{ name = "New Moon", ghost = true, color = colors.PINK3 })
 Spell( 135700 ,{ name = "Moment of Clarity", shine = true, duration = 15, color = colors.LBLUE, group = "buffs" })
 
 
-NugRunningConfig.totems[1] = { name = "Efflorescence", color = colors.PINKIERED, priority = - 100, hideName = true }
+Totem(134222, { name = "Efflorescence", spellID = 145205, color = colors.PINKIERED, priority = - 100, hideName = true })
 
 Spell( 339 ,{ name = "Entangling Roots",duration = 30 })
 
@@ -1257,7 +1258,7 @@ if class == "DEMONHUNTER" then
     DotSpell( 247456,{ name = "Frailty", color = colors.PURPLE4, scale = 0.9, duration = 20, glowtime = 3, singleTarget = true })
 
     Spell( 263648,{ name = "Soul Barrier", color = colors.CHIM, shine = true, group = "buffs", scale = 0.9, duration = 12 })
-    
+
     Cooldown( 263642,{ name = "Fracture", tick = 1.5, overlay = {"tick", "tickend"}, color = colors.CURSE, ghost = true, fixedlen = 10,  ghosteffect = "NIGHTBORNE", priority = 11 })
 
     Spell( 206491,{ name = "Nemesis", color = colors.RED, shine = true, scale = 0.9, duration = 60 })
@@ -1287,7 +1288,7 @@ if class == "DEMONHUNTER" then
 
     helpers.Cast( 198013 ,{ name = "Eye Beam", color = colors.PINK, priority = 12, })
     helpers.Cast( 258925 ,{ name = "Fel Barrage", color = colors.PINK, priority = 12, })
-    
+
 
     Cooldown( 195072 ,{ name = "Fel Rush", ghost = true, minduration = 3, color = colors.PURPLE3, fixedlen = 10, scale = 0.8, resetable = true })
     Cooldown( 198013 ,{ name = "Eye Beam", ghost = true, color = colors.DPURPLE2, color2 = colors.REJUV, scale_until = 10, resetable = true })
@@ -1321,9 +1322,9 @@ Interrupt(147362, "Counter Shot", 3)
 -- helpers.Cast( 203415 ,{ name = "Fury of the Eagle", shine = true, color = colors.DBLUE, priority = 12, })
 
 
-Spell( 271049,{ name = "Volatile Wildfire", shine = true, color = colors.TEAL2, group = "buffs", scale = 0.75, duration = 5, maxtimers = 1 }) 
-Spell( 270339,{ name = "Scorching Shrapnel", shine = true, color = colors.BLUE, group = "buffs", scale = 0.75, duration = 5, maxtimers = 1 }) 
-Spell( 270332,{ name = "Scorching Pheromones", shine = true, color = colors.ORANGE, group = "buffs", scale = 0.75, duration = 5, maxtimers = 1 }) 
+Spell( 271049,{ name = "Volatile Wildfire", shine = true, color = colors.TEAL2, group = "buffs", scale = 0.75, duration = 5, maxtimers = 1 })
+Spell( 270339,{ name = "Scorching Shrapnel", shine = true, color = colors.BLUE, group = "buffs", scale = 0.75, duration = 5, maxtimers = 1 })
+Spell( 270332,{ name = "Scorching Pheromones", shine = true, color = colors.ORANGE, group = "buffs", scale = 0.75, duration = 5, maxtimers = 1 })
 
 Cooldown( 269751 ,{ name = "Flanking Strike", ghost = true, color = colors.DTEAL, scale_until = 8, })
 Cooldown( 19574 ,{ name = "Bestial Wrath", ghost = true, glowtime = 5, effecttime = 5, effect = "NIGHTBORNE", color = colors.PINK3, scale = 0.5 })
