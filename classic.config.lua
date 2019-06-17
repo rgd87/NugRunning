@@ -294,7 +294,8 @@ Spell({ 1513, 14326, 14327 }, { name = "Scare Beast",
 Spell({ 1978, 13549, 13550, 13551, 13552, 13553, 13554, 13555, 25295 }, { name = "Serpent Sting", duration = 15, color = colors.PURPLE, ghost = true, })
 Spell({ 3043, 14275, 14276, 14277 }, { name = "Scorpid Sting", duration = 20, color = colors.TEAL })
 Spell({ 3034, 14279, 14280 }, { name = "Viper Sting", duration = 8, color = colors.DBLUE })
-Spell({ 19386, 24132, 24133 }, { name = "Wyvern Sting", duration = 12, color = colors.GREEN })
+Spell({ 19386, 24132, 24133 }, { name = "Wyvern Sting", short = "Sleep", duration = 12, color = colors.PURPLE3, ghost = 1 })
+Spell({ 24131, 24134, 24135 }, { name = "Wyvern Sting", duration = 12, color = colors.GREEN }) -- Wyvern Sting Dot
 
 
 Spell(19229, { name = "Wing Clip", shine = true, duration = 5, scale = 0.6, color = colors.DBROWN })
@@ -304,7 +305,7 @@ Cooldown( 19306 ,{ name = "Counterattack", ghost = 1, priority = 5, color = colo
 Activation( 19306, { for_cd = true, effect = "FIRESHOT", ghost = 5 })
 
 Spell({ 13812, 14314, 14315 }, { name = "Explosive Trap", duration = 20, multiTarget = true, color = colors.RED, ghost = 1 })
-Spell({ 13797, 14298, 14299, 14300, 14301 }, { name = "Immolation Trap", duration = 20, color = colors.RED, ghost = 1 })
+Spell({ 13797, 14298, 14299, 14300, 14301 }, { name = "Immolation Trap", duration = 15, color = colors.RED, ghost = 1 })
 Spell({ 3355, 14308, 14309 }, { name = "Freezing Trap", color = colors.FROZEN,
     duration = function(timer)
         local mul = 1 + 0.15*Talent(19239, 19245) -- Clever Traps
@@ -320,8 +321,8 @@ Cooldown( 1495 ,{ name = "Mongoose Bite", ghost = true, priority = 4, color = co
 Cooldown( 2973 ,{ name = "Raptor Strike", ghost = 1, priority = 3, color = colors.LBLUE })
 
 -- Cooldown( 19434 ,{ name = "Aimed Shot", ghost = true, priority = 10, color = colors.TEAL3 })
-Cooldown( 2643 ,{ name = "Multi-Shot", ghost = true, priority = 5, color = colors.PINK3 })
-Cooldown( 3044 ,{ name = "Arcane Shot", ghost = true, priority = 7, color = colors.PINK })
+Cooldown( 2643 ,{ name = "Multi-Shot", ghost = true, priority = 5, color = colors.PINKIERED })
+Cooldown( 3044 ,{ name = "Shot", ghost = true, priority = 7, color = colors.TEAL3 })
 Spell({ 2974, 14267, 14268 }, { name = "Wing Clip", duration = 10, color = colors.BROWN })
 Spell( 5116 ,{ name = "Concussive Shot", duration = 4, color = colors.BROWN })
 Spell( 19410 ,{ name = "Conc Stun", duration = 3, shine = true, color = colors.RED })
@@ -639,7 +640,9 @@ Spell( 18499, { name = "Berserker Rage", color = colors.REJUV, shine = true, sca
 Spell({ 20253, 20614, 20615 }, { name = "Intercept", duration = 3, shine = true, color = colors.DRED })
 
 Spell( 12323, { name = "Piercing Howl", multiTarget = true, duration = 6, color = colors.DBROWN })
-Spell( 5246 ,{ name = "Intimidating Shout", duration = 8, maxtimers = 1 })
+Spell( 20511 ,{ name = "Intimidating Shout", duration = 8, priority = -1 }) -- Main Target
+Spell( 5246 ,{ name = "Intimidating Shout", duration = 8, priority = -1.1, scale = 0.5, color = colors.PURPLE4, multiTarget = true }) -- AoE Fear
+
 
 Spell( 676 ,{ name = "Disarm", color = colors.PINK3, scale = 0.8, shine = true,
     duration = function(timer)
