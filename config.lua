@@ -1054,12 +1054,12 @@ Spell( 183218 ,{ name = "Hand of Hindrance", duration = 10, short = "Hindrance",
 Cooldown( 20473 ,{ name = "Holy Shock", ghost = true, priority = 9, fixedlen = normalized_length, color = colors.WOO })
 
 Cooldown( 184575 ,{ name = "Blade of Justice", tickshine = true, ghost = true, priority = 9, fixedlen = normalized_length, color = colors.WOO, ghosteffect = "NIGHTBORNE" })
-Cooldown( 35395 ,{ name = "Crusader Strike", tick = 1.5, tickshine = true, overlay = {"tick", "end"}, ghost = true, short = "", priority = 10, fixedlen = normalized_length, color = colors.CURSE })
-Cooldown( 204019 ,{ name = "Blessed Hammer", short = "", ghost = true, ghosteffect = "AEGWYNN", priority = 10, fixedlen = normalized_length, color = colors.CURSE })
-Cooldown( 53595 ,{ name = "Hammer of the Righteous", short = "", ghost = true, ghosteffect = "AEGWYNN", priority = 10, fixedlen = normalized_length, color = colors.CURSE })
+Cooldown( 35395 ,{ name = "Crusader Strike", tick = 1.5, tickshine = true, overlay = {"tick", "end"}, ghost = true, short = "", priority = 10, fixedlen = normalized_length, color = colors.CURSE, stackcolor = { colors.CURSE, colors.DPURPLE2 } })
+Cooldown( 204019 ,{ name = "Blessed Hammer", short = "", ghost = true, ghosteffect = "AEGWYNN", priority = 10, fixedlen = normalized_length, color = colors.CURSE, stackcolor = {colors.CURSE, colors.CURSE, colors.DPURPLE2 } })
+Cooldown( 53595 ,{ name = "Hammer of the Righteous", short = "", ghost = true, ghosteffect = "AEGWYNN", priority = 10, fixedlen = normalized_length, color = colors.CURSE, stackcolor = { colors.CURSE, colors.DPURPLE2 } })
 
 Spell( 197277,{ name = "Judgement", shine = true, singleTarget = true, priority = -100500, color = colors.PURPLE2, duration = 6 }) --debuff
-Cooldown( 20271 ,{ name = "Judgement", ghost = true, fixedlen = normalized_length, priority = 8, color = colors.PURPLE, ghosteffect = "JUDGEMENT" })
+Cooldown( 20271 ,{ name = "Judgement", ghost = true, fixedlen = normalized_length, priority = 8, color = colors.PURPLE, ghosteffect = "JUDGEMENT", stackcolor = { colors.PURPLE, colors.PURPLE4} })
 
 EventTimer({ spellID = 26573 , event = "SPELL_CAST_SUCCESS", specmask = SPECS(1,2), name = "Consecration", duration = 12, color = colors.PINKIERED, overlay = {0,"gcd",.3}, priority = 9, scale = 0.85, ghost = true, fixedlen = normalized_length })
 Cooldown( 26573 ,{ name = "Consecration", minduration = 6, color = colors.PINKIERED, overlay = {0,"gcd",.3}, priority = 9, scale = 0.85, ghost = true, fixedlen = normalized_length })
