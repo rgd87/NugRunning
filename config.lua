@@ -653,7 +653,8 @@ EventTimer({ spellID = 100130, event = "SPELL_CAST_SUCCESS", priority = 12, name
 -- Spell( 60503 ,{ name = "Overpower", priority = 9, overlay = {0,7, 0.3}, fixedlen = 9, shinerefresh = true, shine = true, color = colors.PINKIERED, duration = 12 }) -- Taste for blood --removed
 
 Cooldown( 23881, { name = "Bloodthirst", fixedlen = 9, tick = 1.5, tickshine = true, overlay = {"tick", "end"}, short = "", priority = 10, check_known = true, ghost = true,  color = colors.CURSE })
-Cooldown( 85288, { name = "Raging Blow", fixedlen = 9, short = "", priority = 9, ghost = true,  color = colors.PINKIERED })
+Cooldown( 85288, { name = "Raging Blow", fixedlen = 9, short = "", priority = 9, ghost = true,  color = colors.PINKIERED, stackcolor = { colors.RED2, colors.PINKIERED } })
+Activation( 85288, { for_cd = true, effect = "SLICENDICE", ghost = 3})
 Cooldown( 118000 ,{ name = "Dragon Roar", fixedlen = 9, ghost = 3, priority = 8, ghost = true, scale = 0.8, color = colors.DBROWN, scale_until = 10 })
 
 -- Spell( 131116 ,{ name = "Raging Blow", priority = 9, fixedlen = 9, shine = true, shinerefresh = true, duration = 12, stackcolor = {
@@ -1396,7 +1397,8 @@ Spell( 117526,{ name = "Binding Shot Stun", duration = 5, color = colors.RED, ma
 -- helpers.Cast(257044, {name = "Rapid Fire", scale = 0.5, color = colors.PINKIERED, priority = 10.1 })
 -- helpers.Cast(19434, {name = "Aimed Shot", scale = 0.5, color = colors.PINKIERED, priority = 10.1 })
 -- helpers.Cast(56641, {name = "Steady Shot", scale = 0.5, color = colors.PINKIERED, priority = 10.1 })
-Cooldown( 19434, {name = "Aimed Shot", color = colors.CURSE, tick = 1.5, overlay = {"tick", "end"}, ghost = true, ghosteffect = "NIGHTBORNE", priority = 10 })
+Cooldown( 19434, {name = "Aimed Shot", color = colors.CURSE, stackcolor = { colors.CURSE, colors.PURPLE5 }, tick = 1.5, overlay = {"tick", "end"}, ghost = true, ghosteffect = "NIGHTBORNE", priority = 10 })
+-- Activation( 19434, { for_cd = true, effect = "MAGICCAST", ghost = 3 })
 EventTimer({ spellID = 185358, event = "SPELL_CAST_SUCCESS", priority = 12, name = "Arcane Shot", duration = 0.5, color = colors.PINK })
 EventTimer({ spellID = 2643, event = "SPELL_CAST_SUCCESS", priority = 12, name = "Multi-Shot", duration = 0.5, color = colors.PINK })
 
@@ -1418,9 +1420,10 @@ Spell( 193530,{ name = "Aspect of the Wild", short = "Wild", group = "buffs", du
 
 Spell( 117526 ,{ name = "Binding Shot", duration = 5, pvpduration = 3, color = colors.RED, maxtimers = 1 })
 Cooldown( 120679,{ name = "Dire Beast", priority = 6, ghost = true, scale = 0.8, color = colors.PURPLE, fixedlen = 9 })
-Cooldown( 217200,{ name = "Barbed Shot", priority = 6, ghost = true, scale = 0.8, color = colors.PINKIERED, fixedlen = 9, resetable = true })
+Cooldown( 217200,{ name = "Barbed Shot", priority = 6, ghost = true, color = colors.PINKIERED, stackcolor = { colors.PINKIERED, colors.PURPLE4 }, fixedlen = 9, resetable = true })
+Activation( 217200, { for_cd = true, effect = "SLICENDICE", ghost = 3 })
 Spell( 257946,{ name = "Thrill of the Hunt", group = "buffs", duration = 8, ghost = true, color = colors.PINK3, scale = 0.75, priority = -50 })
-Spell( 217200,{ name = "Barbed Shot", overlay = {0, 1}, recast_mark = 1, duration = 8, ghost = true, color = colors.RED, fixedlen = 9 })
+Spell( 217200,{ name = "Barbed Shot", overlay = {0, 1}, recast_mark = 1, duration = 8, ghost = true, color = colors.PURPLE, fixedlen = 9 })
 Cooldown( 53209 ,{ name = "Chimera Shot", color = colors.CHIM, ghost = true, fixedlen = 9 })
 
 Cooldown( 130392 ,{ name = "Blink Strike", color = colors.WOO2 })
