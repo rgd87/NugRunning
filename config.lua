@@ -767,8 +767,7 @@ Cooldown( 115098, { name = "Chi Wave", color = { 29/255, 134/255, 83/255 }, fixe
 Spell( 116095 ,{ name = "Disable", ghost = true, color = colors.PURPLE, duration = 15, pvpduration = 8 })
 Spell( 116706 ,{ name = "Root", color = colors.BROWN, duration = 8 })
 
-
-EventTimer({ event = "SPELL_SUMMON", spellID = 123904, name = "Xuen", group = "buffs", duration = 20, priority = -8, color = colors.CHILL })
+Totem(620832, { spellID = 123904, name = "Xuen", group = "buffs", duration = 20, priority = -8, color = colors.CHILL })
 
 helpers.Cast(113656, {name = "Fists of Fury", fixedlen = ww_normalize, color = colors.PINK3, priority = 10.1 })
 Cooldown( 113656, { name = "Fists of Fury", fixedlen = ww_normalize, scale_until = 10, effect = "AEGWYNN", effecttime = 3,  color = colors.PINKIERED, priority = 4, ghost = true })
