@@ -62,7 +62,7 @@ colors["PURPLE3"] = { 64/255, 48/255, 109/255 }
 colors["PURPLE4"] = { 121/255, 29/255, 57/255 }
 colors["PURPLE5"] = { 0.49, 0.16, 0.60 }
 colors["DPURPLE"] = {74/255, 14/255, 85/255}
-colors["DPURPLE2"] = {0.42, 0, 0.7}
+colors["DPURPLE2"] = {0.37, 0, 0.6}
 colors["CHIM"] = {199/255, 130/255, 255/255}
 colors["FROZEN"] = { 65/255, 110/255, 1 }
 colors["CHILL"] = { 0.6, 0.6, 1}
@@ -197,7 +197,7 @@ Spell( 80240 ,{ name = "Havoc", nameplates = true, duration = 8, color = colors.
 
 Spell( 196414 ,{ name = "Eradication", nameplates = true, duration = 8, color = colors.DPURPLE2, scale = 0.75, ghost = true })
 
-Cooldown( 17962, { name = "Conflagrate", ghost = true, priority = 5, color = colors.PINK })
+Cooldown( 17962, { name = "Conflagrate", ghost = true, priority = 5, color = colors.PINK, stackcolor = { colors.PINK, colors.PURPLE4 } })
 
 Spell( 205146,{ name = "Demonic Calling", group = "buffs", duration = 20, shine = true, shinerefresh = true, scale = 0.5, color = colors.TEAL2 })
 
@@ -349,7 +349,7 @@ Spell( 214621, { name = "Schism", color = colors.PINKIERED, arrow = colors.PINKI
 Cooldown( 214621, { name = "Schism", color = colors.PURPLE4, scale_until = 8, ghost = true })
 Cooldown( 129250, { name = "PW:Solace", fixedlen = 9,  color = colors.WOO, priority = 7, ghost = true })
 
-Cooldown( 205351, { name = "Shadow Word: Void", short = "Void", priority = 9, fixedlen = 9, color = colors.CURSE, resetable = true, ghost = true })
+Cooldown( 205351, { name = "Shadow Word: Void", short = "Void", priority = 9, fixedlen = 9, color = colors.CURSE, resetable = true, ghost = true, stackcolor = { colors.CURSE, colors.DPURPLE2 } })
 Cooldown( 8092, { name = "Mind Blast", priority = 9, fixedlen = 9, recast_mark = 1.5, color = colors.CURSE, resetable = true, ghost = true })
 Cooldown( 205448, { name = "Void Bolt", priority = 10, fixedlen = 9, color = colors.PINKIERED, resetable = true, ghost = true })
 Cooldown( 32379, { name = "Shadow Word: Death", short = "SW:Death",  color = colors.PURPLE, resetable = true  })
@@ -1107,7 +1107,7 @@ Spell( 236696 ,{ name = "Thors", duration = 12, scale = 0.5, group = "buffs", sh
 Spell( 209753 ,{ name = "Cyclone", duration = 6, color = colors.PURPLE4 })
 
 Cooldown( 274837 ,{ name = "Feral Frenzy", scale_until = 10, ghost = true, color = colors.DTEAL })
-Cooldown( 274281 ,{ name = "New Moon", ghost = true, color = colors.PINK3 })
+Cooldown( 274281 ,{ name = "New Moon", ghost = true, color = colors.PINK, stackcolor = { colors.PINK, colors.PINK, colors.PURPLE4 } })
 
 Spell( 135700 ,{ name = "Moment of Clarity", shine = true, duration = 15, color = colors.LBLUE, group = "buffs" })
 
@@ -1177,7 +1177,7 @@ Spell( 1079 ,{ name = "Rip", duration = 24, preghost = true, showpower = true, p
 -- feral's thrash
 Spell( 106830, { name = "Thrash", showpower = true, fixedlen = bleed_normalize, nameplates = true, overlay = {0, 15*0.3, 0.2}, maxtimers = 1, color = colors.PURPLE, duration = 15, ghost = true })
 
-Cooldown( 202028, { name = "Brutal Slash", priority = 10, ghost = true, color = colors.CURSE })
+Cooldown( 202028, { name = "Brutal Slash", priority = 10, ghost = true, color = colors.CURSE, stackcolor = {colors.CURSE, colors.CURSE, colors.DPURPLE2 } })
 
 Spell( 203123 ,{ name = "Maim", color = colors.PINK, duration = 5 })
 Spell( 5217, { name = "Tiger's Fury", duration = 8, color = colors.GOLD, scale = 0.7, group = "buffs", shine = true })
@@ -1382,7 +1382,7 @@ Cooldown( 259489 ,{ name = "Kill Command (Surv)", short = "Kill Command", color 
 
 Cooldown( 194599,{ name = "Black Arrow", color = colors.PURPLE, ghost = true, priority = 8 })
 
-Cooldown( 212436,{ name = "Butchery", color = colors.PINK, scale = 0.75, ghost = true, priority = 7 })
+Cooldown( 212436,{ name = "Butchery", color = colors.PINK, ghost = true, priority = 7, stackcolor = {colors.PINK, colors.PINK3, colors.PURPLE4 } })
 Cooldown( 187708,{ name = "Carve", color = colors.PINKIERED, scale = 0.75, ghost = true, priority = 5 })
 
 
@@ -1499,7 +1499,7 @@ Spell( 215785 ,{ name = "Hot Hand", duration = 15, glowtime = 14, color = colors
 
 Spell( 201846 ,{ name = "Stormbringer", duration = 12, glowtime = 12, color = colors.TEAL3, priority = 10.5, scale = 0.5 })
 Cooldown( 17364 ,{ name = "Stormstrike", color = colors.CURSE, ghosteffect = "NIGHTBORNE", fixedlen = enh_normalize, priority = 10, resetable = true, ghost = 9  })
-Cooldown( 193786 ,{ name = "Rockbiter", color = colors.PINKIERED, priority = 9, fixedlen = enh_normalize, ghost = true })
+Cooldown( 193786 ,{ name = "Rockbiter", color = colors.PINKIERED, priority = 9, fixedlen = enh_normalize, ghost = true, stackcolor = { colors.PINKIERED, colors.PURPLE4 } })
 
 Cooldown( 188089 ,{ name = "Earthen Spike", color = colors.PURPLE3, ghost = true, scale_until = 10 })
 
