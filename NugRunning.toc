@@ -1,4 +1,4 @@
-## Interface: 80100
+## Interface: 80200
 ## Title: NugRunning
 ## Notes: Spelltimers
 ## Author: d87
