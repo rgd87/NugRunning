@@ -1639,7 +1639,7 @@ function NugRunning.Unlock(self)
         i = i+1
         if i > 7 then break end
         local fakeopts = {}
-        if not timer.opts then timer.opts = fakeopts end
+        timer.opts = fakeopts
         timer.startTime = GetTime();
         timer.endTime = GetTime()+130-(i*10);
         timer:SetIcon("Interface\\Icons\\inv_misc_questionmark")
