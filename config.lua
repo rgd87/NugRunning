@@ -1510,24 +1510,28 @@ Spell( 58875 ,{ name = "Spirit Walk", group = "buffs", duration = 8, shine = tru
 
 
 EventTimer({ spellID = 51533, event = "SPELL_CAST_SUCCESS", group = "buffs", name = "Feral Spirit", duration = 15, scale = 0.6, color = colors.WOO2 })
-EventTimer({ spellID = 192222, event = "SPELL_SUMMON", group = "buffs", name = "Liquid Magma Totem", duration = 15, scale = 0.6, color = colors.WOO })
-EventTimer({ spellID = 157299, event = "SPELL_SUMMON", group = "buffs", name = "Storm Elemental", duration = 30, scale = 0.6, color = colors.WOO2 })
-EventTimer({ spellID = 188592, event = "SPELL_SUMMON", group = "buffs", name = "Fire Elemental", duration = 30, scale = 0.6, color = colors.ORANGE2 })
-EventTimer({ spellID = 8143, event = "SPELL_SUMMON", group = "buffs", name = "Tremor Totem", duration = 10, color = colors.DPURPLE })
-EventTimer({ spellID = 157153, event = "SPELL_SUMMON", group = "buffs", name = "Cloudburst Totem", duration = 15, color = colors.LGREEN })
-EventTimer({ spellID = 192058, event = "SPELL_SUMMON", group = "buffs", name = "Capacitor Totem", duration = 2, color = colors.LBLUE })
 Spell( 118905 ,{ name = "Static Charge", duration = 3, color = colors.BLACK, maxtimers = 1 })
 Spell( 64695 ,{ name = "Earthgrab Root", duration = 8, color = colors.BROWN, scale = 0.7, maxtimers = 1 })
 --pvp
-Spell( 208963, { name = "Skyfury Totem", timeless = true, group = "buffs", duration = 15, scale = 0.7, color = colors.PURPLE4 })
-Spell( 208997, { name = "Counterstrike Totem", timeless = true, maxtimers = 1, group = "buffs", duration = 15, scale = 0.7, color = colors.DBLUE })
-EventTimer({ spellID = 204336, event = "SPELL_SUMMON", name = "Grounding Totem", group = "buffs", duration = 3, scale = 0.7, shine = true, color = colors.CURSE })
 Spell( 210918 ,{ name = "Ethereal Form", group = "buffs", duration = 15, shine = true, color = colors.CHIM })
--- TOTEMS
--- NugRunningConfig.totems[1] = { name = "Water", group = "buffs", scale = 0.5, color = { 65/255, 110/255, 1}, hideName = false, priority = -77 }
--- NugRunningConfig.totems[2] = { name = "Earth", group = "buffs", scale = 0.5,  color = {74/255, 142/255, 42/255}, priority = -78 }
--- NugRunningConfig.totems[3] = { name = "Fire", group = "buffs", scale = 0.5,  color = {1,80/255,0}, priority = -79 }
--- NugRunningConfig.totems[4] = { name = "Air", group = "buffs", scale = 0.5,  color = {0.6, 0, 1}, priority = -80 }
+-- Spell( 208997, { name = "Counterstrike Totem", timeless = true, maxtimers = 1, group = "buffs", duration = 15, scale = 0.7, color = colors.DBLUE })
+Totem(511726, { spellID = 208997, group = "buffs", name = "Counterstrike Totem", scale = 0.7, color = colors.DBLUE, ghost = 1 })
+Totem(135829, { spellID = 208963, group = "buffs", name = "Skyfury Totem", scale = 0.7, color = colors.PURPLE4, ghost = 1 })
+Totem(971076, { spellID = 157153, group = "buffs", name = "Cloudburst Totem", color = colors.LGREEN })
+Totem(136013, { spellID = 192058, group = "buffs", name = "Capacitor Totem", color = colors.LBLUE })
+Totem(136039, { spellID = 204336, name = "Grounding Totem", group = "buffs", scale = 0.7, shine = true, color = colors.CURSE, ghost = 1 })
+Totem(136108, { spellID = 8143, group = "buffs", name = "Tremor Totem", color = colors.DPURPLE, ghost = 1 })
+Totem(538576, { spellID = 192077, group = "buffs", name = "Wind Rush Totem", ghost = 1 })
+Totem(136102, { spellID = 2484, group = "buffs", name = "Earthbind Totem", color = colors.DBROWN, ghost = 1 })
+Totem(237586, { spellID = 98008, group = "buffs", name = "Spirit Link Totem", shine = true, color = colors.TEAL2, ghost = 1 })
+Totem(135127, { spellID = 5394, group = "buffs", name = "Healing Stream Totem", scale = 0.8, short = "Healing Stream", color = colors.LGREEN, ghost = 1 })
+Totem(538569, { spellID = 108280, group = "buffs", name = "Healing Tide Totem", scale = 0.8, short = "Healing Tide", color = colors.TEAL3, ghost = 1 })
+Totem(136080, { spellID = 207399, group = "buffs", name = "Ancestral Protection Totem", short = "Ancestral Totem", color = colors.LRED })
+Totem(971079, { spellID = 192222, group = "buffs", name = "Liquid Magma Totem", scale = 0.8, color = colors.WOO })
+Totem(135790, { spellID = 188592, group = "buffs", name = "Fire Elemental", duration = 30, scale = 0.6, color = colors.ORANGE2, ghost = 1 })
+Totem(1020304,{ spellID = 157299, group = "buffs", name = "Storm Elemental", duration = 30, scale = 0.6, color = colors.WOO2, ghost = 1 })
+Totem(136024, { spellID = 198103, group = "buffs", name = "Earth Elemental", duration = 60, scale = 0.6, color = colors.DBROWN, ghost = 1 })
+Totem(136098, { spellID = 198838, group = "buffs", name = "Earthen Wall Totem", scale = 0.8, color = colors.PURPLE4 })
 
 end
 
