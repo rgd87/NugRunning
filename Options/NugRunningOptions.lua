@@ -1161,13 +1161,17 @@ function NugRunningGUI.FillForm(self, Form, class, category, id, opts, isEmptyFo
 		controls.clones:SetDisabled(false)
 		controls.duration:SetDisabled(false)
 		controls.affiliation:SetDisabled(false)
+	else
+		controls.event:SetDisabled(true)
+	end
+
+	if category == "event_timers" or category == "casts" then
 		controls.useStackcolor:SetDisabled(true)
 		for i=1,5 do
 			local widgetName = "stackcolor"..i
 			controls[widgetName]:SetDisabled(true)
 		end
 	else
-		controls.event:SetDisabled(true)
 		controls.useStackcolor:SetDisabled(false)
 	end
 
