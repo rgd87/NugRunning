@@ -1,3 +1,13 @@
+### 8.2.0
+
+- Updated TOC to 80200
+- Updated Activation for Revenge
+- EventTimes can be edited in GUI, at the price of 1 event per spell ID restriction
+- Removed old nameplate lines code
+- Totems overhauled, but bfa config is not using that yet, only classic
+- Support for spell ranks / variants
+- Shaman config update
+
 ### 8.1.1
 
 - Updated TOC to 80100
@@ -196,7 +206,7 @@
 
 ### 7.0.6:
 
-- Corruption timers from initial blast of Seed of Corruption now limited 
+- Corruption timers from initial blast of Seed of Corruption now limited
 to 4
 - Fixed nameplate bugs
 - Small changes for Sub Rogue and Retribution
@@ -301,7 +311,7 @@ to 4
 
 ### 5.1.14:
 
-- Miss notification timers, some warlocks now play without a hitcap, so that 
+- Miss notification timers, some warlocks now play without a hitcap, so that
 became important.
 - TidyPlates alpha support
 - Priest config update, mainly for discipline.
