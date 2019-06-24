@@ -490,7 +490,10 @@ function NugRunning.SPELL_ACTIVATION_OVERLAY_GLOW_SHOW(self,event, spellID)
         local opts = activations[spellID]
         if not opts.for_cd then
             if opts.showid then spellID = opts.showid end
-            self:ActivateTimer(UnitGUID("player"),UnitGUID("player"), UnitName("player"), nil, spellID, opts.localname, opts, "ACTIVATION", opts.duration)
+            local timer = self:ActivateTimer(UnitGUID("player"),UnitGUID("player"), UnitName("player"), nil, spellID, opts.localname, opts, "ACTIVATION", opts.duration)
+            if opts.instantGhost then
+                timer:BecomeGhost()
+            end
         else
             local cd_opts = cooldowns[spellID]
             local timer = gettimer(active,spellID, playerGUID, "COOLDOWN")

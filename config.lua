@@ -309,7 +309,10 @@ DotSpell( 589 ,{ name = "Shadow Word: Pain", short = "", preghost = true, durati
                 isknowncheck = function() return IsPlayerSpell(589) and not IsPlayerSpell(204197) end, })
 DotSpell( 34914 ,{ name = "Vampiric Touch", short = "", preghost = true, ghost = true, nameplates = true, fixedlen = 21, priority = 10, duration = 21, color = colors.RED,  })
 
-Cooldown( 200174,{ name = "Mindbender", color = colors.BLACK, ghost = true, scale_until = 10 })
+-- Cooldown( 228260,{ name = "Void Eruption", color = colors.REJUV, ghost = 6, isknowncheck = function() end })
+Activation( 228260, { instantGhost = true, name = "Void Eruption", duration = 5, group = "buffs", priority = -100, effect = "JUDGEMENT", ghost = 2 })
+
+Cooldown( 200174,{ name = "Mindbender", color = colors.PURPLE3, effecttime = 2, effect = "BLOODBOIL", ghost = 6, scale_until = 10 })
 
 -- EventTimer({ event = "SPELL_SUMMON", spellID = 200174, name = "Mindbender", group = "buffs", duration = 15, priority = -10, color = colors.BLACK })
 EventTimer({ event = "SPELL_SUMMON", spellID = 34433, name = "Shadowfiend", group = "buffs", duration = 12, priority = -10, color = colors.BLACK })
@@ -338,7 +341,10 @@ Spell( 205369,{ name = "Mind Bomb", duration = 4, maxtimers = 1 })
 Spell( 47536,{ name = "Rapture", duration = 11, color = colors.LBLUE, shine = true })
 -- Spell( 64044 ,{ name = "Psychic Horror",duration = 1, maxtimers = 1 })
 
-Cast( 15407, { name = "Mind Flay", short = "", priority = 12, tick = 1, overlay = {"tick", "tickend"}, color = colors.PURPLE2, priority = 11, duration = 3, scale = 0.8 })
+local priest_normalize = 7
+
+Cast( 15407, { name = "Mind Flay", short = "", fixedlen = priest_normalize, priority = 12, tick = 1, color = colors.TEAL3, priority = 11, duration = 3, scale = 0.8 })
+
 
 --Old Shadow Orbs
 -- Spell( 77487 ,{ name = "",duration = 60, charged = true, maxcharge = 3, shine = true, shinerefresh = true, priority = -3, color = colors.WOO })
@@ -349,9 +355,34 @@ Spell( 214621, { name = "Schism", color = colors.PINKIERED, arrow = colors.PINKI
 Cooldown( 214621, { name = "Schism", color = colors.PURPLE4, scale_until = 8, ghost = true })
 Cooldown( 129250, { name = "PW:Solace", fixedlen = 9,  color = colors.WOO, priority = 7, ghost = true })
 
-Cooldown( 205351, { name = "Shadow Word: Void", short = "Void", priority = 9, fixedlen = 9, color = colors.CURSE, resetable = true, ghost = true, stackcolor = { colors.CURSE, colors.DPURPLE2 } })
-Cooldown( 8092, { name = "Mind Blast", priority = 9, fixedlen = 9, recast_mark = 1.5, color = colors.CURSE, resetable = true, ghost = true })
-Cooldown( 205448, { name = "Void Bolt", priority = 10, fixedlen = 9, color = colors.PINKIERED, resetable = true, ghost = true })
+Cooldown( 205351, { name = "Shadow Word: Void", short = "Void", priority = 9, fixedlen = priest_normalize, color = colors.CURSE, resetable = true, ghost = true, stackcolor = { colors.CURSE, colors.DPURPLE2 } })
+Cooldown( 8092, { name = "Mind Blast", priority = 9, fixedlen = priest_normalize, overlay = { 0, "gcd", 0.25 },  color = colors.CURSE, resetable = true, ghost = true })
+
+local UnitAura = UnitAura
+local function FindAura(unit, spellID, filter)
+    for i=1, 100 do
+        local name, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, nameplateShowPersonal, auraSpellID = UnitAura(unit, i, filter)
+        if not name then return nil end
+        if spellID == auraSpellID then
+            return name, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, nameplateShowPersonal, auraSpellID
+        end
+    end
+end
+
+Cooldown( 205448, { name = "Void Bolt", priority = 10, fixedlen = priest_normalize, color = colors.PINKIERED, resetable = true, ghost = true,
+    isknowncheck = function()
+        return FindAura("player", 194249, "HELPFUL|PLAYER")
+    end
+})
+EventTimer({ spellID = 194249, event = "SPELL_AURA_REMOVED", name = "VoidBoltCleanup",
+    action = function(active, srcGUID, dstGUID, spellID, damage )
+        local voidbolt_timer = NugRunning.gettimer(active, 205448, UnitGUID("player"), "COOLDOWN")
+        if voidbolt_timer then
+            voidbolt_timer.isGhost = true
+            NugRunning.GhostExpire(voidbolt_timer)
+        end
+    end})
+
 Cooldown( 32379, { name = "Shadow Word: Death", short = "SW:Death",  color = colors.PURPLE, resetable = true  })
 
 Cooldown( 205385, { name = "Shadow Crash", color = colors.WOO2, scale_until = 10 })
