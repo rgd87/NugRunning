@@ -291,14 +291,14 @@ Cooldown( 34861,{ name = "Sanctify", color = colors.GOLD, priority = -9, ghostef
 Cooldown( 17,{ name = "Power Word: Shield", priority = -10, scale = 0.5, color = colors.PINKIERED, ghost = true })
 
 Spell( 198069 ,{ name = "Dark Side", shine = true, color = colors.WOO, duration = 20,  scale = .7, priority = 15, glowtime = 5  })
-Spell( 219521 ,{ name = "Shadow Covenant", group = "buffs", color = colors.CURSE, duration = 6,  scale = .8, maxtimers = 1  })
+Spell( 219521 ,{ name = "Shadow Covenant", group = "buffs", color = colors.PURPLE3, duration = 6,  scale = .8, maxtimers = 1  })
 
 Spell( 139 ,{ name = "Renew", shinerefresh = true, color = colors.LGREEN, duration = 12,  scale = .7,  })
 Spell( 17 ,{ name = "Power Word: Shield", shinerefresh = true, duration = 15, color = colors.LRED })
 
 Spell( 41635 ,{ name = "Prayer of Mending", shinerefresh = true, duration = 30, color = colors.TEAL3, scale = .7, textfunc = function(timer) return timer.dstName end })
-Spell( 47788 ,{ name = "Guardian Spirit", shine = true, duration = 10, color = colors.LBLUE, short = "Guardian" })
-Spell( 33206 ,{ name = "Pain Suppression",shine = true, duration = 8, color = colors.LBLUE })
+Spell( 47788 ,{ name = "Guardian Spirit", shine = true, duration = 10, color = colors.PINK, short = "Guardian" })
+Spell( 33206 ,{ name = "Pain Suppression",shine = true, duration = 8, color = colors.PINK })
 Spell( 586 ,{ name = "Fade",duration = 10 })
 -- Spell( 89485 ,{ name = "Inner Focus", shine = true, color = colors.LBLUE, timeless = true, duration = 0.1 })
 -- Spell( 49694,59000 ,{ name = "Improved Spirit Tap",duration = 8 })
@@ -349,7 +349,7 @@ Cast( 15407, { name = "Mind Flay", short = "", fixedlen = priest_normalize, prio
 --Old Shadow Orbs
 -- Spell( 77487 ,{ name = "",duration = 60, charged = true, maxcharge = 3, shine = true, shinerefresh = true, priority = -3, color = colors.WOO })
 
-Cooldown( 47540 ,{ name = "Penance", tick = 1.5, tickshine = true, overlay = {"tick", "end"}, fixedlen = 9, priority = 15, color = colors.CURSE, ghost = true })
+Cooldown( 47540 ,{ name = "Penance", tick = 1.5, overlay = {"tick", "tickend"}, fixedlen = 9, priority = 15, color = colors.CURSE, ghost = true, ghost = 3, ghosteffect = "AEGWYNN" })
 
 Spell( 214621, { name = "Schism", color = colors.PINKIERED, arrow = colors.PINKIERED, duration = 9 })
 Cooldown( 214621, { name = "Schism", color = colors.PURPLE4, scale_until = 8, ghost = true })
@@ -523,7 +523,7 @@ Spell( 193356,{ name = "Broadsides", shine = true, color = colors.WOO2, group = 
 Spell( 193357,{ name = "Shark Infested Waters", short = "Crit", color = colors.PINK3, shine = true, group = "buffs", scale = 0.75, duration = 36 }) -- crit
 
 Spell( 13750 ,{ name = "Adrenaline Rush", group = "buffs", priority = -5, duration = 20, color = colors.LRED })
-Cooldown( 13750 ,{ name = "Adrenaline Rush", scale_until = 10, minduration = 10, color = colors.LRED })
+Cooldown( 13750 ,{ name = "Adrenaline Rush", scale_until = 10, effect = "BLOODBOIL", effecttime = 2, minduration = 10, color = colors.LRED })
 
 Spell( 13877 ,{ name = "Blade Flurry", group = "buffs", priority = -10, duration = 12, scale = 0.8, color = colors.PINKIERED })
 

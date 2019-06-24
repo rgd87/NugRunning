@@ -107,11 +107,16 @@ local function Rampage()
             if p <= 0 then
                 -- if not timer.shine:IsPlaying() then timer.shine:Play() end
                 if not timer.glow:IsPlaying() then timer.glow:Play() end
+                if rampage_opts.effect then
+                    timer.effect:SetEffect(rampage_opts.effect)
+                    timer.effect:Show()
+                end
                 timer.bar:SetValue(100)
                 timer:SetColor(unpack(rampage_opts.color2))
             else
                 -- if timer.shine:IsPlaying() then timer.shine:Stop() end
                 if timer.glow:IsPlaying() then timer.glow:Stop() end
+                timer.effect:Hide()
                 timer.bar:SetValue(p)
                 timer:SetColor(helpers.GetGradientColor(rampage_opts.color2, rampage_opts.color, (p/rampageCost)^0.7 ))
             end
