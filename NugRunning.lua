@@ -1640,7 +1640,7 @@ function NugRunning.Unlock(self)
 
     for timer in pairs(free) do
         i = i+1
-        if i > 7 then break end
+        if i < 9 then break end
         local fakeopts = {}
         timer.opts = fakeopts
         timer.startTime = GetTime();
@@ -1652,6 +1652,8 @@ function NugRunning.Unlock(self)
         timer:SetName(colorNames[randColorIndex])
         timer:SetColor(unpack(c))
         timer:SetCount(math.random(3))
+        timer:VScale(1)
+        timer.effect:Hide()
         timer:Show()
         local point, to
         local xOffset, yOffset, ySign = 0, 4, 1

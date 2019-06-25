@@ -836,6 +836,7 @@ Spell( 122783 ,{ name = "Diffuse Magic", group = "buffs", shine = true, duration
 Spell( 122278 ,{ name = "Dampen Harm", group = "buffs", shine = true, duration = 6, color = colors.CURSE })
 Spell( 152173 ,{ name = "Serenity", duration = 10, color = colors.TEAL2, group = "buffs", priority = -10 })
 
+Cooldown( 287771 ,{ name = "Reverse Harm", priority = 5, color = colors.TEAL3, ghost = true, ghosteffect = "MAGICCAST" })
 
 Spell( 228563 ,{ name = "Blackout Combo", group = "buffs", scale = .8, priority = -1, glowtime = 15, color = colors.PURPLE3, duration = 15 })
 Cooldown( 205523 ,{ name = "Blackout Strike", overlay = {0,1, 0.2}, fixedlen = 8, priority = 9, color = colors.WOO, ghost = true, })

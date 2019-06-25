@@ -3,10 +3,11 @@
 - Updated TOC to 80200
 - Updated Activation for Revenge
 - EventTimes can be edited in GUI, at the price of 1 event per spell ID restriction
-- Removed old nameplate lines code
-- Totems overhauled, but bfa config is not using that yet, only classic
+- Totems overhauled
 - Support for spell ranks / variants
-- Shaman config update
+- Shaman update
+- Shadow Priest update
+- Rogue update
 
 ### 8.1.1
 
