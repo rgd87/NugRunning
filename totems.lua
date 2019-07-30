@@ -59,8 +59,10 @@ NugRunning.InitTotems = function(self)
                 -- REFRESH
                 local opts = totems[iconID]
                 if opts then
-                    local timer = NugRunning:RefreshTimer(playerGUID, playerGUID, UnitName("player"), nil, opts.spellID, name, opts, "TOTEM", duration)
-                    timer:SetTime(startTime, startTime + duration)
+                    if duration ~= nil then
+                        local timer = NugRunning:RefreshTimer(playerGUID, playerGUID, UnitName("player"), nil, opts.spellID, name, opts, "TOTEM", duration)
+                        timer:SetTime(startTime, startTime + duration)
+                    end
                 end
             end
 

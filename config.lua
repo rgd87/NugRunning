@@ -343,7 +343,8 @@ Spell( 47536,{ name = "Rapture", duration = 11, color = colors.LBLUE, shine = tr
 
 local priest_normalize = 7
 
-Cast( 15407, { name = "Mind Flay", short = "", fixedlen = priest_normalize, priority = 12, tick = 1, color = colors.TEAL3, priority = 11, duration = 3, scale = 0.8 })
+Cast( 15407, { name = "Mind Flay", short = "", fixedlen = priest_normalize, priority = 12, tick = 1, color = colors.TEAL3, priority = 11, duration = 3, scale = 1 })
+Cast( 48045, { name = "Mind Shear", short = "", fixedlen = priest_normalize, priority = 12, tick = 1, color = colors.TEAL2, priority = 11, duration = 3, scale = 1 })
 
 
 --Old Shadow Orbs
@@ -1092,7 +1093,7 @@ Cooldown( 53595 ,{ name = "Hammer of the Righteous", short = "", ghost = true, g
 Spell( 197277,{ name = "Judgement", shine = true, singleTarget = true, priority = -100500, color = colors.PURPLE2, duration = 6 }) --debuff
 Cooldown( 20271 ,{ name = "Judgement", ghost = true, fixedlen = normalized_length, priority = 8, color = colors.PURPLE, ghosteffect = "JUDGEMENT", stackcolor = { colors.PURPLE, colors.PURPLE4} })
 
-EventTimer({ spellID = 26573 , event = "SPELL_CAST_SUCCESS", specmask = SPECS(1,2), name = "Consecration", duration = 12, color = colors.PINKIERED, overlay = {0,"gcd",.3}, priority = 9, scale = 0.85, ghost = true, fixedlen = normalized_length })
+EventTimer({ spellID = 26573 , event = "SPELL_CAST_SUCCESS", specmask = SPECS(1,2), name = "Consecration", duration = 12, color = colors.PINKIERED, overlay = {0,"gcd",.3}, multiTarget = true, priority = 9, ghost = 5, arrow = colors.PINKIERED, glow2time = 2, fixedlen = normalized_length })
 Cooldown( 26573 ,{ name = "Consecration", minduration = 6, color = colors.PINKIERED, overlay = {0,"gcd",.3}, priority = 9, scale = 0.85, ghost = true, fixedlen = normalized_length })
 Cooldown( 24275 ,{ name = "Hammer of Wrath", color = colors.TEAL2, fixedlen = normalized_length, ghost = true, priority = 11 })
 Cooldown( 31935 ,{ name = "Avenger's Shield", resetable = true, fixedlen = normalized_length, priority = 5, scale = 1, ghosteffect = "NIGHTBORNE", color = colors.TEAL, ghost = true })
@@ -1136,6 +1137,8 @@ Interrupt(106839, "Skull Bash", 4)
 Spell( 209749 ,{ name = "Faerie Swarm", duration = 8, color = colors.TEAL3 })
 Spell( 236696 ,{ name = "Thors", duration = 12, scale = 0.5, group = "buffs", shine = true, color = colors.DBROWN })
 Spell( 209753 ,{ name = "Cyclone", duration = 6, color = colors.PURPLE4 })
+
+Spell( 2637 ,{ name = "Hibernate", duration = 40, color = colors.DBROWN })
 
 Cooldown( 274837 ,{ name = "Feral Frenzy", scale_until = 10, ghost = true, color = colors.DTEAL })
 Cooldown( 274281 ,{ name = "New Moon", ghost = true, color = colors.PINK, stackcolor = { colors.PINK, colors.PINK, colors.PURPLE4 } })

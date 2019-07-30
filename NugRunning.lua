@@ -1521,7 +1521,9 @@ function NugRunning:PreGhost()
                     local timer = gettimer(active, spellID, UnitGUID("target"), "DEBUFF")
                     if not timer then
                         timer = self:ActivateTimer(playerGUID, UnitGUID("target"), UnitName("target"), nil, spellID, GetSpellInfo(spellID), opts, "DEBUFF", opts.duration, nil, true)
-                        timer:BecomeGhost()
+                        if timer then
+                            timer:BecomeGhost()
+                        end
                     elseif not timer.isGhost then
                         local opts = timer.opts
                         local overlay = opts.overlay
@@ -1537,9 +1539,9 @@ function NugRunning:PreGhost()
                         end
                     end
 
-                    -- timer.isPreghosting = true
-                    previous_projections[timer] = true
-
+                    if timer then
+                        previous_projections[timer] = true
+                    end
                 end
             end
         end
