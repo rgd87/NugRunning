@@ -11,6 +11,7 @@
 Libs\LibStub\LibStub.lua
 Libs\CallbackHandler-1.0\CallbackHandler-1.0.lua
 Libs\LibSharedMedia-3.0\lib.xml
+Libs\LibClassicDurations\LibClassicDurations.xml
 
 helpers.lua
 classic.config.lua

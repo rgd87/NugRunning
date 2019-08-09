@@ -69,7 +69,7 @@ local gettimer = function(self,spellID,dstGUID,timerType)
         end
     elseif type(spellID) == "string" then
         for timer in pairs(self) do
-            if timer.spellName == spellName and timer.timerType == timerType then
+            if timer.spellName == spellID and timer.timerType == timerType then
                 spellActiveTimers = spellActiveTimers + 1
                 if timer.dstGUID == dstGUID then
                     foundTimer = timer
@@ -851,6 +851,7 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
     timer.dstName = dstName
     if multiTargetGUID then timer.targets[multiTargetGUID] = true end
     timer.spellID = spellID
+    timer.spellName = spellName
     timer.timerType = timerType
     if opts.isItem then
         timer:SetIcon(select(5,GetItemInfoInstant(spellID)))
@@ -1214,6 +1215,16 @@ do
             queue[unit][spellNameOrID] = timer
             timer._queued = GetTime()
         end
+    end
+end
+
+function NugRunning:UpdateTimerToSpellID(timer, newSpellID)
+    if timer.spellID == newSpellID then return end
+    local newDuration = LibClassicDurations:GetDurationForRank(timer.spellName, newSpellID, timer.srcGUID)
+    if newDuration then
+        timer.spellID = newSpellID
+        local startTime = timer.startTime
+        timer:SetTime(startTIme, startTime + newDuration, timer.fixedoffset)
     end
 end
 
@@ -2290,15 +2301,11 @@ do
     local last_taget_update = 0
     local present_spells = {}
     local function UpdateUnitAuras(unit)
-            local up = hUnits[unit]
-            if not up then
-                if string.sub(unit, 1, 9) == "nameplate" then
-                    up = 2
-                end
+
+            if not (unit == "player" or unit == "target" or unit == "mouseover" or string.sub(unit, 1, 9) == "nameplate") then
+                return
             end
-            if not up then return end
             local unitGUID = UnitGUID(unit)
-            if up == 2 and UnitGUID("target") == unitGUID then return end
 
             local now = GetTime()
             -- if up == 1 then --throttle target updates
@@ -2324,16 +2331,13 @@ do
                     if opts and UnitAffiliationCheck(caster, opts.affiliation) then--and (unit ~= "mouseover" or not opts.singleTarget) then
 
                             local timer
-                            timer = gettimer(active, aura_spellID, unitGUID, timerType)
-                            if duration == 0 then
-                                duration = -1
-                            end
+                            timer = gettimer(active, name, unitGUID, timerType)
                             if timer then
-                                NugRunning:SetUnitAuraValues(timer, timer.spellID, name, icon, count, dispelType, duration, expirationTime, caster, isStealable, shouldConsolidate, aura_spellID)
-                            else
-                                timer = NugRunning:ActivateTimer(playerGUID, unitGUID, UnitName(unit), nil, aura_spellID, name, opts, timerType, duration, count, true)
-                                if timer and not timer.timeless then
-                                timer:SetTime( expirationTime - duration, expirationTime, timer.fixedoffset)
+                                if duration ~= 0 then
+                                    NugRunning:SetUnitAuraValues(timer, timer.spellID, name, icon, count, dispelType, duration, expirationTime, caster, isStealable, shouldConsolidate, aura_spellID)
+                                else
+                                    -- print("setting timer ",name, timer.spellID,  "to", aura_spellID)
+                                    NugRunning:UpdateTimerToSpellID(timer, aura_spellID)
                                 end
                             end
 
@@ -2419,7 +2423,7 @@ do
         end
     end
     h:SetScript("OnEvent", NugRunning.OnAuraEvent)
-    h:RegisterUnitEvent("UNIT_AURA", "player")
+    h:RegisterEvent("UNIT_AURA")
     -- h:RegisterEvent("UPDATE_MOUSEOVER_UNIT")
     h:RegisterEvent("PLAYER_TARGET_CHANGED")
 
