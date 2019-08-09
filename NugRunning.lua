@@ -66,6 +66,16 @@ local gettimer = function(self,spellID,dstGUID,timerType)
                 end
             end
         end
+    elseif type(spellID) == "string" then
+        for timer in pairs(self) do
+            if timer.spellName == spellName and timer.timerType == timerType then
+                spellActiveTimers = spellActiveTimers + 1
+                if timer.dstGUID == dstGUID then
+                    foundTimer = timer
+                    break
+                end
+            end
+        end
     else -- comparing by opts table, instead of
         for timer in pairs(self) do
             if timer.opts == spellID and timer.timerType == timerType then
@@ -1056,19 +1066,19 @@ do
     NugRunning.queueFrame:RegisterEvent("UNIT_AURA")
     NugRunning.queueFrame:SetScript('OnEvent', function(qframe, event, unit)
         if not queue[unit] then return end
-        for spellID, timer in pairs(queue[unit]) do
-            if NugRunning:GetUnitAuraData(unit, timer, spellID) then
-                queue[unit][spellID] = nil
+        for spellNameOrID, timer in pairs(queue[unit]) do
+            if NugRunning:GetUnitAuraData(unit, timer, spellNameOrID) then
+                queue[unit][spellNameOrID] = nil
                 timer._queued = nil
             elseif timer._queued and timer._queued + 0.4 < GetTime() then
-                queue[unit][spellID] = nil
+                queue[unit][spellNameOrID] = nil
                 timer._queued = nil
             end
         end
 
         if not next(queue[unit]) then queue[unit] = nil end
     end)
-    function NugRunning.QueueAura(spellID, dstGUID, auraType, timer )
+    function NugRunning.QueueAura(spellNameOrID, dstGUID, auraType, timer )
         local unit
         local auraUnits = (auraType == "DEBUFF") and debuffUnits or buffUnits
         for _,unitID in ipairs(auraUnits) do
@@ -1079,18 +1089,18 @@ do
         end
         if not unit then return nil end
 
-        if not NugRunning:GetUnitAuraData(unit, timer, spellID) then
-            -- print("queueing", select(1,GetSpellInfo(spellID)))
+        if not NugRunning:GetUnitAuraData(unit, timer, spellNameOrID) then
+            -- print("queueing", select(1,GetSpellInfo(spellNameOrID)))
             queue[unit] = queue[unit] or {}
-            queue[unit][spellID] = timer
+            queue[unit][spellNameOrID] = timer
             timer._queued = GetTime()
         end
     end
 end
 
-function NugRunning.SetUnitAuraValues(self, timer, spellID, name, icon, count, dispelType, duration, expirationTime, caster, isStealable, shouldConsolidate, aura_spellID, canApplyAura, isBossDebuff)
+function NugRunning.SetUnitAuraValues(self, timer, spellNameOrID, name, icon, count, dispelType, duration, expirationTime, caster, isStealable, shouldConsolidate, aura_spellID, canApplyAura, isBossDebuff)
             if aura_spellID then
-                if aura_spellID == spellID and NugRunning.UnitAffiliationCheck(caster, timer.opts.affiliation) then
+                if aura_spellID == spellNameOrID and NugRunning.UnitAffiliationCheck(caster, timer.opts.affiliation) then
                     if timer.opts.charged then
                         local opts = timer.opts
                         local max = opts.maxcharge
@@ -1131,18 +1141,16 @@ function NugRunning.SetUnitAuraValues(self, timer, spellID, name, icon, count, d
                         timer:SetCount(count)
                     end
 
-                    local name = GetSpellInfo(spellID)
-
                     return true
                 end
             end
 end
 
-function NugRunning.GetUnitAuraData(self, unit, timer, spellID)
+function NugRunning.GetUnitAuraData(self, unit, timer, spellNameOrID)
         for auraIndex=1,100 do
             local name, icon, count, dispelType, duration, expirationTime, caster, isStealable, shouldConsolidate, aura_spellID, canApplyAura, isBossDebuff, value1, absorb, value3 = UnitAura(unit, auraIndex, timer.filter)
-            if spellID == aura_spellID then
-                return NugRunning:SetUnitAuraValues(timer, spellID, name, icon, count, dispelType, duration, expirationTime, caster, isStealable, shouldConsolidate, aura_spellID, canApplyAura, isBossDebuff, value1, absorb, value3)
+            if spellNameOrID == aura_spellID or spellNameOrID == name then
+                return NugRunning:SetUnitAuraValues(timer, spellNameOrID, name, icon, count, dispelType, duration, expirationTime, caster, isStealable, shouldConsolidate, aura_spellID, canApplyAura, isBossDebuff, value1, absorb, value3)
             elseif name == nil then
                 return
             end
