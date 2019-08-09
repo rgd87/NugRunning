@@ -11,6 +11,7 @@ end)
 local isClassic = select(4,GetBuildInfo()) <= 19999
 local UnitSpellHaste = isClassic and function() return 0 end or _G.UnitSpellHaste
 local GetSpecialization = isClassic and function() return nil end or _G.GetSpecialization
+local LibClassicDurations
 
 local NRunDB = nil
 local config = NugRunningConfig
@@ -271,6 +272,7 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
 
     leaveGhost = NRunDB.leaveGhost
 
+    LibClassicDurations = LibStub("LibClassicDurations")
 
     NugRunningConfigCustom = NugRunningConfigCustom or {}
 
@@ -517,6 +519,17 @@ function NugRunning.COMBAT_LOG_EVENT_UNFILTERED( self, event )
     dstGUID, dstName, dstFlags, dstFlags2,
     spellID, spellName, spellSchool, auraType, amount = CombatLogGetCurrentEventInfo()
 
+    if auraType == "BUFF" or auraType == "DEBUFF" then
+
+    if spellID == 0 then
+        local sid = LibClassicDurations:GetLastRankSpellIDByName(spellName)
+        if sid then
+            spellID = sid
+        else
+            return
+        end
+    end
+
     CountDiminishingReturns(eventType, srcGUID, srcFlags, dstGUID, dstFlags, spellID, auraType)
 
     if spells[spellID] then
@@ -545,6 +558,8 @@ function NugRunning.COMBAT_LOG_EVENT_UNFILTERED( self, event )
                 lastCastSpellID = spellID
             end
         end
+    end
+
     end
 
     if check_event_timers then
@@ -2267,9 +2282,15 @@ do
     local last_taget_update = 0
     local present_spells = {}
     local function UpdateUnitAuras(unit)
-            if unit ~= "player" then return end
-
+            local up = hUnits[unit]
+            if not up then
+                if string.sub(unit, 1, 9) == "nameplate" then
+                    up = 2
+                end
+            end
+            if not up then return end
             local unitGUID = UnitGUID(unit)
+            if up == 2 and UnitGUID("target") == unitGUID then return end
 
             local now = GetTime()
             -- if up == 1 then --throttle target updates
@@ -2296,7 +2317,9 @@ do
 
                             local timer
                             timer = gettimer(active, aura_spellID, unitGUID, timerType)
-                            if duration == 0 then duration = -1 end
+                            if duration == 0 then
+                                duration = -1
+                            end
                             if timer then
                                 NugRunning:SetUnitAuraValues(timer, timer.spellID, name, icon, count, dispelType, duration, expirationTime, caster, isStealable, shouldConsolidate, aura_spellID)
                             else
@@ -2326,6 +2349,8 @@ do
     function NugRunning.OnAuraEvent(self, event, unit)
         if event == "UNIT_AURA" then
             return UpdateUnitAuras(unit)
+        elseif event == "PLAYER_TARGET_CHANGED" then
+            return UpdateUnitAuras("target")
             --[[
         elseif event == "UPDATE_MOUSEOVER_UNIT" then
             return UnitExists("mouseover") and UpdateUnitAuras("mouseover")
@@ -2388,7 +2413,7 @@ do
     h:SetScript("OnEvent", NugRunning.OnAuraEvent)
     h:RegisterUnitEvent("UNIT_AURA", "player")
     -- h:RegisterEvent("UPDATE_MOUSEOVER_UNIT")
-    -- h:RegisterEvent("PLAYER_TARGET_CHANGED")
+    h:RegisterEvent("PLAYER_TARGET_CHANGED")
 
 
     -- h._elapsed = 0
