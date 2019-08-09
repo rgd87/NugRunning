@@ -109,7 +109,7 @@ function NugRunningGUI.CreateNewTimerForm(self)
 	end)
 	Form:AddChild(newcooldown)
 	Form.controls.newcooldown = newcooldown
-	
+
 	local newitemcooldown = AceGUI:Create("Button")
 	newitemcooldown:SetText("New Item Cooldown")
 	newitemcooldown:SetFullWidth(true)
@@ -127,7 +127,7 @@ function NugRunningGUI.CreateNewTimerForm(self)
 	end)
 	Form:AddChild(newcast)
 	Form.controls.newcast = newcast
-	
+
 	local newevent = AceGUI:Create("Button")
 	newevent:SetText("New Event Timer")
 	newevent:SetFullWidth(true)
@@ -202,7 +202,7 @@ function NugRunningGUI.CreateCommonForm(self)
 			if category == "event_timers" and not opts.duration then
 				opts.duration = 3
 			end
-			
+
 			opts.spellID = nil
 		end
 
@@ -240,6 +240,7 @@ function NugRunningGUI.CreateCommonForm(self)
 			clean(opts, default_opts, "effecttime", false)
 			clean(opts, default_opts, "clones", false)
 			clean(opts, default_opts, "event", false)
+			clean(opts, default_opts, "stackcolor", false)
         end
         if opts.overlay and (not default_opts or not default_opts.overlay) and (not opts.overlay[1] or not opts.overlay[2]) then opts.overlay = nil end
 		-- PRESAVE = p.opts
@@ -565,7 +566,9 @@ function NugRunningGUI.CreateCommonForm(self)
     end)
     Form.controls.hide_until = hide_until
     Form:AddChild(hide_until)
-    AddTooltip(hide_until, "Hide until duration is less than X\n(Only for cooldowns)")
+	AddTooltip(hide_until, "Hide until duration is less than X\n(Only for cooldowns)")
+
+
 
 	local ghost = AceGUI:Create("EditBox")
     ghost:SetLabel("Ghost")
@@ -584,7 +587,7 @@ function NugRunningGUI.CreateCommonForm(self)
     Form.controls.ghost = ghost
     Form:AddChild(ghost)
     AddTooltip(ghost, "Timer remains for X seconds after expiring")
-	
+
 	local preghost = AceGUI:Create("CheckBox")
 	preghost:SetLabel("PreGhost")
 	preghost:SetRelativeWidth(0.24)
@@ -699,7 +702,7 @@ function NugRunningGUI.CreateCommonForm(self)
 	Form:AddChild(nameplates)
     AddTooltip(nameplates, "Mirror timer on nameplates.\nMay need /reload to enable nameplate functionality.")
 
-    
+
 
 
 	local overlay_start = AceGUI:Create("EditBox")
@@ -774,7 +777,7 @@ function NugRunningGUI.CreateCommonForm(self)
 	Form.controls.overlay_haste = overlay_haste
 	Form:AddChild(overlay_haste)
 	AddTooltip(overlay_haste, "Overlay length is reduced by haste.")
-	
+
 
 	local pandemic = AceGUI:Create("Button")
 	pandemic:SetText("Pandemic")
@@ -792,7 +795,63 @@ function NugRunningGUI.CreateCommonForm(self)
 	end)
 	Form.controls.pandemic = pandemic
 	Form:AddChild(pandemic)
-    AddTooltip(pandemic, "Calculate pandemic overlay from duration")
+	AddTooltip(pandemic, "Calculate pandemic overlay from duration")
+
+		----------------------------------
+	--- STACKCOLOR
+	----------------------------------
+
+	local useStackcolor = AceGUI:Create("CheckBox")
+	useStackcolor:SetLabel("Color By Stack")
+	useStackcolor:SetRelativeWidth(0.3)
+	useStackcolor:SetCallback("OnValueChanged", function(self, event, value)
+		if value == false then
+			self.parent.opts["stackcolor"] = false
+			for i=1,5 do
+				local widgetName = "stackcolor"..i
+				self.parent.controls[widgetName]:SetDisabled(true)
+				self.parent.controls[widgetName]:SetColor(0,0,0)
+			end
+		else
+			self.parent.opts["stackcolor"] = {
+				{ 1,1,1 },
+				{ 1,1,1 },
+				{ 1,1,1 },
+				{ 1,1,1 },
+				{ 1,1,1 },
+			}
+			for i=1,5 do
+				local widgetName = "stackcolor"..i
+				self.parent.controls[widgetName]:SetDisabled(false)
+				self.parent.controls[widgetName]:SetColor(1,1,1)
+			end
+		end
+	end)
+	Form.controls.useStackcolor = useStackcolor
+	Form:AddChild(useStackcolor)
+    AddTooltip(useStackcolor, "Shine when created")
+
+	local AddStackColor = function(i)
+		local stc1 = AceGUI:Create("ColorPicker")
+		stc1:SetRelativeWidth(0.12)
+		stc1.id = i
+		stc1:SetHasAlpha(false)
+		stc1:SetCallback("OnValueConfirmed", function(self, event, r,g,b,a)
+			self.parent.opts["stackcolor"] = self.parent.opts["stackcolor"] or {}
+			self.parent.opts["stackcolor"][self.id] = {r,g,b}
+		end)
+		local widgetName = "stackcolor"..i
+		Form.controls[widgetName] = stc1
+		Form:AddChild(stc1)
+	end
+
+	for i=1,5 do
+		AddStackColor(i)
+	end
+
+	----------------------------------
+	--- END STACKCOLOR
+	----------------------------------
 
 	local tick = AceGUI:Create("EditBox")
 	tick:SetLabel("Tick")
@@ -864,7 +923,7 @@ function NugRunningGUI.CreateCommonForm(self)
     Form.controls.ghosteffect = ghosteffect
     Form:AddChild(ghosteffect)
 	AddTooltip(ghosteffect, "Effect during ghost phase")
-	
+
 	local glowtime = AceGUI:Create("EditBox")
 	glowtime:SetLabel("Glow At")
 	glowtime:SetRelativeWidth(0.15)
@@ -898,7 +957,7 @@ function NugRunningGUI.CreateCommonForm(self)
 	Form.controls.glow2time = glow2time
 	Form:AddChild(glow2time)
 	AddTooltip(glow2time, "Time when highlight starts spinning.\n(Requires highlight color enabled)")
-	
+
 	local effecttime = AceGUI:Create("EditBox")
 	effecttime:SetLabel("Effect At")
 	effecttime:SetRelativeWidth(0.20)
@@ -915,7 +974,7 @@ function NugRunningGUI.CreateCommonForm(self)
 	Form.controls.effecttime = effecttime
 	Form:AddChild(effecttime)
 	AddTooltip(effecttime, "Time when 3D effect starts being shown")
-	
+
 	local clones = AceGUI:Create("EditBox")
 	clones:SetLabel("Additional Spell IDs")
 	clones:SetRelativeWidth(0.9)
@@ -934,7 +993,7 @@ function NugRunningGUI.CreateCommonForm(self)
 	Form.controls.clones = clones
 	Form:AddChild(clones)
 	AddTooltip(clones, "Spell ID list of clones / spell ranks" )
-	
+
 	local event = AceGUI:Create("EditBox")
 	event:SetLabel("Combat Log Event")
 	event:SetRelativeWidth(0.9)
@@ -1019,6 +1078,25 @@ function NugRunningGUI.FillForm(self, Form, class, category, id, opts, isEmptyFo
 	controls.color2:SetColor(fillAlpha(opts.color2 or {1,1,1,0} ))
 	controls.arrow:SetColor(fillAlpha(opts.arrow or {1,1,1,0} ))
 
+	if opts.stackcolor then
+		controls.useStackcolor:SetValue(true)
+		for i=1,5 do
+			local widgetName = "stackcolor"..i
+			controls[widgetName]:SetDisabled(false)
+			if opts.stackcolor[i] then
+				local r,g,b = unpack(opts.stackcolor[i])
+				controls[widgetName]:SetColor(r,g,b)
+			end
+		end
+	else
+		controls.useStackcolor:SetValue(false)
+		for i=1,5 do
+			local widgetName = "stackcolor"..i
+			controls[widgetName]:SetDisabled(true)
+			controls[widgetName]:SetColor(0,0,0)
+		end
+	end
+
 	controls.affiliation:SetValue(opts.affiliation or COMBATLOG_OBJECT_AFFILIATION_MINE)
 	controls.nameplates:SetValue(opts.nameplates)
 
@@ -1038,7 +1116,7 @@ function NugRunningGUI.FillForm(self, Form, class, category, id, opts, isEmptyFo
 
     controls.effect:SetValue(opts.effect or "NONE")
 	controls.ghosteffect:SetValue(opts.ghosteffect or "NONE")
-	
+
 	local clonesText
 	if opts.clones then
 		clonesText = table.concat(opts.clones, ", ")
@@ -1046,7 +1124,7 @@ function NugRunningGUI.FillForm(self, Form, class, category, id, opts, isEmptyFo
 	controls.clones:SetText(clonesText)
 
 	controls.event:SetText(opts.event)
-	
+
 
 	if id and not NugRunningConfig[category][id] then
 		controls.delete:SetDisabled(false)
@@ -1087,6 +1165,16 @@ function NugRunningGUI.FillForm(self, Form, class, category, id, opts, isEmptyFo
 		controls.affiliation:SetDisabled(false)
 	else
 		controls.event:SetDisabled(true)
+	end
+
+	if category == "event_timers" or category == "casts" then
+		controls.useStackcolor:SetDisabled(true)
+		for i=1,5 do
+			local widgetName = "stackcolor"..i
+			controls[widgetName]:SetDisabled(true)
+		end
+	else
+		controls.useStackcolor:SetDisabled(false)
 	end
 
 	if category == "itemcooldowns" then
@@ -1593,7 +1681,7 @@ local function MakeGeneralOptions()
                         step = 0.01,
                         order = 3,
 					},
-					
+
 					timefont = {
 						type = "select",
 						name = "Time Font",
@@ -1632,7 +1720,7 @@ local function MakeGeneralOptions()
                         step = 0.01,
                         order = 6,
 					},
-					
+
 					stackfont = {
 						type = "select",
 						name = "Stack Font",

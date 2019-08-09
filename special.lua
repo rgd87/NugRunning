@@ -55,7 +55,7 @@ local function Overpower()
             NugRunning:SPELL_ACTIVATION_OVERLAY_GLOW_SHOW(nil, 7384)
         end
     end
-    
+
     local function OnOverpowerSpent()
         NugRunning:SPELL_ACTIVATION_OVERLAY_GLOW_HIDE(nil, 7384)
     end

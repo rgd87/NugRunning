@@ -68,7 +68,270 @@
 - fixed Sap duration
 - added Vanish
 
+<<<<<<< HEAD
 ### 8.2-classic1
+=======
+### 7.3.6
+
+- Added texture and font settings to GUI
+- fixed set and setpos commands
+
+### 7.3.4
+
+- Item cooldowns support
+
+### 7.3.3c
+
+- Possible nameplate settings confict fix
+- Mind Flay is now a cast timer
+
+### 7.3.3
+
+- fixedlen option support for nameplate timers
+- Shadow Priest dots are now normalized to their corresponding durations to make them properly extend during Void form
+- Small Rogue updates
+- Rake, Rip, Garrote, Nightblade, Rupture displayed on nameplates by default
+
+### 7.3.2
+
+- nameplate timer size settings in GUI
+- updated feral and balance configs
+- small arms update
+
+### 7.3.1:
+
+- Updated Ace libs for 7.3
+
+### 7.2.4:
+- Agony bug fixed
+
+### 7.2.3:
+- ToC Update
+- bugfix
+
+### 7.2.2:
+- Disabled shine animation for Rampage because of new patch animation system issues
+### 7.2.1:
+
+- Brewmaster and Rogue changes for 7.2.5
+
+### 7.1.17:
+- Cleaned up default config from old abitlities from previous expansions
+- Tick spark now scales with timer height
+
+### 7.1.16:
+
+- individual timers now can be scaled up to 2
+
+### 7.1.15:
+
+- gui bugfixes
+- nameplate linse feature
+
+### 7.1.14:
+
+- Removed cast success EventTimers for paladin finishers
+- Judgement debuff timer now single target
+- fixed Remorseless Winter timer apearing when all runes are depleted
+
+### 7.1.13:
+
+- Attempt to fix issues with Chronomatic Anomaly boss fight
+
+### 7.1.12:
+
+- GUI bugfixes
+- Blade of Justice #202270 removed for 7.1.5
+- Temporal Shield removed for 7.1.5
+
+### 7.1.11:
+
+- Bugfix for spell creation
+- Added proper ST/MT/MaxTimers setting validation
+
+### 7.1.10:
+
+- Disabling spells in GUI now works properly
+
+### 7.1.9:
+
+- GUI Tooltips
+- all spells are now resetable by default
+- 3D effect option added to GUI
+- scale when set to 1 in GUI bug fixed
+- settings for spells variable duration bug fixed
+
+### 7.1.8:
+
+- updates for Warlock 7.1.5 changes
+
+### 7.1.7:
+
+- Revenge changes for 7.1.5
+
+### 7.1.6:
+
+- Added general settings category for GUI
+
+### 7.1.5:
+
+- Nameplate bugfix
+
+### 7.1.4:
+
+- New Options panel in Interface > AddOns tab
+
+### 7.1.3:
+
+- Absolute Corruption rework
+### - BrM:
+ BoC indicator on Keg Smash timer
+
+### 7.1.2:
+
+- Fixed Unstable Affliction for 7.1
+
+### 7.1.1:
+
+- Spam protection for Doom
+
+### 7.1.0:
+
+- Brew-Stache timer for BrM
+
+### 7.0.9:
+
+- 3D Effecs and color strip added
+- Brewmaster, Prot and Arms Warrior configs are pretty good now
+
+### 7.0.8:
+
+- Garrote now resets
+- Prot Paladin Blessed Hammer talent
+- Sunfire timer limit
+
+### 7.0.7:
+
+- Warlock update
+
+### 7.0.6:
+
+- Corruption timers from initial blast of Seed of Corruption now limited
+to 4
+- Fixed nameplate bugs
+- Small changes for Sub Rogue and Retribution
+
+
+### 7.0.5:
+
+- Druid update
+- Totem bug fixed
+
+### 7.0.4:
+
+- /nrun unlock fixed
+
+### 7.0.3:
+
+- Discipline update
+
+### 7.0.2:
+
+- NNameplate timers now work again
+- Special timer for Absolute Corruption
+- Small Rogue update
+
+### 7.0.1:
+
+- scale_until option and config updates
+
+### 7.0.0:
+
+- Legion Update
+- PvP Talents aren't updated.
+- Nameplate feature disabled for now
+
+### 6.0.7:
+
+- Affiliation check for UnitAura activations
+
+### 6.0.6:
+
+- glow2 fix
+- Hemo and Find Weakness added
+
+### 6.0.5:
+
+- UnitAura-only buffs
+- glow2, used for Shuffle
+
+### 6.0.4:
+
+- fixed a bug with proficiency on warrior
+
+### 6.0.3:
+
+- Empowered Seals added
+- Rogue update
+
+### 6.0.2:
+
+- Major update for Monk, small updates for Paladins and Warriors
+- Gradient colors
+- Several bugfixes
+
+### 6.0.1:
+
+- WoD update
+- snapshotting features removed
+- 30% "pandemic" display for many dot spells
+- hunter, shaman, balance druid configs greatly improved
+
+### 5.2.3:
+
+- Dot power persists through soul swap
+- Hacks for 5.4 combat log mess with Agony
+
+### 5.2.2:
+
+- bugfixes
+
+### 5.2.1:
+
+- fixed corruption on live
+- showid for all timer types
+
+### 5.2.0:
+
+- dot ticks
+
+### 5.1.17:
+
+- Rain of Fire timer
+- Fire and Brimstone Immolate added
+
+### 5.1.16:
+
+- Update for warrior 5.2 overpower changes
+- ToC updated to 50200
+
+### 5.1.15:
+
+- Immune timers no longer appear.
+
+### 5.1.14:
+
+- Miss notification timers, some warlocks now play without a hitcap, so that
+became important.
+- TidyPlates alpha support
+- Priest config update, mainly for discipline.
+- shine animation bug fixed for real
+
+### 5.1.11:
+
+- multitarget timers duration bug fixed
+- fixed strange bug with shine animation getting stuck
+>>>>>>> master
 
 - first classic version
 - disabled debuff UnitAura queues and scanner

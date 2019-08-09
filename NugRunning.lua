@@ -582,7 +582,10 @@ function NugRunning.SPELL_ACTIVATION_OVERLAY_GLOW_SHOW(self,event, spellID)
         local opts = activations[spellID]
         if not opts.for_cd then
             if opts.showid then spellID = opts.showid end
-            self:ActivateTimer(UnitGUID("player"),UnitGUID("player"), UnitName("player"), nil, spellID, opts.localname, opts, "ACTIVATION", opts.duration)
+            local timer = self:ActivateTimer(UnitGUID("player"),UnitGUID("player"), UnitName("player"), nil, spellID, opts.localname, opts, "ACTIVATION", opts.duration)
+            if opts.instantGhost then
+                timer:BecomeGhost()
+            end
         else
             local cd_opts = cooldowns[spellID]
             local timer = gettimer(active,spellID, playerGUID, "COOLDOWN")
@@ -1623,7 +1626,9 @@ function NugRunning:PreGhost()
                     if not timer then
                         local tempTime = 10
                         timer = self:ActivateTimer(playerGUID, UnitGUID("target"), UnitName("target"), nil, spellID, GetSpellInfo(spellID), opts, "DEBUFF", tempTime, nil, true)
-                        timer:BecomeGhost()
+                        if timer then
+                            timer:BecomeGhost()
+                        end
                     elseif not timer.isGhost then
                         local opts = timer.opts
                         local overlay = opts.overlay
@@ -1639,9 +1644,9 @@ function NugRunning:PreGhost()
                         end
                     end
 
-                    -- timer.isPreghosting = true
-                    previous_projections[timer] = true
-
+                    if timer then
+                        previous_projections[timer] = true
+                    end
                 end
             end
         end
@@ -1743,9 +1748,9 @@ function NugRunning.Unlock(self)
 
     for timer in pairs(free) do
         i = i+1
-        if i > 7 then break end
+        if i < 9 then break end
         local fakeopts = {}
-        if not timer.opts then timer.opts = fakeopts end
+        timer.opts = fakeopts
         timer.startTime = GetTime();
         timer.endTime = GetTime()+130-(i*10);
         timer:SetIcon("Interface\\Icons\\inv_misc_questionmark")
@@ -1755,6 +1760,8 @@ function NugRunning.Unlock(self)
         timer:SetName(colorNames[randColorIndex])
         timer:SetColor(unpack(c))
         timer:SetCount(math.random(3))
+        timer:VScale(1)
+        timer.effect:Hide()
         timer:Show()
         local point, to
         local xOffset, yOffset, ySign = 0, 4, 1
