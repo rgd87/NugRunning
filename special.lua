@@ -23,22 +23,8 @@ local function Overpower()
         end
     end
 
-    local RevengeIDs = {
-        [6572] = true,
-        [6574] = true,
-        [7379] = true,
-        [11600] = true,
-        [11601] = true,
-        [25288] = true,
-    }
-
-    local OverpowerIDs = {
-        [7384] = true,
-        [7887] = true,
-        [11584] = true,
-        [11585] = true,
-    }
-
+    local LocalizedOverpower = GetSpellInfo(7384)
+    local LocalizedRevenge = GetSpellInfo(6572)
 
     local IsInBattleStance = function() return GetShapeshiftForm() == 1 end
     local IsInDefensiveStance = function() return GetShapeshiftForm() == 2 end
@@ -101,11 +87,12 @@ local function Overpower()
             end
 
             if eventType == "SPELL_CAST_SUCCESS" then
-                if OverpowerIDs[arg1] then
+                local spellName = arg2
+                if spellName == LocalizedOverpower then
                     OnOverpowerSpent()
                 end
 
-                if RevengeIDs[arg1] then
+                if spellName == LocalizedRevenge then
                     OnRevengeSpent()
                 end
             end
