@@ -81,11 +81,27 @@ helpers.Anchor = function(name, opts)
     NugRunningConfig.anchors[name] = opts
 end
 
+local SpellMixin = _G.Spell
+helpers.spellNameToID = {}
+
 helpers.Spell = function(id, opts)
     if not opts then NugRunningConfig[id] = opts; return end
     if opts.singleTarget then opts.target = "target" end
     if opts.affiliation == "raid" then opts.affiliation = AFFILIATION_PARTY_OR_RAID end
     if opts.affiliation == "any" then opts.affiliation = AFFILIATION_OUTSIDER end
+
+    local lastRankID
+    if type(id) == "table" then
+        lastRankID = id[#id]
+    else
+        lastRankID = id
+    end
+    local spellObj = SpellMixin:CreateFromSpellID(lastRankID)
+    spellObj:ContinueOnSpellLoad(function()
+        local spellName = spellObj:GetSpellName()
+        helpers.spellNameToID[spellName] = lastRankID
+    end)
+
     if type(id) == "table" then
         local clones = id
         id = table.remove(clones, 1) -- extract first spell id from the last as original

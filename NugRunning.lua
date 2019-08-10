@@ -11,7 +11,6 @@ end)
 local isClassic = select(4,GetBuildInfo()) <= 19999
 local UnitSpellHaste = isClassic and function() return 0 end or _G.UnitSpellHaste
 local GetSpecialization = isClassic and function() return nil end or _G.GetSpecialization
-local LibClassicDurations
 
 local NRunDB = nil
 local config = NugRunningConfig
@@ -282,8 +281,6 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
 
     leaveGhost = NRunDB.leaveGhost
 
-    LibClassicDurations = LibStub("LibClassicDurations")
-
     NugRunningConfigCustom = NugRunningConfigCustom or {}
 
     NugRunningConfigMerged = CopyTable(NugRunningConfig)
@@ -532,7 +529,7 @@ function NugRunning.COMBAT_LOG_EVENT_UNFILTERED( self, event )
     if auraType == "BUFF" or auraType == "DEBUFF" then
 
     if spellID == 0 then
-        local sid = LibClassicDurations:GetLastRankSpellIDByName(spellName)
+        local sid = helpers.spellNameToID[spellName]
         if sid then
             spellID = sid
         else
@@ -1220,9 +1217,16 @@ end
 
 function NugRunning:UpdateTimerToSpellID(timer, newSpellID)
     if timer.spellID == newSpellID then return end
-    local newDuration = LibClassicDurations:GetDurationForRank(timer.spellName, newSpellID, timer.srcGUID)
+    local opts = timer.opts
+    -- local oldSpellID = timer.spellID
+    timer.spellID = newSpellID
+
+    local newDuration = NugRunning.SetDefaultDuration(0, opts, timer)
+    local mul = getDRMul(dstGUID, newSpellID)
+
+    local newDuration = newDuration * mul
+
     if newDuration then
-        timer.spellID = newSpellID
         local startTime = timer.startTime
         timer:SetTime(startTIme, startTime + newDuration, timer.fixedoffset)
     end
