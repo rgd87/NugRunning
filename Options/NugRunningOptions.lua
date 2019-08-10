@@ -247,6 +247,16 @@ function NugRunningGUI.CreateCommonForm(self)
 		local delta = CopyTable(opts)
 		delta.timer = nil -- important, clears runtime data
 
+		if not default_opts then
+			local lastRankID
+			if delta.clones then
+				lastRankID = delta.clones[#delta.clones]
+			else
+				lastRankID = spellID
+			end
+			NugRunning.AddSpellNameRecognition(lastRankID)
+		end
+
 		-- remove clones of the previous version of the spell
 		local oldOriginalSpell = NugRunningConfigMerged[category][spellID]
 		if oldOriginalSpell and oldOriginalSpell.clones then

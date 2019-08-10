@@ -157,7 +157,7 @@ Spell({ 172, 6222, 6223, 7648, 11671, 11672, 25311 }, { name = "Corruption", tic
         else
             return 18
         end
-    end })
+    end }) -- Corruption
 Spell({ 348, 707, 1094, 2941, 11665, 11667, 11668, 25309 },{ name = "Immolate", recast_mark = 1.5, overlay = {0, 1.5, 0.3}, duration = 15, nameplates = true, priority = 10, ghost = true, color = colors.RED })
 
 Spell({ 17877, 18867, 18868, 18869, 18870, 18871 }, { name = "Shadowburn", duration = 5, scale = 0.5, color = colors.DPURPLE }) -- Soul Shard debuff

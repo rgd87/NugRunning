@@ -281,6 +281,8 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
 
     leaveGhost = NRunDB.leaveGhost
 
+    NugRunning.AddSpellNameRecognition = helpers.AddSpellNameRecognition
+
     NugRunningConfigCustom = NugRunningConfigCustom or {}
 
     NugRunningConfigMerged = CopyTable(NugRunningConfig)

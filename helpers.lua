@@ -84,6 +84,14 @@ end
 local SpellMixin = _G.Spell
 helpers.spellNameToID = {}
 
+helpers.AddSpellNameRecognition = function(lastRankID)
+    local spellObj = SpellMixin:CreateFromSpellID(lastRankID)
+    spellObj:ContinueOnSpellLoad(function()
+        local spellName = spellObj:GetSpellName()
+        helpers.spellNameToID[spellName] = lastRankID
+    end)
+end
+
 helpers.Spell = function(id, opts)
     if not opts then NugRunningConfig[id] = opts; return end
     if opts.singleTarget then opts.target = "target" end
@@ -96,11 +104,8 @@ helpers.Spell = function(id, opts)
     else
         lastRankID = id
     end
-    local spellObj = SpellMixin:CreateFromSpellID(lastRankID)
-    spellObj:ContinueOnSpellLoad(function()
-        local spellName = spellObj:GetSpellName()
-        helpers.spellNameToID[spellName] = lastRankID
-    end)
+    helpers.AddSpellNameRecognition(lastRankID)
+
 
     if type(id) == "table" then
         local clones = id
