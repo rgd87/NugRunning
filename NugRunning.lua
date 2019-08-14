@@ -295,6 +295,14 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
     MergeTable(NugRunningConfigMerged, globalConfig)
     local classConfig = NugRunningConfigCustom[class]
     MergeTable(NugRunningConfigMerged, classConfig)
+
+    -- filling spellNameToID for user-added spells
+    if classConfig and classConfig.spells then
+        for spellID in pairs(classConfig.spells) do
+            helpers.AddSpellNameRecognition(spellID)
+        end
+    end
+
     config = NugRunningConfigMerged
     spells = config.spells
     activations = config.activations
