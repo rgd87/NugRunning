@@ -68,7 +68,7 @@ local gettimer = function(self,spellID,dstGUID,timerType)
         end
     elseif type(spellID) == "string" then
         for timer in pairs(self) do
-            if timer.spellName == spellName and timer.timerType == timerType then
+            if timer.spellName == spellID and timer.timerType == timerType then
                 spellActiveTimers = spellActiveTimers + 1
                 if timer.dstGUID == dstGUID then
                     foundTimer = timer
@@ -1650,7 +1650,7 @@ function NugRunning.Unlock(self)
 
     for timer in pairs(free) do
         i = i+1
-        if i < 9 then break end
+        if i > 9 then break end
         local fakeopts = {}
         timer.opts = fakeopts
         timer.startTime = GetTime();
