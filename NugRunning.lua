@@ -875,7 +875,7 @@ function NugRunning.RefreshTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID,
 
     local timer = gettimer(active, opts or spellID,dstGUID,timerType)
     if not timer then
-        return self:ActivateTimer(srcGUID, dstGUID or multiTargetGUID, dstName, dstFlags, spellID, spellName, opts, timerType)
+        return self:ActivateTimer(srcGUID, dstGUID or multiTargetGUID, dstName, dstFlags, spellID, spellName, opts, timerType, override)
     end
     if (timerType == "COOLDOWN" or timerType == "ITEMCOOLDOWN") and not timer.isGhost then return timer end
     -- if timer.isGhost then
