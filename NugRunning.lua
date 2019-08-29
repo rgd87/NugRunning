@@ -1796,7 +1796,7 @@ function NugRunning.Unlock(self)
 
     for timer in pairs(free) do
         i = i+1
-        if i < 9 then break end
+        if i > 9 then break end
         local fakeopts = {}
         timer.opts = fakeopts
         timer.startTime = GetTime();
