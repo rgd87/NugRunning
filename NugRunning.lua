@@ -2397,12 +2397,15 @@ do
                 end
             end
             for timer in pairs(active) do
+                local opts = timer.opts
                 if  timer.dstGUID == unitGUID and
                     timer.srcGUID == playerGUID and
-                    not present_spells[timer.opts] and
+                    not present_spells[opts] and
                     (timer.timerType == "BUFF" or timer.timerType == "DEBUFF")
                 then
-                    free[timer] = true
+                    if not opts._skipunitaura then
+                        free[timer] = true
+                    end
                     NugRunning:ArrangeTimers()
                 end
             end
