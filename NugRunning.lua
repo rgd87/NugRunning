@@ -389,6 +389,8 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
         end
     end
 
+    NugRunning.targetIndicator = NugRunning:CreateTargetIndicator()
+
     NugRunning:SetupArrange()
 
     for i=1,MAX_TIMERS do
@@ -1272,6 +1274,14 @@ function NugRunning.TimerFunc(self,time)
     if timer_onupdate then timer_onupdate(self) end
 end
 
+function NugRunning:CreateTargetIndicator()
+    local targetIndicator = NugRunning:CreateTexture(nil, "ARTWORK", nil, 3)
+    targetIndicator:SetTexture("Interface\\BUTTONS\\WHITE8X8")
+    targetIndicator:SetWidth(5)
+    targetIndicator:SetVertexColor(1, 0.5, 1, 0.8)
+    return targetIndicator
+end
+
 function NugRunning.GhostExpire(self)
     self:SetScript("OnUpdate", NugRunning.TimerFunc)
     self.expiredGhost = true
@@ -1388,13 +1398,17 @@ do
     local doswap
     local anchors
     local dbanchors
+    local targetIndicator
+    local growthDirection
     function NugRunning.SetupArrange(self)
         point = ( NRunDB.growth == "down" and "TOPLEFT" ) or "BOTTOMLEFT"
         to = ( NRunDB.growth == "down" and "BOTTOMLEFT" ) or "TOPLEFT"
         ySign = ( NRunDB.growth == "down" and -1 ) or 1
+        growthDirection = NRunDB.growth
         doswap = NRunDB.swapTarget
         anchors = NugRunning.anchors
         dbanchors = NRunDB.anchors
+        targetIndicator = NugRunning.targetIndicator
     end
     -- local playerTimers = {}
     -- local targetTimers = {}
@@ -1418,6 +1432,7 @@ do
         table_wipe(guid_groups)
         local playerTimers = groups.player
         local targetTimers = groups.target
+        local targetIndicatorUpdated
 
         local targetGUID = UnitGUID("target")
         for timer in pairs(active) do
@@ -1467,6 +1482,19 @@ do
                             prev = timer
                             gap = 0
                         end
+
+                        if not doswap and guid == targetGUID then
+                            local lastTimer = group_timers[1]
+                            local firstTimer = group_timers[#group_timers]
+                            if growthDirection == "down" then
+                                firstTimer, lastTimer = lastTimer, firstTimer
+                            end
+                            targetIndicatorUpdated = true
+                            targetIndicator:Show()
+                            targetIndicator:SetPoint("TOPRIGHT", firstTimer, "TOPLEFT", -10, 0)
+                            targetIndicator:SetPoint("BOTTOMRIGHT", lastTimer, "BOTTOMLEFT", -10, 0)
+                        end
+
                         gap = gopts.gap
                     end
                     break -- offtargets should always be the last group for anchor
@@ -1482,6 +1510,9 @@ do
                     end
                     end
                     gap = prev and gopts.gap or 0
+                end
+                if not doswap and not targetIndicatorUpdated then
+                    targetIndicator:Hide()
                 end
             end
         end
@@ -1536,7 +1567,7 @@ function NugRunning:PreGhost()
                         local opts = timer.opts
                         local overlay = opts.overlay
                         local rm = opts.recast_mark or (overlay and overlay[2])
-                        if rm then
+                        if rm and not timer.timeless then
                             local endTime = timer.endTime
                             local beforeEnd = endTime - GetTime()
 
