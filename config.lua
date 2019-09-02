@@ -167,7 +167,10 @@ Spell( 278350, { name = "Vile Taint", duration = 10, color = colors.PURPLE4, sca
 
 Spell( 111400 ,{ name = "Burning Rush",duration = 20, timeless = true, color = colors.PURPLE2 })
 --Immolate
-Spell( 157736,{ name = "", preghost = true, recast_mark = 5.3, overlay = {0, 5.3, 0.2}, maxtimers = 4, duration = 18, nameplates = true, priority = 10, ghost = true, color = colors.RED })
+Spell( 157736,{ name = "", preghost = true, recast_mark = 5.3, overlay = {0, 5.3, 0.2}, maxtimers = 4, duration = 18, nameplates = true, priority = 10, ghost = true, color = colors.RED,
+isknowncheck = function()
+    return IsPlayerSpell(348)
+end })
 
 
 Spell( 117828 ,{ name = "Backdraft", duration = 15, shine = true, priority = -4, shinerefresh = true, color = colors.PURPLE3, scale = 0.5 })
@@ -246,9 +249,15 @@ Spell( 146739 ,{ name = "", preghost = true, maxtimers = 5, duration = 14, recas
             self.timeless = false
         end
         creeping_death(self)
+    end,
+    isknowncheck = function()
+        return IsPlayerSpell(172)
     end})
 --Siphon Life
-Spell( 63106 ,{ name = "", duration = 15, recast_mark = 4.5, overlay = {0, 4.5, 0.2}, priority = 5, fixedlen = normalize_dots_to, nameplates = true, ghost = true, color = colors.DTEAL, init = creeping_death })
+Spell( 63106 ,{ name = "", preghost = true, duration = 15, recast_mark = 4.5, overlay = {0, 4.5, 0.2}, priority = 5, fixedlen = normalize_dots_to, nameplates = true, ghost = true, color = colors.DTEAL, init = creeping_death,
+    isknowncheck = function()
+        return IsPlayerSpell(63106)
+    end })
 
 
 Spell( 27243 ,{ name = "Seed of Corruption",duration = 18, nameplates = true,  color = colors.DBLUE, short = "SoC" })
