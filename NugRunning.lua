@@ -1566,7 +1566,7 @@ function NugRunning:PreGhost()
                     elseif not timer.isGhost then
                         local opts = timer.opts
                         local overlay = opts.overlay
-                        local rm = opts.recast_mark or (overlay and overlay[2])
+                        local rm = opts.recast_mark or (overlay and type(overlay[2]) == "number" and overlay[2])
                         if rm and not timer.timeless then
                             local endTime = timer.endTime
                             local beforeEnd = endTime - GetTime()
