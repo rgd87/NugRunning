@@ -678,6 +678,12 @@ local function GetSpellCooldownCharges(spellID)
 end
 
 local gcdDuration = 1.5
+local wandUserMinDuration
+local _, class = UnitClass("player")
+if class == "WARLOCK" or class == "MAGE" or class == "PRIEST" then
+    wandUserMinDuration = 3
+end
+
 local function CheckCooldown(spellID, opts, startTime, duration, enabled, charges, maxCharges, isItem)
     local cdType = isItem and "ITEMCOOLDOWN" or "COOLDOWN"
     local timer
@@ -701,7 +707,7 @@ local function CheckCooldown(spellID, opts, startTime, duration, enabled, charge
             end
         else
                 if not active[timer] or timer.isGhost then
-                    local mdur = opts.minduration
+                    local mdur = opts.minduration or wandUserMinDuration
                     local time_remains = (duration + startTime) - GetTime()
                     local mrem = opts.hide_until
                     local isKnown = true
