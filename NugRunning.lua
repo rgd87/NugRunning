@@ -541,10 +541,8 @@ function NugRunning.COMBAT_LOG_EVENT_UNFILTERED( self, event )
     if auraType == "BUFF" or auraType == "DEBUFF" then
 
     if spellID == 0 then
-        local sid = helpers.spellNameToID[spellName]
-        if sid then
-            spellID = sid
-        else
+        spellID = helpers.spellNameToID[spellName]
+        if not spellID then
             return
         end
     end
@@ -582,6 +580,13 @@ function NugRunning.COMBAT_LOG_EVENT_UNFILTERED( self, event )
     end
 
     if check_event_timers then
+        if spellID == 0 then
+            spellID = helpers.spellNameToID[spellName]
+            if not spellID then
+                return
+            end
+        end
+
         if event_timers[spellID] then
             local opts = event_timers[spellID]
             if opts.event == eventType then
