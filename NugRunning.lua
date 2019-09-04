@@ -770,7 +770,11 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
         -- print( "DEFAULT TIME", spellName, time, timerType)
         if timerType == "BUFF" or timerType == "DEBUFF" then
             local _guid = multiTargetGUID or dstGUID
-            NugRunning.QueueAura(spellID, _guid, timerType, timer)
+            local uaTime, uaCount = NugRunning.QueueAura(spellID, _guid, timerType, timer)
+            if uaTime then
+                time = uaTime
+                amount = uaCount
+            end
         end
     end
 
@@ -1115,7 +1119,7 @@ function NugRunning.SetUnitAuraValues(self, timer, spellNameOrID, name, icon, co
                         timer:SetCount(count)
                     end
 
-                    return true
+                    return duration, count
                 end
             end
 end
