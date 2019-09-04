@@ -881,16 +881,24 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
     timer.opts = opts
     timer.onupdate = opts.onupdate
 
+    if timerType == "BUFF"
+        then timer.filter = "HELPFUL"
+        else timer.filter = "HARMFUL"
+    end
+
     local time
     if timerType == "MISSED" then
         time = opts.duration
     elseif override then time = override
     else
         time = NugRunning.SetDefaultDuration(dstFlags, opts, timer)
-        if timerType == "BUFF" or timerType == "DEBUFF" then
-            local _guid = multiTargetGUID or dstGUID
-            if _guid == playerGUID then -- you can only see duration on player, even for buffs
-                NugRunning.QueueAura(spellID, _guid, timerType, timer)
+
+        local _guid = multiTargetGUID or dstGUID
+        if _guid == playerGUID and (timerType == "BUFF" or timerType == "DEBUFF") then
+            local uaTime, uaCount = NugRunning.QueueAura(spellName, _guid, timerType, timer)
+            if uaTime then
+                time = uaTime
+                amount = uaCount
             end
         elseif timerType == "DEBUFF" then
             if not multiTargetGUID then
@@ -898,10 +906,6 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
                 time = time * mul
             end
         end
-    end
-    if timerType == "BUFF"
-        then timer.filter = "HELPFUL"
-        else timer.filter = "HARMFUL"
     end
 
     if timer.VScale then
@@ -1028,15 +1032,13 @@ function NugRunning.RefreshTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID,
         if not ignore_applied_dose then -- why was it ignoring multi target?
             time = NugRunning.SetDefaultDuration(dstFlags, opts, timer)
         end
-        if timerType == "BUFF" or timerType == "DEBUFF" then
-            if not dstGUID then
-                if timer.queued and GetTime() < timer.queued + 0.9 then
-                    return
-                end
-            end
-            local _guid = dstGUID or multiTargetGUID
-            if _guid == playerGUID then
-                timer.queued = NugRunning.QueueAura(spellID, _guid, timerType, timer)
+
+        local _guid = multiTargetGUID or dstGUID
+        if _guid == playerGUID and (timerType == "BUFF" or timerType == "DEBUFF") then
+            local uaTime, uaCount = NugRunning.QueueAura(spellName, _guid, timerType, timer)
+            if uaTime then
+                time = uaTime
+                amount = uaCount
             end
         elseif timerType == "DEBUFF" then
             if not multiTargetGUID then
@@ -1200,24 +1202,6 @@ end
 local debuffUnits = {"target","mouseover","focus","arena1","arena2","arena3","arena4","arena5"}
 local buffUnits = {"player","target","mouseover"}
 
-do
-    local queue = setmetatable({}, { __mode = "k" })
-    NugRunning.queueFrame = CreateFrame("Frame")
-    NugRunning.queueFrame:RegisterEvent("UNIT_AURA")
-    NugRunning.queueFrame:SetScript('OnEvent', function(qframe, event, unit)
-        if not queue[unit] then return end
-        for spellNameOrID, timer in pairs(queue[unit]) do
-            if NugRunning:GetUnitAuraData(unit, timer, spellNameOrID) then
-                queue[unit][spellNameOrID] = nil
-                timer._queued = nil
-            elseif timer._queued and timer._queued + 0.4 < GetTime() then
-                queue[unit][spellNameOrID] = nil
-                timer._queued = nil
-            end
-        end
-
-        if not next(queue[unit]) then queue[unit] = nil end
-    end)
     function NugRunning.QueueAura(spellNameOrID, dstGUID, auraType, timer )
         local unit
         local auraUnits = (auraType == "DEBUFF") and debuffUnits or buffUnits
@@ -1229,14 +1213,8 @@ do
         end
         if not unit then return nil end
 
-        if not NugRunning:GetUnitAuraData(unit, timer, spellNameOrID) then
-            -- print("queueing", select(1,GetSpellInfo(spellNameOrID)))
-            queue[unit] = queue[unit] or {}
-            queue[unit][spellNameOrID] = timer
-            timer._queued = GetTime()
-        end
+        return NugRunning:GetUnitAuraData(unit, timer, spellNameOrID)
     end
-end
 
 function NugRunning:UpdateTimerToSpellID(timer, newSpellID)
     if timer.spellID == newSpellID then return end
@@ -1257,7 +1235,7 @@ end
 
 function NugRunning.SetUnitAuraValues(self, timer, spellNameOrID, name, icon, count, dispelType, duration, expirationTime, caster, isStealable, shouldConsolidate, aura_spellID, canApplyAura, isBossDebuff)
             if aura_spellID then
-                if aura_spellID == spellNameOrID and NugRunning.UnitAffiliationCheck(caster, timer.opts.affiliation) then
+                if (aura_spellID == spellNameOrID or name == spellNameOrID) and NugRunning.UnitAffiliationCheck(caster, timer.opts.affiliation) then
                     if timer.opts.charged then
                         local opts = timer.opts
                         local max = opts.maxcharge
@@ -1298,7 +1276,7 @@ function NugRunning.SetUnitAuraValues(self, timer, spellNameOrID, name, icon, co
                         timer:SetCount(count)
                     end
 
-                    return true
+                    return duration, count
                 end
             end
 end
