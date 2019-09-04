@@ -756,7 +756,7 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
     timer.opts = opts
     timer.onupdate = opts.onupdate
 
-    if timerType == "BUFF" then
+    if timerType == "BUFF"
         then timer.filter = "HELPFUL"
         else timer.filter = "HARMFUL"
     end
