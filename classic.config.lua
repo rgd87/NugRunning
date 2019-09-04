@@ -503,7 +503,7 @@ Spell({ 9484, 9485, 10955 }, { name = "Shackle Undead", glowtime = 5, nameplates
 }) -- varies
 Spell( 10060, { name = "Power Infusion", duration = 15, group = "buffs", color = colors.TEAL2 })
 -- make charged to 20?
-Spell({ 588, 602, 1006, 7128, 10951, 10952 }, { name = "Inner Fire", duration = 600, priority = -100, color = colors.GOLD, scale = 0.7 })
+Spell({ 588, 602, 1006, 7128, 10951, 10952 }, { name = "Inner Fire", duration = 600, ghost = true, charged = true, maxcharge = 20, priority = -100, color = colors.GOLD, scale = 0.7 })
 Spell({ 17, 592, 600, 3747, 6065, 6066, 10898, 10899, 10900, 10901 }, { name = "Power Word: Shield", short = "Shield", shinerefresh = true, duration = 30, color = colors.LRED })
 Spell( 552 , { name = "Abolish Disease", tick = 5, tickshine = true, overlay = {"tick", "end"}, duration = 20, scale = 0.5, color = colors.BROWN })
 
