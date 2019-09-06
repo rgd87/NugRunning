@@ -1,7 +1,12 @@
-### 8.2.2
+### 8.2.3
 
 - bugfix for cooldown settings in GUI
 - infinite timer option
+
+### 8.2.2
+
+- floating target setting in GUI
+- preghosting fixes on warlock dots
 
 ### 8.2.1
 
