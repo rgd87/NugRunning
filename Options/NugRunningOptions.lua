@@ -215,6 +215,7 @@ function NugRunningGUI.CreateCommonForm(self)
             clean(opts, default_opts, "short", false)
 			clean(opts, default_opts, "ghost", false)
 			clean(opts, default_opts, "preghost", false)
+			clean(opts, default_opts, "timeless", false)
             clean(opts, default_opts, "singleTarget", false)
             clean(opts, default_opts, "multiTarget", false)
             clean(opts, default_opts, "scale", 1)
@@ -973,6 +974,16 @@ function NugRunningGUI.CreateCommonForm(self)
 	Form:AddChild(effecttime)
 	AddTooltip(effecttime, "Time when 3D effect starts being shown")
 
+	local timeless = AceGUI:Create("CheckBox")
+	timeless:SetLabel("Infinite Timer")
+	timeless:SetRelativeWidth(0.9)
+	timeless:SetCallback("OnValueChanged", function(self, event, value)
+		self.parent.opts["timeless"] = value
+	end)
+	Form.controls.timeless = timeless
+	Form:AddChild(timeless)
+    AddTooltip(timeless, "Create empty bar when switching to target without existing timer")
+
 	local clones = AceGUI:Create("EditBox")
 	clones:SetLabel("Additional Spell IDs")
 	clones:SetRelativeWidth(0.9)
@@ -1071,6 +1082,7 @@ function NugRunningGUI.FillForm(self, Form, class, category, id, opts, isEmptyFo
 	controls.maxtimers:SetText(opts.maxtimers)
 	controls.singleTarget:SetValue(opts.singleTarget)
 	controls.multiTarget:SetValue(opts.multiTarget)
+	controls.timeless:SetValue(opts.timeless)
 
 	controls.color:SetColor(fillAlpha(opts.color or {0.8, 0.1, 0.7} ))
 	controls.color2:SetColor(fillAlpha(opts.color2 or {1,1,1,0} ))
@@ -1145,6 +1157,7 @@ function NugRunningGUI.FillForm(self, Form, class, category, id, opts, isEmptyFo
 		controls.nameplates:SetDisabled(false)
 		controls.hide_until:SetDisabled(true)
 		controls.clones:SetDisabled(false)
+		controls.timeless:SetDisabled(false)
 	else
 		controls.duration:SetDisabled(true)
 		controls.maxtimers:SetDisabled(true)
@@ -1154,6 +1167,7 @@ function NugRunningGUI.FillForm(self, Form, class, category, id, opts, isEmptyFo
 		controls.nameplates:SetDisabled(true)
 		controls.hide_until:SetDisabled(false)
 		controls.clones:SetDisabled(true)
+		controls.timeless:SetDisabled(true)
 	end
 
 	if category == "event_timers" then
