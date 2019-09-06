@@ -570,7 +570,7 @@ local function CheckCooldown(spellID, opts, startTime, duration, enabled, charge
     local timer
     local old_timer = activeCooldownTimers[spellID]
 
-    if old_timer then
+    if old_timer and (old_timer.spellID == spellID and old_timer.timerType == cdType) then
         timer = old_timer
     end
     if opts.replaces then
