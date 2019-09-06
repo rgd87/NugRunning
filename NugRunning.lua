@@ -2424,7 +2424,7 @@ function NugRunning:CreateCastbarTimer(timer)
     end
     function f.UNIT_SPELLCAST_FAILED(self, event, unit,castID)
         if unit ~= self.unit then return end
-        if self.castID == castID then self.UNIT_SPELLCAST_STOP(self, event, unit, spell) end
+        if self.castID == castID then self.UNIT_SPELLCAST_STOP(self, event, unit, nil) end
     end
     f.UNIT_SPELLCAST_INTERRUPTED = f.UNIT_SPELLCAST_STOP
     f.UNIT_SPELLCAST_CHANNEL_STOP = f.UNIT_SPELLCAST_STOP

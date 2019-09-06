@@ -229,11 +229,11 @@ local creeping_death = function(self)
 end
 
 --Unstable Affliction
-Spell( 233490 ,{ name = "", duration = 8, overlay = {0, "gcd"},  priority = 10, nameplates = true, ghost = True, color = colors.PINK2 }) -- first debuff
-Spell( 233496 ,{ name = "", scale = 1, overlay = {0, "gcd"}, scale_until = 3, duration = 8,  priority = 10.1, nameplates = true, ghost = True, color = colors.PINK2 }) -- subsequent applications
-Spell( 233497 ,{ name = "", scale = 0.8, scale_until = 2, duration = 8,  priority = 10.2, nameplates = true, ghost = True, color = colors.PINK2 })
-Spell( 233498 ,{ name = "", scale = 0.8, scale_until = 2, duration = 8,  priority = 10.3, nameplates = true, ghost = True, color = colors.PINK2 })
-Spell( 233499 ,{ name = "", scale = 0.8, scale_until = 2, duration = 8,  priority = 10.4, nameplates = true, ghost = True, color = colors.PINK2 })
+Spell( 233490 ,{ name = "", duration = 8, overlay = {0, "gcd"},  priority = 10, nameplates = true, ghost = true, color = colors.PINK2 }) -- first debuff
+Spell( 233496 ,{ name = "", scale = 1, overlay = {0, "gcd"}, scale_until = 3, duration = 8,  priority = 10.1, nameplates = true, ghost = true, color = colors.PINK2 }) -- subsequent applications
+Spell( 233497 ,{ name = "", scale = 0.8, scale_until = 2, duration = 8,  priority = 10.2, nameplates = true, ghost = true, color = colors.PINK2 })
+Spell( 233498 ,{ name = "", scale = 0.8, scale_until = 2, duration = 8,  priority = 10.3, nameplates = true, ghost = true, color = colors.PINK2 })
+Spell( 233499 ,{ name = "", scale = 0.8, scale_until = 2, duration = 8,  priority = 10.4, nameplates = true, ghost = true, color = colors.PINK2 })
 --Agony
 Spell( 980 ,{ name = "", preghost = 5, duration = 18, recast_mark = 5.4, overlay = {0, 5.4, 0.2},  fixedlen = normalize_dots_to, nameplates = true, _ignore_applied_dose = true, ghost = 6, priority = 6, color = colors.WOO, init = creeping_death })
 --Corruption
