@@ -737,8 +737,8 @@ local function CheckCooldown(spellID, opts, startTime, duration, enabled, charge
                         activeCooldownTimers[spellID] = timer
                     end
                 else
-                    -- print("1", spellID, startTime, duration)
-                    if timer.cd_startTime ~= startTime or timer.cd_duration ~= duration then
+                    local mdur = opts.minduration or wandUserMinDuration
+                    if (timer.cd_startTime ~= startTime or timer.cd_duration ~= duration) and duration > mdur then
                         timer.cd_startTime = startTime
                         timer.fixedoffset = timer.opts.fixedlen and duration - timer.opts.fixedlen or 0
                         timer:SetTime(startTime, startTime + duration, timer.fixedoffset)

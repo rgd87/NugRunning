@@ -2,6 +2,7 @@
 
 - bugfix for cooldown settings in GUI
 - infinite timer option
+- existing cooldowns no longer getting bumped by wand GCD
 
 ### 1.13.15
 
