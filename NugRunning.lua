@@ -695,7 +695,7 @@ local function CheckCooldown(spellID, opts, startTime, duration, enabled, charge
     local timer
     local old_timer = activeCooldownTimers[spellID]
 
-    if old_timer then
+    if old_timer and (old_timer.spellID == spellID and old_timer.timerType == cdType) then
         timer = old_timer
     end
     if opts.replaces then
@@ -888,6 +888,7 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
         if _guid == playerGUID and (timerType == "BUFF" or timerType == "DEBUFF") then
             local uaTime, uaCount = NugRunning.QueueAura(spellName, _guid, timerType, timer)
             if uaTime then
+                time = uaTime
                 amount = uaCount
             end
         elseif timerType == "DEBUFF" then
@@ -1027,6 +1028,7 @@ function NugRunning.RefreshTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID,
         if _guid == playerGUID and (timerType == "BUFF" or timerType == "DEBUFF") then
             local uaTime, uaCount = NugRunning.QueueAura(spellName, _guid, timerType, timer)
             if uaTime then
+                time = uaTime
                 amount = uaCount
             end
         elseif timerType == "DEBUFF" then
@@ -2388,7 +2390,9 @@ do
         if event == "UNIT_AURA" then
             return UpdateUnitAuras(unit)
         elseif event == "PLAYER_TARGET_CHANGED" then
-            return UpdateUnitAuras("target")
+            if UnitExists("target") then
+                return UpdateUnitAuras("target")
+            end
             --[[
         elseif event == "UPDATE_MOUSEOVER_UNIT" then
             return UnitExists("mouseover") and UpdateUnitAuras("mouseover")
