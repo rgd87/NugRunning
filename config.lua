@@ -634,7 +634,6 @@ Spell( 184364 ,{ name = "Enraged Regeneration", short = "Regen", scale = 0.6, gr
 Spell( 132168 ,{ name = "Shockwave", color = colors.CURSE, arrow = colors.LGREEN, duration = 4, maxtimers = 1 , })
 Cooldown( 46968 ,{ name = "Shockwave", fixedlen = 9, ghost = 3, priority = 2, color = colors.DBLUE })
 Cooldown( 107570 ,{ name = "Storm Bolt", fixedlen = 9, ghost = 3, priority = 2, color = colors.DBLUE, scale_until = 9 })
---can't use with_cooldown on shockwave, because without effect applied first it's not working.
 --but shockwave still needs to be used on cooldown
 --old enrage Spell( 85288, { name = "Enraged", shine = true, showid = 14202, color = colors.RED, duration = 10 })
 Spell( 184362,{ name = "Enrage", color = colors.PURPLE4, shine = true, shinerefresh = true, scale = 0.6, group = "buffs", specmask = SPECS(2), priority = 1, duration = 4 })
@@ -661,7 +660,6 @@ Spell( 1719 ,{ name = "Recklessness", color = colors.REJUV, scale = 0.7, shine =
 Cooldown( 1719 ,{ name = "Recklessness", color = colors.REJUV, scale_until = 10, shine = true, ghost = 4, ghosteffect = "AEGWYNN", priority = -20 })
 -- Cooldown( 107570, { name = "Storm Bolt", color = colors.TEAL2 })
 Spell( 274818 ,{ name = "Bloodbath", priority = -8, group = "buffs", color = colors.PINKIERED, duration = 10, })
-    --with_cooldown = { id = 12292, name = "Bloodbath", priority = -8, glowtime = 5, color = colors.DRED }    })
 
 -- Spell( 169686, { name = "Exquisite Proficiency", duration = 6, priority = -5, stackcolor = {
 --                                                                             [1] = { .3, 0, 0},

@@ -563,14 +563,17 @@ local function GetSpellCooldownCharges(spellID)
     return startTime, duration, enabled, charges, maxCharges
 end
 
+local activeCooldownTimers = {}
 local gcdDuration = 1.5
 local function CheckCooldown(spellID, opts, startTime, duration, enabled, charges, maxCharges, isItem)
     local cdType = isItem and "ITEMCOOLDOWN" or "COOLDOWN"
     local timer
-    local old_timer = opts.timer
-    if old_timer and (old_timer.spellID == spellID and old_timer.timerType == cdType) then
-        timer = opts.timer
-    elseif opts.replaces then
+    local old_timer = activeCooldownTimers[spellID]
+
+    if old_timer then
+        timer = old_timer
+    end
+    if opts.replaces then
         timer = gettimer(active, opts.replaces, UnitGUID("player"), cdType)
     end
     if duration then
@@ -581,7 +584,7 @@ local function CheckCooldown(spellID, opts, startTime, duration, enabled, charge
                     if not timer.isGhost then
                         free[timer] = true
                         if timer.isGhost and not timer.shine:IsPlaying() then timer.shine:Play() end
-                        opts.timer = nil
+                        activeCooldownTimers[spellID] = nil
                     end
                 end
             end
@@ -606,7 +609,7 @@ local function CheckCooldown(spellID, opts, startTime, duration, enabled, charge
                         timer.cd_duration = duration
                         timer.fixedoffset = timer.opts.fixedlen and duration - timer.opts.fixedlen or 0
                         timer:SetTime(startTime, startTime + duration,  timer.fixedoffset)
-                        opts.timer = timer
+                        activeCooldownTimers[spellID] = timer
                     end
                 else
                     -- print("1", spellID, startTime, duration)
@@ -623,10 +626,10 @@ local function CheckCooldown(spellID, opts, startTime, duration, enabled, charge
                         timer:SetName(NugRunning:MakeName(opts, name, timer.dstName) )
                         if opts.color then timer:SetColor(unpack(opts.color)) end
                     end
-                    opts.timer = timer
+                    activeCooldownTimers[spellID] = timer
                 end
                 if charges and timer then
-                    opts.timer:SetCount(maxCharges-charges)
+                    activeCooldownTimers[spellID]:SetCount(maxCharges-charges)
                 end
         end
     end
@@ -676,18 +679,6 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
     end
     local multiTargetGUID
     if opts.multiTarget then multiTargetGUID = dstGUID; dstGUID = nil; end
-
-    if opts.with_cooldown then
-        local cd_opts = opts.with_cooldown
-        config.cooldowns[cd_opts.id] = nil
-        for timer in pairs(active) do
-            if timer.opts == cd_opts then
-                free[timer] = true
-                timer:Hide()
-            end
-        end
-        cd_opts.timer = nil
-    end
 
     local timer, totalTimers = gettimer(active, opts,dstGUID,timerType) -- finding timer by opts table id
     if timer then
