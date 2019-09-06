@@ -888,7 +888,6 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
         if _guid == playerGUID and (timerType == "BUFF" or timerType == "DEBUFF") then
             local uaTime, uaCount = NugRunning.QueueAura(spellName, _guid, timerType, timer)
             if uaTime then
-                time = uaTime
                 amount = uaCount
             end
         elseif timerType == "DEBUFF" then
@@ -1028,7 +1027,6 @@ function NugRunning.RefreshTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID,
         if _guid == playerGUID and (timerType == "BUFF" or timerType == "DEBUFF") then
             local uaTime, uaCount = NugRunning.QueueAura(spellName, _guid, timerType, timer)
             if uaTime then
-                time = uaTime
                 amount = uaCount
             end
         elseif timerType == "DEBUFF" then
