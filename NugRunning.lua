@@ -8,7 +8,7 @@ NugRunning:SetScript("OnEvent", function(self, event, ...)
 end)
 
 --- Compatibility with Classic
-local isClassic = select(4,GetBuildInfo()) <= 19999
+local isClassic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
 local UnitSpellHaste = isClassic and function() return 0 end or _G.UnitSpellHaste
 local GetSpecialization = isClassic and function() return nil end or _G.GetSpecialization
 

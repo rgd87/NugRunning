@@ -527,6 +527,40 @@ Spell( 15269 ,{ name = "Blackout", duration = 3, shine = true, color = colors.PU
 Spell( 15286 ,{ name = "Vampiric Embrace", duration = 60, priority = 5, shinerefresh = true, ghost = true, ghosteffect = "GOUGE", color = colors.PURPLE4 })
 Spell( 14751 ,{ name = "Inner Focus", shine = true, duration = 15, group = "buffs", priority = -12, timeless = true, scale = 0.7, color = colors.WOO2DARK })
 
+Spell( 15258 ,{ name = "Shadow Weaving", color = colors.PURPLE3, scale = 0.75, priority = -10, ghost = 2, duration = 15 })
+EventTimer({ event = "SPELL_PERIODIC_DAMAGE", spellID = 10894, name = "SWPRefresh",
+    action = function(active, srcGUID, dstGUID, spellID, damage )
+        local timer = NugRunning.gettimer(active, GetSpellInfo(15258), dstGUID, "DEBUFF")
+        if timer then
+            local now = GetTime()
+            timer:SetTime(now, now + 15, timer.fixedoffset)
+        end
+    end
+})
+
+helpers.AddSpellNameRecognition(10947)
+EventTimer({ event = "SPELL_DAMAGE", spellID = 10947, name = "MBRefresh",
+    action = function(active, srcGUID, dstGUID, spellID, damage )
+        local timer = NugRunning.gettimer(active, GetSpellInfo(15258), dstGUID, "DEBUFF")
+        if timer then
+            local now = GetTime()
+            timer:SetTime(now, now + 15, timer.fixedoffset)
+        end
+    end
+})
+
+
+helpers.AddSpellNameRecognition(18807)
+EventTimer({ event = "SPELL_PERIODIC_DAMAGE", spellID = 18807, name = "MFRefresh",
+    action = function(active, srcGUID, dstGUID, spellID, damage )
+        local timer = NugRunning.gettimer(active, GetSpellInfo(15258), dstGUID, "DEBUFF")
+        if timer then
+            local now = GetTime()
+            timer:SetTime(now, now + 15, timer.fixedoffset)
+        end
+    end
+})
+
 end
 
 if class == "ROGUE" then
