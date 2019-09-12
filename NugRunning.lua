@@ -296,12 +296,9 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
     local classConfig = NugRunningConfigCustom[class]
     MergeTable(NugRunningConfigMerged, classConfig)
 
+    NugRunning.spellNameToID = helpers.spellNameToID
     -- filling spellNameToID for user-added spells
-    if classConfig and classConfig.spells then
-        for spellID in pairs(classConfig.spells) do
-            helpers.AddSpellNameRecognition(spellID)
-        end
-    end
+    NugRunning:UpdateSpellNameToIDTable()
 
     config = NugRunningConfigMerged
     spells = config.spells
@@ -1213,6 +1210,8 @@ function NugRunning:UpdateTimerToSpellID(timer, newSpellID)
     -- local oldSpellID = timer.spellID
     timer.spellID = newSpellID
 
+    local dstGUID = timer.dstGUID
+
     local newDuration = NugRunning.SetDefaultDuration(0, opts, timer)
     local mul = getDRMul(dstGUID, newSpellID)
 
@@ -1220,7 +1219,35 @@ function NugRunning:UpdateTimerToSpellID(timer, newSpellID)
 
     if newDuration then
         local startTime = timer.startTime
-        timer:SetTime(startTIme, startTime + newDuration, timer.fixedoffset)
+        timer:SetTime(startTime, startTime + newDuration, timer.fixedoffset)
+    end
+end
+
+do
+    local spellNameBasedCategories = { "spells", "event_timers" }
+    function NugRunning:UpdateSpellNameToIDTable()
+        local mergedConfig = NugRunningConfigMerged
+        local visited = {}
+
+        for _, catName in ipairs(spellNameBasedCategories) do
+            local category = mergedConfig[catName]
+            if category then
+                for spellID, opts in pairs(category) do
+                    if not visited[opts] then
+                        local lastRankID
+                        local clones = opts.clones
+                        if clones then
+                            lastRankID = clones[#clones]
+                        else
+                            lastRankID = spellID
+                        end
+                        helpers.AddSpellNameRecognition(lastRankID)
+
+                        visited[opts] = true
+                    end
+                end
+            end
+        end
     end
 end
 

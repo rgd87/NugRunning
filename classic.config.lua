@@ -96,7 +96,8 @@ helpers.Interrupt = Interrupt
 if select(4,GetBuildInfo()) > 19999 then return end
 
 -- RACIALS
-Spell( 23234 ,{ name = "Blood Fury", global = true, duration = 15, scale = 0.75, group = "buffs" })
+-- Spell( 23234 ,{ name = "Blood Fury", global = true, duration = 15, scale = 0.75, group = "buffs" })
+EventTimer({ spellID = 23234, event = "SPELL_CAST_SUCCESS", name = "Blood Fury", duration = 15, scale = 0.75, group = "buffs" })
 Spell( 20594 ,{ name = "Stoneform", global = true, duration = 8, shine = true, group = "buffs" })
 Spell( 20549 ,{ name = "War Stomp", global = true, duration = 2, multiTarget = true, color = colors.DRED })
 Spell( 7744 ,{ name = "Will of the Forsaken", global = true, duration = 5, group = "buffs", color = colors.PURPLE5 })
@@ -538,7 +539,6 @@ EventTimer({ event = "SPELL_PERIODIC_DAMAGE", spellID = 10894, name = "SWPRefres
     end
 })
 
-helpers.AddSpellNameRecognition(10947)
 EventTimer({ event = "SPELL_DAMAGE", spellID = 10947, name = "MBRefresh",
     action = function(active, srcGUID, dstGUID, spellID, damage )
         local timer = NugRunning.gettimer(active, GetSpellInfo(15258), dstGUID, "DEBUFF")
@@ -549,8 +549,6 @@ EventTimer({ event = "SPELL_DAMAGE", spellID = 10947, name = "MBRefresh",
     end
 })
 
-
-helpers.AddSpellNameRecognition(18807)
 EventTimer({ event = "SPELL_PERIODIC_DAMAGE", spellID = 18807, name = "MFRefresh",
     action = function(active, srcGUID, dstGUID, spellID, damage )
         local timer = NugRunning.gettimer(active, GetSpellInfo(15258), dstGUID, "DEBUFF")
