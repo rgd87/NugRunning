@@ -7,6 +7,16 @@ NugRunning:SetScript("OnEvent", function(self, event, ...)
     return self[event](self, event, ...)
 end)
 
+local L = setmetatable({}, {
+    __index = function(t, k)
+        -- print(string.format('L["%s"] = ""',k:gsub("\n","\\n")));
+        return k
+    end,
+    __call = function(t,k) return t[k] end,
+})
+helpers.L = L
+NugRunning.L = L
+
 --- Compatibility with Classic
 local isClassic = select(4,GetBuildInfo()) <= 19999
 local UnitSpellHaste = isClassic and function() return 0 end or _G.UnitSpellHaste
