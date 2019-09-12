@@ -134,6 +134,17 @@ NugRunning.timers = alltimers
 NugRunning.gettimer = gettimer
 NugRunning.helpers = helpers
 
+local defaultFont = "ClearFont"
+do
+    local locale = GetLocale()
+    if locale == "zhTW" or locale == "zhCN" or locale == "koKR" then
+        defaultFont = LibStub("LibSharedMedia-3.0").DefaultMedia["font"]
+        -- "預設" - zhTW
+        -- "默认" - zhCN
+        -- "기본 글꼴" - koKR
+    end
+end
+
 local defaults = {
     anchors = {
         main = {
@@ -182,9 +193,9 @@ local defaults = {
     dotticks = true,
     textureName = "Aluminium",
     nptextureName = "Aluminium",
-    nameFont = { font = "ClearFont", size = 10, alpha = 0.5 },
-    timeFont = { font = "ClearFont", size = 8, alpha = 1 },
-    stackFont = { font = "ClearFont", size = 12 },
+    nameFont = { font = defaultFont, size = 10, alpha = 0.5 },
+    timeFont = { font = defaultFont, size = 8, alpha = 1 },
+    stackFont = { font = defaultFont, size = 12 },
 }
 
 local function SetupDefaults(t, defaults)
