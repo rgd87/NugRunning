@@ -444,14 +444,11 @@ function NugRunningGUI.CreateCommonForm(self)
     --         end
     --     end
 	-- end
-	for anchor, opts in pairs(NugRunning.db.anchors) do
-        for i, group in ipairs(opts.groups) do
-            local name = group.name
-            if name ~= "player" and name ~= "target" and name ~= "offtargets" then
-                groupList[name] = name
-                table.insert(groupOrder, name)
-            end
-        end
+	for name, group in pairs(NugRunning.db.groups) do
+		if name ~= "player" and name ~= "target" and name ~= "offtargets" then
+			groupList[name] = name
+			table.insert(groupOrder, name)
+		end
     end
 
 
@@ -1876,11 +1873,18 @@ local function MakeHelp()
         order = 1,
         args = {
 			msg = {
-				name = L"NugRunning provides commands to list spellIDs of all current auras.\n/nrun listauras target\n/nrun listauras player\n/nrun debug - toggle combat log event display in chat\nSpell ID next to SPELL_CAST_SUCCESS is the one to use for cooldowns",
+				name = L"NugRunning provides commands to list spellIDs of all current auras.\n/nrun listauras target\n/nrun listauras player\n/nrun debug - toggle combat log event display in chat\nSpell ID next to SPELL_CAST_SUCCESS is the one to use for cooldowns\nWoW Classic doesn't have spell IDs in combat log",
 				type = "description",
 				fontSize = "medium",
                 width = "full",
                 order = 1,
+			},
+			msg2 = {
+				name = L"To move timer groups to different anchors use '/nrun groupset' command. /nrun help for more info",
+				type = "description",
+				fontSize = "medium",
+                width = "full",
+                order = 2,
             },
 		},
 	}
