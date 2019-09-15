@@ -2132,6 +2132,11 @@ function NugRunning:CreateAnchor(name, opts)
     t:SetVertexColor(1, 0, 0)
     t:SetAllPoints(f)
 
+    local label = f:CreateFontString(nil,"ARTWORK")
+    label:SetFontObject("GameFontNormal")
+    label:SetText("DRAG ->")
+    label:SetPoint("RIGHT", f, "LEFT", 0,0)
+
     if not NRunDB.anchors[name] then
         NRunDB.anchors[name] = { point = "CENTER", parent ="UIParent", to = "CENTER", x = 0, y = 0}
     end
