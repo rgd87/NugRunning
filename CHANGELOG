@@ -1,3 +1,10 @@
+### 8.2.5
+
+- Support for localizations
+- ruRU localization
+- For Chinese and Korean clients using their default font and localized spell names
+- player/target/offtargets groups can now be moved to different anchors. More info: /nrun help
+
 ### 8.2.3
 
 - bugfix for cooldown settings in GUI
