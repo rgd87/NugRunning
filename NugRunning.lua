@@ -135,10 +135,12 @@ NugRunning.gettimer = gettimer
 NugRunning.helpers = helpers
 
 local defaultFont = "ClearFont"
+local defaultShowLocalNames = false
 do
     local locale = GetLocale()
     if locale == "zhTW" or locale == "zhCN" or locale == "koKR" then
         defaultFont = LibStub("LibSharedMedia-3.0").DefaultMedia["font"]
+        defaultShowLocalNames = true
         -- "預設" - zhTW
         -- "默认" - zhCN
         -- "기본 글꼴" - koKR
@@ -182,7 +184,7 @@ local defaults = {
     spellTextEnabled = true,
     shortTextEnabled = true,
     swapTarget = true,
-    localNames = false,
+    localNames = defaultShowLocalNames,
     totems = true,
     leaveGhost = false,
     nameplates = true,
