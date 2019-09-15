@@ -1,3 +1,10 @@
+### 1.13.20
+
+- Support for localizations
+- ruRU localization
+- For Chinese and Korean clients using their default font and localized spell names
+- player/target/offtargets groups can now be moved to different anchors. More info: /nrun help
+
 ### 1.13.19
 
 - Shadow Weaving
