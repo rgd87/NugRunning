@@ -591,16 +591,21 @@ Spell({ 703, 8631, 8632, 8633, 11289, 11290 }, { name = "Garrote", color = color
 Spell({ 408, 8643 }, { name = "Kidney Shot", shine = true, color = colors.LRED,
     duration = function(timer)
         local duration = timer.spellID == 8643 and 1 or 0 -- if Rank 2, add 1s
-        return duration + GetCP()
+        local comboPoints = timer.comboPoints
+        return duration + comboPoints
     end,
 }) -- varies
 Spell({ 1943, 8639, 8640, 11273, 11274, 11275 }, { name = "Rupture", tick = 2, tickshine = true, overlay = {"tick", "end"}, shine = true, color = colors.RED,
-    duration = function() return (6 + GetCP()*2) end,
+    duration = function(timer)
+        local comboPoints = timer.comboPoints
+        return (6 + comboPoints*2)
+    end,
 }) -- varies
 Spell({ 5171, 6774 }, { name = "Slice and Dice", shinerefresh = true, color = colors.PURPLE,
     duration = function(timer)
+        local comboPoints = timer.comboPoints
         local mul = 1 + 0.15*Talent(14165, 14166, 14167)
-        return (6 + GetCP()*3)*mul
+        return (6 + comboPoints*3)*mul
     end
 }) -- varies
 

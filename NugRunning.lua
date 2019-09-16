@@ -865,6 +865,7 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
     if multiTargetGUID then timer.targets[multiTargetGUID] = true end
     timer.spellID = spellID
     timer.spellName = spellName
+    timer.comboPoints = helpers.GetCP()
     timer.timerType = timerType
     if opts.isItem then
         timer:SetIcon(select(5,GetItemInfoInstant(spellID)))
@@ -1054,6 +1055,7 @@ function NugRunning.RefreshTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID,
         timer:SetCount(amount)
     end
     timer.count = amount
+    timer.comboPoints = helpers.GetCP()
 
     if not ignore_applied_dose then
         if opts.tick and NRunDB.dotticks then
