@@ -2067,7 +2067,9 @@ NugRunning.Commands = {
                 dstGUID, dstName, dstFlags, dstFlags2,
                 spellID, spellName, spellSchool, auraType, amount = CombatLogGetCurrentEventInfo()
                 local isSrcPlayer = (bit_band(srcFlags, COMBATLOG_OBJECT_AFFILIATION_MINE) == COMBATLOG_OBJECT_AFFILIATION_MINE)
-                if isSrcPlayer then print (spellID, spellName, eventType, srcFlags, srcGUID,"->",dstGUID, amount) end
+                if isSrcPlayer then
+                    print ("ID:", spellID, string.format("|cffff8800%s|r",spellName), eventType, srcFlags, srcGUID,"|cff00ff00==>|r", dstGUID, dstFlags, amount)
+                end
             end)
         end
         if not NugRunning.debug.enabled then
