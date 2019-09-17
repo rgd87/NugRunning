@@ -125,6 +125,7 @@ local COMBATLOG_OBJECT_AFFILIATION_MASK = COMBATLOG_OBJECT_AFFILIATION_MASK
 local AFFILIATION_MINE = COMBATLOG_OBJECT_AFFILIATION_MINE
 local AFFILIATION_PARTY_OR_RAID = COMBATLOG_OBJECT_AFFILIATION_RAID + COMBATLOG_OBJECT_AFFILIATION_PARTY
 local AFFILIATION_OUTSIDER = COMBATLOG_OBJECT_AFFILIATION_OUTSIDER
+local COMBATLOG_HOSTILE_PLAYER = COMBATLOG_OBJECT_CONTROL_PLAYER + COMBATLOG_OBJECT_REACTION_HOSTILE
 
 local lastCastSpellID
 
@@ -1026,8 +1027,9 @@ end
 
 function NugRunning.SetDefaultDuration(dstFlags, opts, timer )
     if opts.pvpduration
-        and bit.band(dstFlags, COMBATLOG_FILTER_HOSTILE_PLAYERS) == COMBATLOG_FILTER_HOSTILE_PLAYERS
-        then return opts.pvpduration
+        and bit_band(dstFlags, COMBATLOG_HOSTILE_PLAYER) == COMBATLOG_HOSTILE_PLAYER
+    then
+        return opts.pvpduration
     end
     return ((type(opts.duration) == "function" and opts.duration(timer, opts)) or opts.duration)
 end
