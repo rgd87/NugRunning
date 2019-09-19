@@ -100,8 +100,8 @@ if select(4,GetBuildInfo()) > 19999 then return end
 EventTimer({ spellID = 23234, event = "SPELL_CAST_SUCCESS", name = "Blood Fury", duration = 15, scale = 0.75, group = "buffs" })
 Spell( 20594 ,{ name = "Stoneform", global = true, duration = 8, shine = true, group = "buffs" })
 Spell( 20549 ,{ name = "War Stomp", global = true, duration = 2, multiTarget = true, color = colors.DRED })
-Spell( 7744 ,{ name = "Will of the Forsaken", global = true, duration = 5, group = "buffs", color = colors.PURPLE5 })
-
+Spell( 7744 , { name = "Will of the Forsaken", global = true, duration = 5, group = "buffs", color = colors.PURPLE5 })
+Spell( 4068 , { name = "Iron Grenade", global = true, color = colors.DBROWN, shine = true, duration = 3 }) -- Iron Grenade
 -- Cast({ 746, 1159, 3267, 3268, 7926, 7927, 10838, 10839, 18608, 18610, 23567, 23568, 23569, 23696, 24412, 24413, 24414 },
     -- { name = "First Aid", global = true, tick = 1, tickshine = true, overlay = {"tick", "tickend", 0.4 }, color = colors.LGREEN })
 
@@ -351,8 +351,8 @@ Spell({ 339, 1062, 5195, 5196, 9852, 9853 }, { name = "Entangling Roots", color 
     end
 }) -- varies
 Spell({ 2908, 8955, 9901 }, { name = "Soothe Animal", duration = 15, color = colors.PURPLE5 })
--- includes Faerie Fire (Feral) ranks
-Spell({ 770, 778, 9749, 9907, 17390, 17391, 17392 }, { name = "Faerie Fire", duration = 40, color = colors.PURPLE5 })
+Spell({ 770, 778, 9749, 9907 }, { name = "Faerie Fire", duration = 40, color = colors.PURPLE5 })
+Spell({ 16857, 17390, 17391, 17392 }, { name = "Faerie Fire Feral", duration = 40, color = colors.PURPLE5 })
 Spell({ 2637, 18657, 18658 }, { name = "Hibernate", color = colors.PURPLE4, nameplates = true,
     pvpduration = 15,
     duration = function(timer)
