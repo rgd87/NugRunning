@@ -191,6 +191,16 @@ Spell( 16166 ,{ name = "Elemental Mastery", shine = true, duration = 15, priorit
 Spell( 16188 ,{ name = "Nature's Swiftness", shine = true, duration = 15, group = "buffs", priority = -12, timeless = true, color = colors.WOO2DARK })
 Spell( 29203 ,{ name = "Healing Way", maxtimers = 2, duration = 15, scale = 0.7, color = colors.LGREEN })
 
+EventTimer({ event = "SPELL_CAST_SUCCESS", spellID = 25357, name = "HealingWayRefresh",
+    action = function(active, srcGUID, dstGUID, spellID, damage )
+        local timer = NugRunning.gettimer(active, GetSpellInfo(29203), dstGUID, "BUFF")
+        if timer then
+            local now = GetTime()
+            timer:SetTime(now, now + 15, timer.fixedoffset)
+        end
+    end
+})
+
 -- TOTEMS
 local PRIO_FIRE = -77
 local PRIO_EARTH = -78
@@ -415,7 +425,7 @@ if class == "MAGE" then
 Interrupt(2139, "Counterspell", 10)
 
 Spell( 18469 ,{ name = "Silence", duration = 4, color = colors.CHIM }) -- Improved Counterspell
-Spell({ 118, 12824, 12825, 12826, 28270, 28271, 28272 },{ name = "Polymorph", glowtime = 5, pvpduration = 15, ghost = 1, ghosteffect = "SLICENDICE", color = colors.LGREEN,
+Spell({ 118, 12824, 12825, 28271, 28272, 12826 },{ name = "Polymorph", glowtime = 5, pvpduration = 15, ghost = 1, ghosteffect = "SLICENDICE", color = colors.LGREEN,
     pvpduration = 15,
     duration = function(timer)
         if timer.spellID == 118 then return 20
@@ -685,8 +695,9 @@ Spell( 18499, { name = "Berserker Rage", color = colors.REJUV, shine = true, sca
 Spell({ 20253, 20614, 20615 }, { name = "Intercept", duration = 3, shine = true, color = colors.DRED })
 
 Spell( 12323, { name = "Piercing Howl", multiTarget = true, duration = 6, color = colors.DBROWN })
-Spell( 20511 ,{ name = "Intimidating Shout", duration = 8, priority = -1 }) -- Main Target
-Spell( 5246 ,{ name = "Intimidating Shout", duration = 8, priority = -1.1, scale = 0.5, color = colors.PURPLE4, multiTarget = true }) -- AoE Fear
+
+-- Spell( 20511 ,{ name = "Intimidating Shout", duration = 8, priority = -1 }) -- Main Target
+Spell( 5246 ,{ name = "Intimidating Shout", duration = 8, priority = -1.1, color = colors.PURPLE4, multiTarget = true }) -- AoE Fear
 
 
 Spell( 676 ,{ name = "Disarm", color = colors.PINK3, scale = 0.8, shine = true,
@@ -874,7 +885,6 @@ helpers.DR_CategoryBySpellID = {
     [12824] = INCAP,
     [12825] = INCAP,
     [12826] = INCAP,
-    [28270] = INCAP,
     [28271] = INCAP,
     [28272] = INCAP,
 
