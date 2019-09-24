@@ -101,7 +101,7 @@ EventTimer({ spellID = 23234, event = "SPELL_CAST_SUCCESS", name = "Blood Fury",
 Spell( 20594 ,{ name = "Stoneform", global = true, duration = 8, shine = true, group = "buffs" })
 Spell( 20549 ,{ name = "War Stomp", global = true, duration = 2, multiTarget = true, color = colors.DRED })
 Spell( 7744 , { name = "Will of the Forsaken", global = true, duration = 5, group = "buffs", color = colors.PURPLE5 })
-Spell( 4068 , { name = "Iron Grenade", global = true, color = colors.DBROWN, shine = true, duration = 3 }) -- Iron Grenade
+Spell( 4068 , { name = "Iron Grenade", global = true, maxtimers = 1, color = colors.DBROWN, shine = true, duration = 3 }) -- Iron Grenade
 -- Cast({ 746, 1159, 3267, 3268, 7926, 7927, 10838, 10839, 18608, 18610, 23567, 23568, 23569, 23696, 24412, 24413, 24414 },
     -- { name = "First Aid", global = true, tick = 1, tickshine = true, overlay = {"tick", "tickend", 0.4 }, color = colors.LGREEN })
 
