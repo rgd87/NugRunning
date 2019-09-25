@@ -592,7 +592,8 @@ function NugRunning.COMBAT_LOG_EVENT_UNFILTERED( self, event )
 
         if event_timers[spellID] then
             local opts = event_timers[spellID]
-            if opts.event == eventType then
+            local opts_event = opts.event
+            if opts_event == eventType or (type(opts_event) == "table" and opts_event[eventType]) then
                 local affiliationStatus = (bit_band(srcFlags, AFFILIATION_MINE) == AFFILIATION_MINE)
                 if affiliationStatus or (opts.affiliation and bit_band(srcFlags, COMBATLOG_OBJECT_AFFILIATION_MASK) <= opts.affiliation ) then
                     -- if spellID == opts.spellID then
