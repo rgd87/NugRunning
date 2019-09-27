@@ -541,7 +541,7 @@ function NugRunning.COMBAT_LOG_EVENT_UNFILTERED( self, event )
     dstGUID, dstName, dstFlags, dstFlags2,
     spellID, spellName, spellSchool, auraType, amount = CombatLogGetCurrentEventInfo()
 
-    if auraType == "BUFF" or auraType == "DEBUFF" then
+    if auraType == "BUFF" or auraType == "DEBUFF" or eventType == "SPELL_MISSED" then
 
     if spellID == 0 then
         spellID = helpers.spellNameToID[spellName]
@@ -796,7 +796,7 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
     end
     if timerType == "MISSED" then
         if override == "IMMUNE" or override == "ABSORB" then return end
-        opts = { duration = 3, color = NugRunningConfig.colors.MISSED, scale = .8, maxtimers = 1, priority = opts.priority or 100501, shine = true }
+        opts = { duration = 3, color = NugRunningConfig.colors.MISSED, scale = .8, maxtimers = 1, priority = opts.priority or 99999, shine = true }
     end
 
     if opts.specmask then
@@ -953,7 +953,7 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
         nameText = opts.textfunc(timer)
     elseif timerType == "MISSED" then
         if override then
-            nameText = override:sub(1,1)..override:sub(2):lower()
+            nameText = _G[override] or override
         else
             nameText = "Miss"
         end
