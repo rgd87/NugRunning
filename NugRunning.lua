@@ -1942,6 +1942,7 @@ NugRunning.Commands = {
 
             NRunDB.anchors[name] = nil
             NugRunning.anchors[name]:Hide()
+            NugRunning.anchors[name] = nil
 
             NugRunning:SetupArrange()
             NugRunning:ArrangeTimers()
