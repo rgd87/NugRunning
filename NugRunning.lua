@@ -422,10 +422,10 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
 
 
     local f = CreateFrame('Frame', nil, InterfaceOptionsFrame)
-	f:SetScript('OnShow', function(self)
-		self:SetScript('OnShow', nil)
-		LoadAddOn('NugRunningOptions')
-	end)
+    f:SetScript('OnShow', function(self)
+        self:SetScript('OnShow', nil)
+        LoadAddOn('NugRunningOptions')
+    end)
 end
 
 function NugRunning.PLAYER_LOGOUT(self, event)
