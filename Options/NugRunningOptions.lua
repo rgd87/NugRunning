@@ -12,6 +12,8 @@ local COMBATLOG_OBJECT_AFFILIATION_PARTY_OR_RAID = COMBATLOG_OBJECT_AFFILIATION_
 
 local LSM = LibStub("LibSharedMedia-3.0")
 
+local newFeatureIcon = "|TInterface\\OptionsFrame\\UI-OptionsFrame-NewFeatureIcon:0:0:0:-1|t"
+
 function NugRunningGUI.SlashCmd(msg)
     NugRunningGUI.frame:Show()
 end
@@ -1830,8 +1832,9 @@ local function MakeGeneralOptions()
                         order = 7,
 					},
 					swapTargets = {
-                        name = L"Fixed Target Group",
-                        type = "toggle",
+                        name = L"Fixed Target Group"..newFeatureIcon,
+						type = "toggle",
+						width = "full",
                         desc = L"Switch between target indicator or fixed position",
                         get = function(info) return NugRunning.db.swapTarget end,
 						set = function(info, v)
