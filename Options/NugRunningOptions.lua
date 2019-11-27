@@ -188,8 +188,11 @@ function NugRunningGUI.CreateCommonForm(self)
                 --invalid spell id string
                 return
             end
-            if not GetSpellInfo(spellID) then
-                return -- spell doesn't exist
+
+            if category == "itemcooldowns" then
+                if not GetItemInfoInstant(spellID) then return end -- item doesn't exist
+            else
+                if not GetSpellInfo(spellID) then return end -- spell doesn't exist
             end
 
             if not opts.name then
