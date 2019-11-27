@@ -189,7 +189,9 @@ function NugRunningGUI.CreateCommonForm(self)
                 return
             end
             if not GetSpellInfo(spellID) then
-                return -- spell doesn't exist
+                if GetItemInfo(spellID) == nil then    
+                    return -- spell doesn't exist
+                end
             end
 
             if not opts.name then
