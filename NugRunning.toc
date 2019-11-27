@@ -7,6 +7,7 @@
 ## Version: @project-version@
 
 ## X-WoWI-ID: 10440
+## X-Curse-Project-ID: 27470
 
 Libs\LibStub\LibStub.lua
 Libs\CallbackHandler-1.0\CallbackHandler-1.0.lua
