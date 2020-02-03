@@ -34,34 +34,83 @@ local MAX_TIMERS = 20
 local check_event_timers
 local playerGUID
 local alltimers = {}
+local timersByGUID = {}
+local timersByGUIDCounter = {}
 local active = {}
 local free = {}
-local Scouter
-setmetatable(active,{ __newindex = function(t,k,v)
-    rawset(free,k,nil)
-    rawset(t,k,v)
+setmetatable(active,{ __newindex = function(t,timer,v)
+    rawset(free,timer,nil)
+    rawset(t,timer,v)
+    helpers.AddTimerToGUID(timer.dstGUID, timer)
 end})
-setmetatable(free,{ __newindex = function(t,k,v)
-    if k.opts then
-        if k.opts.with_cooldown then
-            local cd_opts = k.opts.with_cooldown
+setmetatable(free,{ __newindex = function(t,timer,v)
+    if timer.opts then
+        if timer.opts.with_cooldown then
+            local cd_opts = timer.opts.with_cooldown
             config.cooldowns[cd_opts.id] = cd_opts
             NugRunning:SPELL_UPDATE_COOLDOWN()
         else
-            if (k.opts.ghost or k.scheduledGhost) and not k.isGhost then return k:BecomeGhost() end
-            if k.isGhost and not k.expiredGhost then return end
-            k.isGhost = nil
-            k.expiredGhost = nil
+            if (timer.opts.ghost or timer.scheduledGhost) and not timer.isGhost then return timer:BecomeGhost() end
+            if timer.isGhost and not timer.expiredGhost then return end
+            timer.isGhost = nil
+            timer.expiredGhost = nil
         end
     end
-    k:Hide()
-    rawset(active,k,nil)
-    if not k.isExternal then
-        rawset(t,k,v)
+    timer:Hide()
+    rawset(active,timer,nil)
+    if not timer.isExternal then
+        rawset(t,timer,v)
+        helpers.RemoveTimerFromGUID(timer.dstGUID, timer)
     end
     NugRunning:ArrangeTimers()
 end})
 local leaveGhost = true
+
+
+function helpers.RecountGUIDTimers(t)
+    local count = 0
+    for k,v in pairs(t) do
+        if type(k) == "table" then
+            count = count + 1
+        end
+    end
+    return count
+end
+function helpers.AddTimerToGUID(dstGUID, timer)
+    if not dstGUID then return end
+
+    local guidTimers = timersByGUID[dstGUID]
+    if not guidTimers then
+        timersByGUID[dstGUID] = {}
+        guidTimers = timersByGUID[dstGUID]
+    end
+    guidTimers[timer] = true
+    local newCount = helpers.RecountGUIDTimers(guidTimers)
+    timersByGUIDCounter[dstGUID] = newCount
+end
+function helpers.RemoveTimerFromGUID(dstGUID, timer)
+    if not dstGUID then return end
+
+    local guidTimers = timersByGUID[dstGUID]
+    if not guidTimers then return end
+    guidTimers[timer] = nil
+    local newCount = helpers.RecountGUIDTimers(guidTimers)
+    if newCount > 0 then
+        timersByGUIDCounter[dstGUID] = newCount
+    else
+        timersByGUIDCounter[dstGUID] = nil
+        timersByGUID[dstGUID] = nil
+    end
+end
+do
+    local emptyTable = {}
+    function helpers.GetActiveTimersByGUID(dstGUID)
+        if not dstGUID then return emptyTable end
+        local guidTimers = timersByGUID[dstGUID]
+        if not guidTimers then return emptyTable end
+        return guidTimers
+    end
+end
 
 local gettimer = function(self,spellID,dstGUID,timerType)
     local foundTimer
@@ -719,8 +768,16 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
 
     timer = next(free)
     if not timer then return end
+
+    timer.srcGUID = srcGUID
+    timer.dstGUID = dstGUID
+    timer.dstName = dstName
+    timer.spellID = spellID
+    timer.timerType = timerType
     active[timer] = true
     timer:SetScript("OnUpdate",NugRunning.TimerFunc)
+
+    if multiTargetGUID then timer.targets[multiTargetGUID] = true end
 
     timer._touched = GetTime()
 
@@ -740,12 +797,7 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
         timer.powerLevel = plevel
         self:UpdateTimerPower(timer, plevel)
     end
-    timer.srcGUID = srcGUID
-    timer.dstGUID = dstGUID
-    timer.dstName = dstName
-    if multiTargetGUID then timer.targets[multiTargetGUID] = true end
-    timer.spellID = spellID
-    timer.timerType = timerType
+
     if opts.isItem then
         timer:SetIcon(select(5,GetItemInfoInstant(spellID)))
     else
@@ -2193,6 +2245,10 @@ do
         ["arena4"] = 2,
         ["arena5"] = 2,
     }
+    for i=1,30 do
+        local npUnit = "nameplate"..i
+        hUnits[npUnit] = 2
+    end
 
     local function UnitAffiliationCheck(unit, affiliation)
         if not affiliation then return unit == "player" end
@@ -2208,13 +2264,9 @@ do
     local present_spells = {}
     local function UpdateUnitAuras(unit)
             local up = hUnits[unit]
-            if not up then
-                if string.sub(unit, 1, 9) == "nameplate" then
-                    up = 2
-                end
-            end
-            if not up then return end
             local unitGUID = UnitGUID(unit)
+            if not timersByGUIDCounter[unitGUID] and not up then return end
+
             if up == 2 and UnitGUID("target") == unitGUID then return end
 
             local now = GetTime()

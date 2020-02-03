@@ -799,7 +799,7 @@ EventTimer({ spellID = 115308, event = "SPELL_CAST_SUCCESS",
 
 Spell( 116768 ,{ name = "Blackout Kick", scale = 0.6, priority = 6, glowtime = 15, color = colors.PINK, duration = 15 })
 
-Cooldown( 107428, { name = "Rising Sun Kick",tick = -1, overlay = {"tick", "end", .35}, fixedlen = ww_normalize, short = "Rising Sun", color = colors.CURSE, priority = 10, ghost = true, resetable = true })
+Cooldown( 107428, { name = "Rising Sun Kick",tick = -1, overlay = {"tick", "end", .35}, fixedlen = ww_normalize, short = "Rising Sun", color = colors.CURSE, priority = 10, ghost = 8, resetable = true })
 
 Cooldown( 115098, { name = "Chi Wave", color = { 29/255, 134/255, 83/255 }, fixedlen = 8, color2 = colors.LGREEN, priority = 6, ghost = true })
 
@@ -812,10 +812,10 @@ helpers.Cast(113656, {name = "Fists of Fury", fixedlen = ww_normalize, color = c
 Cooldown( 113656, { name = "Fists of Fury", fixedlen = ww_normalize, scale_until = 10, effect = "AEGWYNN", effecttime = 3,  color = colors.PINKIERED, priority = 4, ghost = true })
 Cooldown( 152175, { name = "Whirling Dragon Punch", fixedlen = ww_normalize, scale_until = 10, color = colors.TEAL2, priority = 3, ghost =true })
 
-Spell( 119611 ,{ name = "Renewing Mist", color = colors.LGREEN, target = "player", scale = 0.75, duration = 20 })
+Spell( 119611 ,{ name = "Renewing Mist", color = colors.LGREEN, fixedlen = 25, scale = 0.5, duration = 20 })
 Cooldown( 115151 ,{ name = "Renewing Mist", color = colors.TEAL3, priority = -100, ghost = true, ghosteffect = "NIGHTBORNE" })
 
-Spell( 202090 ,{ name = "Teachings", color = colors.REJUV, priority = 10.1, scale = 0.7, duration = 18, timeless = true })
+Spell( 202090 ,{ name = "Teachings", color = colors.REJUV, charged = true, maxcharge = 3, priority = 10.1, scale = 0.7, duration = 18, timeless = true })
 
 Spell( 197916 ,{ name = "Lifecycles", color = colors.TEAL3, duration = 15 })
 Spell( 197919 ,{ name = "Lifecycles", color = colors.GOLD, duration = 15 })
