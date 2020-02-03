@@ -96,8 +96,8 @@ helpers.Interrupt = Interrupt
 if select(4,GetBuildInfo()) > 19999 then return end
 
 -- RACIALS
--- Spell( 23234 ,{ name = "Blood Fury", global = true, duration = 15, scale = 0.75, group = "buffs" })
-EventTimer({ spellID = 23234, event = "SPELL_CAST_SUCCESS", name = "Blood Fury", duration = 15, scale = 0.75, group = "buffs" })
+Spell( 23234 ,{ name = "Blood Fury", global = true, duration = 15, scale = 0.75, group = "buffs" })
+-- EventTimer({ spellID = 23234, event = "SPELL_CAST_SUCCESS", name = "Blood Fury", duration = 15, scale = 0.75, group = "buffs" })
 Spell( 26635 ,{ name = "Berserking", global = true, duration = 10 }) -- Berserking
 Spell( 20594 ,{ name = "Stoneform", global = true, duration = 8, shine = true, group = "buffs" })
 Spell( 20549 ,{ name = "War Stomp", global = true, duration = 2, multiTarget = true, color = colors.DRED })

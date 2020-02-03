@@ -2468,6 +2468,10 @@ do
 
                             local timer
                             timer = gettimer(active, name, unitGUID, timerType)
+                            if not timer and unit == "player" then
+                                -- duration will be not 0 for player so it's fine
+                                timer = NugRunning:ActivateTimer(playerGUID, unitGUID, UnitName(unit), nil, aura_spellID, name, opts, timerType, duration, count, true)
+                            end
                             if timer then
                                 if duration ~= 0 then
                                     NugRunning:SetUnitAuraValues(timer, timer.spellID, name, icon, count, dispelType, duration, expirationTime, caster, isStealable, shouldConsolidate, aura_spellID)
