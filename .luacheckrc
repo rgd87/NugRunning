@@ -151,4 +151,9 @@ globals = {
     "GetGlyphSocketInfo",
     "GetActiveSpecGroup",
     "GetItemInfo",
+    "GetShapeshiftForm",
+    "GetInventoryItemLink",
+    "UnitLevel",
+    "CastingInfo",
+    "ChannelInfo",
 }
