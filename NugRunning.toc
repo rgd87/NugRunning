@@ -1,4 +1,4 @@
-## Interface: 11303
+## Interface: 11304
 ## Title: NugRunning
 ## Notes: Spelltimers
 ## Author: d87
@@ -12,7 +12,6 @@
 Libs\LibStub\LibStub.lua
 Libs\CallbackHandler-1.0\CallbackHandler-1.0.lua
 Libs\LibSharedMedia-3.0\lib.xml
-Libs\LibTotemInfo-1.0\embeds.xml
 
 helpers.lua
 classic.config.lua
