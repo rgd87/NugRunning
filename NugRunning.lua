@@ -1428,7 +1428,6 @@ do
     local anchors
     local dbanchors
     local targetIndicator
-    local growthDirection
 
     local sortedTimerGroups -- table from which arrange function works, generated in setup
 
@@ -1472,10 +1471,6 @@ do
     end
 
     function NugRunning.SetupArrange(self)
-        point = ( NRunDB.growth == "down" and "TOPLEFT" ) or "BOTTOMLEFT"
-        to = ( NRunDB.growth == "down" and "BOTTOMLEFT" ) or "TOPLEFT"
-        ySign = ( NRunDB.growth == "down" and -1 ) or 1
-        growthDirection = NRunDB.growth
         doswap = NRunDB.swapTarget
         anchors = NugRunning.anchors -- frames
         dbanchors = NRunDB.anchors -- settings
@@ -1560,7 +1555,7 @@ do
                         if not doswap and guid == targetGUID then
                             local lastTimer = group_timers[1]
                             local firstTimer = group_timers[#group_timers]
-                            if growthDirection == "down" then
+                            if growth == "down" then
                                 firstTimer, lastTimer = lastTimer, firstTimer
                             end
                             targetIndicatorUpdated = true
@@ -1926,6 +1921,7 @@ NugRunning.Commands = {
     ["swaptarget"] = function()
         NRunDB.swapTarget = not NRunDB.swapTarget
         NugRunning:SetupArrange()
+        NugRunning:ArrangeTimers()
         print("Target swapping turned "..(NRunDB.swapTarget and "on" or "off"))
     end,
     ["totems"] = function()
