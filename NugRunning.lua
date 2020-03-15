@@ -1773,6 +1773,7 @@ do
                         for i,timer in ipairs(group_timers) do
                             local noswap_alpha = guid == targetGUID and 1 or alpha
                             timer:SetAlpha(noswap_alpha)
+                            timer:ClearAllPoints()
                             timer:SetPoint(point, prev or anchorFrame, prev and to  or "TOPRIGHT", xOffset, (yOffset+gap)*ySign)
                             if timer.onupdate then timer:onupdate() end
                             prev = timer
@@ -1799,6 +1800,7 @@ do
                     if group_timers then
                     for i,timer in ipairs(group_timers) do
                         timer:SetAlpha(alpha)
+                        timer:ClearAllPoints()
                         timer:SetPoint(point, prev or anchorFrame, prev and to  or "TOPRIGHT", xOffset, (yOffset+gap)*ySign)
                         if timer.onupdate then timer:onupdate()end
                         prev = timer
