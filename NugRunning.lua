@@ -1392,13 +1392,10 @@ function NugRunning.CreateTimer(self)
     f._width = w
     f._height = h
 
-    f.prototype = NugRunning[f.prototype or "TimerBar"]
-
-    local mtFrameMethods = getmetatable(f).__index
-    setmetatable(f, { __index = function(t,k)
-                                    if t.prototype[k] then return t.prototype[k] end
-                                    return mtFrameMethods[k]
-                                end})
+    local prototypeObject = NugRunning[f.prototype or "TimerBar"]
+    for k,v in pairs(prototypeObject) do
+        f[k] = v
+    end
 
     f:SetScript("OnUpdate", NugRunning.TimerFunc)
 
