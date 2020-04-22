@@ -68,7 +68,7 @@ end
 
 
 helpers.GetCP = function()
-    if not NugRunning.cpNow then return GetComboPoints("player") end
+    if not NugRunning.cpNow then return UnitPower("player", Enum.PowerType.ComboPoints) end
     return NugRunning.cpWas > NugRunning.cpNow and NugRunning.cpWas or NugRunning.cpNow
 end
 helpers.Glyph = function (gSpellID)
@@ -104,6 +104,7 @@ helpers.Spell = function(id, opts)
     if opts and not GetSpellInfo(id) then print(string.format("nrun: misssing spell #%d (%s)",id,opts.name)) return end
     NugRunningConfig.spells[id] = opts
 end
+
 helpers.AddSpell = helpers.Spell
 helpers.ModSpell = function(id, mods)
     if type(id) == "table" then

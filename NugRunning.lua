@@ -18,7 +18,7 @@ helpers.L = L
 NugRunning.L = L
 
 --- Compatibility with Classic
-local isClassic = select(4,GetBuildInfo()) <= 19999
+local isClassic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
 local UnitSpellHaste = isClassic and function() return 0 end or _G.UnitSpellHaste
 local GetSpecialization = isClassic and function() return nil end or _G.GetSpecialization
 
@@ -724,7 +724,7 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
     end
     if timerType == "MISSED" then
         if override == "IMMUNE" or override == "ABSORB" then return end
-        opts = { duration = 3, color = NugRunningConfig.colors.MISSED, scale = .8, maxtimers = 1, priority = opts.priority or 100501, shine = true }
+        opts = { duration = 3, color = NugRunningConfig.colors.MISSED, scale = .8, maxtimers = 1, priority = opts.priority or 99999, shine = true }
     end
 
     if opts.specmask then
