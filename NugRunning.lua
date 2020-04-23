@@ -150,18 +150,6 @@ local gettimer = function(self,spellID,dstGUID,timerType)
 end
 local IsPlayerSpell = IsPlayerSpell
 local GetSpellInfo = GetSpellInfo
--- local GetSpellInfo_ = GetSpellInfo
--- local GetSpellInfo = setmetatable({},{
---     __call = function(self, id)
---     local info = self[id]
---     if not info then
---         info = { GetSpellInfo_(id) }
---         self[id] = info
---     end
---     return unpack(info)
---     end
--- })
-
 local GetSpellCooldown = GetSpellCooldown
 local GetSpellCharges = GetSpellCharges
 local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
@@ -378,19 +366,6 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
         end
     end
     config.spellClones = cloneIDs
-    -- for _, timerType in ipairs(categories) do
-        -- for k, opts in pairs(classConfig[timerType]) do
-            -- NugRunningConfigMerged[timerType]
-        -- end
-    -- end
-    -- local mt = {
-    --     __index = function(t,k)
-    --         return t.defaults[k]
-    --     end
-    -- }
-    -- local categories = {"spells", "cooldowns", "activations", "casts"}
-    -- for
-
 
     NugRunning:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED")
     if not isClassic then NugRunning:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED") end
@@ -550,9 +525,6 @@ end
 ---------------------------------
 -- ACTIVATION OVERLAY & USABLE
 ---------------------------------
-
---function NugRunning.SPELL_UPDATE_USABLE(self, event)
---end
 function NugRunning.SPELL_ACTIVATION_OVERLAY_GLOW_SHOW(self,event, spellID)
     if activations[spellID] then
         local opts = activations[spellID]
@@ -608,7 +580,7 @@ end
 
 ---------------------------
 --   COOLDOWNS
-
+---------------------------
 local function GetSpellCooldownCharges(spellID)
     local startTime, duration, enabled = GetSpellCooldown(spellID)
     local charges, maxCharges, chargeStart, chargeDuration = GetSpellCharges(spellID)
@@ -1395,8 +1367,6 @@ function NugRunning.CreateTimer(self)
     f:SetScript("OnUpdate", NugRunning.TimerFunc)
 
     f.BecomeGhost = TimerBecomeGhost
-    -- f.is_type = Timer_is_type
-    -- f.matches = Timer_matches
 
     f.targets = {}
     f:Hide()
@@ -1471,9 +1441,7 @@ do
 
         sortedTimerGroups = NugRunning:MakeSortedGroupsTable()
     end
-    -- local playerTimers = {}
-    -- local targetTimers = {}
-    -- local sorted = {}
+
     local groups = { player = {}, target = {} }
     local guid_groups = {}
     local sortfunc = function(a,b)
@@ -2375,16 +2343,6 @@ do
     h:RegisterEvent("UNIT_AURA")
     h:RegisterEvent("UPDATE_MOUSEOVER_UNIT")
     h:RegisterEvent("PLAYER_TARGET_CHANGED")
-
-
-    -- h._elapsed = 0
-    -- h:SetScript("OnUpdate", function(self, time)
-    --     self._elapsed = self._elapsed + time
-    --     if self._elapsed < 0.2 then return end
-    --     self._elapsed = 0
-
-    --     NugRunning.OnAuraEvent(nil, "UNIT_AURA", "mouseover")
-    -- end)
 end
 
 
@@ -2458,13 +2416,7 @@ function NugRunning:CreateCastbarTimer(timer)
         else
             timer.arrow:Hide()
         end
-        -- self.startTime = startTime / 1000
-        -- self.endTime = endTime / 1000
-        -- self.bar:SetMinMaxValues(self.startTime,self.endTime)
-        -- local color = NRunCast.coloredSpells[name] or  { 0.6, 0, 1 }
-        -- local color = { 0.6, 0, 1 }
-        -- self.bar:SetStatusBarColor(unpack(color))
-        -- self.bar.bg:SetVertexColor(color[1]*.5,color[2]*.5,color[3]*.5)
+
         self:Show()
     end
 
