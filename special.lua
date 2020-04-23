@@ -54,7 +54,7 @@ local function Rampage()
             self:UnregisterEvent("UNIT_POWER_FREQUENT")
             self:UnregisterEvent("SPELL_ACTIVATION_OVERLAY_GLOW_HIDE")
             if timer then
-                active[timer] = nil
+                timer:SetActive(false)
                 timer:Hide()
                 NugRunning:ArrangeTimers()
             end
@@ -67,7 +67,7 @@ local function Rampage()
         self._elapsed = 0
 
         if lastPositiveUpdate + 5 < GetTime() and UnitPower("player") ~= UnitPowerMax("player") then
-            NugRunning.active[timer] = nil
+            timer:SetActive(false)
             timer:Hide()
             NugRunning:ArrangeTimers()
             self:Hide()
@@ -120,9 +120,9 @@ local function Rampage()
                 timer:SetColor(helpers.GetGradientColor(rampage_opts.color2, rampage_opts.color, (p/rampageCost)^0.7 ))
             end
 
-            if not NugRunning.active[timer] then
+            if not timer:IsActive() then
                 timer:Show()
-                NugRunning.active[timer] = true
+                timer:SetActive(true)
                 NugRunning:ArrangeTimers()
             end
         end

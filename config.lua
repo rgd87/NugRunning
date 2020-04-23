@@ -386,7 +386,7 @@ Cooldown( 205448, { name = "Void Bolt", priority = 10, fixedlen = priest_normali
 })
 EventTimer({ spellID = 194249, event = "SPELL_AURA_REMOVED", name = "VoidBoltCleanup",
     action = function(active, srcGUID, dstGUID, spellID, damage )
-        local voidbolt_timer = NugRunning.gettimer(active, 205448, UnitGUID("player"), "COOLDOWN")
+        local voidbolt_timer = NugRunning:FindActiveTimer(205448, UnitGUID("player"), "COOLDOWN")
         if voidbolt_timer then
             voidbolt_timer.isGhost = true
             NugRunning.GhostExpire(voidbolt_timer)
@@ -1006,7 +1006,7 @@ Cooldown( 108853, { name = "Fire Blast", color = colors.LRED, ghost = true, rese
 EventTimer({ spellID = 153561, event = "SPELL_CAST_SUCCESS", name = "Meteor", duration = 2.9, color = colors.FIRE })
 EventTimer({ spellID = 12654, event = "SPELL_PERIODIC_DAMAGE", name = "Ignite",
     action = function(active, srcGUID, dstGUID, spellID, damage )
-        local ignite_timer = NugRunning.gettimer(active, spellID, dstGUID, "DEBUFF")
+        local ignite_timer = NugRunning:FindActiveTimer(spellID, dstGUID, "DEBUFF")
         if ignite_timer then
             ignite_timer:SetName(damage)
         end
