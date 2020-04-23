@@ -1,7 +1,6 @@
 local _, helpers = ...
 
-NugRunning = CreateFrame("Frame","NugRunning")
-local NugRunning = NugRunning
+local NugRunning = CreateFrame("Frame","NugRunning")
 
 NugRunning:SetScript("OnEvent", function(self, event, ...)
     return self[event](self, event, ...)
@@ -41,7 +40,7 @@ local free = {}
 setmetatable(active,{ __newindex = function(t,timer,v)
     rawset(free,timer,nil)
     rawset(t,timer,v)
-    helpers.AddTimerToGUID(timer.dstGUID, timer)
+    NugRunning:AddTimerToGUID(timer.dstGUID, timer)
 end})
 setmetatable(free,{ __newindex = function(t,timer,v)
     if timer.opts then
@@ -60,57 +59,12 @@ setmetatable(free,{ __newindex = function(t,timer,v)
     rawset(active,timer,nil)
     if not timer.isExternal then
         rawset(t,timer,v)
-        helpers.RemoveTimerFromGUID(timer.dstGUID, timer)
+        NugRunning:RemoveTimerFromGUID(timer.dstGUID, timer)
     end
     NugRunning:ArrangeTimers()
 end})
 local leaveGhost = true
 
-
-function helpers.RecountGUIDTimers(t)
-    local count = 0
-    for k,v in pairs(t) do
-        if type(k) == "table" then
-            count = count + 1
-        end
-    end
-    return count
-end
-function helpers.AddTimerToGUID(dstGUID, timer)
-    if not dstGUID then return end
-
-    local guidTimers = timersByGUID[dstGUID]
-    if not guidTimers then
-        timersByGUID[dstGUID] = {}
-        guidTimers = timersByGUID[dstGUID]
-    end
-    guidTimers[timer] = true
-    local newCount = helpers.RecountGUIDTimers(guidTimers)
-    timersByGUIDCounter[dstGUID] = newCount
-end
-function helpers.RemoveTimerFromGUID(dstGUID, timer)
-    if not dstGUID then return end
-
-    local guidTimers = timersByGUID[dstGUID]
-    if not guidTimers then return end
-    guidTimers[timer] = nil
-    local newCount = helpers.RecountGUIDTimers(guidTimers)
-    if newCount > 0 then
-        timersByGUIDCounter[dstGUID] = newCount
-    else
-        timersByGUIDCounter[dstGUID] = nil
-        timersByGUID[dstGUID] = nil
-    end
-end
-do
-    local emptyTable = {}
-    function helpers.GetActiveTimersByGUID(dstGUID)
-        if not dstGUID then return emptyTable end
-        local guidTimers = timersByGUID[dstGUID]
-        if not guidTimers then return emptyTable end
-        return guidTimers
-    end
-end
 
 local gettimer = function(self,spellID,dstGUID,timerType)
     local foundTimer
@@ -769,7 +723,7 @@ local function CheckCooldown(spellID, opts, startTime, duration, enabled, charge
     end
     if duration then
         if duration <= gcdDuration then
-            if timer and active[timer] then
+            if timer and timer:IsActive() then
                 local oldcdrem = timer.endTime - GetTime()
                 if oldcdrem > duration or oldcdrem < 0 then
                     if not timer.isGhost then
@@ -780,7 +734,7 @@ local function CheckCooldown(spellID, opts, startTime, duration, enabled, charge
                 end
             end
         else
-                if not active[timer] or timer.isGhost then
+                if not timer:IsActive() or timer.isGhost then
                     local mdur = opts.minduration or wandUserMinDuration
                     local time_remains = (duration + startTime) - GetTime()
                     local mrem = opts.hide_until
@@ -910,7 +864,7 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
     timer.spellName = spellName
     timer.comboPoints = helpers.GetCP()
     timer.timerType = timerType
-    active[timer] = true
+    timer:SetActive(true)
     timer:SetScript("OnUpdate",NugRunning.TimerFunc)
 
     if multiTargetGUID then timer.targets[multiTargetGUID] = true end
@@ -1524,6 +1478,17 @@ function TimerManagementMixin.Release(self)
     NugRunning.free[self] = true
 end
 
+function TimerManagementMixin.SetActive(self, status)
+    if status then
+        active[self] = true
+    else
+        active[self] = nil
+    end
+end
+function TimerManagementMixin.IsActive(self)
+    return active[self]
+end
+
 function TimerManagementMixin.GhostExpire(self)
     self:SetScript("OnUpdate", NugRunning.TimerFunc)
     self.expiredGhost = true
@@ -2009,7 +1974,7 @@ NugRunning.Commands = {
             anchor:Hide()
         end
         for _,timer in ipairs(alltimers) do
-            if not active[timer] then
+            if not timer:IsActive() then
                 timer:Hide()
             end
         end
@@ -2653,7 +2618,7 @@ function NugRunning:CreateCastbarTimer(timer)
         self.inverted = false
         self.castID = castID2
         self:UpdateCastingInfo(name,texture,startTime,endTime, opts)
-        NugRunning.active[self] = true
+        self:SetActive(true)
         NugRunning:ArrangeTimers()
     end
     f.UNIT_SPELLCAST_DELAYED = f.UNIT_SPELLCAST_START
@@ -2668,14 +2633,14 @@ function NugRunning:CreateCastbarTimer(timer)
         self.castID = castID2
         self:UpdateCastingInfo(name,texture,startTime,endTime, opts)
 
-        NugRunning.active[self] = true
+        self:SetActive(true)
         NugRunning:ArrangeTimers()
     end
     f.UNIT_SPELLCAST_CHANNEL_UPDATE = f.UNIT_SPELLCAST_CHANNEL_START
     function f.UNIT_SPELLCAST_STOP(self,event, unit, castID, spellID)
         if unit ~= self.unit then return end
         self:Hide()
-        NugRunning.active[self] = nil
+        self:SetActive(false)
         NugRunning:ArrangeTimers()
     end
     function f.UNIT_SPELLCAST_FAILED(self, event, unit,castID)
@@ -2698,5 +2663,58 @@ function NugRunning.UNIT_POWER_UPDATE(self,event,unit, ptype)
     if ptype == "COMBO_POINTS" then
         self.cpWas = self.cpNow or 0
         self.cpNow = GetComboPoints(unit, "target")
+    end
+end
+
+
+
+function NugRunning:FindActiveTimer(...)
+    return gettimer(active, ...)
+end
+-------------------------------
+-- By GUID timer table
+-------------------------------
+function NugRunning:RecountGUIDTimers(t)
+    local count = 0
+    for k,v in pairs(t) do
+        if type(k) == "table" then
+            count = count + 1
+        end
+    end
+    return count
+end
+function NugRunning:AddTimerToGUID(dstGUID, timer)
+    if not dstGUID then return end
+
+    local guidTimers = timersByGUID[dstGUID]
+    if not guidTimers then
+        timersByGUID[dstGUID] = {}
+        guidTimers = timersByGUID[dstGUID]
+    end
+    guidTimers[timer] = true
+    local newCount = self:RecountGUIDTimers(guidTimers)
+    timersByGUIDCounter[dstGUID] = newCount
+end
+function NugRunning:RemoveTimerFromGUID(dstGUID, timer)
+    if not dstGUID then return end
+
+    local guidTimers = timersByGUID[dstGUID]
+    if not guidTimers then return end
+    guidTimers[timer] = nil
+    local newCount = self:RecountGUIDTimers(guidTimers)
+    if newCount > 0 then
+        timersByGUIDCounter[dstGUID] = newCount
+    else
+        timersByGUIDCounter[dstGUID] = nil
+        timersByGUID[dstGUID] = nil
+    end
+end
+do
+    local emptyTable = {}
+    function NugRunning:GetActiveTimersByGUID(dstGUID)
+        if not dstGUID then return emptyTable end
+        local guidTimers = timersByGUID[dstGUID]
+        if not guidTimers then return emptyTable end
+        return guidTimers
     end
 end
