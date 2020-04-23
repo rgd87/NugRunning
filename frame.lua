@@ -90,7 +90,7 @@ end
 
 function TimerBar.MoveMark(self, time)
     local pos, percent = getbarpos(self, time)
-    self.mark:SetPoint("LEFT",self.bar,"LEFT",pos,0)
+    self.mark:SetPoint("CENTER",self.bar,"LEFT",pos,0)
     if percent < 0.02 then
         self.mark:Hide()
         self.mark.texture:Hide()
@@ -126,7 +126,7 @@ function TimerBar.UpdateMark(self, time) -- time - usually closest tick time
         if time then
             if time > 0 then
                 local pos = getbarpos(self, time)
-                self.mark:SetPoint("LEFT",self.bar,"LEFT",pos,0)
+                self.mark:SetPoint("CENTER",self.bar,"LEFT",pos,0)
                 self.mark:Show()
                 self.mark.texture:Show()
             else
@@ -137,7 +137,7 @@ function TimerBar.UpdateMark(self, time) -- time - usually closest tick time
     elseif self.opts.recast_mark then
         local rm = clear_overlay_point(self.opts.recast_mark, self, time)
         local pos = getbarpos(self, rm)
-        self.mark:SetPoint("LEFT",self.bar,"LEFT",pos,0)
+        self.mark:SetPoint("CENTER",self.bar,"LEFT",pos,0)
         self.mark.spark:CatchUp()
         self.mark:Show()
         self.mark.texture:Show()
@@ -430,7 +430,7 @@ end
 
 NugRunning.ConstructTimerBar = function(width, height)
     local f = CreateFrame("Frame",nil,UIParent)
-    f.prototype = "TimerBar"
+    Mixin(f, TimerBar)
 
     local backdrop = {
         bgFile = "Interface\\Tooltips\\UI-Tooltip-Background",
@@ -688,15 +688,15 @@ NugRunning.ConstructTimerBar = function(width, height)
 
     local m = CreateFrame("Frame",nil, f)
     m:SetParent(f)
-    m:SetWidth(1)
+    m:SetWidth(8)
     m:SetHeight(f:GetHeight()*0.9)
     m:SetFrameLevel(4)
     m:SetAlpha(0.6)
-    m:SetPoint("LEFT",f.bar,"LEFT",10,0)
+    m:SetPoint("CENTER",f.bar,"LEFT",10,0)
 
     local texture = m:CreateTexture(nil, "OVERLAY")
-    texture:SetTexture("Interface\\Tooltips\\UI-Tooltip-Background")
-    texture:SetVertexColor(1,1,1,0.8)
+    texture:SetTexture("Interface\\AddOns\\NugRunning\\mark")
+    texture:SetVertexColor(1,1,1,0.5)
     texture:SetAllPoints(m)
     m.texture = texture
 
@@ -710,7 +710,7 @@ NugRunning.ConstructTimerBar = function(width, height)
     spark.mark = m
     spark.CatchUp = function(self)
         local p1, f, p2, x, y = self.mark:GetPoint()
-        self:SetPoint(p1, f, p2, x-9, y-1)
+        self:SetPoint(p1, f, p2, x, y)
     end
     spark:CatchUp()
     m.spark = spark

@@ -112,6 +112,7 @@ helpers.Spell = function(id, opts)
     if opts and not GetSpellInfo(id) then print(string.format("nrun: misssing spell #%d (%s)",id,opts.name)) return end
     NugRunningConfig.spells[id] = opts
 end
+
 helpers.AddSpell = helpers.Spell
 helpers.ModSpell = function(id, mods)
     if type(id) == "table" then
