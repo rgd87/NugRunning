@@ -427,7 +427,7 @@ end
 
 NugRunning.ConstructTimerBar = function(width, height)
     local f = CreateFrame("Frame",nil,UIParent)
-    f.prototype = "TimerBar"
+    Mixin(f, TimerBar)
 
     local backdrop = {
         bgFile = "Interface\\Tooltips\\UI-Tooltip-Background",

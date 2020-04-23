@@ -124,7 +124,8 @@ globals = {
 	"InterfaceOptionsFrame_OpenToCategory",
 	"InterfaceOptions_AddCategory",
     "LoadAddOn",
-	"ActionButton_GetOverlayGlow",
+    "ActionButton_GetOverlayGlow",
+    "Mixin",
 
 	"C_NamePlate",
     "TidyPlates",

@@ -1392,11 +1392,6 @@ function NugRunning.CreateTimer(self)
     f._width = w
     f._height = h
 
-    local prototypeObject = NugRunning[f.prototype or "TimerBar"]
-    for k,v in pairs(prototypeObject) do
-        f[k] = v
-    end
-
     f:SetScript("OnUpdate", NugRunning.TimerFunc)
 
     f.BecomeGhost = TimerBecomeGhost
