@@ -150,6 +150,7 @@ local gettimer = function(self,spellID,dstGUID,timerType)
 end
 local IsPlayerSpell = IsPlayerSpell
 local GetSpellInfo = GetSpellInfo
+local string_sub = string.sub
 local GetSpellCooldown = GetSpellCooldown
 local GetSpellCharges = GetSpellCharges
 local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
@@ -428,8 +429,7 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
         free[timer] = true
     end
     --remove timer from the pool and change it to castbar
-    local cbt = next(free)
-    free[cbt] = nil
+    local cbt = NugRunning:ExtractFromPool()
     NugRunning:CreateCastbarTimer(cbt)
 
     local _,class = UnitClass("player")
@@ -629,7 +629,7 @@ local function CheckCooldown(spellID, opts, startTime, duration, enabled, charge
                         timer = NugRunning:ActivateTimer(UnitGUID("player"),UnitGUID("player"), UnitName("player"), nil, spellID, opts.localname, opts, cdType, time_remains)
                     else
                         if timer and timer.isGhost then
-                            NugRunning.GhostExpire(timer)
+                            timer:GhostExpire()
                         end
                     end
                     if timer then
@@ -683,7 +683,6 @@ end
 
 local helpful = "HELPFUL"
 local harmful = "HARMFUL"
-local string_sub = string.sub
 function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID, spellName, opts, timerType, override, amount, from_unitaura)  -- duration override
     if opts.disabled then return end
 
@@ -738,7 +737,7 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
         end
     end
 
-    timer = next(free)
+    timer = NugRunning:AcquireTimer()
     if not timer then return end
 
     timer.srcGUID = srcGUID
@@ -1283,7 +1282,22 @@ function NugRunning:CreateTargetIndicator()
     return targetIndicator
 end
 
-function NugRunning.GhostExpire(self)
+function NugRunning:AcquireTimer()
+    return next(free)
+end
+
+function NugRunning:ExtractFromPool()
+    local timer = self:AcquireTimer()
+    free[timer] = nil
+    return timer
+end
+
+local TimerManagementMixin = {}
+function TimerManagementMixin.Release(self)
+    NugRunning.free[self] = true
+end
+
+function TimerManagementMixin.GhostExpire(self)
     self:SetScript("OnUpdate", NugRunning.TimerFunc)
     self.expiredGhost = true
     if self.glow:IsPlaying() then self.glow:Stop() end
@@ -1291,21 +1305,18 @@ function NugRunning.GhostExpire(self)
     if self.arrowglow:IsPlaying() then
         self.arrowglow:Stop()
     end
-    free[self] = true
+    self:Release()
     self.isGhost = nil
 end
-function NugRunning.GhostFunc(self,time)
+
+local function GhostFunc(self,time)
     self._elapsed = self._elapsed + time
     if self._elapsed < self.ghost_duration then return end
-    -- if leaveGhost then return end
 
-    -- if self.isPreghosting then
-        -- return
-    -- end
-
-    NugRunning.GhostExpire(self)
+    self:GhostExpire()
 end
-local TimerBecomeGhost = function(self, override_ghost_duration)
+
+function TimerManagementMixin.BecomeGhost(self, override_ghost_duration)
     self.expiredGhost = nil
     self.isGhost = true
     self:SetPowerStatus(nil)
@@ -1331,42 +1342,21 @@ local TimerBecomeGhost = function(self, override_ghost_duration)
         if not self.glow:IsPlaying() then self.glow:Play() end
     end
     self._elapsed = 0
-    self:SetScript("OnUpdate", NugRunning.GhostFunc)
+    self:SetScript("OnUpdate", GhostFunc)
 end
-
---[======[local Timer_is_type = function(self, ...)
-    local t = self.timerType
-    local len = select("#", ...)
-    if len == 0 then return true end
-    for i=1,len do
-    --for _,v in ipairs(...) do
-        if t == select(i, ...) then return true end
-    end
-    return false
-end
-
-local Timer_matches = function(self, spellID, srcGUID, dstGUID, ...)
-    return (
-        (not spellID or self.spellID == spellID) and
-        (not srcGUID or self.dstGUID == dstGUID) and
-        (not srcGUID or self.srcGUID == srcGUID) --and
-        --self:is_type(...)
-    )
-end]======]
-
 
 function NugRunning.CreateTimer(self)
     local w = NugRunningConfig.width or NRunDB.width
     local h = NugRunningConfig.height or NRunDB.height
 
     local f = NugRunning.ConstructTimerBar(w,h)
+    f = Mixin(f, TimerManagementMixin)
+
     f._elapsed = 0
     f._width = w
     f._height = h
 
     f:SetScript("OnUpdate", NugRunning.TimerFunc)
-
-    f.BecomeGhost = TimerBecomeGhost
 
     f.targets = {}
     f:Hide()
@@ -1579,7 +1569,7 @@ function NugRunning:PreGhost()
     for timer in pairs(previous_projections) do
         -- timer.isPreghosting = nil
         if timer.isGhost then
-            self.GhostExpire(timer)
+            timer:GhostExpire()
         end
         previous_projections[timer] = nil
     end
@@ -1695,7 +1685,7 @@ end
 function NugRunning.ClearTimers(self, keepSelfBuffs)
     for timer in pairs(active) do
         if not (keepSelfBuffs and (timer.dstGUID == timer.srcGUID)) then
-            free[timer] = true
+            timer:Release()
         end
     end
     self:ArrangeTimers()
@@ -2272,7 +2262,7 @@ do
                     not present_spells[timer.opts] and
                     (timer.timerType == "BUFF" or timer.timerType == "DEBUFF")
                 then
-                    free[timer] = true
+                    timer:Release()
                     NugRunning:ArrangeTimers()
                 end
             end
@@ -2298,7 +2288,7 @@ do
                     if timer.opts.singleTarget then
                         timer.isGhost = true
                         timer.expiredGhost = true
-                        free[timer] = true
+                        timer:Release()
                         timer.isGhost = nil
                         timer.expiredGhost = nil
                     end
@@ -2348,7 +2338,6 @@ end
 
 function NugRunning:CreateCastbarTimer(timer)
     local f = timer
-    NugRunning.free[timer] = nil
     self.castbar = timer
 
     f.stacktext:Hide()

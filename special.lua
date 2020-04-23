@@ -15,8 +15,7 @@ local function Rampage()
     local rampageCost = 85
     NugRunningConfig.spells[rampageID] = nil
 
-    local timer = NugRunning:CreateTimer()
-    free[timer] = nil
+    local timer = NugRunning:ExtractFromPool()
     -- table.remove()
     timer.stacktext:Hide()
     timer:SetScript("OnUpdate",nil)
@@ -141,7 +140,7 @@ local function Warlock()
                 timer.isGhost = true
                 timer.expiredGhost = true
                 -- timer.timeless = false
-                free[timer] = true
+                timer:Release()
             end
         end
     end
