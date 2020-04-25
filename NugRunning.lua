@@ -1,6 +1,6 @@
 local _, helpers = ...
 
-local NugRunning = CreateFrame("Frame","NugRunning")
+local NugRunning = CreateFrame("Frame","NugRunning", UIParent)
 
 NugRunning:SetScript("OnEvent", function(self, event, ...)
     return self[event](self, event, ...)
@@ -1393,6 +1393,8 @@ do
         dbanchors = NRunDB.anchors -- settings
 
         targetIndicator = NugRunning.targetIndicator
+
+        yOffset = helpers.pixelperfect(3.99, self)
 
         sortedTimerGroups = NugRunning:MakeSortedGroupsTable()
     end

@@ -25,6 +25,10 @@ local AFFILIATION_OUTSIDER = COMBATLOG_OBJECT_AFFILIATION_OUTSIDER
 -- else
 -- end
 
+function helpers.pixelperfect(size, region)
+    region = region or UIParent
+    return PixelUtil.GetNearestPixelSize(size, NugRunning:GetEffectiveScale(), size)
+end
 
 helpers.Talent = function (spellID)
     return IsSpellKnown(spellID) and 1 or 0
