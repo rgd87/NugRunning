@@ -49,7 +49,7 @@ setmetatable(free,{ __newindex = function(t,timer,v)
             config.cooldowns[cd_opts.id] = cd_opts
             NugRunning:SPELL_UPDATE_COOLDOWN()
         else
-            if (timer.opts.ghost or timer.scheduledGhost) and not timer.isGhost then return timer:BecomeGhost() end
+            if NRunDB.leaveGhost and (timer.opts.ghost or timer.scheduledGhost) and not timer.isGhost then return timer:BecomeGhost() end
             if timer.isGhost and not timer.expiredGhost then return end
             timer.isGhost = nil
             timer.expiredGhost = nil
@@ -63,7 +63,6 @@ setmetatable(free,{ __newindex = function(t,timer,v)
     end
     NugRunning:ArrangeTimers()
 end})
-local leaveGhost = true
 
 
 local gettimer = function(self,spellID,dstGUID,timerType)
@@ -279,9 +278,6 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
     NugRunning.db = NRunDB
 
     SetupDefaults(NRunDB, defaults)
-
-    leaveGhost = NRunDB.leaveGhost
-
 
     NugRunningConfigCustom = NugRunningConfigCustom or {}
 
@@ -1822,7 +1818,6 @@ NugRunning.Commands = {
     end,
     ["leaveghost"] = function()
         NRunDB.leaveGhost = not NRunDB.leaveGhost
-        leaveGhost = NRunDB.leaveGhost
         print("NRun leaveghost "..(NRunDB.leaveGhost and "enabled" or "disabled"))
     end,
     ["shorttext"] = function()
