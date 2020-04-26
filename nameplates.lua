@@ -1,3 +1,5 @@
+local _, helpers = ...
+
 local NugRunning = NugRunning
 local LSM = LibStub("LibSharedMedia-3.0")
 

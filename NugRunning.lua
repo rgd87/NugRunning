@@ -560,14 +560,14 @@ local function CheckCooldown(spellID, opts, startTime, duration, enabled, charge
                 local oldcdrem = timer.endTime - GetTime()
                 if oldcdrem > duration or oldcdrem < 0 then
                     if not timer.isGhost then
-                        free[timer] = true
+                        timer:Release()
                         if timer.isGhost and not timer.shine:IsPlaying() then timer.shine:Play() end
                         activeCooldownTimers[spellID] = nil
                     end
                 end
             end
         else
-                if not timer:IsActive() or timer.isGhost then
+                if not timer or not timer:IsActive() or timer.isGhost then
                     local mdur = opts.minduration
                     local time_remains = (duration + startTime) - GetTime()
                     local mrem = opts.hide_until

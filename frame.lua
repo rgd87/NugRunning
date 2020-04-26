@@ -88,6 +88,7 @@ local function getbarpos(timer, time)
     if progress > 1 then progress = 1 end
     return progress * timer.bar:GetWidth(), progress
 end
+helpers.getbarpos = getbarpos
 
 function TimerBar.MoveMark(self, time)
     local pos, percent = getbarpos(self, time)
@@ -159,6 +160,8 @@ function TimerBar.UpdateMark(self, time) -- time - usually closest tick time
             duration = (duration/(1+(UnitSpellHaste("player")/100)))
             t2 = t1 + duration
         end
+        self.overlay2.t1 = t1
+        self.overlay2.t2 = t2
 
         if not t1 or not t2 then
             return -- skip when point contains "tick" or "tickend", but it's not tick update call
@@ -248,7 +251,6 @@ end
 
 function TimerBar.UpdateFonts(f)
     local nameFont, nameSize, nameAlpha = getFont("nameFont")
-    print(nameFont, nameSize)
     f.spellText:SetFont(nameFont, nameSize)
     f.spellText:SetAlpha(nameAlpha or 1)
 
@@ -285,9 +287,7 @@ function NugRunning.UpdateAllNameplateTextures()
     end
 end
 
-function TimerBar:UpdateFrameBorder()
-    local borderType = "1PX"
-
+function TimerBar:UpdateFrameBorder(borderType)
     if self.border then self.border:Hide() end
     if self.backdrop then self.backdrop:Hide() end
 
@@ -478,7 +478,7 @@ NugRunning.ConstructTimerBar = function(width, height)
     f:SetWidth(width)
     f:SetHeight(height)
 
-    f:UpdateFrameBorder()
+    f:UpdateFrameBorder("2PX")
 
     local ic = CreateFrame("Frame",nil,f)
     ic:SetPoint("TOPLEFT",f,"TOPLEFT", 0, 0)
