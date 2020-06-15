@@ -731,13 +731,8 @@ local function CheckCooldown(spellID, opts, startTime, duration, enabled, charge
                 end
             end
         else
-<<<<<<< HEAD
-                if not timer:IsActive() or timer.isGhost then
-                    local mdur = opts.minduration or wandUserMinDuration
-=======
                 if not timer or not timer:IsActive() or timer.isGhost then
-                    local mdur = opts.minduration
->>>>>>> origin/master
+                    local mdur = opts.minduration or wandUserMinDuration
                     local time_remains = (duration + startTime) - GetTime()
                     local mrem = opts.hide_until
                     local isKnown = true
