@@ -159,4 +159,5 @@ globals = {
     "UnitLevel",
     "CastingInfo",
     "ChannelInfo",
+    "GetCVar",
 }
