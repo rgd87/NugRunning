@@ -1,6 +1,6 @@
 local _, helpers = ...
 
-local NugRunning = CreateFrame("Frame","NugRunning")
+local NugRunning = CreateFrame("Frame","NugRunning", UIParent)
 
 NugRunning:SetScript("OnEvent", function(self, event, ...)
     return self[event](self, event, ...)
@@ -49,7 +49,7 @@ setmetatable(free,{ __newindex = function(t,timer,v)
             config.cooldowns[cd_opts.id] = cd_opts
             NugRunning:SPELL_UPDATE_COOLDOWN()
         else
-            if (timer.opts.ghost or timer.scheduledGhost) and not timer.isGhost then return timer:BecomeGhost() end
+            if NRunDB.leaveGhost and (timer.opts.ghost or timer.scheduledGhost) and not timer.isGhost then return timer:BecomeGhost() end
             if timer.isGhost and not timer.expiredGhost then return end
             timer.isGhost = nil
             timer.expiredGhost = nil
@@ -63,7 +63,6 @@ setmetatable(free,{ __newindex = function(t,timer,v)
     end
     NugRunning:ArrangeTimers()
 end})
-local leaveGhost = true
 
 
 local gettimer = function(self,spellID,dstGUID,timerType)
@@ -280,8 +279,6 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
     NugRunning.db = NRunDB
 
     SetupDefaults(NRunDB, defaults)
-
-    leaveGhost = NRunDB.leaveGhost
 
     NugRunning.AddSpellNameRecognition = helpers.AddSpellNameRecognition
 
@@ -727,15 +724,20 @@ local function CheckCooldown(spellID, opts, startTime, duration, enabled, charge
                 local oldcdrem = timer.endTime - GetTime()
                 if oldcdrem > duration or oldcdrem < 0 then
                     if not timer.isGhost then
-                        free[timer] = true
+                        timer:Release()
                         if timer.isGhost and not timer.shine:IsPlaying() then timer.shine:Play() end
                         activeCooldownTimers[spellID] = nil
                     end
                 end
             end
         else
+<<<<<<< HEAD
                 if not timer:IsActive() or timer.isGhost then
                     local mdur = opts.minduration or wandUserMinDuration
+=======
+                if not timer or not timer:IsActive() or timer.isGhost then
+                    local mdur = opts.minduration
+>>>>>>> origin/master
                     local time_remains = (duration + startTime) - GetTime()
                     local mrem = opts.hide_until
                     local isKnown = true
@@ -1621,6 +1623,8 @@ do
 
         targetIndicator = NugRunning.targetIndicator
 
+        yOffset = helpers.pixelperfect(3.99, self)
+
         sortedTimerGroups = NugRunning:MakeSortedGroupsTable()
     end
 
@@ -2049,7 +2053,6 @@ NugRunning.Commands = {
     end,
     ["leaveghost"] = function()
         NRunDB.leaveGhost = not NRunDB.leaveGhost
-        leaveGhost = NRunDB.leaveGhost
         print("NRun leaveghost "..(NRunDB.leaveGhost and "enabled" or "disabled"))
     end,
     ["shorttext"] = function()

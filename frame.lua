@@ -1,3 +1,5 @@
+local _, helpers = ...
+
 local NugRunning = NugRunning
 local LSM = LibStub("LibSharedMedia-3.0")
 
@@ -21,6 +23,8 @@ local getFont = function(labelName)
 		return s.font, s.size, s.alpha
 	end
 end
+
+local pixelperfect = helpers.pixelperfect
 
 NugRunning.TimerBar = {}
 local TimerBar = NugRunning.TimerBar
@@ -87,6 +91,7 @@ local function getbarpos(timer, time)
     if progress > 1 then progress = 1 end
     return progress * timer.bar:GetWidth(), progress
 end
+helpers.getbarpos = getbarpos
 
 function TimerBar.MoveMark(self, time)
     local pos, percent = getbarpos(self, time)
@@ -158,6 +163,8 @@ function TimerBar.UpdateMark(self, time) -- time - usually closest tick time
             duration = (duration/(1+(UnitSpellHaste("player")/100)))
             t2 = t1 + duration
         end
+        self.overlay2.t1 = t1
+        self.overlay2.t2 = t2
 
         if not t1 or not t2 then
             return -- skip when point contains "tick" or "tickend", but it's not tick update call
@@ -247,7 +254,6 @@ end
 
 function TimerBar.UpdateFonts(f)
     local nameFont, nameSize, nameAlpha = getFont("nameFont")
-    print(nameFont, nameSize)
     f.spellText:SetFont(nameFont, nameSize)
     f.spellText:SetAlpha(nameAlpha or 1)
 
@@ -281,6 +287,43 @@ function NugRunning.UpdateAllNameplateTextures()
         local texture = LSM:Fetch("statusbar", NugRunning.db.nptextureName)
         f:SetStatusBarTexture(texture)
         f.bg:SetTexture(texture)
+    end
+end
+
+function TimerBar:UpdateFrameBorder(borderType)
+    if self.border then self.border:Hide() end
+    if self.backdrop then self.backdrop:Hide() end
+
+    if borderType == "2PX" then
+        self.backdrop = self.backdrop or self:CreateTexture(nil, "BACKGROUND", nil, -2)
+        local backdrop = self.backdrop
+        local offset = pixelperfect(2, self)
+        backdrop:SetTexture("Interface\\BUTTONS\\WHITE8X8")
+        backdrop:SetVertexColor(0,0,0, 0.5)
+        backdrop:SetPoint("TOPLEFT", -offset, offset)
+        backdrop:SetPoint("BOTTOMRIGHT", offset, -offset)
+        backdrop:Show()
+
+    elseif borderType == "1PX" then
+        self.backdrop = self.backdrop or self:CreateTexture(nil, "BACKGROUND", nil, -2)
+        local backdrop = self.backdrop
+        local offset = pixelperfect(1, self)
+        backdrop:SetTexture("Interface\\BUTTONS\\WHITE8X8")
+        backdrop:SetVertexColor(0,0,0, 1)
+        backdrop:SetPoint("TOPLEFT", -offset, offset)
+        backdrop:SetPoint("BOTTOMRIGHT", offset, -offset)
+        backdrop:Show()
+    -- elseif borderType == "3PX" then
+    --     self.border = self.border or CreateFrame("Frame", nil, self)
+    --     local border = self.border
+    --     local offset = pixelperfect(3)
+    --     border:SetPoint("TOPLEFT", -offset, offset)
+    --     border:SetPoint("BOTTOMRIGHT", offset, -offset)
+    --     border:SetBackdrop({
+    --         edgeFile = "Interface\\AddOns\\NugRunning\\border_3px", edgeSize = 8, tileEdge = false,
+    --     })
+    --     border:SetBackdropBorderColor(0.4,0.4,0.4)
+    --     border:Show()
     end
 end
 
@@ -328,6 +371,9 @@ function TimerBar.VScale(self, scale)
 end
 
 function TimerBar.Resize(self, width, height)
+    width = pixelperfect(width)
+    height = pixelperfect(height)
+
     self._width = width
     self._height = height
 
@@ -432,17 +478,10 @@ NugRunning.ConstructTimerBar = function(width, height)
     local f = CreateFrame("Frame",nil,UIParent)
     Mixin(f, TimerBar)
 
-    local backdrop = {
-        bgFile = "Interface\\Tooltips\\UI-Tooltip-Background",
-        tile = true, tileSize = 0,
-        insets = {left = -2, right = -2, top = -2, bottom = -2},
-    }
-
     f:SetWidth(width)
     f:SetHeight(height)
 
-    f:SetBackdrop(backdrop)
-    f:SetBackdropColor(0, 0, 0, 0.7)
+    f:UpdateFrameBorder("2PX")
 
     local ic = CreateFrame("Frame",nil,f)
     ic:SetPoint("TOPLEFT",f,"TOPLEFT", 0, 0)
