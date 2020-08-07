@@ -118,6 +118,7 @@ globals = {
     "UnitSpellHaste",
     "UnitPowerMax",
     "UnitRace",
+    "UnitIsUnit",
     "Enum",
     "UnitPower",
     "GetTime",

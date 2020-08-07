@@ -108,6 +108,7 @@ local GetSpellCooldown = GetSpellCooldown
 local GetSpellCharges = GetSpellCharges
 local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
 local bit_band = bit.band
+local strfind = string.find
 local UnitAura = UnitAura
 local UnitGUID = UnitGUID
 local table_wipe = table.wipe
@@ -190,76 +191,14 @@ local defaults = {
     stackFont = { font = defaultFont, size = 12 },
 }
 
-local function SetupDefaults(t, defaults)
-    if not defaults then return end
-    for k,v in pairs(defaults) do
-        if type(v) == "table" then
-            if t[k] == nil then
-                t[k] = CopyTable(v)
-            elseif t[k] == false then
-                t[k] = false --pass
-            else
-                SetupDefaults(t[k], v)
-            end
-        else
-            if t[k] == nil then t[k] = v end
-            if t[k] == "__REMOVED__" then t[k] = nil end
-        end
-    end
-end
+
+local MergeTable = helpers.MergeTable
+local RemoveDefaultsPreserve = helpers.RemoveDefaultsPreserve
+local RemoveDefaults = helpers.RemoveDefaults
+local SetupDefaults = helpers.SetupDefaults
 NugRunning.SetupDefaults = SetupDefaults
-
-local function RemoveDefaults(t, defaults)
-    if not defaults then return end
-    for k, v in pairs(defaults) do
-        if type(t[k]) == 'table' and type(v) == 'table' then
-            RemoveDefaults(t[k], v)
-            if next(t[k]) == nil then
-                t[k] = nil
-            end
-        elseif t[k] == v then
-            t[k] = nil
-        end
-    end
-    return t
-end
 NugRunning.RemoveDefaults = RemoveDefaults
-
-local function RemoveDefaultsPreserve(t, defaults)
-    if not defaults then return end
-    for k, v in pairs(defaults) do
-        if type(t[k]) == 'table' and type(v) == 'table' then
-            RemoveDefaultsPreserve(t[k], v)
-            if next(t[k]) == nil then
-                t[k] = nil
-            end
-        elseif t[k] == nil and v ~= nil then
-            t[k] = "__REMOVED__"
-        elseif t[k] == v then
-            t[k] = nil
-        end
-    end
-    return t
-end
 NugRunning.RemoveDefaultsPreserve = RemoveDefaultsPreserve
-
-local function MergeTable(t1, t2)
-    if not t2 then return false end
-    for k,v in pairs(t2) do
-        if type(v) == "table" then
-            if t1[k] == nil then
-                t1[k] = CopyTable(v)
-            else
-                MergeTable(t1[k], v)
-            end
-        elseif v == "__REMOVED__" then
-            t1[k] = nil
-        else
-            t1[k] = v
-        end
-    end
-    return t1
-end
 NugRunning.MergeTable = MergeTable
 
 
@@ -2104,7 +2043,7 @@ function NugRunning:CreateAnchor(name, opts)
 
     local label = f:CreateFontString(nil,"ARTWORK")
     label:SetFontObject("GameFontNormal")
-    label:SetText("DRAG ->")
+    label:SetText(string.format("%s ->", name))
     label:SetPoint("RIGHT", f, "LEFT", 0,0)
 
     if not NRunDB.anchors[name] then
@@ -2134,6 +2073,17 @@ function NugRunning:CreateAnchor(name, opts)
 end
 
 
+
+function NugRunning.UnitAffiliationCheck(unit, affiliation)
+    if not affiliation then return unit == "player" end
+    if unit == "player" then return true end
+    if not unit then return affiliation == AFFILIATION_OUTSIDER end
+    if affiliation == AFFILIATION_OUTSIDER then return true end
+    if string_sub(unit, 1, 4) == "raid" then return affiliation == AFFILIATION_PARTY_OR_RAID end
+    if string_sub(unit, 1, 5) == "party" then return affiliation == AFFILIATION_PARTY_OR_RAID end
+end
+local UnitAffiliationCheck = NugRunning.UnitAffiliationCheck
+
 do
     -- It updates timers with UnitAura data on UNIT_AURA and PLAYER_TARGET_CHANGED events
     -- At this point this piece already became very important,
@@ -2142,7 +2092,7 @@ do
     local targetTimers = {}
 
     local h = CreateFrame("Frame")
-    local hUnits = {
+    local scanUnits = {
         ["player"] = 0,
         ["target"] = 1,
         ["focus"] = 2,
@@ -2157,40 +2107,19 @@ do
     }
     for i=1,30 do
         local npUnit = "nameplate"..i
-        hUnits[npUnit] = 2
+        scanUnits[npUnit] = 2
     end
 
-    local function UnitAffiliationCheck(unit, affiliation)
-        if not affiliation then return unit == "player" end
-        if unit == "player" then return true end
-        if not unit then return affiliation == AFFILIATION_OUTSIDER end
-        if affiliation == AFFILIATION_OUTSIDER then return true end
-        if string.find(unit, "raid") then return affiliation == AFFILIATION_PARTY_OR_RAID end
-        if string.find(unit, "party") then return affiliation == AFFILIATION_PARTY_OR_RAID end
-    end
-    NugRunning.UnitAffiliationCheck = UnitAffiliationCheck
-
-    local last_taget_update = 0
     local present_spells = {}
     local function UpdateUnitAuras(unit)
-            local up = hUnits[unit]
+            local unitPrio = scanUnits[unit]
             local unitGUID = UnitGUID(unit)
-            if not timersByGUIDCounter[unitGUID] and not up then return end
+            if not timersByGUIDCounter[unitGUID] and not unitPrio then return end
 
-            if up == 2 and UnitGUID("target") == unitGUID then return end
+            if unitPrio == 2 and UnitIsUnit(unit, "target") then return end -- Skip double checks on target
 
             local now = GetTime()
-            -- if up == 1 then --throttle target updates
-                -- if now - last_taget_update < 200 then return end
-            -- end
 
-            -- for timer in pairs(active) do
-            --     if  timer.dstGUID == unitGUID and
-            --         (timer.timerType == "BUFF" or timer.timerType == "DEBUFF")
-            --     then
-            --             NugRunning:SetUnitAuraValues(timer, timer.spellID, UnitAura(unit, GetSpellInfo(timer.spellID), nil, timer.filter))
-            --     end
-            -- end
             table_wipe(present_spells)
 
             for _, filter in ipairs(filters) do
@@ -2240,6 +2169,9 @@ do
             -- updating timers from target unit when possible
             local targetGUID = UnitGUID("target")
             if not targetGUID then return end
+
+            -- Here it at the same time finds all timers active for the current target
+            -- And removes all single target timers that became invalid after switching to a new target
             table_wipe(targetTimers)
             for timer in pairs(active) do
                 if timer.dstGUID == targetGUID then
