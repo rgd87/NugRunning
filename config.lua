@@ -389,7 +389,7 @@ EventTimer({ spellID = 194249, event = "SPELL_AURA_REMOVED", name = "VoidBoltCle
         local voidbolt_timer = NugRunning:FindActiveTimer(205448, UnitGUID("player"), "COOLDOWN")
         if voidbolt_timer then
             voidbolt_timer.isGhost = true
-            NugRunning.GhostExpire(voidbolt_timer)
+            voidbolt_timer:GhostExpire()
         end
     end})
 
