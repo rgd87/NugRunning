@@ -31,6 +31,7 @@ local event_timers = config.event_timers
 local nameplates
 local MAX_TIMERS = 20
 local check_event_timers
+local UpdateUnitAuras
 local playerGUID
 local alltimers = {}
 local timersByGUID = {}
@@ -270,7 +271,8 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
 
 
     NugRunning:RegisterEvent("PLAYER_TARGET_CHANGED")
-    -- NugRunning:RegisterEvent("UNIT_AURA")
+    NugRunning:RegisterEvent("UNIT_AURA")
+    if not isClassic then NugRunning:RegisterEvent("UPDATE_MOUSEOVER_UNIT") end
 
 
     if NRunDB.cooldownsEnabled then
@@ -1510,7 +1512,21 @@ function NugRunning:PreGhost()
     end
 end
 
-function NugRunning.PLAYER_TARGET_CHANGED(self)
+function NugRunning:UNIT_AURA(event, unit)
+    UpdateUnitAuras(unit)
+end
+
+function NugRunning:UPDATE_MOUSEOVER_UNIT()
+    if UnitExists("mouseover") then
+        UpdateUnitAuras("mouseover")
+    end
+end
+
+function NugRunning:PLAYER_TARGET_CHANGED()
+    if not isClassic then
+        NugRunning:CancelSingleTargetTimers()
+    end
+    UpdateUnitAuras("target")
     if NRunDB.preghost then self:PreGhost() end
     self:ArrangeTimers()
 end
@@ -2089,9 +2105,7 @@ do
     -- At this point this piece already became very important,
     -- and also i can abandon hope that blizzard will fix combat log refresh someday.
     local filters = { harmful, helpful }
-    local targetTimers = {}
 
-    local h = CreateFrame("Frame")
     local scanUnits = {
         ["player"] = 0,
         ["target"] = 1,
@@ -2111,7 +2125,7 @@ do
     end
 
     local present_spells = {}
-    local function UpdateUnitAuras(unit)
+    function NugRunning.UpdateUnitAuras(unit)
             local unitPrio = scanUnits[unit]
             local unitGUID = UnitGUID(unit)
             if not timersByGUIDCounter[unitGUID] and not unitPrio then return end
@@ -2158,75 +2172,22 @@ do
                 end
             end
     end
-    NugRunning.UpdateUnitAuras = UpdateUnitAuras
+    UpdateUnitAuras = NugRunning.UpdateUnitAuras -- init upvalue
+end
 
-    function NugRunning.OnAuraEvent(self, event, unit)
-        if event == "UNIT_AURA" then
-            return UpdateUnitAuras(unit)
-        elseif event == "UPDATE_MOUSEOVER_UNIT" then
-            return UnitExists("mouseover") and UpdateUnitAuras("mouseover")
-        elseif event == "PLAYER_TARGET_CHANGED" then
-            -- updating timers from target unit when possible
-            local targetGUID = UnitGUID("target")
-            if not targetGUID then return end
+function NugRunning:CancelSingleTargetTimers()
+    local targetGUID = UnitGUID("target")
+    if not targetGUID then return end
 
-            -- Here it at the same time finds all timers active for the current target
-            -- And removes all single target timers that became invalid after switching to a new target
-            table_wipe(targetTimers)
-            for timer in pairs(active) do
-                if timer.dstGUID == targetGUID then
-                    -- if (timer.srcGUID == playerGUID or timer.opts.affiliation) then
-                        table.insert(targetTimers, timer)
-                    -- end
-                else
-                    if timer.opts.singleTarget then
-                        timer.isGhost = true
-                        timer.expiredGhost = true
-                        timer:Release()
-                        timer.isGhost = nil
-                        timer.expiredGhost = nil
-                    end
-                end
-            end
-
-            for _, filter in ipairs(filters) do
-                for i=1,100 do
-                    local name, _, count, _, duration, expirationTime, caster, _,_, aura_spellID = UnitAura("target", i, filter)
-                    if not name then break end
-
-                    local opts = spells[aura_spellID]
-                    if opts and UnitAffiliationCheck(caster, opts.affiliation) then
-                        if opts.target and opts.target ~= "target" then return end
-                        local found, timerType
-                        -- searching in generated earlier table of player->target timers for matching spell
-                        for _, timer in ipairs(targetTimers) do
-                            if  timer.spellID == aura_spellID then
-                                found = true
-                                timerType = timer.timerType
-                                break
-                            end
-                        end
-                        local newtimer
-                        if duration == 0 then duration = -1 end
-                        if found then
-                            newtimer = NugRunning:RefreshTimer(playerGUID, targetGUID, UnitName("target"), nil, aura_spellID, name, spells[aura_spellID], timerType, duration, count, true)
-                        else
-                            timerType = filter == "HELPFUL" and "BUFF" or "DEBUFF"
-                            newtimer = NugRunning:ActivateTimer(playerGUID, targetGUID, UnitName("target"), nil, aura_spellID, name, spells[aura_spellID], timerType, duration, count, true)
-                        end
-                        if newtimer and not newtimer.timeless then newtimer:SetTime( expirationTime - duration, expirationTime, newtimer.fixedoffset) end
-                        if newtimer and newtimer.opts.maxtimers then
-                            newtimer._touched = GetTime()
-                        end
-                    end
-                end
-            end
+    for timer in pairs(active) do
+        if timer.dstGUID ~= targetGUID and timer.opts.singleTarget then
+            timer.isGhost = true
+            timer.expiredGhost = true
+            timer:Release()
+            timer.isGhost = nil
+            timer.expiredGhost = nil
         end
     end
-    h:SetScript("OnEvent", NugRunning.OnAuraEvent)
-    h:RegisterEvent("UNIT_AURA")
-    h:RegisterEvent("UPDATE_MOUSEOVER_UNIT")
-    h:RegisterEvent("PLAYER_TARGET_CHANGED")
 end
 
 
