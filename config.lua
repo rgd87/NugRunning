@@ -1065,7 +1065,7 @@ local normalized_length = 8
 -- Spell( 200652 ,{ name = "Tyr's Deliverance", duration = 10, color = colors.DBLUE })
 -- Spell( 209202 ,{ name = "Eye of Tyr", duration = 9, maxtimers = 1, color = colors.DBLUE })
 
-Spell( 205191 ,{ name = "Eye for an Eye", duration = 10, group = "buffs", color = colors.LRED })
+Spell( 205191 ,{ name = "Eye for an Eye", duration = 10, group = "buffs", color = colors.DTEAL })
 Spell( 184662 ,{ name = "Shield of Vengeance", duration = 15, group = "buffs", color = colors.GOLD })
 
 
@@ -1080,13 +1080,15 @@ Cooldown( 267798 ,{ name = "Execution Sentence", ghost = true, color = colors.DP
 
 
 --Spell( 53657 ,{ name = "Judgements of the Pure", short = "JotP", duration = 100500, color = colors.LBLUE })
-Spell( 31884 ,{ name = "Avenging Wrath",duration = 20, group = "buffs", color = colors.PURPLE2 })
+Spell( 31884 ,{ name = "Avenging Wrath",duration = 20, group = "buffs", color = colors.LRED, effect = "JUDGEMENT" })
+Spell( 216331 ,{ name = "Avenging Crusader",duration = 20, group = "buffs", color = colors.LRED, effect = "JUDGEMENT" })
 Spell( 498 ,{ name = "Divine Protection",duration = 10, group = "buffs", color = colors.BLACK })
 Spell( 642 ,{ name = "Divine Shield",duration = 8, group = "buffs", color = colors.BLACK })
 Spell( 31850,{ name = "Ardent Defender", duration = 10, color = colors.BLACK, group = "buffs"})
 Spell( 86659,{ name = "Guardian", duration = 8, color = colors.BLACK, group = "buffs"})
-Spell( 31821,{ name = "Devotion Aura", duration = 6, target = "player", color = colors.GOLD, group = "buffs"})
+Spell( 31821,{ name = "Aura Mastery", duration = 6, target = "player", color = colors.GOLD, group = "buffs"})
 Spell( 1022 ,{ name = "Blessing of Protection",duration = 10, short = "Protection", color = colors.WOO2, group = "buffs" })
+Spell( 204018,{ name = "Blessing of Spellwarding",duration = 10, short = "Spellwarding", color = colors.WOO2, group = "buffs" })
 Spell( 1044 ,{ name = "Blessing of Freedom",duration = 6, short = "Freedom", color = colors.BROWN, group = "buffs", scale = 0.8 })
 
 
@@ -1103,6 +1105,8 @@ Spell( 183218 ,{ name = "Hand of Hindrance", duration = 10, short = "Hindrance",
 
 Cooldown( 20473 ,{ name = "Holy Shock", ghost = true, priority = 9, fixedlen = normalized_length, color = colors.WOO })
 
+Spell( 326733 ,{ name = "Empyrean Power", scale = 0.8, priority = 15, glowtime = 15, color = colors.PINK, duration = 15 })
+
 Cooldown( 184575 ,{ name = "Blade of Justice", tickshine = true, ghost = true, priority = 9, fixedlen = normalized_length, color = colors.WOO, ghosteffect = "NIGHTBORNE" })
 Cooldown( 35395 ,{ name = "Crusader Strike", tick = 1.5, tickshine = true, overlay = {"tick", "end"}, ghost = true, short = "", priority = 10, fixedlen = normalized_length, color = colors.CURSE, stackcolor = { colors.CURSE, colors.DPURPLE2 } })
 Cooldown( 204019 ,{ name = "Blessed Hammer", short = "", ghost = true, ghosteffect = "AEGWYNN", priority = 10, fixedlen = normalized_length, color = colors.CURSE, stackcolor = {colors.CURSE, colors.CURSE, colors.DPURPLE2 } })
@@ -1117,7 +1121,6 @@ Cooldown( 24275 ,{ name = "Hammer of Wrath", color = colors.TEAL2, fixedlen = no
 Cooldown( 31935 ,{ name = "Avenger's Shield", resetable = true, fixedlen = normalized_length, priority = 5, scale = 1, ghosteffect = "NIGHTBORNE", color = colors.TEAL, ghost = true })
 
 Spell( 132403 ,{ name = "Shield of the Righteous", short = "Shield", group = "buffs", duration = 3, priority = -15, scale = 1, glowtime = 1, arrow = colors.PINK2, color = colors.PINK3 })
-Cooldown( 53600 ,{ name = "Shield of the Righteous", ghost = true, color = colors.PURPLE3, ghosteffect = "NIGHTBORNE", group = "buffs", scale = 0.5, priority = -100 })
 -- Spell( 132403 ,{ name = "Shield of the Righteous", short = "SotR", duration = 3, priority = 10, color = colors.DPURPLE })
 
 --Spell( 94686 ,{ name = "Crusader", duration = 15 })
@@ -1138,7 +1141,7 @@ Spell( 157048 ,{ name = "Final Verdict", duration = 30, color = colors.DPURPLE, 
 
 
 Spell( 105421 ,{ name = "Blinding Light", duration = 6, maxtimers = 1 })
-Spell( 105809 ,{ name = "Holy Avenger", color = colors.GOLD, group = "buffs",  duration = 20 })
+Spell( 105809 ,{ name = "Holy Avenger", color = colors.GOLD, group = "buffs", effect = "JUDGEMENT", duration = 20 })
 Cooldown( 114165 ,{ name = "Holy Prism", color = colors.BLACK })
 end
 
