@@ -317,6 +317,7 @@ DotSpell( 204213 ,{ name = "Purge the Wicked", short = "", preghost = true, dura
 DotSpell( 589 ,{ name = "Shadow Word: Pain", short = "", preghost = true, duration = 16, ghost = true, nameplates = true, fixedlen = 16, priority = 9, color =colors.PURPLE,
                 isknowncheck = function() return IsPlayerSpell(589) and not IsPlayerSpell(204197) end, })
 DotSpell( 34914 ,{ name = "Vampiric Touch", short = "", preghost = true, ghost = true, nameplates = true, fixedlen = 21, priority = 10, duration = 21, color = colors.RED,  })
+DotSpell( 335467 ,{ name = "Devouring Plague", short = "", shine = true, duration = 6, ghost = 1, nameplates = true, priority = 8.5, color = colors.WOO })
 
 -- Cooldown( 228260,{ name = "Void Eruption", color = colors.REJUV, ghost = 6, isknowncheck = function() end })
 Activation( 228260, { instantGhost = true, name = "Void Eruption", duration = 5, group = "buffs", priority = -100, effect = "JUDGEMENT", ghost = 2 })
@@ -333,7 +334,8 @@ Spell( 123254, { name = "Twist of Fate", duration = 10, group = "buffs", priorit
 Spell( 10060, { name = "Power Infusion", duration = 20, group = "buffs", color = colors.TEAL3 })
 Cooldown( 10060, { name = "Power Infusion", color = colors.DBROWN, scale_until = 10, })
 -- Spell( 205372, { name = "Void Ray", duration = 6, group = "buffs", priority = -20, scale = 0.5, color = colors.PINK3 })
-Spell( 194249 ,{ name = "Voidform", duration = 1, timeless = true, priority = -20, scale = 0.8, group = "buffs", shine = true, color = colors.DPURPLE })
+Spell( 194249 ,{ name = "Voidform", duration = 1, arrow = colors.REJUV, priority = -20, scale = 0.8, group = "buffs", shine = true, color = colors.PINK3 })
+Spell( 319952 ,{ name = "Surrender to Madness", short = "STM", duration = 25, arrow = colors.CURSE, priority = -21, group = "buffs", shine = true, color = colors.PURPLE4, target = "player" })
 
 -- Spell( 47753 ,{ name = "Divine Aegis", duration = 12 })
 
@@ -344,6 +346,7 @@ Spell( 124430,{ name = "Shadowy Insight", duration = 12, color = colors.BLACK })
 Spell( 9484 ,{ name = "Shackle Undead",duration = 50, pvpduration = 8, short = "Shackle" })
 Spell( 15487 ,{ name = "Silence",duration = 5, color = colors.PINK })
 
+Spell( 322098 ,{ name = "Death and Madness", duration = 7, scale = 0.6, color = colors.DPURPLE })
 Spell( 64044 ,{ name = "Psychic Horror", duration = 3, pvpduration = 4 })
 Spell( 8122 ,{ name = "Psychic Scream", duration = 8, maxtimers = 1 })
 Spell( 205369,{ name = "Mind Bomb", duration = 4, maxtimers = 1 })
