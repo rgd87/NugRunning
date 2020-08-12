@@ -943,6 +943,7 @@ Spell( 81340 ,{ name = "Sudden Doom", shine = true, duration = 10, color = color
 Spell( 91800 ,{ name = "Gnaw", duration = 3, color = colors.RED })
 Spell( 91797 ,{ name = "Monstrous Blow", duration = 4, color = colors.RED, short = "Gnaw" })
 Spell( 48707 ,{ name = "Anti-Magic Shell", duration = 5, short = "Shell", color = colors.LGREEN })
+EventTimer({ event = "SPELL_CAST_SUCCESS", spellID = 51052, name = "Anti-Magic Zone", duration = 10, color = colors.WOO2DARK, shine = true })
 
 -- Spell( 116888 ,{ name = "Purgatory", color = colors.LGREEN, duration = 3, shine = true })
 Spell( {221562, 108194} ,{ name = "Asphyxiate", color = colors.PINK, duration = 5 })
@@ -1318,8 +1319,6 @@ if class == "DEMONHUNTER" then
     Cooldown( 258920,{ name = "Immolation Aura", color = colors.PINKIERED, scale_until = 5, ghosteffect = "JUDGEMENT", priority = -1 })
 
     -- vengeance
-    Spell( 178740,{ name = "Immolation Aura", color = colors.TEAL3, scale = 0.6, group = "buffs", priority = 6, duration = 6 })
-    Cooldown( 178740,{ name = "Immolation Aura", color = colors.PINKIERED, scale = 0.9 })
     Spell( 207744,{ name = "Fiery Brand",  duration = 8, shine = true, group = "buffs", color = colors.RED })
     Spell( 203819,{ name = "Demon Spikes", ghost = 1, arrow = colors.PINK3, glow2time = 1, color = colors.PINK3, shine = true, group = "buffs", priority = - 9, duration = 6 })
 
