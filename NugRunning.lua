@@ -396,6 +396,7 @@ function NugRunning.COMBAT_LOG_EVENT_UNFILTERED( self, event )
                 local affiliationStatus = (bit_band(srcFlags, AFFILIATION_MINE) == AFFILIATION_MINE)
                 if affiliationStatus or (opts.affiliation and bit_band(srcFlags, COMBATLOG_OBJECT_AFFILIATION_MASK) <= opts.affiliation ) then
                     -- if spellID == opts.spellID then
+                        if dstGUID == "" then dstGUID = srcGUID end
                         if opts.action and not opts.disabled then
                             opts.action(active, srcGUID, dstGUID, spellID, auraType) --  auraType = damage amount for SPELL_DAMAGE
                         else

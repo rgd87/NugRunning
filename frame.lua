@@ -189,6 +189,15 @@ function TimerBar.SetCharge(self,val)
     if self.opts.stackcolor then
         self:SetColor(unpack(self.opts.stackcolor[val]))
     end
+    if self.opts.glowstack then
+        if self.glow then
+            if val >= self.opts.glowstack then
+                if not self.glow:IsPlaying() then self.glow:Play() end
+            else
+                self.glow:Stop()
+            end
+        end
+    end
 end
 
 
