@@ -1148,7 +1148,6 @@ Interrupt(106839, "Skull Bash", 4)
 
 Spell( 209749 ,{ name = "Faerie Swarm", duration = 8, color = colors.TEAL3 })
 Spell( 236696 ,{ name = "Thors", duration = 12, scale = 0.5, group = "buffs", shine = true, color = colors.DBROWN })
-Spell( 209753 ,{ name = "Cyclone", duration = 6, color = colors.PURPLE4 })
 
 Spell( 2637 ,{ name = "Hibernate", duration = 40, color = colors.DBROWN })
 
@@ -1165,10 +1164,11 @@ Spell( 339 ,{ name = "Entangling Roots",duration = 30 })
 Spell( 22842 ,{ name = "Frenzied Regeneration", duration = 5, color = colors.TEAL3, group = "buffs", shine = true })
 -- Spell( 113746 ,{ name = "Weakened Armor", short = "WeakArmor", priority = -10, affiliation = "any", singleTarget = true, color = colors.BROWN, duration = 30 })
 
--- Spell( 48517 ,{ name = "Solar Eclipse", timeless = true, duration = 0.1, short = "Solar", color = colors.ORANGE }) -- Wrath boost
--- Spell( 48518 ,{ name = "Lunar Eclipse", timeless = true, duration = 0.1, short = "Lunar", color = colors.LBLUE }) -- Starfire boost
+Spell( 48517 ,{ name = "Solar Eclipse", group = "buffs", duration = 10, shine = true, priority = -25, short = "Solar", color = colors.ORANGE }) -- Wrath boost
+Spell( 48518 ,{ name = "Lunar Eclipse", group = "buffs", duration = 10, shine = true, priority = -24, short = "Lunar", color = colors.LBLUE }) -- Starfire boost
+
 Spell( 78675,{ name = "Solar Beam", duration = 10, color = colors.GOLD, target = "player" })
-Spell( 33786 ,{ name = "Cyclone", duration = 6 })
+Spell( 33786 ,{ name = "Cyclone", shine = true, color = colors.BLACK, overlay = {0, "gcd"}, duration = 6 })
 DotSpell( 164812 ,{ name = "Moonfire", duration = 16, preghost = true, nameplates = true, priority = 10, ghost = true, color = colors.PURPLE,
         init = function(self)
             local duration = 16
@@ -1186,8 +1186,8 @@ DotSpell( 164812 ,{ name = "Moonfire", duration = 16, preghost = true, nameplate
         end,
         isknowncheck = function() return GetSpecialization() == 1 end
         })
-Spell( 164547 ,{ name = "Lunar Empowerment", short = "", group = "buffs", priority = -25, duration = 30, scale = 0.8, ghost = true, color = colors.REJUV, charged = true, maxcharge = 3})
-Spell( 164545 ,{ name = "Solar Empowerment", short = "", group = "buffs", priority = -24, duration = 30, scale = 0.8, ghost = true, color = colors.ORANGE2, charged = true, maxcharge = 3})
+-- Spell( 164547 ,{ name = "Lunar Empowerment", short = "", group = "buffs", priority = -25, duration = 30, scale = 0.8, ghost = true, color = colors.REJUV, charged = true, maxcharge = 3})
+-- Spell( 164545 ,{ name = "Solar Empowerment", short = "", group = "buffs", priority = -24, duration = 30, scale = 0.8, ghost = true, color = colors.ORANGE2, charged = true, maxcharge = 3})
 DotSpell( 164815 ,{ name = "Sunfire",duration = 12, preghost = true, nameplates = true, priority = 9, ghost = true, color = colors.ORANGE, maxtimers = 1,
         init = function(self)
             local duration = 12
@@ -1207,7 +1207,7 @@ Spell( 213708,{ name = "Galactic Guardian", shine = true, priority = 12, duratio
 
 Spell( 192081, { name = "Ironfur", priority = -10, group = "buffs", shine = true, glowtime = 1, ghost = 1, color = colors.PINK3, duration = 7 })
 
-Spell( 158792 ,{ name = "Pulverize",duration = 10, ghost = true, color = colors.WOO2 })
+Spell( 80313 ,{ name = "Pulverize",duration = 10, ghost = true, color = colors.WOO2 })
 Spell( 155835 ,{ name = "Bristling Fur",duration = 3, color = colors.WOO2 })
 
 Spell( 106951 ,{ name = "Berserk", duration = 15, shine = true, color = colors.TEAL2, group = "buffs" })
