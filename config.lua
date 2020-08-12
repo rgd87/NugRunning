@@ -477,7 +477,7 @@ Spell( 2983  ,{ name = "Sprint", group = "buffs", shine = true, duration = 8 })
 Spell( 5277  ,{ name = "Evasion", group = "buffs", color = colors.PINK, duration = 15 })
 Spell( 31224 ,{ name = "Cloak of Shadows", group = "buffs", color = colors.CURSE, duration = 5 })
 Spell( 185311 ,{ name = "Crimson Vial", group ="buffs", shine = true, color = colors.LGREEN ,duration = 6 })
-DotSpell( 5171  ,{ name = "Slice and Dice", shinerefresh = true, duration = 36, overlay = {0, 36*0.3, 0.2}, short = "SnD", color = colors.PURPLE,
+DotSpell( 315496 ,{ name = "Slice and Dice", shinerefresh = true, duration = 36, overlay = {0, 36*0.3, 0.2}, short = "SnD", color = colors.PURPLE,
     init = function(self)
         self.overlay[2] = IsPlayerSpell(193531) and 42*0.3 or 36*0.3 --Deeper Stratagem
         -- self.recast_mark = self.overlay[2]
@@ -519,7 +519,7 @@ Spell( 195452  ,{ name = "", ghost = true, nameplates = true, shinerefresh = tru
 -- Spell( 200803 ,{ name = "Agonizing Poison", color = { 192/255, 77/255, 48/255}, duration = 12, short = "Agonizing" })
 --Spell( 3409 ,{ name = "Crippling Poison", color = { 192/255, 77/255, 48/255}, duration = 12, short = "Crippling" })
 
-Spell( 32645 ,{ name = "Envenom", color = colors.DTEAL, priority = -1, group = "buffs", duration = function() return (1+GetCP()) end })
+Spell( 32645 ,{ name = "Envenom", color = colors.DTEAL, priority = -1, group = "buffs", target = "player", duration = function() return (1+GetCP()) end })
 Spell( 79140 ,{ name = "Vendetta", shine = true, group = "buffs", color = colors.PINK3, duration = 20 })
 Cooldown( 79140 ,{ name = "Vendetta", color = colors.DPURPLE2, effect = "BLOODBOIL", effecttime = 1.5, ghost = 3, scale_until = 10 })
 Cooldown( 703 ,{ name = "Garrote", short = "", ghost = 3, ghosteffect = "MAGICCAST", color = colors.PURPLE4, color2 = colors.PINK, scale = 0.75, priority = -20, resetable = true })
