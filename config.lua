@@ -580,13 +580,18 @@ Spell( 199085 ,{ name = "Warpath", color = colors.DRED, duration = 3, maxtimers 
 Cooldown( 198912 ,{ name = "Shield Bash", priority = 10, fixedlen = 9, scale = .8, ghost = true, color = colors.TEAL3, resetable = true, ghosteffect = "AEGWYNN" })
 Spell( 236077 ,{ name = "Disarm", color = colors.DBROWN, duration = 4, scale = 0.6, shine = true })
 
+Spell( 23920 ,{ name = "Spell Reflect", color = colors.LBLUE, group = "buffs", arrow = colors.LBLUE, duration = 5, scale = 0.75, shine = true })
+
 
 Spell( 213858 ,{ name = "Battle Trance", color = colors.LGREEN, group = "buffs", duration = 18, shine = true })
 Spell( 199261 ,{ name = "Death Wish", color = colors.PINKIERED, group = "buffs", duration = 15, shine = true, shinerefresh = true, priority = -100, arrow = colors.PINKIERED, glow2time = 3 })
 
 Spell( 215562 ,{ name = "War Machine", priority = -1, color = colors.RED2, shine = true, shinerefresh = true, duration = 10, group = "buffs" })
 
-Spell( 85739 ,{ name = "Whirlwind", short = "", glowtime = 20, group = "buffs", priority = -100503, color = colors.TEAL2, shine = true, scale = 0.8, duration = 20, charged = true, maxcharge = 2 })
+Spell( 85739 ,{ name = "Whirlwind", short = "", glowtime = 20, group = "buffs", priority = -100503, color = colors.TEAL2, shine = true, scale = 0.8, duration = 20, charged = true, maxcharge = 2,
+    init = function(self)
+        self.maxcharge = IsPlayerSpell(280392) and 4 or 2
+    end })
 -- Spell( 6673 ,{ name = "Battle Shout", target = "player", glowtime = 10, priority = -10, color = colors.DPURPLE, duration = 120 })
 -- Spell( 469 ,{ name = "Commanding Shout", target = "player", priority = -10, glowtime = 10, short = "CommShout", color = colors.DPURPLE, duration = 120 })
 Spell( 132404 ,{ name = "Shield Block", color = colors.WOO2, shine = true, group = "buffs", priority = - 9, duration = 6, arrow = colors.LGREEN })
@@ -639,7 +644,8 @@ Cooldown( 46968 ,{ name = "Shockwave", fixedlen = 9, ghost = 3, priority = 2, co
 Cooldown( 107570 ,{ name = "Storm Bolt", fixedlen = 9, ghost = 3, priority = 2, color = colors.DBLUE, scale_until = 9 })
 --but shockwave still needs to be used on cooldown
 --old enrage Spell( 85288, { name = "Enraged", shine = true, showid = 14202, color = colors.RED, duration = 10 })
-Spell( 184362,{ name = "Enrage", color = colors.PURPLE4, shine = true, shinerefresh = true, scale = 0.6, group = "buffs", specmask = SPECS(2), priority = 1, duration = 4 })
+Spell( 184362,{ name = "Enrage", color = colors.PURPLE4, shine = true, shinerefresh = true, scale = 0.8, group = "buffs", specmask = SPECS(2), priority = 1, duration = 4 })
+Spell( 335082,{ name = "Frenzy", color = colors.DPURPLE, scale = 0.5, group = "buffs", priority = 2, duration = 12 })
 -- Spell( 215572,{ name = "Frothing Berserker", short = "Frothing", color = colors.DRED, group = "buffs", priority = 2, scale = 0.6, shine = true, shinerefresh = true, duration = 6 })
 
 Cooldown( 845 ,{ name = "Cleave", priority = 8, color = colors.TEAL3, fixedlen = 9, ghost = true, scale = 0.75 })
@@ -662,7 +668,6 @@ Spell( 184367 ,{ name = "Rampage", shine = true, color = colors.DPURPLE, color2 
 Spell( 1719 ,{ name = "Recklessness", color = colors.REJUV, scale = 0.7, shine = true, group = "buffs", duration = 10})
 Cooldown( 1719 ,{ name = "Recklessness", color = colors.REJUV, scale_until = 10, shine = true, ghost = 4, ghosteffect = "AEGWYNN", priority = -20 })
 -- Cooldown( 107570, { name = "Storm Bolt", color = colors.TEAL2 })
-Spell( 274818 ,{ name = "Bloodbath", priority = -8, group = "buffs", color = colors.PINKIERED, duration = 10, })
 
 -- Spell( 169686, { name = "Exquisite Proficiency", duration = 6, priority = -5, stackcolor = {
 --                                                                             [1] = { .3, 0, 0},
