@@ -1385,7 +1385,7 @@ Spell( 266779,{ name = "Coordinated Assault", duration = 20, fixedlen = 20, grou
 Spell( 199483,{ name = "Camouflage", duration = 60, target = "player", color = colors.CURSE })
 
 --Spell( 77769 ,{ name = "Trap Launcher", shine = true, timeless = true, duration = 0.1, color = colors.CURSE })
---Spell( 53220 ,{ name = "Steady Focus", duration = 10, color = colors.BLACK })
+-- Spell( 193534 ,{ name = "Steady Focus", duration = 10, group = "buffs", scale = 0.8, color = colors.BLACK })
 
 -- Spell( 82925 ,{ name = "Ready, Set, Aim...", short = "", duration = 30, shinerefresh = true, color = colors.LBLUE }) --removed
 -- Spell( 82926 ,{ name = "Aimed Shot!", duration = 10, shine = true, color = colors.WOO2 }) --removed
@@ -1410,7 +1410,7 @@ Spell( 191241,{ name = "Sticky Bomb", duration = 3, shine = true, color = colors
 --Spell( 19306 ,{ name = "Counterattack", duration = 5, color = { 192/255, 77/255, 48/255} })l
 
 -- Surv Ability
-DotSpell( 259491 ,{ name = "Serpent Sting (Surv)", short = "Serpent Sting", duration = 12, color = colors.PURPLE, maxtimers = 1, ghost = true })
+DotSpell( 259491 ,{ name = "Serpent Sting (Surv)", short = "Serpent Sting", duration = 12, color = colors.PURPLE, maxtimers = 3, ghost = true })
 -- MM Talent
 DotSpell( 271788 ,{ name = "Serpent Sting", duration = 12, color = colors.PURPLE, ghost = true })
 Spell( 5116 ,{ name = "Concussive Shot", duration = 6, color = colors.CHILL, init = function(self)self.duration = 4 + Talent(19407) end })
@@ -1423,11 +1423,10 @@ Spell( 259277 ,{ name = "Bloodseeker", duration = 8, color = colors.RED, scale =
 Spell( 3355 ,{ name = "Freezing Trap", duration = 10, pvpduration = 8, color = colors.FROZEN, init = function(self)self.duration = 20 * (1+Talent(19376)*0.1) end })
 
 
-Cooldown( 34026 ,{ name = "Kill Command (MM)", short = "Kill Command", color = colors.CURSE, ghost = true, tick = 1.5, overlay = {"tick", "end"}, short = "", fixedlen = 9, priority = 10, resetable = true })
-Cooldown( 259489 ,{ name = "Kill Command (Surv)", short = "Kill Command", color = colors.CURSE, ghost = true, tick = 1.5, overlay = {"tick", "end"}, short = "", fixedlen = 9, priority = 10, resetable = true })
+Cooldown( 34026 ,{ name = "Kill Command (BM)", short = "Kill Command", color = colors.CURSE, ghost = true, tick = 1.5, overlay = {"tick", "end"}, short = "", ghosteffect = "NIGHTBORNE", fixedlen = 9, priority = 10, resetable = true })
+Cooldown( 259489 ,{ name = "Kill Command (Suv)", short = "Kill Command", color = colors.CURSE, ghost = true, tick = 1.5, overlay = {"tick", "end"}, short = "", ghosteffect = "NIGHTBORNE", resetable = true, fixedlen = 9, priority = 10, resetable = true })
 
--- Cooldown( 53209 ,{ name = "Chimera Shot", color = { 1, 0.2, 1}, ghost = true, short = "", priority = 10, })
--- Cooldown( 53351 ,{ name = "Kill Shot", color = colors.PINKIERED, ghost = true, priority = 9, resetable = true })
+Cooldown( 53351 ,{ name = "Kill Shot", color = colors.PINKIERED, ghost = true, priority = 9, resetable = true })
 
 
 Cooldown( 194599,{ name = "Black Arrow", color = colors.PURPLE, ghost = true, priority = 8 })
@@ -1442,7 +1441,8 @@ Cooldown( 259495,{ name = "Wildfire Bomb", color = colors.WOO, ghost = true, gho
 Cooldown( 257044,{ name = "Rapid Fire", color = colors.PURPLE4, ghost = true, effect = "AEGWYNN", effecttime = 1.5, priority = 5 })
 Cooldown( 212431 ,{ name = "Explosive Shot", color = colors.WOO, effect = "JUDGEMENT", effecttime = 1.5, ghost = true, priority = 3, scale_until = 5 })
 
-Spell( 117526,{ name = "Binding Shot Stun", duration = 5, color = colors.RED, maxtimers = 1 })
+Spell( 117526,{ name = "Binding Shot Root", short = "Root", duration = 8, color = colors.BROWN, maxtimers = 1 })
+Spell( 321469 ,{ name = "Binding Shackles", duration = 8, color = colors.DBROWN })
 
 -- helpers.Cast(257044, {name = "Rapid Fire", scale = 0.5, color = colors.PINKIERED, priority = 10.1 })
 -- helpers.Cast(19434, {name = "Aimed Shot", scale = 0.5, color = colors.PINKIERED, priority = 10.1 })
@@ -1463,7 +1463,7 @@ DotSpell( 185855,{ name = "Lacerate", duration = 12, color = colors.RED, priorit
 
 Spell( 201081,{ name = "Mok'Nathal Tactics", duration = 8, group = "buffs", scale = 0.8, priority = -200, color = colors.PINK3, shine = true, shinerefresh = true })
 
-Spell( 193526,{ name = "Trueshot", duration = 15, group = "buffs", priority = -1, color = colors.TEAL, shine = true })
+Spell( 288613,{ name = "Trueshot", duration = 15, group = "buffs", priority = -1, color = colors.TEAL, shine = true })
 Spell( 186265,{ name = "Aspect of the Turtle", short = "Turtle", group = "buffs", duration = 8, color = colors.BLACK, shine = true })
 Spell( 186289,{ name = "Aspect of the Eagle", short = "Eagle", group = "buffs", duration = 10, color = colors.TEAL, shine = true })
 Spell( 193530,{ name = "Aspect of the Wild", short = "Wild", group = "buffs", duration = 10, color = colors.TEAL, shine = true })
