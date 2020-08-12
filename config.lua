@@ -738,9 +738,8 @@ if class == "MONK" then
 Interrupt(116705, "Spear Hand Strike", 4)
 
 -- [[ ARTIFACTS ]]
--- Spell( 214326 ,{ name = "Exploding Keg", color = colors.DBLUE, shine = true, maxtimers = 1, duration = 3, ghost = true, group = "buffs" })
+Spell( 325153 ,{ name = "Exploding Keg", color = colors.DBLUE, shine = true, maxtimers = 1, duration = 3, ghost = 1, group = "buffs" })
 -- Cooldown( 205320 ,{ name = "Strike of the Windlord", color = colors.DTEAL, scale_until = 10, ghost = true })
-Spell( 115080 ,{ name = "Touch of Death", color = colors.RED2, duration = 8, scale = 0.8, shine = true })
 
 Spell( 233759 ,{ name = "Grapple Weapon", color = colors.DBROWN, duration = 6, scale = 0.6, shine = true })
 Spell( 248646 ,{ name = "Tigereye Brew", color = colors.DBROWN, group = "buffs", duration = 120, scale = 0.5 })
@@ -786,7 +785,7 @@ end
 local BlackoutCombo = 228563
 
 local stagger_pause_opts = { name = "Stagger Pause", group = "buffs", priority = -8, showid = 7812, color = colors.DRED, shine = true, duration = 3}
-EventTimer({ spellID = 115308, event = "SPELL_CAST_SUCCESS",
+EventTimer({ spellID = 322507, event = "SPELL_CAST_SUCCESS",
     action = function(active, srcGUID, dstGUID, spellID, damage )
         local IsBlackoutComboOn = GetBuff("player", BlackoutCombo)
         if IsBlackoutComboOn then
@@ -796,7 +795,7 @@ EventTimer({ spellID = 115308, event = "SPELL_CAST_SUCCESS",
     end,
  })
 
-
+Spell( 325202 ,{ name = "Dance of Chi-Ji", scale = 0.6, priority = 6, glowtime = 15, color = colors.PURPLE, duration = 15 })
 Spell( 116768 ,{ name = "Blackout Kick", scale = 0.6, priority = 6, glowtime = 15, color = colors.PINK, duration = 15 })
 
 Cooldown( 107428, { name = "Rising Sun Kick",tick = -1, overlay = {"tick", "end", .35}, fixedlen = ww_normalize, short = "Rising Sun", color = colors.CURSE, priority = 10, ghost = 8, resetable = true })
@@ -806,7 +805,10 @@ Cooldown( 115098, { name = "Chi Wave", color = { 29/255, 134/255, 83/255 }, fixe
 Spell( 116095 ,{ name = "Disable", ghost = true, color = colors.PURPLE, duration = 15, pvpduration = 8 })
 Spell( 116706 ,{ name = "Root", color = colors.BROWN, duration = 8 })
 
-Totem(620832, { spellID = 123904, name = "Xuen", group = "buffs", duration = 20, priority = -8, color = colors.CHILL })
+Totem(620832, { spellID = 123904, name = "Xuen", group = "buffs", duration = 24, priority = -8, color = colors.CHILL })
+Totem(608951, { spellID = 132578, name = "Niuzao", group = "buffs", duration = 25, priority = -8, color = colors.DBROWN })
+Totem(574571, { spellID = 322118, name = "Yu'lon", group = "buffs", duration = 25, priority = -8, color = colors.TEAL2 })
+-- Totem(877514, { spellID = 325197, name = "Chi-Ji", group = "buffs", duration = 25, priority = -8, color = colors.TEAL2 })
 
 helpers.Cast(113656, {name = "Fists of Fury", fixedlen = ww_normalize, color = colors.PINK3, priority = 10.1 })
 Cooldown( 113656, { name = "Fists of Fury", fixedlen = ww_normalize, scale_until = 10, effect = "AEGWYNN", effecttime = 3,  color = colors.PINKIERED, priority = 4, ghost = true })
@@ -834,8 +836,8 @@ Spell( 197908 ,{ name = "Mana Tea", priority = -10, group = "buffs", duration = 
 
 Spell( 128939 ,{ name = "Elusive Brew", priority = -10, scale = .8, shinerefresh = true, duration = 30, color = colors.DBROWN, glowstack = 15 })
 Spell( 115308 ,{ name = "Elusive Brew", duration = 15, group = "buffs", shine = true, color = colors.PINKIERED })
--- Spell( 215479, { name = "Ironskin Brew", priority = -10, spark = true, fixedlen = 10, arrow = colors.REJUV, group = "buffs", shine = true, glowtime = 1, glow2time = 2, ghost = 1, color = colors.PINK3, duration = 6, })
-Spell( 215479, { name = "Ironskin Brew", priority = -10, spark = true, fixedlen = 10, arrow = colors.REJUV, group = "buffs", shine = true, glowtime = 1, glow2time = 2, ghost = 5, color = colors.PINK3, duration = 6, })
+Spell( 322507, { name = "Celestial Brew", priority = -15, spark = true, arrow = colors.REJUV, group = "buffs", shine = true, glowtime = 1, ghost = 1, color = colors.TEAL3, duration = 8 })
+Spell( 215479, { name = "Shuffle", priority = -10, spark = true, fixedlen = 10, arrow = colors.REJUV, group = "buffs", shine = true, glowtime = 1, ghost = 5, color = colors.PINK3, duration = 6, })
 Spell( 214373, { name = "Brew-Stache", priority = -9, fixedlen = 10, ghosteffect = "AEGWYNN", arrow = colors.PINK2, group = "buffs", shine = true, ghost = 4, color = colors.REJUV, duration = 4.5, scale = 0.5 })
 
 -- Cooldown( 119381 ,{ name = "Leg Sweep", color = colors.DBLUE, scale_until = 8, fixedlen = 8 })
@@ -847,7 +849,7 @@ Spell( 152173 ,{ name = "Serenity", duration = 10, color = colors.TEAL2, group =
 Cooldown( 287771 ,{ name = "Reverse Harm", priority = 5, color = colors.TEAL3, ghost = true, ghosteffect = "MAGICCAST" })
 
 Spell( 228563 ,{ name = "Blackout Combo", group = "buffs", scale = .8, priority = -1, glowtime = 15, color = colors.PURPLE3, duration = 15 })
-Cooldown( 205523 ,{ name = "Blackout Strike", overlay = {0,1, 0.2}, fixedlen = 8, priority = 9, color = colors.WOO, ghost = true, })
+Cooldown( 205523 ,{ name = "Blackout Kick", overlay = {0,1, 0.2}, fixedlen = 8, priority = 9, color = colors.WOO, ghost = true, })
 Cooldown( 119582 ,{ name = "Purifying Brew", scale = 0.5, color = colors.TEAL3, ghost = 6, ghosteffect = "NIGHTBORNE" })
 Cooldown( 115399 ,{ name = "Black Ox Brew", scale_until = 10, ghosteffect = "AEGWYNN", color = colors.REJUV, ghost = 6, priority = -20 })
 
