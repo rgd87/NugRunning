@@ -143,9 +143,12 @@ Interrupt(132409, "Spell Lock", 6) -- Command Demon after sacrificing Felhunter
 -- Cooldown( 196586 ,{ name = "Dimensional Rift", ghost = true, scale_until = 10, priority = -1, color = colors.PURPLE3 })
 
 
+Spell( 1714 ,{ name = "Curse of Tongues", duration = 30, scale = 0.8, color = colors.CURSE })
+Spell( 702 ,{ name = "Curse of Weakness", duration = 120, scale = 0.8, color = colors.CURSE })
+Spell( 321997 ,{ name = "Curse of Recklessness", duration = 120, scale = 0.8, color = colors.CURSE })
+Spell( 334275 ,{ name = "Curse of Exhaustion", duration = 8, scale = 0.8, color = colors.CURSE })
+
 -- pvp
-Spell( 199890 ,{ name = "Curse of Tongues", duration = 10, scale = 0.8, color = colors.DBROWN })
-Spell( 199892 ,{ name = "Curse of Weakness", duration = 10, scale = 0.8, color = colors.DGREEN })
 Spell( 234877 ,{ name = "Curse of Shadows", duration = 10, scale = 0.8, color = colors.CURSE })
 Spell( 236471 ,{ name = "Soulshatter", duration = 8, group = "buffs", color = colors.PINKIERED })
 Spell( 212295 ,{ name = "Nether Ward", duration = 3, group = "buffs", color = colors.LBLUE })
@@ -157,6 +160,7 @@ Spell( 264571 ,{ name = "Nightfall", duration = 12, priority = 15, scale = 0.75,
 Cooldown( 264106 ,{ name = "Deathbolt", ghost = true, scale_until = 5, color = colors.PURPLE2 })
 Spell( 113860 ,{ name = "Dark Soul: Misery", short = "Dark Soul", group = "buffs", duration = 20, color = colors.CURSE })
 Spell( 113858 ,{ name = "Dark Soul: Instability", short = "Dark Soul", group = "buffs", duration = 20, color = colors.CURSE })
+Spell( 267218 ,{ name = "Nether Portal", group = "buffs", duration = 15, color = colors.CURSE })
 Cooldown( 264119 ,{ name = "Summon Vilefiend", ghost = true, scale_until = 10, color = colors.DBLUE })
 Cooldown( 264057 ,{ name = "Soul Strike", ghost = true, color = colors.DBLUE })
 Cooldown( 196447 ,{ name = "Demonfire", ghost = true, color = colors.DTEAL, scale_until = 8 })
@@ -204,7 +208,7 @@ Cooldown( 17962, { name = "Conflagrate", ghost = true, priority = 5, color = col
 
 Spell( 205146,{ name = "Demonic Calling", group = "buffs", duration = 20, shine = true, shinerefresh = true, scale = 0.5, color = colors.TEAL2 })
 
-Spell( 265412 ,{ name = "Doom", duration = 30, nameplates = true, ghost = true, priority = 6, color = colors.DPURPLE2 })
+DotSpell( 603 ,{ name = "Doom", duration = 17.3, nameplates = true, ghost = true, priority = 6, color = colors.DPURPLE2 })
 
 Spell( 265273 ,{ name = "Demonic Power", group = "buffs", duration = 15, color = colors.WOO2, target = "player" })
 
@@ -220,7 +224,7 @@ Spell( 234153 ,{ name = "Drain Life", tick = 1, overlay = {"tick", "tickend"},  
 local normalize_dots_to = nil--26
 
 --Haunt
-Cooldown( 48181 ,{ name = "Haunt", priority = 8, ghost = true, color = colors.TEAL })
+Spell( 48181 ,{ name = "Haunt", priority = 8, ghost = true, color = colors.TEAL, duration = 18, overlay = {0, 3} })
 
 local creeping_death = function(self)
     local duration = IsPlayerSpell(264000) and self.duration*0.85 or self.duration
@@ -229,11 +233,7 @@ local creeping_death = function(self)
 end
 
 --Unstable Affliction
-Spell( 233490 ,{ name = "", duration = 8, overlay = {0, "gcd"},  priority = 10, nameplates = true, ghost = true, color = colors.PINK2 }) -- first debuff
-Spell( 233496 ,{ name = "", scale = 1, overlay = {0, "gcd"}, scale_until = 3, duration = 8,  priority = 10.1, nameplates = true, ghost = true, color = colors.PINK2 }) -- subsequent applications
-Spell( 233497 ,{ name = "", scale = 0.8, scale_until = 2, duration = 8,  priority = 10.2, nameplates = true, ghost = true, color = colors.PINK2 })
-Spell( 233498 ,{ name = "", scale = 0.8, scale_until = 2, duration = 8,  priority = 10.3, nameplates = true, ghost = true, color = colors.PINK2 })
-Spell( 233499 ,{ name = "", scale = 0.8, scale_until = 2, duration = 8,  priority = 10.4, nameplates = true, ghost = true, color = colors.PINK2 })
+Spell( 316099 ,{ name = "", duration = 16, overlay = {0, 4.8, 0.2}, priority = 10, nameplates = true, ghost = true, color = colors.PINK2, init = creeping_death })
 --Agony
 Spell( 980 ,{ name = "", preghost = 5, duration = 18, recast_mark = 5.4, overlay = {0, 5.4, 0.2},  fixedlen = normalize_dots_to, nameplates = true, _ignore_applied_dose = true, ghost = 6, priority = 6, color = colors.WOO, init = creeping_death })
 --Corruption
