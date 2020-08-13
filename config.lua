@@ -368,7 +368,7 @@ Cooldown( 214621, { name = "Schism", color = colors.PURPLE4, scale_until = 8, gh
 Cooldown( 129250, { name = "PW:Solace", fixedlen = 9,  color = colors.WOO, priority = 7, ghost = true })
 
 Cooldown( 205351, { name = "Shadow Word: Void", short = "Void", priority = 9, fixedlen = priest_normalize, color = colors.CURSE, resetable = true, ghost = true, stackcolor = { colors.CURSE, colors.DPURPLE2 } })
-Cooldown( 8092, { name = "Mind Blast", priority = 9, fixedlen = priest_normalize, overlay = { 0, "gcd", 0.25 },  color = colors.CURSE, resetable = true, ghost = true })
+Cooldown( 8092, { name = "Mind Blast", priority = 9, fixedlen = priest_normalize, overlay = { 0, "gcd", 0.25 }, ghosteffect = "SLICENDICE", color = colors.CURSE, resetable = true, ghost = 7 })
 
 local UnitAura = UnitAura
 local function FindAura(unit, spellID, filter)
@@ -1207,7 +1207,7 @@ DotSpell( 164815 ,{ name = "Sunfire",duration = 12, preghost = true, nameplates 
         end,
         isknowncheck = function() return GetSpecialization() == 1 end }) -- Sunfire button spell id
 -- Spell( 93400 ,{ name = "Shooting Stars", shine = true, duration = 12, color = colors.CURSE })
--- Spell( 48505 ,{ name = "Starfall", shine = true, duration = 10, color = colors.WOO2 })
+Spell( 191034 ,{ name = "Starfall", shine = true, duration = 8, color = colors.WOO2 })
 -- Cooldown( 78674 ,{ name = "Starsurge", resetable = true, priority = 6, ghost = true, color = colors.CURSE })
 Cooldown( 197626 ,{ name = "Starsurge", resetable = true, priority = 6, ghost = true, color = colors.CURSE })
 DotSpell( 202347, { name = "Stellar Flare",duration = 24, priority = 5, ghost = true, color = colors.CHIM })

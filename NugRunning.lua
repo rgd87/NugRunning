@@ -656,7 +656,7 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
             timer.tickPeriod = nil
         end
 
-        local plevel = self:GetPowerLevel()
+        local plevel = self:GetPowerLevel(spellID)
         timer.powerLevel = plevel
         self:UpdateTimerPower(timer, plevel)
     end
@@ -843,7 +843,7 @@ function NugRunning.RefreshTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID,
             timer.tickPeriod = nil
         end
 
-        local plevel = self:GetPowerLevel()
+        local plevel = self:GetPowerLevel(spellID)
         timer.powerLevel = plevel
         self:UpdateTimerPower(timer, plevel)
     end
@@ -1021,7 +1021,7 @@ function NugRunning.SetUnitAuraValues(self, timer, spellNameOrID, name, icon, co
                                 -- else
                                 --     timer.tickPeriod = nil
                                 -- end
-                                local plevel = self:GetPowerLevel()
+                                local plevel = self:GetPowerLevel(aura_spellID)
                                 timer.powerLevel = plevel
                                 self:UpdateTimerPower(timer, plevel)
 
@@ -1534,9 +1534,13 @@ end
 
 
 do
-    local currentPowerLevel = 0
-    function NugRunning:GetPowerLevel()
-        return currentPowerLevel
+    local bleedPowerLevel = 0
+    local ripPowerLevel = 0
+    function NugRunning:GetPowerLevel(spellID)
+        if spellID == 1079 then
+            return ripPowerLevel
+        end
+        return bleedPowerLevel
     end
     function NugRunning:UpdateTimerPower(timer, plevel)
         if timer.powerLevel > plevel then
@@ -1549,27 +1553,33 @@ do
     end
 
     local function UpdatePowerLevel()
-        currentPowerLevel = 0
+        bleedPowerLevel = 0
+        ripPowerLevel = 0
         for i=1, 100 do
             local name, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, nameplateShowPersonal, spellID = UnitAura("player", i, "HELPFUL")
-            if not name then return currentPowerLevel end
+            if not name then return bleedPowerLevel, ripPowerLevel end
             if spellID == 5217 then -- Tiger's fury
-                currentPowerLevel = currentPowerLevel + 15
+                bleedPowerLevel = bleedPowerLevel + 15
+                ripPowerLevel = ripPowerLevel + 15
             elseif spellID == 145152 then -- Bloodtalons
-                currentPowerLevel = currentPowerLevel + 25
+                ripPowerLevel = ripPowerLevel + 25
             end
         end
-        return currentPowerLevel
+        return bleedPowerLevel, ripPowerLevel
     end
 
     local dotpowerFrame = CreateFrame("Frame", nil, UIParent)
     NugRunning.dotpowerFrame = dotpowerFrame
     dotpowerFrame:SetScript("OnEvent", function()
-        local plevel = UpdatePowerLevel()
+        local bleedPowerLevel, ripPowerLevel = UpdatePowerLevel()
         for timer in pairs(active) do
             if timer.opts.showpower and timer.powerLevel and not timer.isGhost then
                 -- timer:SetName(timer.powerLevel)
-                NugRunning:UpdateTimerPower(timer, plevel)
+                if timer.spellID == 1079 then
+                    NugRunning:UpdateTimerPower(timer, ripPowerLevel)
+                else
+                    NugRunning:UpdateTimerPower(timer, bleedPowerLevel)
+                end
             else
                 timer:SetPowerStatus(nil)
             end
