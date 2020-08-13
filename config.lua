@@ -208,7 +208,7 @@ Cooldown( 17962, { name = "Conflagrate", ghost = true, priority = 5, color = col
 
 Spell( 205146,{ name = "Demonic Calling", group = "buffs", duration = 20, shine = true, shinerefresh = true, scale = 0.5, color = colors.TEAL2 })
 
-DotSpell( 603 ,{ name = "Doom", duration = 17.3, nameplates = true, ghost = true, priority = 6, color = colors.DPURPLE2 })
+DotSpell( 603 ,{ name = "Doom", duration = 20, nameplates = true, ghost = true, priority = 6, color = colors.DPURPLE2 })
 
 Spell( 265273 ,{ name = "Demonic Power", group = "buffs", duration = 15, color = colors.WOO2, target = "player" })
 
@@ -619,7 +619,7 @@ Spell( 280776 ,{ name = "Sudden Death", glowtime = 10, effect = "AEGWYNN", prior
 
 -- Spell( 7384 ,{ name = "Overpower", group = "buffs", shine = true, shinerefresh = true, priority = -100501, color = colors.WOO, duration = 15, charged = true, maxcharge = 2, scale = 0.6 })
 Cooldown( 7384,{ name = "Overpower", shine = true, resetable = true, ghost = true, ghosteffect = "JUDGEMENT", color = colors.PURPLE, priority = 7 })
-DotSpell( 772 ,{ name = "Rend", color = colors.RED, duration = 12, ghost = true })
+DotSpell( 772 ,{ name = "Rend", color = colors.RED, duration = 15, ghost = true })
 Spell( 208086 ,{ name = "Colossus Smash", singleTarget = true, shine = true, priority = -100500, color = colors.PURPLE2, duration = 6 }) --debuff
 
 --different versions of spell for arms and fury
@@ -908,7 +908,7 @@ Cooldown( 210764 ,{ name = "Rune Strike", color = colors.TEAL3, ghost = true, sc
 Cooldown( 274156 ,{ name = "Consumption", color = colors.DBLUE, ghost = true, scale_until = 10 }) -- talent
 DotSpell( 55095 ,{ name = "Frost Fever", ghost = true, color = colors.PURPLE, duration = 24, maxtimers = 1, })
 DotSpell( 55078 ,{ name = "Blood Plague", ghost = true, color = colors.PURPLE, priority = 9, maxtimers = 1, duration = 24 })
-Spell( 191587,{ name = "Virulent Plague", ghost = true, color = colors.PURPLE, priority = 9, singleTarget = true, duration = 21 })
+Spell( 191587,{ name = "Virulent Plague", ghost = true, color = colors.PURPLE, priority = 9, singleTarget = true, duration = 27 })
 -- Spell( 43265 ,{ name = "Death and Decay", short = "DnD", color = colors.RED, duration = 10, target = "player" })
 Cooldown( 43265 ,{ name = "Death and Decay", color = colors.PINKIERED, priority = 8, resetable = true, ghost = true, minduration = 11 })
 Cooldown( 152280 ,{ name = "Defile", color = colors.PINKIERED, priority = 8, resetable = true, ghost = true, minduration = 11 })
@@ -1183,7 +1183,7 @@ Spell( 33786 ,{ name = "Cyclone", shine = true, color = colors.BLACK, overlay = 
 DotSpell( 164812 ,{ name = "Moonfire", duration = 16, preghost = true, nameplates = true, priority = 10, ghost = true, color = colors.PURPLE,
         init = function(self)
             local duration = 16
-            if GetSpecialization() == 1 then duration = duration + 6 end -- balance druid thing
+            if GetSpecialization() == 1 then duration = duration + 12 end -- balance druid thing
             self.duration = duration
             self.overlay[2] = duration*0.3
 
@@ -1202,7 +1202,7 @@ DotSpell( 164812 ,{ name = "Moonfire", duration = 16, preghost = true, nameplate
 DotSpell( 164815 ,{ name = "Sunfire",duration = 12, preghost = true, nameplates = true, priority = 9, ghost = true, color = colors.ORANGE, maxtimers = 1,
         init = function(self)
             local duration = 12
-            if GetSpecialization() == 1 then duration = duration + 6 end -- balance druid thing
+            if GetSpecialization() == 1 then duration = duration + 12 end -- balance druid thing
             self.duration = duration
             self.overlay[2] = duration*0.3
         end,
@@ -1417,7 +1417,7 @@ Spell( 191241,{ name = "Sticky Bomb", duration = 3, shine = true, color = colors
 -- Surv Ability
 DotSpell( 259491 ,{ name = "Serpent Sting (Surv)", short = "Serpent Sting", duration = 12, color = colors.PURPLE, maxtimers = 3, ghost = true })
 -- MM Talent
-DotSpell( 271788 ,{ name = "Serpent Sting", duration = 12, color = colors.PURPLE, ghost = true })
+DotSpell( 271788 ,{ name = "Serpent Sting", duration = 18, color = colors.PURPLE, ghost = true })
 Spell( 5116 ,{ name = "Concussive Shot", duration = 6, color = colors.CHILL, init = function(self)self.duration = 4 + Talent(19407) end })
 
 Spell( 24394 ,{ name = "Intimidation", duration = 5, color = colors.RED })
