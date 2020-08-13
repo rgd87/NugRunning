@@ -320,8 +320,6 @@ DotSpell( 34914 ,{ name = "Vampiric Touch", short = "", preghost = true, ghost =
 DotSpell( 335467 ,{ name = "Devouring Plague", short = "", shine = true, duration = 6, ghost = 1, nameplates = true, priority = 8.5, color = colors.WOO })
 
 -- Cooldown( 228260,{ name = "Void Eruption", color = colors.REJUV, ghost = 6, isknowncheck = function() end })
-Activation( 228260, { instantGhost = true, name = "Void Eruption", duration = 5, group = "buffs", priority = -100, effect = "JUDGEMENT", ghost = 2 })
-
 Cooldown( 200174,{ name = "Mindbender", color = colors.PURPLE3, effecttime = 2, effect = "BLOODBOIL", ghost = 6, scale_until = 10 })
 
 -- EventTimer({ event = "SPELL_SUMMON", spellID = 200174, name = "Mindbender", group = "buffs", duration = 15, priority = -10, color = colors.BLACK })
@@ -335,6 +333,7 @@ Spell( 10060, { name = "Power Infusion", duration = 20, group = "buffs", color =
 Cooldown( 10060, { name = "Power Infusion", color = colors.DBROWN, scale_until = 10, })
 -- Spell( 205372, { name = "Void Ray", duration = 6, group = "buffs", priority = -20, scale = 0.5, color = colors.PINK3 })
 Spell( 194249 ,{ name = "Voidform", duration = 1, arrow = colors.REJUV, priority = -20, scale = 0.8, group = "buffs", shine = true, color = colors.PINK3 })
+Cooldown( 228260 ,{ name = "Voidform", color = colors.REJUV, scale_until = 10, shine = true, ghost = 7, ghosteffect = "JUDGEMENT", priority = -20 })
 Spell( 319952 ,{ name = "Surrender to Madness", short = "STM", duration = 25, arrow = colors.CURSE, priority = -21, group = "buffs", shine = true, color = colors.PURPLE4, target = "player" })
 
 -- Spell( 47753 ,{ name = "Divine Aegis", duration = 12 })
@@ -1324,7 +1323,7 @@ if class == "DEMONHUNTER" then
     Cooldown( 258920,{ name = "Immolation Aura", color = colors.PINKIERED, scale_until = 5, ghosteffect = "JUDGEMENT", priority = -1 })
 
     -- vengeance
-    Spell( 207744,{ name = "Fiery Brand",  duration = 8, shine = true, group = "buffs", color = colors.RED })
+    Spell( 207771,{ name = "Fiery Brand",  duration = 10, shine = true, group = "buffs", color = colors.RED })
     Spell( 203819,{ name = "Demon Spikes", ghost = 1, arrow = colors.PINK3, glow2time = 1, color = colors.PINK3, shine = true, group = "buffs", priority = - 9, duration = 6 })
 
     EventTimer({ spellID = 196718, event = "SPELL_CAST_SUCCESS", name = "Darkness", duration = 8, shine = true, color = colors.DPURPLE, scale = 0.8 })
