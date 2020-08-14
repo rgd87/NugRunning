@@ -65,6 +65,13 @@ setmetatable(free,{ __newindex = function(t,timer,v)
     NugRunning:ArrangeTimers()
 end})
 
+function NugRunning:FindFirstActiveTimer(spellID)
+    for timer in pairs(active) do
+        if timer.spellID == spellID and not timer.isGhost then
+            return timer
+        end
+    end
+end
 
 local gettimer = function(self,spellID,dstGUID,timerType)
     local foundTimer
