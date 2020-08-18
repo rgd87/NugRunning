@@ -312,6 +312,7 @@ Spell( 586 ,{ name = "Fade",duration = 10 })
 -- Spell( 89485 ,{ name = "Inner Focus", shine = true, color = colors.LBLUE, timeless = true, duration = 0.1 })
 -- Spell( 49694,59000 ,{ name = "Improved Spirit Tap",duration = 8 })
 -- Spell( 15271 ,{ name = "Spirit Tap",duration = 15 })
+Spell( 341207 ,{ name = "Dark Thought", duration = 6, glowtime = 6, color = colors.PURPLE5, effect = "NIGHTBORNE", priority = 13 })
 DotSpell( 204213 ,{ name = "Purge the Wicked", short = "", preghost = true, duration = 20, ghost = true, nameplates = true, priority = 9, color = colors.PURPLE, maxtimers = 5,
                 isknowncheck = function() return IsPlayerSpell(204197) end })
 DotSpell( 589 ,{ name = "Shadow Word: Pain", short = "", preghost = true, duration = 16, ghost = true, nameplates = true, fixedlen = 16, priority = 9, color =colors.PURPLE,
@@ -368,7 +369,7 @@ Cooldown( 214621, { name = "Schism", color = colors.PURPLE4, scale_until = 8, gh
 Cooldown( 129250, { name = "PW:Solace", fixedlen = 9,  color = colors.WOO, priority = 7, ghost = true })
 
 Cooldown( 205351, { name = "Shadow Word: Void", short = "Void", priority = 9, fixedlen = priest_normalize, color = colors.CURSE, resetable = true, ghost = true, stackcolor = { colors.CURSE, colors.DPURPLE2 } })
-Cooldown( 8092, { name = "Mind Blast", priority = 9, fixedlen = priest_normalize, overlay = { 0, "gcd", 0.25 }, ghosteffect = "SLICENDICE", color = colors.CURSE, resetable = true, ghost = 7 })
+Cooldown( 8092, { name = "Mind Blast", priority = 9, fixedlen = priest_normalize, overlay = { 0, "gcd", 0.25 }, ghosteffect = "NIGHTBORNE", color = colors.CURSE, resetable = true, ghost = 7 })
 
 local UnitAura = UnitAura
 local function FindAura(unit, spellID, filter)
@@ -1069,9 +1070,6 @@ local normalized_length = 8
 Spell( 205191 ,{ name = "Eye for an Eye", duration = 10, group = "buffs", color = colors.DTEAL })
 Spell( 184662 ,{ name = "Shield of Vengeance", duration = 15, group = "buffs", color = colors.GOLD })
 
-
-
-Spell( 204150 ,{ name = "Aegis of Light", duration = 6, group = "buffs", color = colors.GOLD })
 Spell( 84963 ,{ name = "Inquisition", duration = 45, group = "buffs", scale = 0.6, ghost = true, color = colors.PURPLE })
 Spell( 231895 ,{ name = "Crusade", duration = 25, shine = true, group = "buffs", scale = 0.6, ghost = true, color = colors.PURPLE })
 
@@ -1224,7 +1222,7 @@ Spell( 106951 ,{ name = "Berserk", duration = 15, shine = true, color = colors.T
 --cat
 Spell( 163505 ,{ name = "Rake Stun", duration = 4, scale = 0.5, priority = 6.2, color = colors.PINK })
 
-local bleed_normalize = nil
+local bleed_normalize = 24
 Spell( 155722 ,{ name = "Rake", duration = 15, showpower = true, priority = 6, preghost = true, nameplates = true, ghost = 4, overlay = {0, 15*0.3, 0.2}, fixedlen = bleed_normalize, color = colors.PINKIERED,
         isknowncheck = function() return IsPlayerSpell(1822) and IsUsableSpell(1822) end })
 Spell( 1079 ,{ name = "Rip", duration = 24, preghost = true, showpower = true, priority = 5, ghost = 4, nameplates = true, maxtimers = 4, overlay = {0, 24*0.3, 0.2}, fixedlen = bleed_normalize, color = colors.RED, })
