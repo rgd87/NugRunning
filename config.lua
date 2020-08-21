@@ -132,6 +132,12 @@ Spell( 296072, { name = "The Ever-Rising Tide", global = true, duration = 10, gr
 
 
 if class == "WARLOCK" then
+
+-- [[ COVENANTS ]]
+Spell( 312321 ,{ --[[Kyrian]] name = "Scouring Tithe", duration = 18, nameplates = true, ghost = 5, ghosteffect = "AEGWYNN", color = colors.WOO2 })
+Spell( 325640 ,{ --[[Night Fae]] name = "Soul Rot", duration = 8, maxtimers = 1, ghost = 2, color = colors.WOO2 })
+
+
 Interrupt(212619, "Call Felhunter", 6) -- pvp talent
 Interrupt(119910, "Spell Lock", 6) -- Felhunter spell from action bar
 Interrupt(19647, "Spell Lock", 6) -- Felhunter spell from pet bar
@@ -287,6 +293,14 @@ Spell( 710 ,{ name = "Banish", nameplates = true, duration = 30 })
 end
 
 if class == "PRIEST" then
+
+-- [[ COVENANTS ]]
+Spell( 325013 ,{ --[[Kyrian]] name = "Boon of the Ascended", group = "buffs", priority = -7, duration = 10, color = colors.PINK3 })
+Spell( 323673 ,{ --[[Venthyr]] name = "Mindgames", duration = 5, color = colors.LRED })
+Spell( 325203 ,{ --[[Necrolord]] name = "Unholy Transfusion", duration = 15, maxtimers = 1, ghost = 2, color = colors.TEAL3 })
+Spell( 327661 ,{ --[[Night Fae]] name = "Fae Guardians", group = "buffs", priority = -7, duration = 20, ghost = 2, color = colors.PINK3 })
+
+
 -- [[ ARTIFACTS ]]
 -- Cooldown( 205065,{ name = "Void Torrent", color = colors.DTEAL, ghost = true, scale_until = 10 })
 -- Cooldown( 207946,{ name = "Light's Wrath", color = colors.DTEAL, ghost = true, scale_until = 10 })
@@ -300,7 +314,7 @@ Cooldown( 34861,{ name = "Sanctify", color = colors.GOLD, priority = -9, ghostef
 Cooldown( 17,{ name = "Power Word: Shield", priority = -10, scale = 0.5, color = colors.PINKIERED, ghost = true })
 
 Spell( 198069 ,{ name = "Dark Side", shine = true, color = colors.WOO, duration = 20,  scale = .7, priority = 15, glowtime = 5  })
-Spell( 219521 ,{ name = "Shadow Covenant", group = "buffs", color = colors.PURPLE3, duration = 6,  scale = .8, maxtimers = 1  })
+Spell( 322105 ,{ name = "Shadow Covenant", group = "buffs", color = colors.PURPLE3, duration = 6,  scale = .8  })
 
 Spell( 139 ,{ name = "Renew", shinerefresh = true, color = colors.LGREEN, duration = 12,  scale = .7,  })
 Spell( 17 ,{ name = "Power Word: Shield", shinerefresh = true, duration = 15, color = colors.LRED })
@@ -370,6 +384,12 @@ Cooldown( 129250, { name = "PW:Solace", fixedlen = 9,  color = colors.WOO, prior
 
 Cooldown( 205351, { name = "Shadow Word: Void", short = "Void", priority = 9, fixedlen = priest_normalize, color = colors.CURSE, resetable = true, ghost = true, stackcolor = { colors.CURSE, colors.DPURPLE2 } })
 Cooldown( 8092, { name = "Mind Blast", priority = 9, fixedlen = priest_normalize, overlay = { 0, "gcd", 0.25 }, ghosteffect = "NIGHTBORNE", color = colors.CURSE, resetable = true, ghost = 7 })
+-- EventTimer({ spellID = 8092, event = "SPELL_CAST_SUCCESS", priority = 12, name = "Mind Blast", duration = 0.5, color = colors.PINK,
+-- isknowncheck = function()
+--     -- local timer = NugRunning:FindFirstActiveTimer(341207)
+--     return true
+-- end
+--  })
 
 local UnitAura = UnitAura
 local function FindAura(unit, spellID, filter)
@@ -445,6 +465,10 @@ end
 
 
 if class == "ROGUE" then
+
+-- [[ COVENANTS ]]
+-- Spell( 324073 ,{ --[[Necrolord]] name = "Serrated Bone Spike", priority = -7, timeless = true, duration = 30, scale = 0.5, maxtimers = 1, color = colors.TEAL3 })
+
 Interrupt(1766, "Kick", 5)
 
 -- [[ ARTIFACTS ]]
@@ -564,6 +588,13 @@ EventTimer({ event = "SPELL_CAST_SUCCESS", spellID = 1725, name = "Distract", co
 end
 
 if class == "WARRIOR" then
+
+-- [[ COVENANTS ]]
+Spell( 307871 ,{ --[[Kyrian]] name = "Spear of Bastion", duration = 4, maxtimers = 1, ghost = 2, color = colors.WOO2 })
+Spell( 325787 ,{ --[[Necrolord]] name = "Glory", group = "buffs", priority = -7, duration = 4, maxcharge = 15, charged = true, glowstack = 15, color = colors.PINK3 })
+Spell( 325862 ,{ --[[Necrolord]] name = "Conqueror's Frenzy", group = "buffs", priority = -7, duration = 30, ghost = 1, color = colors.PINK3 })
+Spell( 326062 ,{ --[[Night Fae]] name = "Ancient Aftershock", group = "buffs", priority = -7, maxtimers = 1, duration = 12, ghost = 1, color = colors.PURPLE2 })
+
 Interrupt(6552, "Pummel", 4)
 
 -- [[ ARTIFACTS ]]
@@ -743,6 +774,12 @@ Cooldown( 280772 ,{ name = "Siegebreaker", ghost = true, color = colors.DTEAL, s
 end
 
 if class == "MONK" then
+
+-- [[ COVENANTS ]]
+Spell( 326860 ,{ --[[Venthyr]] name = "Fallen Order", group = "buffs", duration = 24, color = colors.LRED })
+-- Spell( 325216 ,{ --[[Necrolord]] name = "Bonedust Brew", duration = 10, color = colors.BLACK, singleTarget = true })
+Cooldown( 327104 ,{ --[[Night Fae]] name = "Faeline Stomp", priority = 1, scale_until = 5, ghosteffect = "NIGHTBORNE", ghost = 3, color = colors.WOO2 })
+
 Interrupt(116705, "Spear Hand Strike", 4)
 
 -- [[ ARTIFACTS ]]
@@ -819,8 +856,8 @@ Totem(574571, { spellID = 322118, name = "Yu'lon", group = "buffs", duration = 2
 -- Totem(877514, { spellID = 325197, name = "Chi-Ji", group = "buffs", duration = 25, priority = -8, color = colors.TEAL2 })
 
 helpers.Cast(113656, {name = "Fists of Fury", fixedlen = ww_normalize, color = colors.PINK3, priority = 10.1 })
-Cooldown( 113656, { name = "Fists of Fury", fixedlen = ww_normalize, scale_until = 10, effect = "AEGWYNN", effecttime = 3,  color = colors.PINKIERED, priority = 4, ghost = true })
-Cooldown( 152175, { name = "Whirling Dragon Punch", fixedlen = ww_normalize, scale_until = 10, color = colors.TEAL2, priority = 3, ghost =true })
+Cooldown( 113656, { name = "Fists of Fury", fixedlen = ww_normalize, scale_until = 10, effect = "AEGWYNN", effecttime = 3,  color = colors.PINKIERED, priority = 3, ghost = true })
+Cooldown( 152175, { name = "Whirling Dragon Punch", fixedlen = ww_normalize, scale_until = 10, color = colors.TEAL2, priority = 2, ghost =true })
 
 Spell( 119611 ,{ name = "Renewing Mist", color = colors.LGREEN, fixedlen = 25, scale = 0.5, duration = 20 })
 Cooldown( 115151 ,{ name = "Renewing Mist", color = colors.TEAL3, priority = -100, ghost = true, ghosteffect = "NIGHTBORNE" })
@@ -889,6 +926,13 @@ Spell( 196725, { name = "Refreshing Jade Wind", short = "", scale = .7, color = 
 end
 
 if class == "DEATHKNIGHT" then
+
+-- [[ COVENANTS ]]
+Spell( 315443 ,{ --[[Necrolord]] name = "Abomination Limb", duration = 12, color = colors.DTEAL, shine = true })
+Spell( 311648 ,{ --[[Venthyr]] name = "Swarming Mist", duration = 8, color = colors.DRED, shine = true, ghost = 1 })
+Spell( 312202 ,{ --[[Kyrian]] name = "Shackle the Unworthy", duration = 14, color = colors.PINK })
+Cooldown( 312202 ,{ --[[Kyrian]] name = "Shackle the Unworthy", scale_until = 5, fixedlen = 60, ghosteffect = "NIGHTBORNE", ghost = 3, color = colors.PURPLE3 })
+
 Interrupt(47528, "Mind Freeze", 3)
 
 -- [[ ARTIFACTS ]]
@@ -921,8 +965,8 @@ Cooldown(50842,{ name = "Blood Boil", color = colors.PINK3, scale = 0.85,  prior
 Cooldown( 206931,{ name = "Exsanguinate", color = colors.DRED, ghost = true, minduration = 20, scale_until = 6, })
 -- Cooldown( 207317,{ name = "Epidemic", color = colors.PURPLE3, ghost = true, minduration = 6 })
 Spell( 194310,{ name = "Festering Wound", charged = true, singleTarget = true, ghost = true, maxcharge = 6, color = colors.PINK2, duration = 2000, timeless = true })
-Spell( 130736,{ name = "Soul Reaper", priority = -300, color = colors.TEAL3, duration = 5, })
-Cooldown( 130736,{ name = "Soul Reaper", color = colors.DPURPLE, color2 = colors.WOO, ghosteffect = "AEGWYNN", scale_until = 10, minduration = 30 })
+Spell( 343294,{ name = "Soul Reaper", priority = -300, color = colors.TEAL3, duration = 5, })
+Cooldown( 343294,{ name = "Soul Reaper", color = colors.DPURPLE, color2 = colors.WOO, ghosteffect = "AEGWYNN", scale_until = 10 })
 
 Spell( 77606, { name = "Dark Simulacrum", color = colors.DPURPLE, duration = 8 })
 
@@ -951,6 +995,11 @@ Spell( {221562, 108194} ,{ name = "Asphyxiate", color = colors.PINK, duration = 
 end
 
 if class == "MAGE" then
+
+-- [[ COVENANTS ]]
+Spell( 324220 ,{ --[[Necrolord]] name = "Deathborne", group = "buffs", arrow = colors.PINK3, duration = 20, color = colors.PINK3, ghost = 1, shine = true })
+Cooldown( 312202 ,{ --[[Kyrian]] name = "Shackle the Unworthy", scale_until = 5, fixedlen = 60, ghosteffect = "NIGHTBORNE", ghost = 3, color = colors.PURPLE3 })
+
 Interrupt(2139, "Counterspell", 6)
 
 -- [[ ARTIFACTS ]]
@@ -1059,6 +1108,17 @@ Spell( 114923 ,{ name = "Nether Tempest", duration = 12, color = colors.PURPLE }
 end
 
 if class == "PALADIN" then
+
+-- [[ COVENANTS ]]
+Spell( 328282 ,{ --[[Night Fae]] name = "Blessing of Spring", group = "buffs", duration = 30, color = colors.WOO2, ghost = 1, shine = true })
+Cooldown( 328282 ,{ --[[Night Fae]] name = "Blessing of Spring", scale_until = 5, ghosteffect = "NIGHTBORNE", ghost = 5, color = colors.PURPLE3 })
+Spell( 328620 ,{ --[[Night Fae]] name = "Blessing of Summer", group = "buffs", duration = 30, color = colors.WOO2, ghost = 1, shine = true })
+-- Cooldown( 328620 ,{ --[[Night Fae]] name = "Blessing of Summer", scale_until = 5, ghosteffect = "NIGHTBORNE", ghost = 5, color = colors.PURPLE3 })
+Spell( 328622 ,{ --[[Night Fae]] name = "Blessing of Autumn", group = "buffs", duration = 30, color = colors.WOO2, ghost = 1, shine = true })
+-- Cooldown( 328622 ,{ --[[Night Fae]] name = "Blessing of Autumn", scale_until = 5, ghosteffect = "NIGHTBORNE", ghost = 5, color = colors.PURPLE3 })
+Spell( 328281 ,{ --[[Night Fae]] name = "Blessing of Winter", group = "buffs", duration = 30, color = colors.WOO2, ghost = 1, shine = true })
+-- Cooldown( 328281 ,{ --[[Night Fae]] name = "Blessing of Winter", scale_until = 5, ghosteffect = "NIGHTBORNE", ghost = 5, color = colors.PURPLE3 })
+
 Interrupt(96231, "Rebuke", 4)
 
 local normalized_length = 8
@@ -1145,6 +1205,18 @@ Cooldown( 114165 ,{ name = "Holy Prism", color = colors.BLACK })
 end
 
 if class == "DRUID" then
+
+-- [[ COVENANTS ]]
+Spell( 338035 ,{ --[[Kyrian]] name = "Lone Meditation", group = "buffs", duration = 10, color = colors.WOO2, shine = true })
+Spell( 338018 ,{ --[[Kyrian]] name = "Lone Protection", group = "buffs", duration = 10, color = colors.WOO2, shine = true })
+Spell( 338142 ,{ --[[Kyrian]] name = "Lone Empowerment", group = "buffs", duration = 10, color = colors.WOO2, shine = true })
+Spell( 327071 ,{ --[[Kyrian]] name = "Kindred Focus", group = "buffs", duration = 10, color = colors.WOO2, shine = true })
+Spell( 327037 ,{ --[[Kyrian]] name = "Kindred Protection", group = "buffs", duration = 10, color = colors.WOO2, shine = true })
+Spell( 327022 ,{ --[[Kyrian]] name = "Kindred Empowerment", group = "buffs", duration = 10, color = colors.WOO2, shine = true })
+
+Spell( 323546 ,{ --[[Venthyr]] name = "Ravenous Frenzy", group = "buffs", duration = 20, color = colors.RED2, shine = true })
+Spell( { 325748, 325733 } ,{ --[[Necrolord]] name = "Adaptive Swarm", duration = 12, color = colors.WOO2, shine = true })
+
 Interrupt(106839, "Skull Bash", 4)
 
 -- [[ ARTIFACTS ]]
@@ -1294,6 +1366,10 @@ Spell( 16870 ,{ name = "Clearcasting",  duration = 15 })
 end
 
 if class == "DEMONHUNTER" then
+
+    -- [[ COVENANTS ]]
+    Spell( 317009 ,{ --[[Venthyr]] name = "Sinful Brand", duration = 8, color = colors.RED2, maxtimers = 1 })
+
     Interrupt(183752, "Disrupt", 3)
 
     Spell( 205630,{ name = "Illidan's Grasp", color = colors.PURPLE4, duration = 6 })
@@ -1360,6 +1436,15 @@ if class == "DEMONHUNTER" then
 end
 
 if class == "HUNTER" then
+
+-- [[ COVENANTS ]]
+Spell( 308498 ,{ --[[Kyrian]] name = "Resonating Arrow", group = "buffs", maxtimers = 1, duration = 10, color = colors.WOO2 })
+-- Spell( 324149 ,{ --[[Venthyr]] name = "Flayed Shot", duration = 20, color = colors.RED })
+Cooldown( 324149 ,{ --[[Venthyr]] name = "Flayed Shot", color = colors.WOO2, ghost = 5 })
+Spell( 324156 ,{ --[[Venthyr]] name = "Flayer's Mark", priority = 15, glowtime = 12, duration = 12, color = colors.PINK })
+Spell( 328275 ,{ --[[Night Fae]] name = "Wild Spirits", maxtimers = 1, duration = 15, color = colors.WOO2 })
+
+
 Interrupt(187707, "Muzzle", 3)
 Interrupt(147362, "Counter Shot", 3)
 
@@ -1472,7 +1557,7 @@ Spell( 193530,{ name = "Aspect of the Wild", short = "Wild", group = "buffs", du
 
 Spell( 117526 ,{ name = "Binding Shot", duration = 5, pvpduration = 3, color = colors.RED, maxtimers = 1 })
 Cooldown( 120679,{ name = "Dire Beast", priority = 6, ghost = true, scale = 0.8, color = colors.PURPLE, fixedlen = 9 })
-Cooldown( 217200,{ name = "Barbed Shot", priority = 6, ghost = true, color = colors.PINKIERED, stackcolor = { colors.PINKIERED, colors.PURPLE4 }, fixedlen = 9, resetable = true })
+Cooldown( 217200,{ name = "Barbed Shot", priority = 6, ghost = true, color = colors.PINKIERED, stackcolor = { colors.RED, colors.PURPLE4 }, fixedlen = 9, resetable = true })
 Activation( 217200, { for_cd = true, effect = "SLICENDICE", ghost = 3 })
 Spell( 257946,{ name = "Thrill of the Hunt", group = "buffs", duration = 8, ghost = true, color = colors.PINK3, scale = 0.75, priority = -50 })
 Spell( 217200,{ name = "Barbed Shot", overlay = {0, 1}, recast_mark = 1, duration = 8, ghost = true, color = colors.PURPLE, fixedlen = 9 })
