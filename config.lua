@@ -239,7 +239,12 @@ local creeping_death = function(self)
 end
 
 --Unstable Affliction
-Spell( 316099 ,{ name = "", duration = 16, overlay = {0, 4.8, 0.2}, priority = 10, nameplates = true, ghost = true, color = colors.PINK2, init = creeping_death })
+Spell( 316099 ,{ name = "", duration = 16, overlay = {0, 4.8, 0.2}, priority = 10, nameplates = true, ghost = true, color = colors.PINK2,
+    init = function(self)
+        self.duration = IsPlayerSpell(334315) and 21 or 16
+        creeping_death(self)
+    end
+})
 --Agony
 Spell( 980 ,{ name = "", preghost = 5, duration = 18, recast_mark = 5.4, overlay = {0, 5.4, 0.2},  fixedlen = normalize_dots_to, nameplates = true, _ignore_applied_dose = true, ghost = 6, priority = 6, color = colors.WOO, init = creeping_death })
 --Corruption
@@ -372,7 +377,7 @@ local priest_normalize = 7
 Cast( 15407, { name = "Mind Flay", short = "", fixedlen = priest_normalize, priority = 12, tick = 1, color = colors.TEAL3, priority = 11, duration = 3, scale = 1 })
 Cast( 48045, { name = "Mind Shear", short = "", fixedlen = priest_normalize, priority = 12, tick = 1, color = colors.TEAL2, priority = 11, duration = 3, scale = 1 })
 
-
+Spell( 453, { name = "Mind Soothe", color = colors.PURPLE3, duration = 20 })
 --Old Shadow Orbs
 -- Spell( 77487 ,{ name = "",duration = 60, charged = true, maxcharge = 3, shine = true, shinerefresh = true, priority = -3, color = colors.WOO })
 
@@ -1010,6 +1015,7 @@ Interrupt(2139, "Counterspell", 6)
 
 
 -- Item( 153130 ,{ name = "Man'Ari", color = colors.DTEAL, ghost = true })
+Spell( 110909 ,{ name = "Alter Time", group = "buffs", duration = 10, color = colors.PURPLE3 })
 
 helpers.Cast( 205021 ,{ name = "Ray of Frost", tick = 1, overlay = {"tick", "tickend"}, color = colors.CURSE, priority = 12, })
 
@@ -1244,8 +1250,8 @@ Spell( 339 ,{ name = "Entangling Roots",duration = 30 })
 Spell( 22842 ,{ name = "Frenzied Regeneration", duration = 5, color = colors.TEAL3, group = "buffs", shine = true })
 -- Spell( 113746 ,{ name = "Weakened Armor", short = "WeakArmor", priority = -10, affiliation = "any", singleTarget = true, color = colors.BROWN, duration = 30 })
 
-Spell( 48517 ,{ name = "Solar Eclipse", group = "buffs", duration = 10, shine = true, priority = -25, short = "Solar", color = colors.ORANGE }) -- Wrath boost
-Spell( 48518 ,{ name = "Lunar Eclipse", group = "buffs", duration = 10, shine = true, priority = -24, short = "Lunar", color = colors.LBLUE }) -- Starfire boost
+Spell( 48517 ,{ name = "Solar Eclipse", group = "buffs", duration = 10, fixedlen = 10, shine = true, priority = -25, short = "Solar", color = colors.ORANGE }) -- Wrath boost
+Spell( 48518 ,{ name = "Lunar Eclipse", group = "buffs", duration = 10, fixedlen = 10, shine = true, priority = -24, short = "Lunar", color = colors.LBLUE }) -- Starfire boost
 
 Spell( 78675,{ name = "Solar Beam", duration = 10, color = colors.GOLD, target = "player" })
 Spell( 33786 ,{ name = "Cyclone", shine = true, color = colors.BLACK, overlay = {0, "gcd"}, duration = 6 })
@@ -1255,6 +1261,7 @@ DotSpell( 164812 ,{ name = "Moonfire", duration = 16, preghost = true, nameplate
             if GetSpecialization() == 1 then duration = duration + 12 end -- balance druid thing
             self.duration = duration
             self.overlay[2] = duration*0.3
+            self.fixedlen = duration
 
             if GetSpecialization() == 3 then
                 -- self.maxtimers = 1
@@ -1274,6 +1281,7 @@ DotSpell( 164815 ,{ name = "Sunfire",duration = 12, preghost = true, nameplates 
             if GetSpecialization() == 1 then duration = duration + 12 end -- balance druid thing
             self.duration = duration
             self.overlay[2] = duration*0.3
+            self.fixedlen = duration
         end,
         isknowncheck = function() return GetSpecialization() == 1 end }) -- Sunfire button spell id
 -- Spell( 93400 ,{ name = "Shooting Stars", shine = true, duration = 12, color = colors.CURSE })
@@ -1662,7 +1670,7 @@ Totem(135829, { spellID = 208963, group = "buffs", name = "Skyfury Totem", scale
 Totem(971076, { spellID = 157153, group = "buffs", name = "Cloudburst Totem", color = colors.LGREEN })
 Totem(136013, { spellID = 192058, group = "buffs", name = "Capacitor Totem", color = colors.LBLUE })
 Totem(135861, { spellID = 16191, group = "buffs", name = "Mana Tide Totem", color = colors.PURPLE })
-Totem(136114, { spellID = 8512, group = "buffs", name = "Windfury Totem", color = colors.PINK3 })
+-- Totem(136114, { spellID = 8512, group = "buffs", name = "Windfury Totem", color = colors.PINK3 })
 Totem(136039, { spellID = 204336, name = "Grounding Totem", group = "buffs", scale = 0.7, shine = true, color = colors.CURSE, ghost = 1 })
 Totem(136108, { spellID = 8143, group = "buffs", name = "Tremor Totem", color = colors.DPURPLE, ghost = 1 })
 Totem(538576, { spellID = 192077, group = "buffs", name = "Wind Rush Totem", ghost = 1 })
