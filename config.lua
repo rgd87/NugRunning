@@ -331,10 +331,13 @@ Spell( 586 ,{ name = "Fade",duration = 10 })
 -- Spell( 89485 ,{ name = "Inner Focus", shine = true, color = colors.LBLUE, timeless = true, duration = 0.1 })
 -- Spell( 49694,59000 ,{ name = "Improved Spirit Tap",duration = 8 })
 -- Spell( 15271 ,{ name = "Spirit Tap",duration = 15 })
+
+Spell( 109964 ,{ name = "Spirit Shell",duration = 12, color = colors.PINK, shine = true, group = "buffs", ghost = 1 })
+
 Spell( 341207 ,{ name = "Dark Thought", duration = 6, glowtime = 6, color = colors.PURPLE5, effect = "NIGHTBORNE", priority = 13 })
 DotSpell( 204213 ,{ name = "Purge the Wicked", short = "", preghost = true, duration = 20, ghost = true, nameplates = true, priority = 9, color = colors.PURPLE, maxtimers = 5,
                 isknowncheck = function() return IsPlayerSpell(204197) end })
-DotSpell( 589 ,{ name = "Shadow Word: Pain", short = "", preghost = true, duration = 16, ghost = true, nameplates = true, fixedlen = 16, priority = 9, color =colors.PURPLE,
+DotSpell( 589 ,{ name = "Shadow Word: Pain", short = "", preghost = true, duration = 16, ghost = true, maxtimers = 4, nameplates = true, fixedlen = 16, priority = 9, color =colors.PURPLE,
                 isknowncheck = function() return IsPlayerSpell(589) and not IsPlayerSpell(204197) end, })
 DotSpell( 34914 ,{ name = "Vampiric Touch", short = "", preghost = true, ghost = true, nameplates = true, fixedlen = 21, priority = 10, duration = 21, color = colors.RED,  })
 DotSpell( 335467 ,{ name = "Devouring Plague", short = "", shine = true, duration = 6, ghost = 1, nameplates = true, priority = 8.5, color = colors.WOO })
@@ -596,8 +599,8 @@ if class == "WARRIOR" then
 
 -- [[ COVENANTS ]]
 Spell( 307871 ,{ --[[Kyrian]] name = "Spear of Bastion", duration = 4, maxtimers = 1, ghost = 2, color = colors.WOO2 })
-Spell( 325787 ,{ --[[Necrolord]] name = "Glory", group = "buffs", priority = -7, duration = 4, maxcharge = 15, charged = true, glowstack = 15, color = colors.PINK3 })
-Spell( 325862 ,{ --[[Necrolord]] name = "Conqueror's Frenzy", group = "buffs", priority = -7, duration = 30, ghost = 1, color = colors.PINK3 })
+Spell( 325787 ,{ --[[Necrolord]] name = "Glory", group = "buffs", priority = -7, duration = 30, scale = 0.5, color = colors.PINK3 })
+Spell( 343672 ,{ --[[Necrolord]] name = "Conqueror's Frenzy", group = "buffs", target = "player", priority = -7, duration = 20, color = colors.PINK3 })
 Spell( 326062 ,{ --[[Night Fae]] name = "Ancient Aftershock", group = "buffs", priority = -7, maxtimers = 1, duration = 12, ghost = 1, color = colors.PURPLE2 })
 
 Interrupt(6552, "Pummel", 4)
@@ -1140,8 +1143,8 @@ Spell( 84963 ,{ name = "Inquisition", duration = 45, group = "buffs", scale = 0.
 Spell( 231895 ,{ name = "Crusade", duration = 25, shine = true, group = "buffs", scale = 0.6, ghost = true, color = colors.PURPLE })
 
 Cooldown( 255937 ,{ name = "Wake of Ashes", ghost = true, color = colors.DBLUE, scale_until = 8 })
-Spell( 267799 ,{ name = "Execution Sentence", scale = 0.9, duration = 12, color = colors.REJUV })
-Cooldown( 267798 ,{ name = "Execution Sentence", ghost = true, color = colors.DPURPLE, scale_until = 5 })
+Spell( 343527 ,{ name = "Execution Sentence", scale = 0.9, duration = 8, color = colors.REJUV })
+-- Cooldown( 267798 ,{ name = "Execution Sentence", ghost = true, color = colors.DPURPLE, scale_until = 5 })
 
 
 --Spell( 53657 ,{ name = "Judgements of the Pure", short = "JotP", duration = 100500, color = colors.LBLUE })
@@ -1180,8 +1183,9 @@ Cooldown( 53595 ,{ name = "Hammer of the Righteous", short = "", ghost = true, g
 Spell( 197277,{ name = "Judgement", shine = true, singleTarget = true, priority = -100500, color = colors.PURPLE2, duration = 6 }) --debuff
 Cooldown( 20271 ,{ name = "Judgement", ghost = true, fixedlen = normalized_length, priority = 8, color = colors.PURPLE, ghosteffect = "JUDGEMENT", stackcolor = { colors.PURPLE, colors.PURPLE4} })
 
-EventTimer({ spellID = 26573 , event = "SPELL_CAST_SUCCESS", specmask = SPECS(1,2), name = "Consecration", duration = 12, color = colors.PINKIERED, overlay = {0,"gcd",.3}, multiTarget = true, priority = 9, ghost = 5, arrow = colors.PINKIERED, glow2time = 2, fixedlen = normalized_length })
-Cooldown( 26573 ,{ name = "Consecration", minduration = 6, color = colors.PINKIERED, overlay = {0,"gcd",.3}, priority = 9, scale = 0.85, ghost = true, fixedlen = normalized_length })
+Totem(135926, { name = "Consecration", spellID = 26573, color = colors.PINKIERED, overlay = {0, 3, 0.3}, priority = 9, ghost = true, fixedlen = normalized_length })
+-- EventTimer({ spellID = 26573 , event = "SPELL_CAST_SUCCESS", specmask = SPECS(1,2), name = "Consecration", duration = 12, color = colors.PINKIERED, overlay = {0,"gcd",.3}, multiTarget = true, priority = 9, ghost = 5, arrow = colors.PINKIERED, glow2time = 2, fixedlen = normalized_length })
+-- Cooldown( 26573 ,{ name = "Consecration", minduration = 6, color = colors.PINKIERED, overlay = {0,"gcd",.3}, priority = 9, scale = 0.85, ghost = true, fixedlen = normalized_length })
 Cooldown( 24275 ,{ name = "Hammer of Wrath", color = colors.TEAL2, fixedlen = normalized_length, ghost = true, priority = 11 })
 Cooldown( 31935 ,{ name = "Avenger's Shield", resetable = true, fixedlen = normalized_length, priority = 5, scale = 1, ghosteffect = "NIGHTBORNE", color = colors.TEAL, ghost = true })
 
@@ -1250,8 +1254,8 @@ Spell( 339 ,{ name = "Entangling Roots",duration = 30 })
 Spell( 22842 ,{ name = "Frenzied Regeneration", duration = 5, color = colors.TEAL3, group = "buffs", shine = true })
 -- Spell( 113746 ,{ name = "Weakened Armor", short = "WeakArmor", priority = -10, affiliation = "any", singleTarget = true, color = colors.BROWN, duration = 30 })
 
-Spell( 48517 ,{ name = "Solar Eclipse", group = "buffs", duration = 10, fixedlen = 10, shine = true, priority = -25, short = "Solar", color = colors.ORANGE }) -- Wrath boost
-Spell( 48518 ,{ name = "Lunar Eclipse", group = "buffs", duration = 10, fixedlen = 10, shine = true, priority = -24, short = "Lunar", color = colors.LBLUE }) -- Starfire boost
+Spell( 48517 ,{ name = "Solar Eclipse", group = "buffs", duration = 15, shine = true, priority = -25, short = "Solar", color = colors.ORANGE }) -- Wrath boost
+Spell( 48518 ,{ name = "Lunar Eclipse", group = "buffs", duration = 15, shine = true, priority = -24, short = "Lunar", color = colors.LBLUE }) -- Starfire boost
 
 Spell( 78675,{ name = "Solar Beam", duration = 10, color = colors.GOLD, target = "player" })
 Spell( 33786 ,{ name = "Cyclone", shine = true, color = colors.BLACK, overlay = {0, "gcd"}, duration = 6 })
