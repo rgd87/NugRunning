@@ -384,7 +384,7 @@ Spell( 453, { name = "Mind Soothe", color = colors.PURPLE3, duration = 20 })
 --Old Shadow Orbs
 -- Spell( 77487 ,{ name = "",duration = 60, charged = true, maxcharge = 3, shine = true, shinerefresh = true, priority = -3, color = colors.WOO })
 
-Cooldown( 47540 ,{ name = "Penance", tick = 1.5, overlay = {"tick", "tickend"}, fixedlen = 9, priority = 15, color = colors.CURSE, ghost = true, ghost = 3, ghosteffect = "AEGWYNN" })
+Cooldown( 47540 ,{ name = "Penance", tick = 1.5, overlay = {"tick", "tickend"}, fixedlen = 9, priority = 15, color = colors.TEAL3, ghost = true, ghost = 3, ghosteffect = "AEGWYNN" })
 
 Spell( 214621, { name = "Schism", color = colors.PINKIERED, arrow = colors.PINKIERED, duration = 9 })
 Cooldown( 214621, { name = "Schism", color = colors.PURPLE4, scale_until = 8, ghost = true })
@@ -644,7 +644,7 @@ Spell( 202574 ,{ name = "Vengeance Ignore Pain", group = "buffs", priority = -10
 Spell( 202573 ,{ name = "Vengeance Revenge", group = "buffs", priority = -10, scale = 0.5, color = colors.TEAL2, duration = 15, })
 
 Spell( 262228 ,{ name = "Deadly Calm", group = "buffs", color = colors.BROWN, duration = 6 })
--- Spell( 115767 ,{ name = "Deep Wounds", color = colors.DRED, duration = 15, singleTarget = true })
+DotSpell( 262115 ,{ name = "Deep Wounds", color = colors.PINKIERED, ghost = true, preghost = true, duration = 12, maxtimers = 1, isknowncheck = function() return true end })
 
 Spell( 5246 ,{ name = "Intimidating Shout", duration = 8, maxtimers = 1 })
 
@@ -974,7 +974,7 @@ Cooldown( 206931,{ name = "Exsanguinate", color = colors.DRED, ghost = true, min
 -- Cooldown( 207317,{ name = "Epidemic", color = colors.PURPLE3, ghost = true, minduration = 6 })
 Spell( 194310,{ name = "Festering Wound", charged = true, singleTarget = true, ghost = true, maxcharge = 6, color = colors.PINK2, duration = 2000, timeless = true })
 Spell( 343294,{ name = "Soul Reaper", priority = -300, color = colors.TEAL3, duration = 5, })
-Cooldown( 343294,{ name = "Soul Reaper", color = colors.DPURPLE, color2 = colors.WOO, ghosteffect = "AEGWYNN", scale_until = 10 })
+-- Cooldown( 343294,{ name = "Soul Reaper", color = colors.DPURPLE, color2 = colors.WOO, ghosteffect = "AEGWYNN", minduration = 5.7, scale_until = 10 })
 
 Spell( 77606, { name = "Dark Simulacrum", color = colors.DPURPLE, duration = 8 })
 
