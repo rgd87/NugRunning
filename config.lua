@@ -799,7 +799,6 @@ Spell( 248646 ,{ name = "Tigereye Brew", color = colors.DBROWN, group = "buffs",
 Spell( 247483 ,{ name = "Tigereye Brew", color = colors.PINKIERED, shine = true, priority = -5, group = "buffs", duration = 20, target = "player" })
 Spell( 233766 ,{ name = "Control the Mists", color = colors.DTEAL, group = "buffs", fixedlen = 10, duration = 10, scale = 0.6, ghost = true })
 
-Spell( 216113 ,{ name = "Way of the Crane", color = colors.PINKIERED, shine = true, priority = -5, group = "buffs", duration = 15 })
 Spell( 209584 ,{ name = "Zen Focus Tea", color = colors.LBLUE, shine = true, group = "buffs", duration = 5 })
 
 
