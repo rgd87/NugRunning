@@ -318,7 +318,7 @@ Cooldown( 263165,{ name = "Void Torrent", color = colors.DTEAL, ghost = true, sc
 Cooldown( 2050,{ name = "Serenity", color = colors.LBLUE, priority = -10, ghosteffect = "AEGWYNN", ghost = true, scale = .8 })
 Cooldown( 34861,{ name = "Sanctify", color = colors.GOLD, priority = -9, ghosteffect = "JUDGEMENT", ghost = true, scale = .8 })
 
-Cooldown( 17,{ name = "Power Word: Shield", priority = -10, scale = 0.5, color = colors.PINKIERED, ghost = true })
+-- Cooldown( 17,{ name = "Power Word: Shield", priority = -10, scale = 0.5, color = colors.PINKIERED, ghost = true })
 
 Spell( 198069 ,{ name = "Dark Side", shine = true, color = colors.WOO, duration = 20,  scale = .7, priority = 15, glowtime = 5  })
 Spell( 322105 ,{ name = "Shadow Covenant", group = "buffs", color = colors.PURPLE3, duration = 6,  scale = .8  })

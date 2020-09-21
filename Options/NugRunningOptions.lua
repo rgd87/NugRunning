@@ -276,6 +276,7 @@ function NugRunningGUI.CreateCommonForm(self)
             -- end
         else
             NugRunningConfigMerged[category][spellID] = delta
+            delta.isAdded = true
         end
 
         -- fill up spell clones of the new version

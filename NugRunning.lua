@@ -234,9 +234,35 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
     local categories = {"spells", "cooldowns", "activations", "casts"}
     if not NugRunningConfigCustom[class] then NugRunningConfigCustom[class] = {} end
 
+    local function fixRemovedDefaultSpells(customConfig, defaultConfig)
+        if not (customConfig and defaultConfig) then return end
+        local toRemove = {}
+        for spellID, opts in pairs(customConfig) do
+            local dopts = defaultConfig[spellID]
+            if not dopts and not opts.name then
+                table.insert(toRemove, spellID)
+            elseif opts.name then -- then it's a is probably an added spell
+                opts.isAdded = true -- making sure it's marked as added
+            end
+        end
+        for _, spellID in ipairs(toRemove) do
+            customConfig[spellID] = nil
+        end
+    end
+
     local globalConfig = NugRunningConfigCustom["GLOBAL"]
+    if globalConfig then
+        for _, category in ipairs(categories) do
+            fixRemovedDefaultSpells(globalConfig[category], config[category])
+        end
+    end
     MergeTable(NugRunningConfigMerged, globalConfig)
     local classConfig = NugRunningConfigCustom[class]
+    if classConfig then
+        for _, category in ipairs(categories) do
+            fixRemovedDefaultSpells(classConfig[category], config[category])
+        end
+    end
     MergeTable(NugRunningConfigMerged, classConfig)
     config = NugRunningConfigMerged
     spells = config.spells
