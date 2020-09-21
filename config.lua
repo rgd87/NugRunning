@@ -115,20 +115,18 @@ Spell( 298357, { name = "Memory of Lucid Dreams", short = "Lucid Dreams", global
 Spell( 299624, { name = "The Ever-Rising Tide", global = true, duration = 10, group = "buffs", shine = true, scale = 1, priority = -999998, color = colors.PINKIERED })
 Spell( 296072, { name = "The Ever-Rising Tide", global = true, duration = 10, group = "buffs", shine = true, scale = 0.5, priority = -999999, color = colors.PURPLE3})
 
--- local CASTER_POTIONS = function(specmask)
---         Spell( 105702 ,{ name = "Potion", specmask = specmask, group = "procs", color = colors.GREEN, duration = 25 }) -- Intellect
---         Spell( 137592 ,{ name = "Tempus Repit", specmask = specmask, affiliation = "any", color = colors.ORANGE, target= "player", group = "procs", duration = 10 })
---         Spell( 104993 ,{ name = "Jade Spirit", specmask = specmask, affiliation = "any", color = colors.LGREEN, target= "player", group = "procs", duration = 10 })
---         Spell( 96230 ,{ name = "Springs", specmask = specmask, color = colors.LGREEN, group = "procs", duration = 10 })
---         Spell( 127923 ,{ name = "Trinket1", specmask = specmask, group = "procs", duration = 10 })
---         Spell( 126659 ,{ name = "Haste", specmask = specmask, group = "procs", duration = 20 }) -- Sha of Fear trinket
---         Spell( 138703 ,{ name = "Haste", specmask = specmask, group = "procs", duration = 10 }) -- 522 Valor trinker
---         Spell( 128985 ,{ name = "Relic of Yu'lon", specmask = specmask, color = colors.LGREEN, group = "procs", duration = 15 })
---         Spell( 104510 ,{ name = "WS: Mastery", specmask = specmask, group = "procs", duration = 10 })
---         Spell( 104509 ,{ name = "WS: Crit", specmask = specmask, group = "procs", duration = 10 })
---         Spell( 104423 ,{ name = "WS: Haste", specmask = specmask, group = "procs", duration = 10 })
--- end
+-- POTIONS
+Spell( 344314, { name = "Potion of Psychopomp's Speed", short = "Speed", global = true, duration = 8, group = "buffs", shine = true, color = colors.LGREEN })
+Spell( 307195, { name = "Potion of Invisibility", short = "Invisible", global = true, duration = 18, group = "buffs", shine = true, color = colors.LBLUE })
+Spell( 307164, { name = "Potion of Spectral Strength", short = "Strength", global = true, duration = 25, group = "buffs", shine = true, color = colors.LRED })
+Spell( 307159, { name = "Potion of Spectral Agility", short = "Agility", global = true, duration = 25, group = "buffs", shine = true, color = colors.LGREEN })
+Spell( 307162, { name = "Potion of Spectral Intellect", short = "Intellect", global = true, duration = 25, group = "buffs", shine = true, color = colors.PINK })
+Spell( 307494, { name = "Potion of Empowered Exorcisms", short = "Exorcisms", global = true, duration = 25, group = "buffs", shine = true, color = colors.REJUV })
+Spell( 307495, { name = "Potion of Phantom Fire", short = "Phantom Fire", global = true, duration = 25, group = "buffs", shine = true, color = colors.REJUV })
+Spell( 307496, { name = "Potion of Divine Awakening", short = "Divine Awakening", global = true, duration = 25, group = "buffs", shine = true, color = colors.REJUV })
 
+-- SOULBINDS
+Spell( 331937, { --[[Nadja]] name = "Euphoria", global = true, duration = 10, group = "buffs", shine = true, color = colors.LRED })
 
 
 if class == "WARLOCK" then
@@ -155,7 +153,7 @@ Spell( 321997 ,{ name = "Curse of Recklessness", duration = 120, scale = 0.8, co
 Spell( 334275 ,{ name = "Curse of Exhaustion", duration = 8, scale = 0.8, color = colors.CURSE })
 
 -- pvp
-Spell( 234877 ,{ name = "Curse of Shadows", duration = 10, scale = 0.8, color = colors.CURSE })
+Spell( 234877 ,{ name = "Bane of Shadows", duration = 10, scale = 0.8, color = colors.CURSE })
 Spell( 236471 ,{ name = "Soulshatter", duration = 8, group = "buffs", color = colors.PINKIERED })
 Spell( 212295 ,{ name = "Nether Ward", duration = 3, group = "buffs", color = colors.LBLUE })
 Spell( 221715 ,{ name = "Essence Drain", duration = 6, group = "buffs", scale = 0.8, color = colors.CHIM })
@@ -306,6 +304,10 @@ Spell( 325203 ,{ --[[Necrolord]] name = "Unholy Transfusion", duration = 15, max
 Spell( 327661 ,{ --[[Night Fae]] name = "Fae Guardians", group = "buffs", priority = -7, duration = 20, ghost = 2, color = colors.PINK3 })
 
 
+-- PVP
+Spell( 232707 ,{ name = "Ray of Hope", shine = true, group = "buffs", color = colors.LBLUE, duration = 6, scale = 1, priority = 15  })
+
+
 -- [[ ARTIFACTS ]]
 -- Cooldown( 205065,{ name = "Void Torrent", color = colors.DTEAL, ghost = true, scale_until = 10 })
 -- Cooldown( 207946,{ name = "Light's Wrath", color = colors.DTEAL, ghost = true, scale_until = 10 })
@@ -352,7 +354,7 @@ Spell( 47585 ,{ name = "Dispersion",duration = 6, color = colors.PURPLE })
 -- Spell( 15286 ,{ name = "Vampiric Embrace",duration = 15, color = colors.CURSE, short = "VampEmbrace" })
 
 Spell( 123254, { name = "Twist of Fate", duration = 10, group = "buffs", priority = -10, color = colors.CURSE, specmask = SPECS(1,2) })
-Spell( 10060, { name = "Power Infusion", duration = 20, group = "buffs", color = colors.TEAL3 })
+Spell( 10060, { name = "Power Infusion", duration = 20, group = "buffs", color = colors.TEAL3, global = true, affiliation = "raid" })
 Cooldown( 10060, { name = "Power Infusion", color = colors.DBROWN, scale_until = 10, })
 -- Spell( 205372, { name = "Void Ray", duration = 6, group = "buffs", priority = -20, scale = 0.5, color = colors.PINK3 })
 Spell( 194249 ,{ name = "Voidform", duration = 1, arrow = colors.REJUV, priority = -20, scale = 0.8, group = "buffs", shine = true, color = colors.PINK3 })
@@ -1564,7 +1566,7 @@ Spell( 201081,{ name = "Mok'Nathal Tactics", duration = 8, group = "buffs", scal
 Spell( 288613,{ name = "Trueshot", duration = 15, group = "buffs", priority = -1, color = colors.TEAL, shine = true })
 Spell( 186265,{ name = "Aspect of the Turtle", short = "Turtle", group = "buffs", duration = 8, color = colors.BLACK, shine = true })
 Spell( 186289,{ name = "Aspect of the Eagle", short = "Eagle", group = "buffs", duration = 10, color = colors.TEAL, shine = true })
-Spell( 193530,{ name = "Aspect of the Wild", short = "Wild", group = "buffs", duration = 10, color = colors.TEAL, shine = true })
+Spell( 193530,{ name = "Aspect of the Wild", short = "Wild", group = "buffs", duration = 10, target = "player", color = colors.TEAL, shine = true })
 
 Spell( 117526 ,{ name = "Binding Shot", duration = 5, pvpduration = 3, color = colors.RED, maxtimers = 1 })
 Cooldown( 120679,{ name = "Dire Beast", priority = 6, ghost = true, scale = 0.8, color = colors.PURPLE, fixedlen = 9 })
@@ -1573,8 +1575,6 @@ Activation( 217200, { for_cd = true, effect = "SLICENDICE", ghost = 3 })
 Spell( 257946,{ name = "Thrill of the Hunt", group = "buffs", duration = 8, ghost = true, color = colors.PINK3, scale = 0.75, priority = -50 })
 Spell( 217200,{ name = "Barbed Shot", overlay = {0, 1}, recast_mark = 1, duration = 8, ghost = true, color = colors.PURPLE, fixedlen = 9 })
 Cooldown( 53209 ,{ name = "Chimera Shot", color = colors.CHIM, ghost = true, fixedlen = 9 })
-
-Cooldown( 130392 ,{ name = "Blink Strike", color = colors.WOO2 })
 
 helpers.Cast( 120360 ,{ name = "Barrage", color = colors.CURSE, priority = 12 })
 Cooldown( 120360 ,{ name = "Barrage", color = colors.WOO, scale_until = 8, ghost = true })
