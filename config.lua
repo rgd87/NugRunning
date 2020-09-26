@@ -342,7 +342,7 @@ DotSpell( 204213 ,{ name = "Purge the Wicked", short = "", preghost = true, dura
 DotSpell( 589 ,{ name = "Shadow Word: Pain", short = "", preghost = true, duration = 16, ghost = true, maxtimers = 4, nameplates = true, fixedlen = 16, priority = 9, color =colors.PURPLE,
                 isknowncheck = function() return IsPlayerSpell(589) and not IsPlayerSpell(204197) end, })
 DotSpell( 34914 ,{ name = "Vampiric Touch", short = "", preghost = true, ghost = true, nameplates = true, fixedlen = 21, priority = 10, duration = 21, color = colors.RED,  })
-DotSpell( 335467 ,{ name = "Devouring Plague", short = "", shine = true, duration = 6, ghost = 1, nameplates = true, priority = 8.5, color = colors.WOO })
+Spell( 335467 ,{ name = "Devouring Plague", short = "", shine = true, duration = 6, ghost = 1, nameplates = true, priority = 8.5, color = colors.WOO })
 
 -- Cooldown( 228260,{ name = "Void Eruption", color = colors.REJUV, ghost = 6, isknowncheck = function() end })
 Cooldown( 200174,{ name = "Mindbender", color = colors.PURPLE3, effecttime = 2, effect = "BLOODBOIL", ghost = 6, scale_until = 10 })
