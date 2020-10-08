@@ -511,7 +511,7 @@ Spell( 2983  ,{ name = "Sprint", group = "buffs", shine = true, duration = 8 })
 Spell( 5277  ,{ name = "Evasion", group = "buffs", color = colors.PINK, duration = 15 })
 Spell( 31224 ,{ name = "Cloak of Shadows", group = "buffs", color = colors.CURSE, duration = 5 })
 Spell( 185311 ,{ name = "Crimson Vial", group ="buffs", shine = true, color = colors.LGREEN ,duration = 6 })
-DotSpell( 315496 ,{ name = "Slice and Dice", shinerefresh = true, duration = 36, overlay = {0, 36*0.3, 0.2}, short = "SnD", color = colors.PURPLE,
+DotSpell( 315496 ,{ name = "Slice and Dice", shinerefresh = true, duration = 36, priority = 10, overlay = {0, 36*0.3, 0.2}, short = "SnD", color = colors.PURPLE,
     init = function(self)
         self.overlay[2] = IsPlayerSpell(193531) and 42*0.3 or 36*0.3 --Deeper Stratagem
         -- self.recast_mark = self.overlay[2]
@@ -546,7 +546,7 @@ Spell( 121411, { name = "Crimson Tempest", overlay = {0, 12*0.3, 0.2}, color = c
     end
 })
 --Nightblade
-Spell( 195452  ,{ name = "", ghost = true, nameplates = true, shinerefresh = true, overlay = {0, 4.8, 0.3}, fixedlen = 16, color = colors.PURPLE5, duration = 16})
+-- Spell( 195452  ,{ name = "", ghost = true, nameplates = true, shinerefresh = true, overlay = {0, 4.8, 0.3}, fixedlen = 16, color = colors.PURPLE5, duration = 16})
 
 -- Spell( 1330  ,{ name = "Silence", color = colors.PINK, duration = 3 })
 

@@ -4,7 +4,7 @@ local NugRunning = NugRunning
 local LSM = LibStub("LibSharedMedia-3.0")
 
 LSM:Register("statusbar", "Aluminium", [[Interface\AddOns\NugRunning\statusbar.tga]])
-LSM:Register("font", "ClearFont", [[Interface\AddOns\NugRunning\Calibri.ttf]], GetLocale() ~= "enUS" and 15)
+LSM:Register("font", "AlegreyaSans-Medium", [[Interface\AddOns\NugRunning\AlegreyaSans-Medium.ttf]],  GetLocale() ~= "enUS" and 15)
 
 local getStatusbar = function()
 	if not NugRunningConfig.overrideTexture then

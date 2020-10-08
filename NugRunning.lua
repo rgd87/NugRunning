@@ -135,7 +135,7 @@ NugRunning.timers = alltimers
 NugRunning.gettimer = gettimer
 NugRunning.helpers = helpers
 
-local defaultFont = "ClearFont"
+local defaultFont = "AlegreyaSans-Medium"
 local defaultShowLocalNames = false
 do
     local locale = GetLocale()
