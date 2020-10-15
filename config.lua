@@ -236,8 +236,8 @@ local creeping_death = function(self)
     self.recast_mark = duration*0.3
 end
 
---Unstable Affliction
-Spell( 316099 ,{ name = "", duration = 16, overlay = {0, 4.8, 0.2}, priority = 10, nameplates = true, ghost = true, color = colors.PINK2,
+--Unstable Affliction, UA with Rampant Afflications
+Spell({ 316099, 342938 } ,{ name = "", duration = 16, overlay = {0, 4.8, 0.2}, priority = 10, nameplates = true, ghost = true, color = colors.PINK2,
     init = function(self)
         self.duration = IsPlayerSpell(334315) and 21 or 16
         creeping_death(self)
