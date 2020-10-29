@@ -150,7 +150,7 @@ Interrupt(132409, "Spell Lock", 6) -- Command Demon after sacrificing Felhunter
 Spell( 1714 ,{ name = "Curse of Tongues", duration = 30, scale = 0.8, color = colors.CURSE })
 Spell( 702 ,{ name = "Curse of Weakness", duration = 120, scale = 0.8, color = colors.CURSE })
 Spell( 321997 ,{ name = "Curse of Recklessness", duration = 120, scale = 0.8, color = colors.CURSE })
-Spell( 334275 ,{ name = "Curse of Exhaustion", duration = 8, scale = 0.8, color = colors.CURSE })
+Spell( 334275 ,{ name = "Curse of Exhaustion", duration = 12, scale = 0.8, color = colors.CURSE })
 
 -- pvp
 Spell( 234877 ,{ name = "Bane of Shadows", duration = 10, scale = 0.8, color = colors.CURSE })
@@ -182,8 +182,6 @@ end })
 
 
 Spell( 117828 ,{ name = "Backdraft", duration = 15, shine = true, priority = -4, shinerefresh = true, color = colors.PURPLE3, scale = 0.5 })
-
-Spell( 196098 ,{ name = "Soul Harvest", duration = 10, group = "buffs", color = colors.CURSE })
 
 Cooldown( 205180,{ name = "Summon Darkglare", color = colors.DTEAL, scale_until = 12, ghost = true })
 
@@ -374,7 +372,8 @@ Spell( 322098 ,{ name = "Death and Madness", duration = 7, scale = 0.6, color = 
 Spell( 64044 ,{ name = "Psychic Horror", duration = 3, pvpduration = 4 })
 Spell( 8122 ,{ name = "Psychic Scream", duration = 8, maxtimers = 1 })
 Spell( 205369,{ name = "Mind Bomb", duration = 4, maxtimers = 1 })
-Spell( 47536,{ name = "Rapture", duration = 11, color = colors.LBLUE, shine = true })
+Spell( 47536,{ name = "Rapture", duration = 11, color = colors.LBLUE, group = "buffs", shine = true })
+Spell( 200183,{ name = "Apotheosis", duration = 11, color = colors.LBLUE, group = "buffs", shine = true })
 -- Spell( 64044 ,{ name = "Psychic Horror",duration = 1, maxtimers = 1 })
 
 local priest_normalize = 7
@@ -589,8 +588,8 @@ Cooldown( 196937 ,{ name = "Ghostly Strike", color = colors.DPURPLE, color2 = co
 --Spell( 1784 ,{ name = "Stealth", color = colors.CURSE, timeless = true, duration = 0.1})
 
 Cooldown( 200806 ,{ name = "Exsanguinate", ghost = true, color = colors.PURPLE2, scale_until = 10 })
-Cooldown( 245388,{ name = "Toxic Blade", color = colors.TEAL3, effect = "UNHOLY", effecttime = 1.5, ghost = true, scale_until = 5 })
-Spell( 245389,{ name = "Toxic Blade", color = colors.TEAL2, priority = -0.9, arrow = colors.TEAL2, shine = true, group = "buffs", duration = 9 })
+-- Cooldown( 245388,{ name = "Toxic Blade", color = colors.TEAL3, effect = "UNHOLY", effecttime = 1.5, ghost = true, scale_until = 5 })
+-- Spell( 245389,{ name = "Toxic Blade", color = colors.TEAL2, priority = -0.9, arrow = colors.TEAL2, shine = true, group = "buffs", duration = 9 })
 Cooldown( 137619 ,{ name = "Marked for Death", ghost = true, color = colors.LRED, scale_until = 10 })
 
 
@@ -641,7 +640,6 @@ Spell( 12975, { name = "Last Stand", color = colors.PURPLE3, duration = 20, grou
 Cooldown( 2565 ,{ name = "", priority = 9.9, fixedlen = 9, scale = .5, ghost = true, color = colors.DPURPLE, }) -- shield block cd
 -- Cooldown( 156321 ,{ name = "", priority = 9.9, fixedlen = 9, scale = .5, ghost = true, color = colors.DPURPLE, }) -- shield charge cd
 Spell( 190456 ,{ name = "Ignore Pain", ghost = 0.5, group = "buffs", priority = -8, glowtime = 4, color = colors.WOO, duration = 12, arrow = colors.WOO })
-Spell( 203581 ,{ name = "Dragon Scales", group = "buffs", priority = -9, color = colors.DRED, duration = 12, shine = true, shinerefresh = true })
 Spell( 202574 ,{ name = "Vengeance Ignore Pain", group = "buffs", priority = -10, scale = 0.5, color = colors.DRED, duration = 15, })
 Spell( 202573 ,{ name = "Vengeance Revenge", group = "buffs", priority = -10, scale = 0.5, color = colors.TEAL2, duration = 15, })
 
@@ -813,9 +811,6 @@ Cooldown( 261947 ,{ name = "Fist of the White Tiger", short = "Whtie Tiger", fix
 Spell( 120954, { name = "Fortifying Brew", group = "buffs", color = colors.BLACK, duration = 20 })
 Spell( 115078, { name = "Paralysis", color = colors.PURPLE, duration = 30, pvpduration = 8 })
 
-Spell( 115295, { name = "Guard", color = colors.GOLD, group = "buffs", duration = 15 })
-Cooldown( 115295, { name = "Guard", color = colors.DBROWN, scale_until = 10, })
-
 
 -- EventTimer({ spellID = 100780, event = "SPELL_CAST_SUCCESS", priority = 12, name = "Tiger Palm", duration = 0.5, color = colors.PINK, scale = 0.6 })
 -- EventTimer({ spellID = 205523, event = "SPELL_CAST_SUCCESS", priority = 12, name = "Blackout Strike", duration = 0.5, color = colors.PINK, scale = 0.6 })
@@ -888,8 +883,6 @@ Spell( 197908 ,{ name = "Mana Tea", priority = -10, group = "buffs", duration = 
 -- NugRunningConfig.totems[2] = { name = "", color = colors.WOO2DARK, priority = - 100, hideName = true }
 -- Spell( 138130 ,{ name = "Clone", color = colors.RED, duration = 100, timeless = true, singleTarget = true })
 
-Spell( 128939 ,{ name = "Elusive Brew", priority = -10, scale = .8, shinerefresh = true, duration = 30, color = colors.DBROWN, glowstack = 15 })
-Spell( 115308 ,{ name = "Elusive Brew", duration = 15, group = "buffs", shine = true, color = colors.PINKIERED })
 Spell( 322507, { name = "Celestial Brew", priority = -15, spark = true, arrow = colors.REJUV, group = "buffs", shine = true, glowtime = 1, ghost = 1, color = colors.TEAL3, duration = 8 })
 Spell( 215479, { name = "Shuffle", priority = -10, spark = true, fixedlen = 10, arrow = colors.REJUV, group = "buffs", shine = true, glowtime = 1, ghost = 5, color = colors.PINK3, duration = 6, })
 Spell( 214373, { name = "Brew-Stache", priority = -9, fixedlen = 10, ghosteffect = "AEGWYNN", arrow = colors.PINK2, group = "buffs", shine = true, ghost = 4, color = colors.REJUV, duration = 4.5, scale = 0.5 })
@@ -1238,7 +1231,7 @@ Interrupt(106839, "Skull Bash", 4)
 -- Spell( 200851 ,{ name = "Rage of the Sleeper", shine = true, duration = 10, color = colors.DBLUE })
 
 Spell( 209749 ,{ name = "Faerie Swarm", duration = 8, color = colors.TEAL3 })
-Spell( 236696 ,{ name = "Thors", duration = 12, scale = 0.5, group = "buffs", shine = true, color = colors.DBROWN })
+Spell( 236696 ,{ name = "Thorns", duration = 12, scale = 0.5, group = "buffs", shine = true, color = colors.DBROWN })
 
 Spell( 2637 ,{ name = "Hibernate", duration = 40, color = colors.DBROWN })
 
