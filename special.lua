@@ -12,7 +12,7 @@ local function Rampage()
     local rampageID = 184367
     local rampage_opts = NugRunningConfig.spells[rampageID]
     if not rampage_opts then return end
-    local rampageCost = 85
+    local rampageCost = 80
     NugRunningConfig.spells[rampageID] = nil
 
     local timer = NugRunning:ExtractFromPool()
@@ -43,10 +43,6 @@ local function Rampage()
     rampage_frame.timer = timer
     rampage_frame.CheckFury = function(self)
         if GetSpecialization() == 2 and IsPlayerSpell(184367) then
-            rampageCost = IsPlayerSpell(215571) and 95 or 85 -- Frothing Berserker
-            if IsPlayerSpell(202922) then -- Carnage
-                rampageCost = rampageCost - 10
-            end
             timer.bar:SetMinMaxValues(0, rampageCost)
             self:RegisterEvent("UNIT_POWER_FREQUENT")
             self:RegisterEvent("SPELL_ACTIVATION_OVERLAY_GLOW_HIDE")
