@@ -1255,7 +1255,7 @@ Spell( 33786 ,{ name = "Cyclone", shine = true, color = colors.BLACK, overlay = 
 DotSpell( 164812 ,{ name = "Moonfire", duration = 16, preghost = true, nameplates = true, priority = 10, ghost = true, color = colors.PURPLE,
         init = function(self)
             local duration = 16
-            if GetSpecialization() == 1 then duration = duration + 12 end -- balance druid thing
+            if GetSpecialization() == 1 then duration = duration + 6 end -- balance druid thing
             self.duration = duration
             self.overlay[2] = duration*0.3
             self.fixedlen = duration
@@ -1275,7 +1275,7 @@ DotSpell( 164812 ,{ name = "Moonfire", duration = 16, preghost = true, nameplate
 DotSpell( 164815 ,{ name = "Sunfire",duration = 12, preghost = true, nameplates = true, priority = 9, ghost = true, color = colors.ORANGE, maxtimers = 1,
         init = function(self)
             local duration = 12
-            if GetSpecialization() == 1 then duration = duration + 12 end -- balance druid thing
+            if GetSpecialization() == 1 then duration = duration + 6 end -- balance druid thing
             self.duration = duration
             self.overlay[2] = duration*0.3
             self.fixedlen = duration
