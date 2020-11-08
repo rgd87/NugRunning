@@ -1282,7 +1282,7 @@ DotSpell( 164815 ,{ name = "Sunfire",duration = 12, preghost = true, nameplates 
         end,
         isknowncheck = function() return GetSpecialization() == 1 end }) -- Sunfire button spell id
 -- Spell( 93400 ,{ name = "Shooting Stars", shine = true, duration = 12, color = colors.CURSE })
-Spell( 191034 ,{ name = "Starfall", shine = true, duration = 8, color = colors.WOO2 })
+DotSpell( 191034 ,{ name = "Starfall", shine = true, duration = 10, color = colors.WOO2 })
 -- Cooldown( 78674 ,{ name = "Starsurge", resetable = true, priority = 6, ghost = true, color = colors.CURSE })
 Cooldown( 197626 ,{ name = "Starsurge", resetable = true, priority = 6, ghost = true, color = colors.CURSE })
 DotSpell( 202347, { name = "Stellar Flare",duration = 24, priority = 5, ghost = true, color = colors.CHIM })
