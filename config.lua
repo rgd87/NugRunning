@@ -643,7 +643,7 @@ Spell( 202574 ,{ name = "Vengeance Ignore Pain", group = "buffs", priority = -10
 Spell( 202573 ,{ name = "Vengeance Revenge", group = "buffs", priority = -10, scale = 0.5, color = colors.TEAL2, duration = 15, })
 
 Spell( 262228 ,{ name = "Deadly Calm", group = "buffs", color = colors.BROWN, duration = 6 })
-DotSpell( 262115 ,{ name = "Deep Wounds", color = colors.PINKIERED, ghost = true, preghost = true, duration = 12, maxtimers = 1, isknowncheck = function() return true end })
+DotSpell( 262115 ,{ name = "Deep Wounds", color = colors.PINKIERED, ghost = true, specmask = SPECS(1), preghost = true, duration = 12, maxtimers = 1, isknowncheck = function() return true end })
 
 Spell( 5246 ,{ name = "Intimidating Shout", duration = 8, maxtimers = 1 })
 
