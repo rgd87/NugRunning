@@ -10,8 +10,9 @@ local UnitGUID = UnitGUID
 
 local function Rampage()
     local rampageID = 184367
-    local rampage_opts = NugRunningConfig.spells[rampageID]
-    if not rampage_opts then return end
+    local rampage_opts = NugRunningConfigMerged.spells[rampageID]
+
+    if not rampage_opts or rampage_opts.disabled then return end
     local rampageCost = 80
     NugRunningConfig.spells[rampageID] = nil
 

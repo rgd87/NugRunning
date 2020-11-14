@@ -625,7 +625,7 @@ Spell( 23920 ,{ name = "Spell Reflect", color = colors.LBLUE, group = "buffs", a
 
 Spell( 213858 ,{ name = "Battle Trance", color = colors.LGREEN, group = "buffs", duration = 18, shine = true })
 Spell( 199261 ,{ name = "Death Wish", color = colors.PINKIERED, group = "buffs", duration = 15, shine = true, shinerefresh = true, priority = -100, arrow = colors.PINKIERED, glow2time = 3 })
-Spell( 215562 ,{ name = "War Machine", priority = -1, color = colors.RED2, shine = true, shinerefresh = true, duration = 10, group = "buffs" })
+-- Spell( 262232 ,{ name = "War Machine", priority = -1, color = colors.RED2, shine = true, shinerefresh = true, duration = 10, group = "buffs" })
 
 Spell( 85739 ,{ name = "Whirlwind", short = "", glowtime = 20, group = "buffs", priority = -100503, color = colors.TEAL2, shine = true, scale = 0.8, duration = 20, charged = true, maxcharge = 2,
     init = function(self)
