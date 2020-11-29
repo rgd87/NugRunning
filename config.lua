@@ -230,7 +230,9 @@ Spell( 48181 ,{ name = "Haunt", priority = 8, ghost = true, color = colors.TEAL,
 
 local creeping_death = function(self)
     local duration = IsPlayerSpell(264000) and self.duration*0.85 or self.duration
-    self.overlay[2] = duration*0.3
+    if self.overlay then
+        self.overlay[2] = duration*0.3
+    end
     self.recast_mark = duration*0.3
 end
 
@@ -512,8 +514,9 @@ Spell( 31224 ,{ name = "Cloak of Shadows", group = "buffs", color = colors.CURSE
 Spell( 185311 ,{ name = "Crimson Vial", group ="buffs", shine = true, color = colors.LGREEN ,duration = 6 })
 DotSpell( 315496 ,{ name = "Slice and Dice", shinerefresh = true, duration = 36, priority = 10, overlay = {0, 36*0.3, 0.2}, short = "SnD", color = colors.PURPLE,
     init = function(self)
-        self.overlay[2] = IsPlayerSpell(193531) and 42*0.3 or 36*0.3 --Deeper Stratagem
-        -- self.recast_mark = self.overlay[2]
+        if self.overlay then
+            self.overlay[2] = IsPlayerSpell(193531) and 42*0.3 or 36*0.3 --Deeper Stratagem
+        end
     end })
 -- effect = "AEGWYNN", ghosteffect = "JUDGEMENT,
 Spell( 212283  ,{ name = "Symbols", shinerefresh = true, ghost = 1, group = "buffs", duration = 10, color = colors.PINKIERED })
@@ -534,14 +537,17 @@ DotSpell( 703,{ name = "", nameplates = true, scale = 0.85, priority = 8, fixedl
 --Rupture
 Spell( 1943  ,{ name = "Rupture", short = "", shinerefresh = true, priority = 7, fixedlen = bleed_normalize, nameplates = true, overlay = {0, 24*0.3, 0.3}, color = colors.PURPLE5, duration = 24, preghost = true,  ghost = 7,
     init = function(self)
-        self.overlay[2] = IsPlayerSpell(193531) and 28*0.3 or 24*0.3 --Deeper Stratagem
-        -- self.recast_mark = self.overlay[2]
+        if self.overlay then
+            self.overlay[2] = IsPlayerSpell(193531) and 28*0.3 or 24*0.3 --Deeper Stratagem
+        end
     end
 })
 
 Spell( 121411, { name = "Crimson Tempest", overlay = {0, 12*0.3, 0.2}, color = colors.PURPLE4, maxtimers = 1, duration = 12,
     init = function(self)
-        self.overlay[2] = IsPlayerSpell(193531) and 14*0.3 or 12*0.3 --Deeper Stratagem
+        if self.overlay then
+            self.overlay[2] = IsPlayerSpell(193531) and 14*0.3 or 12*0.3 --Deeper Stratagem
+        end
     end
 })
 --Nightblade
@@ -783,8 +789,10 @@ end
 if class == "MONK" then
 
 -- [[ COVENANTS ]]
+Spell( 328908 ,{ --[[Kyrian, Pelagos]] name = "Combat Meditation", group = "buffs", duration = 10, scale = 0.5, color = colors.WOO2, priority = -4.9 })
+Spell( 310454 ,{ --[[Kyrian]] name = "Weapons of Order", group = "buffs", duration = 30, color = colors.WOO2, priority = -5 })
 Spell( 326860 ,{ --[[Venthyr]] name = "Fallen Order", group = "buffs", duration = 24, color = colors.LRED })
--- Spell( 325216 ,{ --[[Necrolord]] name = "Bonedust Brew", duration = 10, color = colors.BLACK, singleTarget = true })
+Spell( 325216 ,{ --[[Necrolord]] name = "Bonedust Brew", duration = 10, color = colors.BLACK, singleTarget = true })
 Cooldown( 327104 ,{ --[[Night Fae]] name = "Faeline Stomp", priority = 1, scale_until = 5, ghosteffect = "NIGHTBORNE", ghost = 3, color = colors.WOO2 })
 
 Interrupt(116705, "Spear Hand Strike", 4)
@@ -800,6 +808,7 @@ Spell( 233766 ,{ name = "Control the Mists", color = colors.DTEAL, group = "buff
 
 Spell( 209584 ,{ name = "Zen Focus Tea", color = colors.LBLUE, shine = true, group = "buffs", duration = 5 })
 
+Spell( 325092 ,{ name = "Purified Chi", group = "buffs", duration = 10, arrow = colors.TEAL2, color = colors.TEAL3, glow2time = 3, glowtime = 2, priority = -15 })
 
 EventTimer({ spellID = 116844, event = "SPELL_CAST_SUCCESS", name = "Ring of Peace", duration = 5, group = "buffs", color = colors.WOO })
 
@@ -1257,7 +1266,9 @@ DotSpell( 164812 ,{ name = "Moonfire", duration = 16, preghost = true, nameplate
             local duration = 16
             if GetSpecialization() == 1 then duration = duration + 6 end -- balance druid thing
             self.duration = duration
-            self.overlay[2] = duration*0.3
+            if self.overlay then
+                self.overlay[2] = duration*0.3
+            end
             self.fixedlen = duration
 
             if GetSpecialization() == 3 then
@@ -1277,7 +1288,9 @@ DotSpell( 164815 ,{ name = "Sunfire",duration = 12, preghost = true, nameplates 
             local duration = 12
             if GetSpecialization() == 1 then duration = duration + 6 end -- balance druid thing
             self.duration = duration
-            self.overlay[2] = duration*0.3
+            if self.overlay then
+                self.overlay[2] = duration*0.3
+            end
             self.fixedlen = duration
         end,
         isknowncheck = function() return GetSpecialization() == 1 end }) -- Sunfire button spell id
