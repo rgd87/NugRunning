@@ -1320,6 +1320,7 @@ Spell( 1079 ,{ name = "Rip", duration = 24, preghost = true, showpower = true, p
 -- Spell( 210705 ,{ name = "Ashamane's Rip", duration = 24, priority = 4, scale = 0.75, fixedlen = 24, color = colors.PURPLE })
 -- feral's thrash
 Spell( 106830, { name = "Thrash", showpower = true, fixedlen = bleed_normalize, nameplates = true, overlay = {0, 15*0.3, 0.2}, maxtimers = 1, color = colors.PURPLE, duration = 15, ghost = true })
+Spell( 192090, { name = "Thrash", maxtimers = 1, color = colors.PURPLE, duration = 15, scale = 0.7, ghost = true })
 
 Cooldown( 202028, { name = "Brutal Slash", priority = 10, ghost = true, color = colors.CURSE, stackcolor = {colors.CURSE, colors.CURSE, colors.DPURPLE2 } })
 
