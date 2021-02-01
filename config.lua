@@ -1504,7 +1504,7 @@ Spell( 118455 ,{ name = "Beast Cleave", duration = 4, target = "pet", priority =
 
 Spell( 19574 ,{ name = "Bestial Wrath", group = "buffs", duration = 10, priority = -9, color = colors.LRED, target = "player" })
 
-
+Spell( 193534 ,{ name = "Steady Focus", group = "buffs", duration = 10, priority = -7, color = colors.GOLD })
 
 Spell( 136 ,{ name = "Mend Pet", duration = 10, color = colors.LGREEN })
 
@@ -1613,7 +1613,7 @@ Spell( 61295 ,{ name = "Riptide", duration = 15, color = colors.FROZEN })
 Spell( 51514 ,{ name = "Hex", duration = 50, pvpduration = 8, color = colors.CURSE })
 Spell( 79206 ,{ name = "Spiritwalker's Grace", duration = 10, color = colors.LGREEN, group = "buffs" })
 
-DotSpell( 188389 ,{ name = "Flame Shock", duration = 18, color = colors.RED, ghost = true, ghosteffect = "JUDGEMENT" }) -- elemental
+DotSpell( 188389 ,{ name = "Flame Shock", duration = 18, color = colors.RED, preghost = true, ghost = true, ghosteffect = "JUDGEMENT" }) -- elemental
 Cooldown( 188389 ,{ name = "Flame Shock", color = colors.DTEAL, scale = 0.6, ghost = 1, priority = 1, scale = 1 })  -- elemental
 
 Spell( 196840 ,{ name = "Frost Shock", duration = 5, color = colors.LBLUE, })
