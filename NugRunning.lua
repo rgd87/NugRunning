@@ -1513,10 +1513,11 @@ function NugRunning:PreGhost()
     end
     if UnitExists("target") and UnitAffectingCombat("player") then
         for spellID, opts in pairs(spells) do
-            if opts.preghost then
+            if opts.preghost and not config.spellClones[spellID] then
                 local checkfunc = opts.isknowncheck or IsAvailable
                 if checkfunc(spellID) then
-                    local timer = gettimer(active, spellID, UnitGUID("target"), "DEBUFF")
+                    local spellIdOrName = isClassic and GetSpellInfo(spellID) or spellID
+                    local timer = gettimer(active, spellIdOrName, UnitGUID("target"), "DEBUFF")
                     if not timer then
                         timer = self:ActivateTimer(playerGUID, UnitGUID("target"), UnitName("target"), nil, spellID, GetSpellInfo(spellID), opts, "DEBUFF", opts.duration, nil, true)
                         if timer then
