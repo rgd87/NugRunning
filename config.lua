@@ -20,13 +20,6 @@ local IsPlayerSpell = IsPlayerSpell
 local IsUsableSpell = IsUsableSpell
 local _,class = UnitClass("player")
 
--- NugRunningConfig.overrideTexture = true
--- NugRunningConfig.texture = "Interface\\AddOns\\NugRunning\\statusbar"
--- NugRunningConfig.overrideFonts = true
--- NugRunningConfig.nameFont = { font = "Interface\\AddOns\\NugRunning\\Calibri.ttf", size = 10, alpha = 0.5 }
--- NugRunningConfig.timeFont = { font = "Interface\\AddOns\\NugRunning\\Calibri.ttf", size = 8, alpha = 1 }
--- NugRunningConfig.stackFont = { font = "Interface\\AddOns\\NugRunning\\Calibri.ttf", size = 12 }
-
 NugRunningConfig.nameplates.parented = true
 
 NugRunningConfig.colors = {}
@@ -93,7 +86,8 @@ local Interrupt = function(id, name, duration)
 end
 helpers.Interrupt = Interrupt
 
-if select(4,GetBuildInfo()) < 80000 then return end
+local isMainline = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
+if not isMainline then return end
 
 local _, race = UnitRace("player")
 -- if race == "Troll" then Spell( 26297 ,{ name = "Berserking", duration = 10 }) end --Troll Racial
