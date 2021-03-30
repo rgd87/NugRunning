@@ -284,8 +284,10 @@ end
 if class == "DRUID" then
 Interrupt(16979, "Feral Charge", 4)
 
-Spell( 22812 ,{ name = "Barkskin", duration = 15, color = colors.WOO2, group = "buffs" })
-Spell({ 339, 1062, 5195, 5196, 9852, 9853 }, { name = "Entangling Roots", color = colors.DBROWN,
+-- TODO: Force of Nature
+
+Spell( 22812 ,{ name = "Barkskin", duration = 12, color = colors.WOO2, group = "buffs" })
+Spell({ 339, 1062, 5195, 5196, 9852, 9853, 26989 }, { name = "Entangling Roots", color = colors.DBROWN,
     pvpduration = 20,
     duration = function(timer)
         if timer.spellID == 339 then return 12
@@ -296,9 +298,10 @@ Spell({ 339, 1062, 5195, 5196, 9852, 9853 }, { name = "Entangling Roots", color 
         else return 27 end
     end
 }) -- varies
-Spell({ 2908, 8955, 9901 }, { name = "Soothe Animal", duration = 15, color = colors.PURPLE5 })
-Spell({ 770, 778, 9749, 9907 }, { name = "Faerie Fire", duration = 40, color = colors.PURPLE5 })
-Spell({ 16857, 17390, 17391, 17392 }, { name = "Faerie Fire Feral", duration = 40, color = colors.PURPLE5 })
+Spell( 33786 ,{ name = "Cyclone", shine = true, color = colors.BLACK, overlay = {0, "gcd"}, duration = 6 })
+Spell({ 2908, 8955, 9901, 26995 }, { name = "Soothe Animal", duration = 15, color = colors.PURPLE5 })
+Spell({ 770, 778, 9749, 9907, 26993 }, { name = "Faerie Fire", duration = 40, color = colors.PURPLE5 })
+Spell({ 16857, 17390, 17391, 17392, 27011 }, { name = "Faerie Fire Feral", duration = 40, color = colors.PURPLE5 })
 Spell({ 2637, 18657, 18658 }, { name = "Hibernate", color = colors.PURPLE4, nameplates = true,
     pvpduration = 20,
     duration = function(timer)
@@ -307,7 +310,7 @@ Spell({ 2637, 18657, 18658 }, { name = "Hibernate", color = colors.PURPLE4, name
         else return 40 end
     end
 }) -- varies
-Spell({ 99, 1735, 9490, 9747, 9898 }, { name = "Demoralizing Roar", duration = 30, color = colors.DTEAL, multiTarget = true, shinerefresh = true })
+Spell({ 99, 1735, 9490, 9747, 9898, 26998 }, { name = "Demoralizing Roar", duration = 30, color = colors.DTEAL, multiTarget = true, shinerefresh = true })
 Spell({ 5211, 6798, 8983 }, { name = "Bash", color = colors.RED,
     duration = function(timer)
         local brutal_impact = Talent(16940, 16941)*0.5
@@ -316,15 +319,23 @@ Spell({ 5211, 6798, 8983 }, { name = "Bash", color = colors.RED,
         else return 4+brutal_impact end
     end
 }) -- varies
-
+Spell( 33745, { name = "Lacerate", duration = 15, color = colors.RED, priority = 2, ghost = true })
 Spell( 5209 , { name = "Challenging Roar", duration = 6, multiTarget = true })
 Spell( 6795 ,{ name = "Taunt", duration = 3 })
 -- SKIPPING: Nature's Grasp
-Spell({ 1850, 9821 }, { name = "Dash", duration = 15 })
+Spell({ 1850, 9821, 33357 }, { name = "Dash", duration = 15 })
 Spell( 5229, { name = "Enrage", color = colors.PURPLE4, shine = true, scale = 0.6, group = "buffs", duration = 10 })
-Spell({ 22842, 22895, 22896 }, { name = "Frenzied Regeneration", duration = 10, color = colors.LGREEN })
-
+Spell({ 22842, 22895, 22896, 26999 }, { name = "Frenzied Regeneration", duration = 10, color = colors.LGREEN })
+Spell(22570, { name = "Maim", shine = true, color = colors.LRED,
+    duration = function(timer)
+        return 1 + timer.comboPoints
+    end,
+}) -- varies
 Spell( 19675, { name = "Feral Charge", duration = 4, color = colors.DBROWN, shine = true })
+--          bear                        cat
+Spell({ 33878, 33986, 33987,    33876, 33982, 33983 }, { name = "Mangle", duration = 12, color = colors.DRED, shinerefresh = true, shine = true, group = "buffs", priority = -10,  })
+
+
 
 Spell( 16922, { name = "Starfire Stun", duration = 3, shine = true, color = colors.RED })
 Spell({ 9005, 9823, 9827 }, { name = "Pounce", _skipunitaura = true, priority = -20, color = colors.RED,
@@ -334,25 +345,26 @@ Spell({ 9005, 9823, 9827 }, { name = "Pounce", _skipunitaura = true, priority = 
     end
 })
 Spell({ 9007, 9824, 9826 }, { name = "Pounce Bleed", duration = 18, priority = 4, color = colors.PINK3 })
-Spell({ 8921, 8924, 8925, 8926, 8927, 8928, 8929, 9833, 9834, 9835 }, { name = "Moonfire", priority = 5, ghost = true, color = colors.PURPLE, nameplates = true,
+Spell({ 8921, 8924, 8925, 8926, 8927, 8928, 8929, 9833, 9834, 9835, 26987, 26988 }, { name = "Moonfire", priority = 5, ghost = true, color = colors.PURPLE, nameplates = true,
 duration = function(timer)
     if timer.spellID == 8921 then return 9
     else return 12 end
 end
 })
 Spell({ 1822, 1823, 1824, 9904 }, { name = "Rake", tick = 3, overlay = {"tick", "end"}, duration = 9, priority = 6, nameplates = true, ghost = true, color = colors.PINKIERED })
-Spell({ 1079, 9492, 9493, 9752, 9894, 9896 }, { name = "Rip", tick = 2, overlay = {"tick", "end"}, duration = 12, priority = 5, ghost = true, nameplates = true, color = colors.RED })
+Spell({ 1079, 9492, 9493, 9752, 9894, 9896, 27008 }, { name = "Rip", tick = 2, overlay = {"tick", "end"}, duration = 12, priority = 5, ghost = true, nameplates = true, color = colors.RED })
 Spell({ 5217, 6793, 9845, 9846 }, { name = "Tiger's Fury", duration = 6, color = colors.GOLD, scale = 0.7, group = "buffs", shine = true })
 
 Spell( 2893 ,{ name = "Abolish Poison", tick = 2, tickshine = true, overlay = {"tick", "end"}, group = "buffs", duration = 8, color = colors.TEAL2 })
 Spell( 29166 , { name = "Innervate", duration = 20, shine = true, color = colors.DBLUE })
 
-Spell({ 8936, 8938, 8939, 8940, 8941, 9750, 9856, 9857, 9858 }, { name = "Regrowth", duration = 21, scale = 0.7, color = colors.LGREEN })
-Spell({ 774, 1058, 1430, 2090, 2091, 3627, 8910, 9839, 9840, 9841, 25299 }, { name = "Rejuvenation", scale = 1, duration = 12, color = colors.REJUV })
+Spell({ 8936, 8938, 8939, 8940, 8941, 9750, 9856, 9857, 9858, 26980 }, { name = "Regrowth", duration = 21, scale = 0.7, color = colors.LGREEN })
+Spell({ 774, 1058, 1430, 2090, 2091, 3627, 8910, 9839, 9840, 9841, 25299, 26981, 26982 }, { name = "Rejuvenation", scale = 1, duration = 12, color = colors.REJUV })
 Spell( 16870 ,{ name = "Clearcasting", shine = true, group = "buffs", duration = 15, color = colors.CHIM })
 
-Spell({ 5570, 24974, 24975, 24976, 24977 }, { name = "Insect Swarm", duration = 12, priority = 6, color = colors.TEAL3, ghost = true, nameplates = true, })
+Spell({ 5570, 24974, 24975, 24976, 24977, 27013 }, { name = "Insect Swarm", duration = 12, priority = 6, color = colors.TEAL3, ghost = true, nameplates = true, })
 Spell( 17116 ,{ name = "Nature's Swiftness", shine = true, duration = 15, group = "buffs", priority = -12, timeless = true, scale = 0.7, color = colors.WOO2DARK })
+Spell( 33763 ,{ name = "Lifebloom", shinerefresh = true, duration = 7, color = { 0.5, 1, 0.5} })
 
 
 end
