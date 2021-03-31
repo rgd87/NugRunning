@@ -49,12 +49,14 @@ Spell( 24259 ,{ name = "Silence", duration = 3, color = colors.PINK }) -- Spell 
 
 local normalize_dots_to = nil--26
 
+Spell( 27243 ,{ name = "Seed of Corruption", duration = 18, nameplates = true,  color = colors.DBLUE, short = "SoC" })
+Spell({ 30108, 30404, 30405 } ,{ name = "Unstable Affliction", duration = 18, overlay = {0, 4.8, 0.2}, priority = 10, nameplates = true, ghost = true, color = colors.PINK2 })
 Spell({ 1714, 11719 }, { name = "Curse of Tongues", duration = 30, color = colors.CURSE })
-Spell({ 702, 1108, 6205, 7646, 11707, 11708 },{  name = "Curse of Weakness", duration = 120, color = colors.CURSE })
+Spell({ 702, 1108, 6205, 7646, 11707, 11708, 27224, 30909 },{  name = "Curse of Weakness", duration = 120, color = colors.CURSE })
 Spell({ 17862, 17937 }, { name = "Curse of Shadows", duration = 300, glowtime = 15, color = colors.CURSE })
-Spell({ 1490, 11721, 11722 }, { name = "Curse of Elements", duration = 300, glowtime = 15, color = colors.CURSE })
-Spell({ 704, 7658, 7659, 11717 }, { name = "Curse of Recklessness", duration = 120, shine = true, color = colors.CURSE })
-Spell( 603 ,{ name = "Curse of Doom", duration = 60, ghost = true, color = colors.CURSE, nameplates = true, })
+Spell({ 1490, 11721, 11722, 27228 }, { name = "Curse of Elements", duration = 300, glowtime = 15, color = colors.CURSE })
+Spell({ 704, 7658, 7659, 11717, 27226 }, { name = "Curse of Recklessness", duration = 120, shine = true, color = colors.CURSE })
+Spell({ 603, 30910 },{ name = "Curse of Doom", duration = 60, ghost = true, color = colors.CURSE, nameplates = true, })
 Spell( 18223 ,{ name = "Curse of Exhaustion", duration = 12, ghost = true, color = colors.CURSE })
 
 Spell( 17941 ,{ name = "Shadow Trance", duration = 10, shine = true, priority = 15, glowtime = 10, scale = 0.7, shinerefresh = true, color = colors.DPURPLE })
@@ -80,12 +82,12 @@ Spell({ 710, 18647 }, { name = "Banish", nameplates = true, color = colors.TEAL3
         return timer.spellID == 710 and 20 or 30
     end
 })
-Spell({ 6789, 17925, 17926 }, { name = "Death Coil", duration = 3, color = colors.DTEAL })
+Spell({ 6789, 17925, 17926, 27223 }, { name = "Death Coil", duration = 3, color = colors.DTEAL })
 
 
-Spell({ 18265, 18879, 18880, 18881}, { name = "Siphon Life", duration = 30, priority = 5, fixedlen = normalize_dots_to, nameplates = true, ghost = true, color = colors.DTEAL })
-Spell({ 980, 1014, 6217, 11711, 11712, 11713 }, { name = "Curse of Agony", duration = 24, fixedlen = normalize_dots_to, nameplates = true, ghost = true, priority = 6, color = colors.CURSE })
-Spell({ 172, 6222, 6223, 7648, 11671, 11672, 25311 }, { name = "Corruption", tick = 3, overlay = {"tick", "end", 0.35}, priority = 9, fixedlen = normalize_dots_to, nameplates = true, ghost = true, color = colors.PINK3,
+Spell({ 18265, 18879, 18880, 18881, 27264, 30911 }, { name = "Siphon Life", duration = 30, priority = 5, fixedlen = normalize_dots_to, nameplates = true, ghost = true, color = colors.DTEAL })
+Spell({ 980, 1014, 6217, 11711, 11712, 11713, 27218 }, { name = "Curse of Agony", duration = 24, fixedlen = normalize_dots_to, nameplates = true, ghost = true, priority = 6, color = colors.CURSE })
+Spell({ 172, 6222, 6223, 7648, 11671, 11672, 25311, 27216 }, { name = "Corruption", tick = 3, overlay = {"tick", "end", 0.35}, priority = 9, fixedlen = normalize_dots_to, nameplates = true, ghost = true, color = colors.PINK3,
     duration = function(timer, opts)
         if timer.spellID == 172 then
             return 12
@@ -95,16 +97,16 @@ Spell({ 172, 6222, 6223, 7648, 11671, 11672, 25311 }, { name = "Corruption", tic
             return 18
         end
     end }) -- Corruption
-Spell({ 348, 707, 1094, 2941, 11665, 11667, 11668, 25309 },{ name = "Immolate", recast_mark = 1.5, overlay = {0, 1.5, 0.3}, duration = 15, nameplates = true, priority = 10, ghost = true, color = colors.RED })
+Spell({ 348, 707, 1094, 2941, 11665, 11667, 11668, 25309, 27215 },{ name = "Immolate", recast_mark = 1.5, overlay = {0, 1.5, 0.3}, duration = 15, nameplates = true, priority = 10, ghost = true, color = colors.RED })
 
-Spell({ 17877, 18867, 18868, 18869, 18870, 18871 }, { name = "Shadowburn", duration = 5, scale = 0.5, color = colors.DPURPLE }) -- Soul Shard debuff
+Spell( 29341, { name = "Shadowburn", duration = 5, scale = 0.5, color = colors.DPURPLE }) -- Soul Shard debuff
 
 Cooldown( 17962, { name = "Conflagrate", ghost = true, priority = 5, color = colors.PINK })
 
 
 Spell({ 6229, 11739, 11740, 28610 } ,{ name = "Shadow Ward", duration = 30, group = "buffs", scale = 0.7, color=colors.DPURPLE})
-Spell({ 7812, 19438, 19440, 19441, 19442, 19443 }, { name = "Sacrifice", duration = 30, group = "buffs", shine = true, color=colors.GOLD })
-Spell({ 17767, 17850, 17851, 17852, 17853, 17854 }, { name = "Consume Shadows", duration = 10, color = colors.LRED, target = "pet" })
+Spell({ 7812, 19438, 19440, 19441, 19442, 19443, 27273 }, { name = "Sacrifice", duration = 30, group = "buffs", shine = true, color=colors.GOLD })
+Spell({ 17767, 17850, 17851, 17852, 17853, 17854, 27272 }, { name = "Consume Shadows", duration = 10, color = colors.LRED, target = "pet" })
 
 end
 
@@ -338,7 +340,7 @@ Spell({ 33878, 33986, 33987,    33876, 33982, 33983 }, { name = "Mangle", durati
 
 
 Spell( 16922, { name = "Starfire Stun", duration = 3, shine = true, color = colors.RED })
-Spell({ 9005, 9823, 9827 }, { name = "Pounce", _skipunitaura = true, priority = -20, color = colors.RED,
+Spell({ 9005, 9823, 9827, 27006 }, { name = "Pounce", _skipunitaura = true, priority = -20, color = colors.RED,
     duration = function(timer)
         local brutal_impact = Talent(16940, 16941)*0.5
         return 2+brutal_impact
