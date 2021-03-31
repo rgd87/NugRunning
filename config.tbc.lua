@@ -774,6 +774,7 @@ local RANDOM_ROOT = "RANDOM_ROOT"
 local FROST_SHOCK = "FROST_SHOCK"
 local ROOT = "ROOT"
 local KIDNEY_SHOT = "KIDNEY_SHOT"
+local CYCLONE = "CYCLONE"
 
 helpers.DR_TypesPVE = {
     [KIDNEY_SHOT] = true,
@@ -794,16 +795,23 @@ helpers.DR_CategoryBySpellID = {
     [5484] = FEAR, -- Howl of Terror 2 ranks
     [17928] = FEAR,
     [6358] = FEAR, -- Seduction
+
+    [30153] = STUN, -- Felguard Intercept Stun
+    [30195] = STUN,
+    [30197] = STUN,
+
     [1090] = INCAP, -- Magic Dust
     [13327] = INCAP, -- Goblin Rocket Helm, Reckless Charge
     [5134] = FEAR, -- Flash Bomb
 
     -- [24259] = SILENCE, -- Spell Lock
 
-    -- Coil wasn't on DR in classic
-    -- [6789]    = HORROR, -- Death Coil 3 ranks
-    -- [17925]   = HORROR,
-    -- [17926]   = HORROR,
+    -- Coil wasn't on DR in classic, not sure about BC
+    [6789] = HORROR, -- Death Coil 3 ranks
+    [17925] = HORROR,
+    [17926] = HORROR,
+    [27223] = HORROR,
+
     [22703] = STUN, -- Infernal Summon Stun
 
 
@@ -849,12 +857,16 @@ helpers.DR_CategoryBySpellID = {
     [5196] = ROOT,
     [9852] = ROOT,
     [9853] = ROOT,
+    [26989] = ROOT,
     [16922] = RANDOM_STUN, -- Improved Starfire
 
+    [33786] = CYCLONE, -- Cyclone
+
     -- Pounce wasn't on the same DR with Cheap Shot until 3.1.0
-    [9005] = STUN, -- Pounce 3 ranks
+    [9005] = STUN, -- Pounce
     [9823] = STUN,
     [9827] = STUN,
+    [27006] = STUN,
 
 
     -- [18469] = SILENCE, -- Silence (Improved Counterspell)
@@ -897,7 +909,9 @@ helpers.DR_CategoryBySpellID = {
     [1833] = STUN, -- Cheap Shot
     -- Blind wasn't on Fear until some time in 3.0, and before that it was with Cyclone,
     -- and in classic probably with itself
-    -- [2094] = FEAR, -- Blind
+
+    -- In BC Blind and Cyclone share DR
+    [2094] = CYCLONE, -- Blind
 
     [2070] = INCAP, -- Sap 3 ranks
     [6770] = INCAP,
