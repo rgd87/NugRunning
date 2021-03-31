@@ -500,24 +500,25 @@ Spell( 15269 ,{ name = "Blackout", duration = 3, shine = true, color = colors.PU
 Spell( 15286 ,{ name = "Vampiric Embrace", duration = 60, priority = 5, shinerefresh = true, ghost = true, ghosteffect = "GOUGE", color = colors.PURPLE4 })
 Spell( 14751 ,{ name = "Inner Focus", shine = true, duration = 15, group = "buffs", priority = -12, timeless = true, scale = 0.7, color = colors.WOO2DARK })
 
-Spell( 15258 ,{ name = "Shadow Weaving", color = colors.PURPLE3, scale = 0.75, priority = -10, ghost = 2, duration = 15 })
+Spell( 15258 ,{ name = "Shadow Weaving", color = colors.PURPLE3, scale = 0.75, priority = -10, ghost = 2, maxtimers = 1, duration = 15 })
 
 EventTimer({ event = "SPELL_CAST_SUCCESS", spellID = 34433, name = "Shadowfiend", group = "buffs", duration = 12, priority = -10, color = colors.BLACK })
 
 end
 
 if class == "ROGUE" then
-Interrupt({ 1766, 1767, 1768, 1769 }, "Kick", 5)
+Interrupt({ 1766, 1767, 1768, 1769, 38768 }, "Kick", 5)
 
 Spell( 18425 ,{ name = "Silence", duration = 2, color = colors.PINK }) -- Improved Kick
 
 -- Premedi doesn't work because UnitAura scan kills it
 -- Spell( 14183 ,{ name = "Premeditation", duration = 10, group = "buffs", color = colors.CURSE })
 
+Spell( 31224 ,{ name = "Cloak of Shadows", group = "buffs", color = colors.CURSE, duration = 5 })
+Spell( 26679 ,{ name = "Deadly Throw", color = colors.DBLUE, duration = 6 })
+
 Spell( 13750 ,{ name = "Adrenaline Rush", group = "buffs", priority = -5, duration = 15, color = colors.LRED })
 Spell( 13877 ,{ name = "Blade Flurry", group = "buffs", priority = -4, duration = 15, color = colors.PURPLE5 })
-
--- TODO: Premeditation timer
 
 Spell( 1833 , { name = "Cheap Shot", duration = 4, color = colors.LRED })
 Spell({ 2070, 6770, 11297 }, { name = "Sap", color = colors.LBLUE, glowtime = 5, ghost = 1, ghosteffect = "SLICENDICE",
@@ -532,8 +533,9 @@ Spell( 2094 , { name = "Blind", duration = 10, color = colors.WOO })
 
 Spell({ 11327, 11329 }, { name = "Vanish", duration = 10, group = "buffs", scale = 0.5, color = colors.BLACK })
 
-Spell({ 8647, 8649, 8650, 11197, 11198 }, { name = "Expose Armor", duration = 30, color = colors.WOO2 })
-Spell({ 703, 8631, 8632, 8633, 11289, 11290 }, { name = "Garrote", color = colors.PINK3, duration = 18 })
+Spell({ 8647, 8649, 8650, 11197, 11198, 26866 }, { name = "Expose Armor", duration = 30, color = colors.WOO2 })
+Spell( 1330, { name = "Silence", color = colors.PINKIERED, duration = 3 })
+Spell({ 703, 8631, 8632, 8633, 11289, 11290, 26839, 26884 }, { name = "Garrote", color = colors.PINK3, duration = 18 })
 Spell({ 408, 8643 }, { name = "Kidney Shot", shine = true, color = colors.LRED,
     duration = function(timer)
         local duration = timer.spellID == 8643 and 1 or 0 -- if Rank 2, add 1s
@@ -541,7 +543,7 @@ Spell({ 408, 8643 }, { name = "Kidney Shot", shine = true, color = colors.LRED,
         return duration + comboPoints
     end,
 }) -- varies
-Spell({ 1943, 8639, 8640, 11273, 11274, 11275 }, { name = "Rupture", tick = 2, tickshine = true, overlay = {"tick", "end"}, shine = true, color = colors.RED,
+Spell({ 1943, 8639, 8640, 11273, 11274, 11275, 26867 }, { name = "Rupture", tick = 2, tickshine = true, overlay = {"tick", "end"}, shine = true, color = colors.RED,
     duration = function(timer)
         local comboPoints = timer.comboPoints
         return (6 + comboPoints*2)
@@ -556,8 +558,8 @@ Spell({ 5171, 6774 }, { name = "Slice and Dice", shinerefresh = true, color = co
 }) -- varies
 
 Spell({ 2983, 8696, 11305 }, { name = "Sprint", group = "buffs", shine = true, duration = 8 })
-Spell( 5277 ,{ name = "Evasion", group = "buffs", color = colors.PINK, duration = 15 })
-Spell({ 1776, 1777, 8629, 11285, 11286 }, { name = "Gouge", shine = true, color = colors.PINK3,
+Spell({ 5277, 26669 } ,{ name = "Evasion", group = "buffs", color = colors.PINK, duration = 15 })
+Spell({ 1776, 1777, 8629, 11285, 11286, 38764 }, { name = "Gouge", shine = true, color = colors.PINK3,
     duration = function(timer)
         return 4 + 0.5*Talent(13741, 13793, 13792)
     end
@@ -890,6 +892,7 @@ helpers.DR_CategoryBySpellID = {
     [8629] = INCAP,
     [11285] = INCAP,
     [11286] = INCAP,
+    [38764] = INCAP,
 
     [408] = KIDNEY_SHOT, -- Kidney Shot 2 ranks
     [8643] = KIDNEY_SHOT,
