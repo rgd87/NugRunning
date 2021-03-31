@@ -456,11 +456,11 @@ if class == "PRIEST" then
 Spell( 15487 ,{ name = "Silence", duration = 5, color = colors.PINK })
 
 Spell({ 14743, 27828 } ,{ name = "Focused Casting", shine = true, duration = 6, effect = "FIRESHOT", color = colors.PURPLE4, group = "buffs" })
-Cast({ 15407, 17311, 17312, 17313, 17314, 18807 }, { name = "Mind Flay", short = "", priority = 13, tick = 1, overlay = {"tick", "tickend"}, color = colors.PURPLE2, priority = 11, duration = 3, scale = 0.8 })
-Spell({ 10797, 19296, 19299, 19302, 19303, 19304, 19305 }, { name = "Starshards", duration = 6, priority = 9, color = colors.CHIM })
-Spell({ 2944, 19276, 19277, 19278, 19279, 19280 }, { name = "Devouring Plague", duration = 24, priority = 9, color = colors.PURPLE4 })
+Cast({ 15407, 17311, 17312, 17313, 17314, 18807, 25387 }, { name = "Mind Flay", short = "", priority = 13, tick = 1, overlay = {"tick", "tickend"}, color = colors.PURPLE2, priority = 11, duration = 3, scale = 0.8 })
+Spell({ 10797, 19296, 19299, 19302, 19303, 19304, 19305, 25446 }, { name = "Starshards", duration = 6, priority = 9, color = colors.CHIM })
+Spell({ 2944, 19276, 19277, 19278, 19279, 19280, 25467 }, { name = "Devouring Plague", duration = 24, priority = 9, color = colors.PURPLE4 })
 
-Spell({ 453, 8192, 10953 }, { name = "Mind Soothe", duration = 15, color = colors.PURPLE5 })
+Spell({ 453, 8192, 10953, 25596 }, { name = "Mind Soothe", duration = 15, color = colors.PURPLE5 })
 
 Spell({ 9484, 9485, 10955 }, { name = "Shackle Undead", glowtime = 5, nameplates = true, color = colors.PURPLE3, ghost = 1, ghosteffect = "SLICENDICE",
     duration = function(timer)
@@ -470,18 +470,23 @@ Spell({ 9484, 9485, 10955 }, { name = "Shackle Undead", glowtime = 5, nameplates
     end
 }) -- varies
 Spell( 10060, { name = "Power Infusion", duration = 15, group = "buffs", color = colors.TEAL2 })
+Spell( 41635 ,{ name = "Prayer of Mending", shinerefresh = true, duration = 30, color = colors.TEAL3, scale = 1, textfunc = function(timer) return timer.dstName end })
+Spell( 33206 ,{ name = "Pain Suppression", shine = true, duration = 8, color = colors.PINK })
+Spell( 34754 ,{ name = "Clearcasting", shine = true, duration = 15, color = colors.PINK, group = "buffs" })
+
+Spell({ 34914, 34916, 34917 },{ name = "Vampiric Touch", short = "", preghost = true, ghost = true, overlay = { 0, "gcd", 0.25 }, nameplates = true, priority = 10, duration = 15, color = colors.RED, })
 -- make charged to 20?
 Spell({ 588, 602, 1006, 7128, 10951, 10952 }, { name = "Inner Fire", duration = 600, ghost = true, charged = true, maxcharge = 20, priority = -100, color = colors.GOLD, scale = 0.7 })
-Spell({ 17, 592, 600, 3747, 6065, 6066, 10898, 10899, 10900, 10901 }, { name = "Power Word: Shield", short = "Shield", shinerefresh = true, duration = 30, color = colors.LRED })
+Spell({ 17, 592, 600, 3747, 6065, 6066, 10898, 10899, 10900, 10901, 25217, 25218 }, { name = "Power Word: Shield", short = "Shield", shinerefresh = true, duration = 30, color = colors.LRED })
 Spell( 552 , { name = "Abolish Disease", tick = 5, tickshine = true, overlay = {"tick", "end"}, duration = 20, scale = 0.5, color = colors.BROWN })
 
-Spell({ 14914, 15261, 15262, 15263, 15264, 15265, 15266, 15267 }, { name = "Holy Fire", color = colors.PINK, duration = 10, ghost = true })
-Spell({ 139, 6074, 6075, 6076, 6077, 6078, 10927, 10928, 10929, 25315 }, { name = "Renew", shinerefresh = true, color = colors.LGREEN, duration = 15,  scale = 0.8  })
-Spell({ 586, 9578, 9579, 9592, 10941, 10942 }, { name = "Fade", duration = 10, scale = 0.6, shine = true, color = colors.CHILL })
+Spell({ 14914, 15261, 15262, 15263, 15264, 15265, 15266, 15267, 25384 }, { name = "Holy Fire", color = colors.PINK, duration = 10, ghost = true })
+Spell({ 139, 6074, 6075, 6076, 6077, 6078, 10927, 10928, 10929, 25221, 25222, 25315 }, { name = "Renew", shinerefresh = true, color = colors.LGREEN, duration = 15,  scale = 0.8  })
+Spell({ 586, 9578, 9579, 9592, 10941, 10942, 25429 }, { name = "Fade", duration = 10, scale = 0.6, shine = true, color = colors.CHILL })
 Cooldown( 8092, { name = "Mind Blast", priority = 9, color = colors.CURSE, ghosteffect = "MAGICCAST", ghost = true })
 
 Spell({ 8122, 8124, 10888, 10890 }, { name = "Psychic Scream", duration = 8, shine = true, multiTarget = true })
-Spell({ 589, 594, 970, 992, 2767, 10892, 10893, 10894 }, { name = "Shadow Word: Pain", short = "Pain", ghost = true, nameplates = true, priority = 8, color = colors.PURPLE,
+Spell({ 589, 594, 970, 992, 2767, 10892, 10893, 10894, 25367, 25368 }, { name = "Shadow Word: Pain", short = "Pain", ghost = true, nameplates = true, priority = 8, color = colors.PURPLE,
     duration = function(timer, opts)
         local duration = 18
         -- Improved SWP, 2 ranks: Increases the duration of your Shadow Word: Pain spell by 3 sec.
@@ -496,45 +501,8 @@ Spell( 15286 ,{ name = "Vampiric Embrace", duration = 60, priority = 5, shineref
 Spell( 14751 ,{ name = "Inner Focus", shine = true, duration = 15, group = "buffs", priority = -12, timeless = true, scale = 0.7, color = colors.WOO2DARK })
 
 Spell( 15258 ,{ name = "Shadow Weaving", color = colors.PURPLE3, scale = 0.75, priority = -10, ghost = 2, duration = 15 })
-EventTimer({
-    event = {
-        ["SPELL_AURA_APPLIED"] = true,
-        ["SPELL_AURA_REFRESH"] = true,
-    },
-    spellID = 10894, name = "SWPRefresh", _hidden = true,
-    action = function(active, srcGUID, dstGUID, spellID, damage )
-        local timer = NugRunning.gettimer(active, GetSpellInfo(15258), dstGUID, "DEBUFF")
-        if timer then
-            local now = GetTime()
-            timer:SetTime(now, now + 15, timer.fixedoffset)
-        end
-    end
-})
 
-EventTimer({ event = "SPELL_DAMAGE", spellID = 10947, name = "MBRefresh", _hidden = true,
-    action = function(active, srcGUID, dstGUID, spellID, damage )
-        local timer = NugRunning.gettimer(active, GetSpellInfo(15258), dstGUID, "DEBUFF")
-        if timer then
-            local now = GetTime()
-            timer:SetTime(now, now + 15, timer.fixedoffset)
-        end
-    end
-})
-
-EventTimer({
-    event = {
-        ["SPELL_AURA_APPLIED"] = true,
-        ["SPELL_AURA_REFRESH"] = true,
-    },
-    spellID = 18807, name = "MFRefresh",  _hidden = true,
-    action = function(active, srcGUID, dstGUID, spellID, damage )
-        local timer = NugRunning.gettimer(active, GetSpellInfo(15258), dstGUID, "DEBUFF")
-        if timer then
-            local now = GetTime()
-            timer:SetTime(now, now + 15, timer.fixedoffset)
-        end
-    end
-})
+EventTimer({ event = "SPELL_CAST_SUCCESS", spellID = 34433, name = "Shadowfiend", group = "buffs", duration = 12, priority = -10, color = colors.BLACK })
 
 end
 
