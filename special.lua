@@ -354,6 +354,7 @@ end
 
 
 function NugRunning.SetupSpecialTimers()
+    --[[
     if class  == "WARRIOR" then
         Rampage()
     end
@@ -361,4 +362,5 @@ function NugRunning.SetupSpecialTimers()
     if class == "WARLOCK" then
         Warlock()
     end
+    ]]
 end
