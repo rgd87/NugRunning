@@ -17,7 +17,12 @@ helpers.L = L
 NugRunning.L = L
 
 --- Compatibility with Classic
-local isClassic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
+local apiLevel = math.floor(select(4,GetBuildInfo())/10000)
+local isClassic = apiLevel <= 3
+local isBC = apiLevel == 2
+local isMainline = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE -- WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
+-- local isClassic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
+
 local UnitSpellHaste = isClassic and function() return 0 end or _G.UnitSpellHaste
 local GetSpecialization = isClassic and function() return nil end or _G.GetSpecialization
 
@@ -518,6 +523,14 @@ end
 
 local activeCooldownTimers = {}
 local gcdDuration = 1.5
+local wandUserMinDuration
+if isClassic then
+    local _, class = UnitClass("player")
+    if class == "WARLOCK" or class == "MAGE" or class == "PRIEST" then
+        wandUserMinDuration = 3
+    end
+end
+
 local function CheckCooldown(spellID, opts, startTime, duration, enabled, charges, maxCharges, isItem)
     local cdType = isItem and "ITEMCOOLDOWN" or "COOLDOWN"
     local timer
@@ -543,7 +556,7 @@ local function CheckCooldown(spellID, opts, startTime, duration, enabled, charge
             end
         else
                 if not timer or not timer:IsActive() or timer.isGhost then
-                    local mdur = opts.minduration
+                    local mdur = opts.minduration or wandUserMinDuration
                     local time_remains = (duration + startTime) - GetTime()
                     local mrem = opts.hide_until
                     local isKnown = true
@@ -566,7 +579,8 @@ local function CheckCooldown(spellID, opts, startTime, duration, enabled, charge
                     end
                 else
                     -- print("1", spellID, startTime, duration)
-                    if timer.cd_startTime ~= startTime or timer.cd_duration ~= duration then
+                    local mdur = opts.minduration or wandUserMinDuration
+                    if (timer.cd_startTime ~= startTime or timer.cd_duration ~= duration) and (not mdur or duration > mdur) then
                         timer.cd_startTime = startTime
                         timer.fixedoffset = timer.opts.fixedlen and duration - timer.opts.fixedlen or 0
                         timer:SetTime(startTime, startTime + duration, timer.fixedoffset)
@@ -591,7 +605,9 @@ end
 local lastCooldownUpdateTime = GetTime()
 function NugRunning.SPELL_UPDATE_COOLDOWN(self,event, periodic)
     if periodic and GetTime() - lastCooldownUpdateTime < 0.9 then return end
-    gcdDuration = select(2,GetSpellCooldown(61304)) -- gcd spell
+    if isMainline then
+        gcdDuration = select(2,GetSpellCooldown(61304)) -- gcd spell
+    end
 
     for spellID,opts in pairs(cooldowns) do
         if not opts.check_known or IsPlayerSpell(spellID) then

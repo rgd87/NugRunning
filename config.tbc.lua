@@ -87,7 +87,7 @@ Spell({ 6789, 17925, 17926, 27223 }, { name = "Death Coil", duration = 3, color 
 
 Spell({ 18265, 18879, 18880, 18881, 27264, 30911 }, { name = "Siphon Life", duration = 30, priority = 5, fixedlen = normalize_dots_to, nameplates = true, ghost = true, color = colors.DTEAL })
 Spell({ 980, 1014, 6217, 11711, 11712, 11713, 27218 }, { name = "Curse of Agony", duration = 24, fixedlen = normalize_dots_to, nameplates = true, ghost = true, priority = 6, color = colors.CURSE })
-Spell({ 172, 6222, 6223, 7648, 11671, 11672, 25311, 27216 }, { name = "Corruption", tick = 3, overlay = {"tick", "end", 0.35}, priority = 9, fixedlen = normalize_dots_to, nameplates = true, ghost = true, color = colors.PINK3,
+Spell({ 172, 6222, 6223, 7648, 11671, 11672, 25311, 27216 }, { name = "Corruption", tick = 3, overlay = {"tick", "end", 0.35}, priority = 9, fixedlen = normalize_dots_to, nameplates = true, ghost = true, color = colors.PINKIERED,
     duration = function(timer, opts)
         if timer.spellID == 172 then
             return 12
@@ -582,7 +582,6 @@ Interrupt({ 72, 1671, 1672, 29704 }, "Shield Bash", 6)
 
 Spell( 18498 ,{ name = "Silence", duration = 3, color = colors.PINK }) -- Improved Shield Bash
 Spell( 23920 ,{ name = "Spell Reflect", color = colors.LBLUE, group = "buffs", arrow = colors.LBLUE, duration = 5, scale = 0.75, shine = true })
-
 Spell({ 29801, 30030, 30033 } ,{ name = "Rampage", shine = true, shinerefresh = true, color = colors.DPURPLE, color2 = colors.REJUV, priority = 11, duration = 30 })
 
 Spell( 20230 ,{ name = "Retaliation", group = "buffs", shine = true, duration = 15, color = colors.PINK })
