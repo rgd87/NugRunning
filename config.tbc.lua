@@ -240,14 +240,18 @@ Spell({ 1513, 14326, 14327 }, { name = "Scare Beast",
         else return 20 end
     end
 })
+Cooldown( 34026 , { name = "Kill Command ", color = colors.CURSE, ghost = true, tick = 1.5, fixedlen = 9, priority = 10, resetable = true })
+Spell({ 136, 3111, 3661, 3662, 13542, 13543, 13544, 27046 }, { name = "Mend Pet", duration = 15, color = colors.LGREEN })
+Spell( 34490, { name = "Silencing Shot", duration = 3, color = colors.PINK })
+
 
 Spell({ 1130, 14323, 14324, 14325 }, { name = "Hunter's Mark", duration = 120, ghost = 3, color = colors.PURPLE4 })
 
-Spell({ 1978, 13549, 13550, 13551, 13552, 13553, 13554, 13555, 25295 }, { name = "Serpent Sting", duration = 15, color = colors.PURPLE, ghost = true, })
+Spell({ 1978, 13549, 13550, 13551, 13552, 13553, 13554, 13555, 25295, 27016 }, { name = "Serpent Sting", duration = 15, color = colors.PURPLE, ghost = true, })
 Spell({ 3043, 14275, 14276, 14277 }, { name = "Scorpid Sting", duration = 20, color = colors.TEAL })
-Spell({ 3034, 14279, 14280 }, { name = "Viper Sting", duration = 8, color = colors.DBLUE })
-Spell({ 19386, 24132, 24133 }, { name = "Wyvern Sting", short = "Sleep", duration = 12, color = colors.PURPLE3, ghost = 1 })
-Spell({ 24131, 24134, 24135 }, { name = "Wyvern Sting", duration = 12, color = colors.GREEN }) -- Wyvern Sting Dot
+Spell({ 3034, 14279, 14280, 27018 }, { name = "Viper Sting", duration = 8, color = colors.DBLUE })
+Spell({ 19386, 24132, 24133, 27068 }, { name = "Wyvern Sting", short = "Sleep", duration = 12, color = colors.PURPLE3, ghost = 1 })
+Spell({ 24131, 24134, 24135, 27069 }, { name = "Wyvern Sting", duration = 12, color = colors.GREEN }) -- Wyvern Sting Dot
 
 
 Spell(19229, { name = "Wing Clip", shine = true, duration = 5, scale = 0.6, color = colors.DBROWN })
@@ -256,8 +260,8 @@ Spell({ 19306, 20909, 20910 }, { name = "Counterattack", shine = true, duration 
 Cooldown( 19306 ,{ name = "Counterattack", ghost = 1, priority = 5, color = colors.PURPLE4 })
 Activation( 19306, { for_cd = true, effect = "FIRESHOT", ghost = 5 })
 
-Spell({ 13812, 14314, 14315 }, { name = "Explosive Trap", duration = 20, multiTarget = true, color = colors.RED, ghost = 1 })
-Spell({ 13797, 14298, 14299, 14300, 14301 }, { name = "Immolation Trap", duration = 15, color = colors.RED, ghost = 1 })
+Spell({ 13812, 14314, 14315, 27026 }, { name = "Explosive Trap", duration = 20, multiTarget = true, color = colors.RED, ghost = 1 })
+Spell({ 13797, 14298, 14299, 14300, 14301, 27024 }, { name = "Immolation Trap", duration = 15, color = colors.RED, ghost = 1 })
 Spell({ 3355, 14308, 14309 }, { name = "Freezing Trap", color = colors.FROZEN,
     pvpduration = 20,
     duration = function(timer)
@@ -806,9 +810,10 @@ helpers.DR_CategoryBySpellID = {
     [14308] = INCAP,
     [14309] = INCAP,
 
-    [19386] = INCAP, -- Wyvern Sting 3 ranks
+    [19386] = INCAP, -- Wyvern Sting 4ranks
     [24132] = INCAP,
     [24133] = INCAP,
+    [27068] = INCAP,
 
     [19503] = INCAP, -- Scatter Shot
     -- [19229] = RANDOM_ROOT, -- Improved Wing Clip Root
