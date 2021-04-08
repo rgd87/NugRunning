@@ -376,7 +376,7 @@ Spell( 33763 ,{ name = "Lifebloom", shinerefresh = true, duration = 7, color = {
 end
 
 if class == "MAGE" then
-Interrupt(2139, "Counterspell", 10)
+Interrupt(2139, "Counterspell", 8)
 
 Spell( 18469 ,{ name = "Silence", duration = 4, color = colors.CHIM }) -- Improved Counterspell
 Spell({ 118, 12824, 12825, 28271, 28272, 12826 },{ name = "Polymorph", glowtime = 5, ghost = 1, ghosteffect = "SLICENDICE", color = colors.LGREEN,
@@ -389,12 +389,16 @@ Spell({ 118, 12824, 12825, 28271, 28272, 12826 },{ name = "Polymorph", glowtime 
     end
 }) -- varies
 
+Spell( 36032 ,{ name = "Arcane Blast", color = colors.REJUV, charged = true, maxcharge = 3, priority = 10.1, scale = 0.7, duration = 8, timeless = true })
+
+Spell( 66, { name = "Invisibility Fade", duration = 5, color = colors.LBLUE })
+Spell( 32612, { name = "Invisibility", duration = 20 })
 
 Spell( 11958 ,{ name = "Ice Block", duration = 10, color = colors.CHIM, group = "buffs", shine = true })
-Spell({ 1463, 8494, 8495, 10191, 10192, 10193 }, { name = "Mana Shield", duration = 60, ghost = true, group = "buffs", color = colors.TEAL })
-Spell({ 11426, 13031, 13032, 13033 }, { name = "Ice Barrier", duration = 60, ghost = true, group = "buffs", color = colors.TEAL3 })
-Spell({ 543, 8457, 8458, 10223, 10225 }, { name = "Fire Ward", duration = 30, group = "buffs", scale = 0.7, color = colors.ORANGE })
-Spell({ 6143, 8461, 8462, 10177, 28609 }, { name = "Frost Ward", duration = 30, group = "buffs", scale = 0.7, color = colors.LBLUE })
+Spell({ 1463, 8494, 8495, 10191, 10192, 10193, 27131 }, { name = "Mana Shield", duration = 60, ghost = true, group = "buffs", color = colors.TEAL })
+Spell({ 11426, 13031, 13032, 13033, 27134, 33405 }, { name = "Ice Barrier", duration = 60, ghost = true, group = "buffs", color = colors.TEAL3 })
+Spell({ 543, 8457, 8458, 10223, 10225, 27128 }, { name = "Fire Ward", duration = 30, group = "buffs", scale = 0.7, color = colors.ORANGE })
+Spell({ 6143, 8461, 8462, 10177, 28609, 32796 }, { name = "Frost Ward", duration = 30, group = "buffs", scale = 0.7, color = colors.LBLUE })
 Spell( 28682 ,{ name = "Combustion", color = colors.DPURPLE, timeless = true, group = "buffs", priority = -20, duration = 10 })
 
 Cooldown( 2136, { name = "Fire Blast", color = colors.LRED, ghost = true })
@@ -410,12 +414,12 @@ EventTimer({ spellID = 12654, event = "SPELL_PERIODIC_DAMAGE",
     end})
 Spell( 22959 ,{ name = "Fire Vulnerability", duration = 30, scale = 0.5, priority = -10, glowtime = 4, ghost = true, ghosteffect = "GOUGE", color = colors.BROWN })
 
-Spell({ 2120, 2121, 8422, 8423, 10215, 10216 }, { name = "Flamestrike", duration = 8, color = colors.PURPLE, multiTarget = true })
+Spell({ 2120, 2121, 8422, 8423, 10215, 10216, 27086 }, { name = "Flamestrike", duration = 8, color = colors.PURPLE, multiTarget = true })
 
 -- EventTimer({ spellID = 153561, event = "SPELL_CAST_SUCCESS", name = "Meteor", duration = 2.9, color = colors.FIRE })
 
 Spell({ 11113, 13018, 13019, 13020, 13021 }, { name = "Blast Wave", duration = 6, scale = 1,  color = colors.DBROWN, multiTarget = true })
-Spell({ 120, 8492, 10159, 10160, 10161 }, { name = "Cone of Cold", scale = 0.6,  color = colors.CHILL, multiTarget = true,
+Spell({ 120, 8492, 10159, 10160, 10161, 27087 }, { name = "Cone of Cold", scale = 0.6,  color = colors.CHILL, multiTarget = true,
     duration = function(timer)
         local permafrost = Talent(11175, 12569, 12571)
         return 8 + permafrost
@@ -447,11 +451,16 @@ Spell({ 116, 205, 837, 7322, 8406, 8407, 8408, 10179, 10180, 10181, 25304 }, { n
 
 
 Spell( 12494 ,{ name = "Frostbite", duration = 5, color = colors.FROZEN, shine = true })
-Spell({ 122, 865, 6131, 10230 } ,{ name = "Frost Nova", duration = 8, color = colors.FROZEN, multiTarget = true })
+Spell({ 122, 865, 6131, 10230, 27088 } ,{ name = "Frost Nova", duration = 8, color = colors.FROZEN, multiTarget = true })
 
 Spell( 12536 ,{ name = "Clearcasting", shine = true, group = "buffs", duration = 15, color = colors.CHIM })
 Spell( 12043 ,{ name = "Presence of Mind", shine = true, duration = 15, group = "buffs", priority = -12, timeless = true, scale = 0.7, color = colors.WOO2DARK })
 Spell( 12042 ,{ name = "Arcane Power", duration = 15, group = "buffs", color = colors.PINK })
+
+Spell( 31589 ,{ name = "Slow", duration = 15 })
+Spell({ 31661, 33041, 33042, 33043 } ,{ name = "Dragon's Breath", duration = 3, color = colors.ORANGE, short = "Breath", maxtimers = 1 })
+Spell( 12472 ,{ name = "Icy Veins", group = "buffs", duration = 20, color = colors.PINK3 })
+Spell( 33395 ,{ name = "Freeze", duration = 8, color = colors.FROZEN }) -- Water Elemental's Ability
 
 end
 

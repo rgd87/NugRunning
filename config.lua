@@ -1085,7 +1085,7 @@ Spell( 12472 ,{ name = "Icy Veins", group = "buffs", duration = 20, color = colo
 Spell( 82691 ,{ name = "Ring of Frost", shine = true, color = colors.FROZEN, maxtimers = 1, duration = 12, pvpduration = 8 }) -- it's not multi target, but... it can spam
 Spell( 122 ,{ name = "Frost Nova",duration = 8, color = colors.FROZEN, maxtimers = 1 })
 Spell( 228600 ,{ name = "Glacial Spike",duration = 4, color = colors.FROZEN, maxtimers = 1 })
-Spell( 33395 ,{ name = "Freeze",duration = 8, color = colors.FROZEN })
+Spell( 33395 ,{ name = "Freeze",duration = 8, maxtimers = 1, color = colors.FROZEN })
 Spell( 44544 ,{ name = "Fingers of Frost", shine = true, shinerefresh = true, priority = 10, scale = 0.8, duration = 15, color = colors.PURPLE3 })
 Spell( 228358 ,{ name = "Winter's Chill", duration = 6, shine = true, shinerefresh = true, color = colors.FROZEN })
 Spell( 190446 ,{ name = "Brain Freeze", priority = 12, duration = 15, scale = 0.8, glowtime = 15, shine = true, shinerefresh = true, color = colors.DBLUE })
