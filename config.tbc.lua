@@ -181,7 +181,7 @@ end
 if class == "PALADIN" then
 
 Spell( 20066 ,{ name = "Repentance", duration = 6 })
-Spell({ 2878, 5627, 5627 }, { name = "Turn Undead",
+Spell({ 2878, 5627, 10326 }, { name = "Turn Undead",
     duration = function(timer)
         if timer.spellID == 2878 then return 10
         elseif timer.spellID == 5627 then return 15
@@ -192,7 +192,7 @@ Cooldown( 879 ,{ name = "Exorcism", color = colors.ORANGE, ghost = true, priorit
 Cooldown( 24275 ,{ name = "Hammer of Wrath", color = colors.TEAL2, ghost = true, priority = 11 })
 
 Spell( 1044 ,{ name = "Blessing of Freedom", duration = 10, group = "buffs" })
-Spell({ 6940, 20729 }, { name = "Blessing of Sacrifice", duration = 10, group = "buffs", color = colors.LRED })
+Spell({ 6940, 20729, 27147, 27148 }, { name = "Blessing of Sacrifice", duration = 10, group = "buffs", color = colors.LRED })
 Spell({ 1022, 5599, 10278 }, { name = "Blessing of Protection", group = "buffs", color = colors.WOO2,
     duration = function(timer)
         if timer.spellID == 1022 then return 6
@@ -201,19 +201,25 @@ Spell({ 1022, 5599, 10278 }, { name = "Blessing of Protection", group = "buffs",
     end
 })
 -- DS includes Divine Protection
+Spell( 31884 ,{ name = "Avenging Wrath",duration = 20, group = "buffs", color = colors.LRED, effect = "JUDGEMENT" })
 Spell({ 498, 5573, 642, 1020 }, { name = "Divine Shield", duration = 12, group = "buffs", color = colors.BLACK }) --varies BUFF
+Spell({ 31892, 348700 }, { name = "Seal of Blood", scale_until = 8, priority = 6, duration = 30, ghost = 1, color = colors.LRED })
+Spell({ 31801, 348704 }, { name = "Seal of Vengeance", scale_until = 8, priority = 6, duration = 30, ghost = 1, color = colors.GOLD })
+Spell(31834, { name = "Light's Grace", scale = 0.75, duration = 15, color = colors.DPURPLE })
+Cooldown( 31935 ,{ name = "Avenger's Shield", resetable = true, priority = 5, scale = 1, color = colors.TEAL, ghost = true })
+Cooldown( 35395 ,{ name = "Crusader Strike", tick = 1.5, tickshine = true, overlay = {"tick", "end"}, ghost = true, short = "", priority = 10, color = colors.CURSE })
 
-Spell({ 20375, 20915, 20918, 20919, 20920 }, { name = "Seal of Command", scale_until = 8, priority = 6, duration = 30, ghost = 1, color = colors.RED })
-Spell({ 21084, 20287, 20288, 20289, 20290, 20291, 20292, 20293 }, { name = "Seal of Righteousness", scale_until = 8, priority = 6, duration = 30, ghost = 1, color = colors.DTEAL })
-Spell({ 20162, 20305, 20306, 20307, 20308, 21082 }, { name = "Seal of the Crusader", scale_until = 8, priority = 6, duration = 30, ghost = 1, color = colors.GOLD })
-Spell({ 20165, 20347, 20348, 20349 }, { name = "Seal of Light", scale_until = 8, priority = 6, duration = 30, ghost = 1, color = colors.LGREEN })
-Spell({ 20166, 20356, 20357 }, { name = "Seal of Wisdom", scale_until = 8, priority = 6, duration = 30, ghost = 1, color = colors.LBLUE })
-Spell( 20164 , { name = "Seal of Justice", scale_until = 8, priority = 6, duration = 30, ghost = 1, color = colors.BLACK })
+Spell({ 20375, 20915, 20918, 20919, 20920, 27170 }, { name = "Seal of Command", scale_until = 8, priority = 6, duration = 30, ghost = 1, color = colors.RED })
+Spell({ 20154, 20287, 20288, 20289, 20290, 20291, 20292, 20293, 21084, 27155 }, { name = "Seal of Righteousness", scale_until = 8, priority = 6, duration = 30, ghost = 1, color = colors.DTEAL })
+Spell({ 20162, 20305, 20306, 20307, 20308, 21082, 27158 }, { name = "Seal of the Crusader", scale_until = 8, priority = 6, duration = 30, ghost = 1, color = colors.GOLD })
+Spell({ 20165, 20347, 20348, 20349, 27160 }, { name = "Seal of Light", scale_until = 8, priority = 6, duration = 30, ghost = 1, color = colors.LGREEN })
+Spell({ 20166, 20356, 20357, 27166 }, { name = "Seal of Wisdom", scale_until = 8, priority = 6, duration = 30, ghost = 1, color = colors.LBLUE })
+Spell({ 20164, 31895 } , { name = "Seal of Justice", scale_until = 8, priority = 6, duration = 30, ghost = 1, color = colors.BLACK })
 
-Spell({ 21183, 20188, 20300, 20301, 20302, 20303 }, { name = "Judgement of the Crusader", short = "Crusader", duration = 10, color = colors.GOLD })
-Spell({ 20185, 20344, 20345, 20346 }, { name = "Judgement of Light", short = "Light", duration = 10, color = colors.LGREEN })
-Spell({ 20186, 20354, 20355 }, { name = "Judgement of Wisdom", short = "Wisdom", duration = 10, color = colors.LBLUE })
-Spell( 20184 , { name = "Judgement of Justice", short = "Justice", duration = 10, color = colors.BLACK })
+Spell({ 21183, 20188, 20300, 20301, 20302, 20303, 27159 }, { name = "Judgement of the Crusader", short = "Crusader", duration = 10, color = colors.GOLD })
+Spell({ 20185, 20344, 20345, 20346, 27162 }, { name = "Judgement of Light", short = "Light", duration = 10, color = colors.LGREEN })
+Spell({ 20186, 20354, 20355, 27164 }, { name = "Judgement of Wisdom", short = "Wisdom", duration = 10, color = colors.LBLUE })
+Spell({ 20184, 31896 } , { name = "Judgement of Justice", short = "Justice", duration = 10, color = colors.BLACK })
 
 Spell({ 853, 5588, 5589, 10308 }, { name = "Hammer of Justice", short = "Hammer", color = colors.FROZEN,
     duration = function(timer)
@@ -229,7 +235,7 @@ Cooldown( 26573 ,{ name = "Consecration", color = colors.PINKIERED, priority = 9
 Cooldown( 20473 ,{ name = "Holy Shock", ghost = 1, priority = 5, scale_until = 5, color = colors.WOO })
 Cooldown( 20271 ,{ name = "Judgement", ghost = true, priority = 8, color = colors.PURPLE })
 
-Spell({ 20925, 20927, 20928 }, { name = "Holy Shield", duration = 10, priority = 7, scale = 1, ghost = true, arrow = colors.PINK2, color = colors.PINK3 })
+Spell({ 20925, 20927, 20928, 27179 }, { name = "Holy Shield", duration = 10, priority = 7, scale = 1, ghost = true, arrow = colors.PINK2, color = colors.PINK3 })
 
 end
 

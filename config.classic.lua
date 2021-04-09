@@ -171,7 +171,7 @@ end
 if class == "PALADIN" then
 
 Spell( 20066 ,{ name = "Repentance", duration = 6 })
-Spell({ 2878, 5627, 5627 }, { name = "Turn Undead",
+Spell({ 2878, 5627, 10326 }, { name = "Turn Undead",
     duration = function(timer)
         if timer.spellID == 2878 then return 10
         elseif timer.spellID == 5627 then return 15
