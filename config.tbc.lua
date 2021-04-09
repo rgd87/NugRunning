@@ -113,18 +113,21 @@ end
 
 
 if class == "SHAMAN" then
-Interrupt({ 8042, 8044, 8045, 8046, 10412, 10413, 10414 }, "Earth Shock", 2)
+Interrupt({ 8042, 8044, 8045, 8046, 10412, 10413, 10414, 25454 }, "Earth Shock", 2)
 
+Spell({ 974, 32593, 32594 } ,{ name = "Earth Shield", duration = 60, timeless = true, charged = true, maxcharge = 6, color = colors.LGREEN })
+Spell( 30823 ,{ name = "Shamanistic Rage", group = "buffs", duration = 15, shine = true, color = colors.PURPLE3 })
 -- Spell( 3600 ,{ name = "Earthbind", maxtimers = 1, duration = 5, timeless = true, color = colors.BROWN, scale = 0.7 })
 Spell({ 16257, 16277, 16278, 16279, 16280 }, { name = "Flurry", duration = 15, scale = 0.8, group = "buffs", shine = true, shinerefresh = true, color = colors.DPURPLE })
-Spell({ 8056, 8058, 10472, 10473 }, { name = "Frost Shock", duration = 8, color = colors.LBLUE })
-Spell({ 8050, 8052, 8053, 10447, 10448, 29228 }, { name = "Flame Shock", duration = 12, color = colors.RED, ghost = true })
+Spell({ 8056, 8058, 10472, 10473, 25464 }, { name = "Frost Shock", duration = 8, color = colors.LBLUE })
+Spell({ 8050, 8052, 8053, 10447, 10448, 25457, 29228 }, { name = "Flame Shock", duration = 12, color = colors.RED, ghost = true })
 Cooldown( 8042 ,{ name = "Shock", color = colors.TEAL3, ghost = 2, priority = 1, ghosteffect = "MAGICCAST", scale = 0.9 })
 Cooldown( 17364 ,{ name = "Stormstrike", color = colors.CURSE, priority = 10, scale_until = 5, ghost = true  })
 Spell( 29063 ,{ name = "Focused Casting", shine = true, duration = 6, color = colors.PURPLE4, group = "buffs" })
 Spell( 16246 ,{ name = "Clearcasting", shine = true, duration = 15, color = colors.CHIM, group = "buffs" })
 Spell( 16166 ,{ name = "Elemental Mastery", shine = true, duration = 15, priority = 12, timeless = true, color = colors.DPURPLE })
 Spell( 16188 ,{ name = "Nature's Swiftness", shine = true, duration = 15, group = "buffs", priority = -12, timeless = true, color = colors.WOO2DARK })
+--[[
 Spell( 29203 ,{ name = "Healing Way", maxtimers = 2, duration = 15, scale = 0.7, color = colors.LGREEN })
 
 EventTimer({ event = "SPELL_CAST_SUCCESS", spellID = 25357, name = "HealingWayRefresh",
@@ -136,6 +139,7 @@ EventTimer({ event = "SPELL_CAST_SUCCESS", spellID = 25357, name = "HealingWayRe
         end
     end
 })
+]]
 
 -- TOTEMS
 local PRIO_FIRE = -77
@@ -147,12 +151,15 @@ Totem(136097, { name = "Stoneclaw Totem", spellID = 5730, group = "buffs", color
 Totem(136098, { name = "Stoneskin Totem", spellID = 8071, group = "buffs", color = colors.WOO, ghost = 1, scale = 0.7, priority = PRIO_EARTH })
 Totem(136023, { name = "Strength of the Earth Totem", short = "Strength", spellID = 8075, group = "buffs", color = colors.DTEAL, scale = 0.7, ghost = 1, priority = PRIO_EARTH })
 Totem(136108, { name = "Tremor Totem", spellID = 8143, group = "buffs", color = colors.PINK, ghost = 1, priority = PRIO_EARTH })
+Totem(136024, { name = "Earth Elemental", spellID = 2062, group = "buffs", color = colors.DBROWN, priority = PRIO_EARTH })
 
 Totem(135824, { name = "Fire Nova Totem", spellID = 1535, group = "buffs", color = colors.LRED, shine = true, priority = PRIO_FIRE })
 Totem(135826, { name = "Magma Totem", spellID = 8190, group = "buffs", color = colors.DRED, tick = 2, overlay = {"tick", "end", 0.3}, priority = PRIO_FIRE })
 Totem(135825, { name = "Searing Totem", spellID = 3599, group = "buffs", color = colors.RED, priority = PRIO_FIRE, ghost = 1 })
 Totem(136040, { name = "Flametongue Totem", spellID = 8227, group = "buffs", color = colors.PURPLE4, priority = PRIO_FIRE, scale = 0.7, ghost = 1 })
 Totem(135866, { name = "Frost Resistance Totem", short = "Frost Res", spellID = 8181, group = "buffs", color = colors.LRED, ghost = 1, scale_until = 15, priority = PRIO_FIRE })
+Totem(135790, { name = "Fire Elemental", spellID = 2894, group = "buffs", color = colors.LRED, priority = PRIO_FIRE })
+Totem(135829, { name = "Totem of Wrath", spellID = 30706, group = "buffs", color = colors.PINKIERED, priority = PRIO_FIRE })
 
 Totem(135832, { name = "Fire Resistance Totem", short = "Fire Res", spellID = 8184, group = "buffs", color = colors.FROZEN, ghost = 1, scale_until = 15, priority = PRIO_WATER })
 Totem(135127, { name = "Healing Stream Totem", short = "Healing Stream", spellID = 5394, group = "buffs", color = colors.LGREEN, ghost = 3, scale = 0.7, priority = PRIO_WATER })
@@ -168,6 +175,7 @@ Totem(136061, { name = "Nature Resistance Totem", short = "Nature Res", spellID 
 Totem(136022, { name = "Windwall Totem", spellID = 15107, group = "buffs", color = colors.BLACK, scale = 0.7, priority = PRIO_AIR, ghost = 1 })
 Totem(136013, { name = "Tranquil Air Totem", short = "Tranquil Air", spellID = 25908, group = "buffs", color = colors.LBLUE, scale_until = 15, priority = PRIO_AIR, ghost = 1 })
 -- Totem(136082, { name = "Sentry Totem", spellID = 6495, group = "buffs", color = colors.CURSE, ghost = 1, priority = PRIO_AIR })
+Totem(136092, { name = "Wrath of Air Totem", short = "Wrath of Air", spellID = 3738, group = "buffs", color = colors.PINK3, shine = true, scale = 0.7, ghosteffect = "FIRESHOT", priority = PRIO_AIR, ghost = 3 })
 end
 
 if class == "PALADIN" then
@@ -460,7 +468,7 @@ Spell( 12042 ,{ name = "Arcane Power", duration = 15, group = "buffs", color = c
 Spell( 31589 ,{ name = "Slow", duration = 15 })
 Spell({ 31661, 33041, 33042, 33043 } ,{ name = "Dragon's Breath", duration = 3, color = colors.ORANGE, short = "Breath", maxtimers = 1 })
 Spell( 12472 ,{ name = "Icy Veins", group = "buffs", duration = 20, color = colors.PINK3 })
-Spell( 33395 ,{ name = "Freeze", duration = 8, color = colors.FROZEN }) -- Water Elemental's Ability
+Spell( 33395 ,{ name = "Freeze", duration = 8, maxtimers = 1, color = colors.FROZEN }) -- Water Elemental's Ability
 
 end
 
