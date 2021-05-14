@@ -348,7 +348,7 @@ Spell( 5229, { name = "Enrage", color = colors.PURPLE4, shine = true, scale = 0.
 Spell({ 22842, 22895, 22896, 26999 }, { name = "Frenzied Regeneration", duration = 10, color = colors.LGREEN })
 Spell(22570, { name = "Maim", shine = true, color = colors.LRED,
     duration = function(timer)
-        return 1 + timer.comboPoints
+        return 1 + GetCP()
     end,
 }) -- varies
 Spell( 19675, { name = "Feral Charge", duration = 4, color = colors.DBROWN, shine = true })
@@ -564,23 +564,17 @@ Spell({ 8647, 8649, 8650, 11197, 11198, 26866 }, { name = "Expose Armor", durati
 Spell( 1330, { name = "Silence", color = colors.PINKIERED, duration = 3 })
 Spell({ 703, 8631, 8632, 8633, 11289, 11290, 26839, 26884 }, { name = "Garrote", color = colors.PINK3, duration = 18 })
 Spell({ 408, 8643 }, { name = "Kidney Shot", shine = true, color = colors.LRED,
-    duration = function(timer)
-        local duration = timer.spellID == 8643 and 1 or 0 -- if Rank 2, add 1s
-        local comboPoints = timer.comboPoints
-        return duration + comboPoints
-    end,
+    duration = function(timer) return 1+GetCP() end,
 }) -- varies
 Spell({ 1943, 8639, 8640, 11273, 11274, 11275, 26867 }, { name = "Rupture", tick = 2, tickshine = true, overlay = {"tick", "end"}, shine = true, color = colors.RED,
     duration = function(timer)
-        local comboPoints = timer.comboPoints
-        return (6 + comboPoints*2)
+        return (6 + GetCP()*2)
     end,
 }) -- varies
 Spell({ 5171, 6774 }, { name = "Slice and Dice", shinerefresh = true, color = colors.PURPLE,
     duration = function(timer)
-        local comboPoints = timer.comboPoints
         local mul = 1 + 0.15*Talent(14165, 14166, 14167)
-        return (6 + comboPoints*3)*mul
+        return (6 + GetCP()*3)*mul
     end
 }) -- varies
 
