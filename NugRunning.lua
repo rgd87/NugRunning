@@ -1535,7 +1535,8 @@ function NugRunning:PreGhost()
                     local spellIdOrName = isClassic and GetSpellInfo(spellID) or spellID
                     local timer = gettimer(active, spellIdOrName, UnitGUID("target"), "DEBUFF")
                     if not timer then
-                        timer = self:ActivateTimer(playerGUID, UnitGUID("target"), UnitName("target"), nil, spellID, GetSpellInfo(spellID), opts, "DEBUFF", opts.duration, nil, true)
+                        local someDuration = type(opts.duration) == "number" and opts.duration or 5
+                        timer = self:ActivateTimer(playerGUID, UnitGUID("target"), UnitName("target"), nil, spellID, GetSpellInfo(spellID), opts, "DEBUFF", someDuration, nil, true)
                         if timer then
                             timer:BecomeGhost()
                         end
