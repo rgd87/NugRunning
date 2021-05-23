@@ -284,6 +284,7 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
         table.wipe(tempTable)
         for spellID, opts in pairs(config[category]) do
             if not cloneIDs[spellID] and opts.clones then
+                opts.clones[spellID] = nil -- Removing possible input of original spell ID into clone list
                 for i, additionalSpellID in ipairs(opts.clones) do
                     tempTable[additionalSpellID] = opts
                     cloneIDs[additionalSpellID] = spellID
