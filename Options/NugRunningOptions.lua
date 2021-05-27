@@ -1816,7 +1816,20 @@ local function MakeGeneralOptions()
                         type = "toggle",
                         desc = L"Display spell name on timers",
                         get = function(info) return NugRunning.db.spellTextEnabled end,
-                        set = function(info, v) NugRunning.db.spellTextEnabled = not NugRunning.db.spellTextEnabled end,
+                        set = function(info, v)
+                            NugRunning.db.spellTextEnabled = not NugRunning.db.spellTextEnabled
+                            NugRunning.db.targetTextEnabled = false
+                        end,
+                        order = 1,
+                    },
+                    targetNameText = {
+                        name = L"Show Target Names",
+                        type = "toggle",
+                        get = function(info) return NugRunning.db.targetTextEnabled end,
+                        set = function(info, v)
+                            NugRunning.db.targetTextEnabled = not NugRunning.db.targetTextEnabled
+                            NugRunning.db.spellTextEnabled = false
+                        end,
                         order = 1,
                     },
                     localNames = {
