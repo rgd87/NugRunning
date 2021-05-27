@@ -1543,7 +1543,7 @@ local function MakeGeneralOptions()
                         end,
                         min = 80,
                         max = 400,
-                        step = 5,
+                        step = 1,
                         order = 1,
                     },
                     height = {
