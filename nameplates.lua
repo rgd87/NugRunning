@@ -166,14 +166,7 @@ function NugRunningNameplates:Resize()
     end
 end
 
-function NugRunningNameplates:Update(targetTimers, guidTimers, targetSwapping)
-    if targetSwapping then
-        local tGUID = UnitGUID("target")
-        if tGUID then
-            guidTimers[tGUID] = targetTimers
-        end
-    end
-
+function NugRunningNameplates:Update(guidTimers)
     for unit in pairs(activeNameplates) do
         local np = GetNamePlateForUnit(unit)
         if np then
@@ -186,8 +179,17 @@ function NugRunningNameplates:Update(targetTimers, guidTimers, targetSwapping)
     end
 end
 
+local sortfunc = NugRunning.sortfunc
+local orderedTimers = {}
 function NugRunningNameplates:UpdateNPTimers(np, nrunTimers, nameplateUnit)
-    if nrunTimers then
+    if nrunTimers and next(nrunTimers) then
+        table.wipe(orderedTimers)
+        for k,v in pairs(nrunTimers) do
+            table.insert(orderedTimers, k)
+        end
+        table.sort(orderedTimers, sortfunc)
+        nrunTimers = orderedTimers
+
         local i = 1
         while i <= #nrunTimers do
             local timer = nrunTimers[i]
