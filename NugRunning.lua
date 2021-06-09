@@ -311,7 +311,7 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
 
     NugRunning:RegisterEvent("PLAYER_TARGET_CHANGED")
     NugRunning:RegisterEvent("UNIT_AURA")
-    if apiLevel > 1 then NugRunning:RegisterEvent("UPDATE_MOUSEOVER_UNIT") end
+    if apiLevel >= 8 then NugRunning:RegisterEvent("UPDATE_MOUSEOVER_UNIT") end
 
 
     if NRunDB.cooldownsEnabled then
@@ -2180,7 +2180,6 @@ do
         ["player"] = 0,
         ["target"] = 1,
         ["focus"] = 2,
-        ["mouseover"] = 2,
         ["boss1"] = 2,
         ["boss2"] = 2,
         ["arena1"] = 2,
@@ -2189,6 +2188,9 @@ do
         ["arena4"] = 2,
         ["arena5"] = 2,
     }
+    if apiLevel >= 8 then
+        scanUnits["mouseover"] = 2
+    end
     for i=1,30 do
         local npUnit = "nameplate"..i
         scanUnits[npUnit] = 2
