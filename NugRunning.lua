@@ -43,32 +43,38 @@ local timersByGUID = {}
 local timersByGUIDCounter = {}
 local active = {}
 local free = {}
-setmetatable(active,{ __newindex = function(t,timer,v)
-    rawset(free,timer,nil)
-    rawset(t,timer,v)
+
+function NugRunning:SetActive(timer, status)
+    free[timer] = nil
+    active[timer] = status
     NugRunning:AddTimerToGUID(timer.dstGUID, timer)
-end})
-setmetatable(free,{ __newindex = function(t,timer,v)
+end
+
+function NugRunning:FreeTimer(timer, skipGhost)
     if timer.opts then
         if timer.opts.with_cooldown then
             local cd_opts = timer.opts.with_cooldown
             config.cooldowns[cd_opts.id] = cd_opts
             NugRunning:SPELL_UPDATE_COOLDOWN()
         else
-            if NRunDB.leaveGhost and (timer.opts.ghost or timer.scheduledGhost) and not timer.isGhost then return timer:BecomeGhost() end
-            if timer.isGhost and not timer.expiredGhost then return end
+            if not skipGhost then
+                if NRunDB.leaveGhost and (timer.opts.ghost or timer.scheduledGhost) and not timer.isGhost then return timer:BecomeGhost() end
+                if timer.isGhost and not timer.expiredGhost then return end
+            end
             timer.isGhost = nil
             timer.expiredGhost = nil
         end
     end
     timer:Hide()
+
     rawset(active,timer,nil)
+
     if not timer.isExternal then
-        rawset(t,timer,v)
+        free[timer] = true
         NugRunning:RemoveTimerFromGUID(timer.dstGUID, timer)
     end
     NugRunning:ArrangeTimers()
-end})
+end
 
 function NugRunning:FindFirstActiveTimer(spellID)
     for timer in pairs(active) do
@@ -347,7 +353,7 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
 
     for i=1,MAX_TIMERS do
         local timer = NugRunning:CreateTimer()
-        free[timer] = true
+        timer:Release()
     end
     --remove timer from the pool and change it to castbar
     local cbt = NugRunning:ExtractFromPool()
@@ -663,7 +669,7 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
                 deltimer.isGhost = true
                 deltimer.expiredGhost = true
                 -- deltimer.timeless = false
-                free[deltimer] = true
+                deltimer:Release()
             end
         else
             return
@@ -962,7 +968,7 @@ function NugRunning.DeactivateTimer(self,srcGUID,dstGUID, spellID, spellName, op
                 timer.targets[multiTargetGUID] = nil
                 if next(timer.targets) then return end
             end
-            free[timer] = true
+            timer:Release()
             self:ArrangeTimers()
             return
         end
@@ -971,15 +977,15 @@ end
 
 local function free_noghost(timer)
     timer._elapsed = 2.5
-    free[timer] = true
+    timer:Release()
 end
 function NugRunning.DeactivateTimersOnDeath(self,dstGUID)
     for timer in pairs(active) do
         if spells[timer.spellID] then
         if not timer.dstGUID then -- clearing guid from multi target list just in case
             timer.targets[dstGUID] = nil
-            if not next(timer.targets) then free_noghost(timer) end
-        elseif timer.dstGUID == dstGUID then free_noghost(timer) end
+            if not next(timer.targets) then timer:Release("NOGHOST") end
+        elseif timer.dstGUID == dstGUID then timer:Release("NOGHOST") end
         end
     end
 end
@@ -1121,7 +1127,7 @@ function NugRunning.TimerFunc(self,time)
     if beforeEnd <= 0 then
         if not self.dontfree then
             table_wipe(self.targets)
-            NugRunning.free[self] = true
+            self:Release()
             return
         end
     end
@@ -1228,19 +1234,15 @@ function NugRunning:ExtractFromPool()
 end
 
 local TimerManagementMixin = {}
-function TimerManagementMixin.Release(self)
-    NugRunning.free[self] = true
+function TimerManagementMixin.Release(self, skipGhost)
+    NugRunning:FreeTimer(self, skipGhost)
 end
 
 function TimerManagementMixin.SetActive(self, status)
-    if status then
-        active[self] = true
-    else
-        active[self] = nil
-    end
+    NugRunning:SetActive(self, true)
 end
 function TimerManagementMixin.IsActive(self)
-    return active[self]
+    return active[self] ~= nil
 end
 
 function TimerManagementMixin.GhostExpire(self)
