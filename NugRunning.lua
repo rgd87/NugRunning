@@ -82,18 +82,9 @@ local gettimer = function(self,spellID,dstGUID,timerType)
     local foundTimer
     local spellActiveTimers = 0
     if type(spellID) == "number" then
+        local baseSpellID = config.spellClones[spellID] or spellID
         for timer in pairs(self) do
-            if timer.spellID == spellID and timer.timerType == timerType then
-                spellActiveTimers = spellActiveTimers + 1
-                if timer.dstGUID == dstGUID then
-                    foundTimer = timer
-                    break
-                end
-            end
-        end
-    elseif type(spellID) == "string" then
-        for timer in pairs(self) do
-            if timer.spellName == spellID and timer.timerType == timerType then
+            if timer.baseSpellID == baseSpellID and timer.timerType == timerType then
                 spellActiveTimers = spellActiveTimers + 1
                 if timer.dstGUID == dstGUID then
                     foundTimer = timer
@@ -686,7 +677,7 @@ function NugRunning.ActivateTimer(self,srcGUID,dstGUID,dstName,dstFlags, spellID
     timer.dstGUID = dstGUID
     timer.dstName = dstName
     timer.spellID = spellID
-    timer.spellIDRoot = config.spellClones[spellID] or spellID
+    timer.baseSpellID = config.spellClones[spellID] or spellID
     timer.spellName = spellName
     timer.timerType = timerType
     timer:SetActive(true)
