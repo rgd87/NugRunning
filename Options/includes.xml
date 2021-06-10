@@ -8,6 +8,7 @@
 
     <Include file="..\Locales\ruRU.lua"/>
     <Include file="..\Locales\zhCN.lua"/>
+    <Include file="..\Locales\koKR.lua"/>
 
     <Script file="NugRunningOptions.lua"/>
 </Ui>
