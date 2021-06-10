@@ -1413,7 +1413,7 @@ do
         local targetGUID = UnitGUID("target")
         for timer in pairs(active) do
             local custom_group = timer.opts.group
-            if custom_group then
+            if custom_group and custom_group ~= "default" then
                 groups[custom_group] = groups[custom_group] or {}
                 table.insert(groups[custom_group],timer)
             elseif timer.dstGUID == playerGUID then table.insert(playerTimers,timer)
