@@ -1393,6 +1393,7 @@ do
             return ap < bp
         end
     end
+    NugRunning.sortfunc = sortfunc
 
     function NugRunning.ArrangeTimers(self)
         for g,tbl in pairs(groups) do
@@ -1489,16 +1490,8 @@ do
         end
 
         if nameplates then
-            nameplates:Update(targetTimers, guid_groups, doswap)
+            nameplates:Update(timersByGUID)
         end
-    end
-    function NugRunning.GetTimersByDstGUID(self, guid) -- for nameplate updates on target
-        local guidTimers = {}
-        for timer in pairs(active) do
-            if timer.dstGUID == guid then table.insert(guidTimers, timer) end
-        end
-        table.sort(guidTimers,sortfunc)
-        return guidTimers
     end
 end
 
@@ -2438,3 +2431,7 @@ do
         return guidTimers
     end
 end
+
+-- function NugRunning.GetTimersByGUID(self, dstGUID)
+--     return timersByGUID[dstGUID]
+-- end
