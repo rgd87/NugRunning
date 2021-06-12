@@ -44,10 +44,12 @@ local timersByGUIDCounter = {}
 local active = {}
 local free = {}
 
-function NugRunning:SetActive(timer, status)
-    free[timer] = nil
-    active[timer] = status
-    NugRunning:AddTimerToGUID(timer.dstGUID, timer)
+function NugRunning:SetActive(timer)
+    rawset(free,timer,nil)
+    rawset(active,timer,true)
+    if not timer.isExternal then
+        NugRunning:AddTimerToGUID(timer.dstGUID, timer)
+    end
 end
 
 function NugRunning:FreeTimer(timer, skipGhost)
@@ -2257,6 +2259,7 @@ function NugRunning:CreateCastbarTimer(timer)
     f.dstGUID = UnitGUID("player")
     f.srcGUID = UnitGUID("player")
     f.dontfree = true
+    f.isExternal = true
     -- f.priority = 9001
     f.opts = {}
 
@@ -2352,9 +2355,7 @@ function NugRunning:CreateCastbarTimer(timer)
     f.UNIT_SPELLCAST_CHANNEL_UPDATE = f.UNIT_SPELLCAST_CHANNEL_START
     function f.UNIT_SPELLCAST_STOP(self,event, unit, castID, spellID)
         if unit ~= self.unit then return end
-        self:Hide()
-        self:SetActive(false)
-        NugRunning:ArrangeTimers()
+        self:Release()
     end
     function f.UNIT_SPELLCAST_FAILED(self, event, unit,castID)
         if unit ~= self.unit then return end
