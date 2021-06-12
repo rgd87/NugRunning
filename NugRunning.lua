@@ -1231,6 +1231,7 @@ end
 
 function NugRunning:ExtractFromPool()
     local timer = self:AcquireTimer()
+    timer.isExternal = true
     free[timer] = nil
     return timer
 end
