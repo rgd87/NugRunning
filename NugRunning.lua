@@ -1567,7 +1567,7 @@ function NugRunning:UPDATE_MOUSEOVER_UNIT()
 end
 
 function NugRunning:PLAYER_TARGET_CHANGED()
-    if not apiLevel == 1 then
+    if apiLevel > 1 then
         NugRunning:CancelSingleTargetTimers()
     end
     UpdateUnitAuras("target")
@@ -2239,11 +2239,7 @@ function NugRunning:CancelSingleTargetTimers()
 
     for timer in pairs(active) do
         if timer.dstGUID ~= targetGUID and timer.opts.singleTarget then
-            timer.isGhost = true
-            timer.expiredGhost = true
-            timer:Release()
-            timer.isGhost = nil
-            timer.expiredGhost = nil
+            timer:Release("NoGhost")
         end
     end
 end
