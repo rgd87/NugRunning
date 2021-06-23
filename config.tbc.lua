@@ -111,6 +111,9 @@ end
 
 
 
+Spell( 2825  ,{ name = "Bloodlust", group = "buffs", global = true, duration = 40, color = colors.DRED, shine = true, affiliation = "raid", target = "player" })
+Spell( 32182 ,{ name = "Heroism", group = "buffs", global = true, duration = 40, color = colors.DRED, shine = true, affiliation = "raid", target = "player" })
+-- Spell( 80353 ,{ name = "Time Warp", group = "buffs", global = true, duration = 40, color = colors.DRED, shine = true, affiliation = "raid", target = "player" })
 if class == "SHAMAN" then
 Interrupt({ 8042, 8044, 8045, 8046, 10412, 10413, 10414, 25454 }, "Earth Shock", 2)
 
