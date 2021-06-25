@@ -38,7 +38,10 @@ Spell( 4068 , { name = "Iron Grenade", global = true, maxtimers = 1, color = col
 -- Cast({ 746, 1159, 3267, 3268, 7926, 7927, 10838, 10839, 18608, 18610, 23567, 23568, 23569, 23696, 24412, 24413, 24414 },
     -- { name = "First Aid", global = true, tick = 1, tickshine = true, overlay = {"tick", "tickend", 0.4 }, color = colors.LGREEN })
 
-
+Spell( 2825  ,{ name = "Bloodlust", group = "buffs", global = true, duration = 40, color = colors.DRED, shine = true, affiliation = "raid", target = "player" })
+Spell( 32182 ,{ name = "Heroism", group = "buffs", global = true, duration = 40, color = colors.DRED, shine = true, affiliation = "raid", target = "player" })
+Spell({ 29528, 351360},{ name = "Drums of War", group = "buffs", global = true, duration = 30, color = colors.DRED, shine = true, affiliation = "raid", target = "player" })
+Spell({ 35476, 351355},{ name = "Drums of Battle", group = "buffs", global = true, duration = 30, color = colors.DRED, shine = true, affiliation = "raid", target = "player" })
 
 if class == "WARLOCK" then
 -- Interrupt(119910, "Spell Lock", 6) -- Felhunter spell from action bar
@@ -110,10 +113,6 @@ Spell({ 17767, 17850, 17851, 17852, 17853, 17854, 27272 }, { name = "Consume Sha
 end
 
 
-
-Spell( 2825  ,{ name = "Bloodlust", group = "buffs", global = true, duration = 40, color = colors.DRED, shine = true, affiliation = "raid", target = "player" })
-Spell( 32182 ,{ name = "Heroism", group = "buffs", global = true, duration = 40, color = colors.DRED, shine = true, affiliation = "raid", target = "player" })
--- Spell( 80353 ,{ name = "Time Warp", group = "buffs", global = true, duration = 40, color = colors.DRED, shine = true, affiliation = "raid", target = "player" })
 if class == "SHAMAN" then
 Interrupt({ 8042, 8044, 8045, 8046, 10412, 10413, 10414, 25454 }, "Earth Shock", 2)
 
