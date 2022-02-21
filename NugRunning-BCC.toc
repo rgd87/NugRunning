@@ -1,4 +1,4 @@
-## Interface: 20501
+## Interface: 20503
 ## Title: NugRunning
 ## Notes: Spelltimers
 ## Author: d87
@@ -8,6 +8,7 @@
 
 ## X-WoWI-ID: 10440
 ## X-Curse-Project-ID: 27470
+## X-Wago-ID: vEGPo5K1
 
 Libs\LibStub\LibStub.lua
 Libs\CallbackHandler-1.0\CallbackHandler-1.0.lua
