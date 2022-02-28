@@ -613,7 +613,7 @@ Interrupt({ 72, 1671, 1672, 29704 }, "Shield Bash", 6)
 
 Spell( 18498 ,{ name = "Silence", duration = 3, color = colors.PINK }) -- Improved Shield Bash
 Spell( 23920 ,{ name = "Spell Reflect", color = colors.LBLUE, group = "buffs", arrow = colors.LBLUE, duration = 5, scale = 0.75, shine = true })
-Spell({ 29801, 30030, 30033 } ,{ name = "Rampage", shine = true, shinerefresh = true, color = colors.DPURPLE, color2 = colors.REJUV, priority = 11, duration = 30 })
+Spell({ 30029, 30031, 30032 } ,{ name = "Rampage", shine = true, shinerefresh = true, color = colors.DPURPLE, color2 = colors.REJUV, priority = 11, duration = 30 })
 
 Spell( 20230 ,{ name = "Retaliation", group = "buffs", shine = true, duration = 15, color = colors.PINK })
 Spell( 1719 ,{ name = "Recklessness", group = "buffs", shine = true, duration = 15, color = colors.REJUV })
