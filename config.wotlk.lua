@@ -25,8 +25,8 @@ local colors = NugRunningConfig.colors
 NugRunningConfig.nameplates.parented = true
 
 local apiLevel = math.floor(select(4,GetBuildInfo())/10000)
-local isBC = apiLevel == 2
-if not isBC then return end
+local isWrath = apiLevel == 3
+if not isWrath then return end
 
 -- RACIALS
 -- EventTimer({ spellID = 23234, event = "SPELL_CAST_SUCCESS", name = "Blood Fury", duration = 15, scale = 0.75, group = "buffs" })
@@ -50,6 +50,19 @@ Interrupt(19647, "Spell Lock", 8) -- Rank 2
 Spell( 24259 ,{ name = "Silence", duration = 3, color = colors.PINK }) -- Spell Lock Silence
 
 local normalize_dots_to = nil--26
+
+Spell({ 172, 6222, 6223, 7648, 11671, 11672, 25311, 27216, 47812, 47813 }, { name = "Corruption", tick = 3, overlay = {"tick", "end", 0.35}, priority = 9, fixedlen = normalize_dots_to, nameplates = true, ghost = true, color = colors.PINKIERED,
+    duration = function(timer, opts)
+        if timer.spellID == 172 then
+            return 12
+        elseif timer.spellID == 6222 then
+            return 15
+        else
+            return 18
+        end
+    end }) -- Corruption
+
+
 
 Spell( 27243 ,{ name = "Seed of Corruption", duration = 18, nameplates = true,  color = colors.DBLUE, short = "SoC" })
 Spell({ 30108, 30404, 30405 } ,{ name = "Unstable Affliction", duration = 18, overlay = {0, 4.8, 0.2}, priority = 10, nameplates = true, ghost = true, color = colors.PINK2 })
@@ -88,17 +101,8 @@ Spell({ 6789, 17925, 17926, 27223 }, { name = "Death Coil", duration = 3, color 
 
 
 Spell({ 18265, 18879, 18880, 18881, 27264, 30911 }, { name = "Siphon Life", duration = 30, priority = 5, fixedlen = normalize_dots_to, nameplates = true, ghost = true, color = colors.DTEAL })
-Spell({ 980, 1014, 6217, 11711, 11712, 11713, 27218 }, { name = "Curse of Agony", duration = 24, fixedlen = normalize_dots_to, nameplates = true, ghost = true, priority = 6, color = colors.CURSE })
-Spell({ 172, 6222, 6223, 7648, 11671, 11672, 25311, 27216 }, { name = "Corruption", tick = 3, overlay = {"tick", "end", 0.35}, priority = 9, fixedlen = normalize_dots_to, nameplates = true, ghost = true, color = colors.PINKIERED,
-    duration = function(timer, opts)
-        if timer.spellID == 172 then
-            return 12
-        elseif timer.spellID == 6222 then
-            return 15
-        else
-            return 18
-        end
-    end }) -- Corruption
+Spell({ 980, 1014, 6217, 11711, 11712, 11713, 27218, 47863, 47864 }, { name = "Curse of Agony", duration = 24, fixedlen = normalize_dots_to, nameplates = true, ghost = true, priority = 6, color = colors.CURSE })
+
 Spell({ 348, 707, 1094, 2941, 11665, 11667, 11668, 25309, 27215 },{ name = "Immolate", recast_mark = 1.5, overlay = {0, 1.5, 0.3}, duration = 15, nameplates = true, priority = 10, ghost = true, color = colors.RED })
 
 Spell( 29341, { name = "Shadowburn", duration = 5, scale = 0.5, color = colors.DPURPLE }) -- Soul Shard debuff
