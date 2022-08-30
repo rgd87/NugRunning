@@ -164,4 +164,5 @@ globals = {
 
     -- Wrath spell haste
     "GetCombatRatingBonus",
+    "GetActiveTalentGroup",
 }
