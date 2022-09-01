@@ -397,6 +397,7 @@ Spell({ 9005, 9823, 9827, 27006 }, { name = "Pounce", _skipunitaura = true, prio
         return 2+brutal_impact
     end
 })
+Spell( 69369, { name = "Predator's Swiftness", duration = 10, priority = 4, group = "buffs", color = colors.LGREEN })
 Spell({ 9007, 9824, 9826 }, { name = "Pounce Bleed", duration = 18, priority = 4, color = colors.PINK3 })
 Spell({ 8921, 8924, 8925, 8926, 8927, 8928, 8929, 9833, 9834, 9835, 26987, 26988, 48462, 48463 }, { name = "Moonfire", priority = 5, ghost = true, color = colors.PURPLE, nameplates = true, duration = 12})
 Spell({ 1822, 1823, 1824, 9904, 27003, 48573, 48574 }, { name = "Rake", duration = 9, priority = 6, nameplates = true, ghost = true, color = colors.PINKIERED })
