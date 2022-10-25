@@ -293,7 +293,7 @@ if class == "PRIEST" then
 
 -- [[ COVENANTS ]]
 Spell( 325013 ,{ --[[Kyrian]] name = "Boon of the Ascended", group = "buffs", priority = -7, duration = 10, color = colors.PINK3 })
-Spell( 323673 ,{ --[[Venthyr]] name = "Mindgames", duration = 5, color = colors.LRED })
+Spell( 375901 ,{ --[[Venthyr]] name = "Mindgames", duration = 5, color = colors.LRED })
 Spell( 325203 ,{ --[[Necrolord]] name = "Unholy Transfusion", duration = 15, maxtimers = 1, ghost = 2, color = colors.TEAL3 })
 Spell( 327661 ,{ --[[Night Fae]] name = "Fae Guardians", group = "buffs", priority = -7, duration = 20, ghost = 2, color = colors.PINK3 })
 
@@ -625,7 +625,6 @@ Spell( 23920 ,{ name = "Spell Reflect", color = colors.LBLUE, group = "buffs", a
 
 Spell( 213858 ,{ name = "Battle Trance", color = colors.LGREEN, group = "buffs", duration = 18, shine = true })
 Spell( 199261 ,{ name = "Death Wish", color = colors.PINKIERED, group = "buffs", duration = 15, shine = true, shinerefresh = true, priority = -100, arrow = colors.PINKIERED, glow2time = 3 })
--- Spell( 262232 ,{ name = "War Machine", priority = -1, color = colors.RED2, shine = true, shinerefresh = true, duration = 10, group = "buffs" })
 
 Spell( 85739 ,{ name = "Whirlwind", short = "", glowtime = 20, group = "buffs", priority = -100503, color = colors.TEAL2, shine = true, scale = 0.8, duration = 20, charged = true, maxcharge = 2,
     init = function(self)

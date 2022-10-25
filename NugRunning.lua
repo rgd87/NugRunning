@@ -308,7 +308,9 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
     -- NugRunning:RegisterEvent("PLAYER_TALENT_UPDATE")
     -- NugRunning.PLAYER_TALENT_UPDATE = NugRunning.ReInitSpells
     NugRunning.CHARACTER_POINTS_CHANGED = NugRunning.ReInitSpells
+    NugRunning.SPELLS_CHANGED = NugRunning.ReInitSpells
     NugRunning:RegisterEvent("CHARACTER_POINTS_CHANGED")
+    NugRunning:RegisterEvent("SPELLS_CHANGED")
     NugRunning:RegisterUnitEvent("UNIT_POWER_UPDATE", "player")
 
     NugRunning:ReInitSpells()
