@@ -161,6 +161,7 @@ globals = {
     "CastingInfo",
     "ChannelInfo",
     "GetCVar",
+    "IsTestBuild",
 
     -- Wrath spell haste
     "GetCombatRatingBonus",
