@@ -353,7 +353,6 @@ Cooldown( 10060, { name = "Power Infusion", color = colors.DBROWN, scale_until =
 -- Spell( 205372, { name = "Void Ray", duration = 6, group = "buffs", priority = -20, scale = 0.5, color = colors.PINK3 })
 Spell( 194249 ,{ name = "Voidform", duration = 1, arrow = colors.REJUV, priority = -20, scale = 0.8, group = "buffs", shine = true, color = colors.PINK3 })
 Cooldown( 228260 ,{ name = "Voidform", color = colors.REJUV, scale_until = 10, shine = true, ghost = 7, ghosteffect = "JUDGEMENT", priority = -20 })
-Spell( 319952 ,{ name = "Surrender to Madness", short = "STM", duration = 25, arrow = colors.CURSE, priority = -21, group = "buffs", shine = true, color = colors.PURPLE4, target = "player" })
 
 -- Spell( 47753 ,{ name = "Divine Aegis", duration = 12 })
 
@@ -518,7 +517,6 @@ Cooldown( 212283 ,{ name = "Symbols", ghost = 5, ghosteffect = "AEGWYNN", color 
 
 Spell( 1833  ,{ name = "Cheap Shot", duration = 4, color = colors.LRED })
 Spell( 408   ,{ name = "Kidney Shot", shine = true, duration = function() return 1+GetCP() end, color = colors.LRED })
-Spell( 199804   ,{ name = "Between the Eyes", shine = true, duration = function() return GetCP() end, color = colors.LRED })
 Spell( 1776  ,{ name = "Gouge", color = colors.PINK, duration = 4 })
 Spell( 2094  ,{ name = "Blind",duration = 60, pvpduration = 8, color = {0.20, 0.80, 0.2} })
 
