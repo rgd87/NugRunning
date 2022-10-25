@@ -53,6 +53,9 @@ end
 function TimerBar.SetCount(self,amount)
     if not amount then return end
     if self.opts.stackcolor then
+        local tbl = self.opts.stackcolor
+        local color = tbl[amount]
+        if not color then color = tbl[#tbl] end
         self:SetColor(unpack(self.opts.stackcolor[amount]))
     end
     if self.opts.glowstack then

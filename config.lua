@@ -735,7 +735,7 @@ EventTimer({ spellID = 100130, event = "SPELL_CAST_SUCCESS", priority = 12, name
 -- Spell( 60503 ,{ name = "Overpower", priority = 9, overlay = {0,7, 0.3}, fixedlen = 9, shinerefresh = true, shine = true, color = colors.PINKIERED, duration = 12 }) -- Taste for blood --removed
 
 Cooldown( 23881, { name = "Bloodthirst", fixedlen = 9, tick = 1.5, tickshine = true, overlay = {"tick", "end"}, short = "", priority = 10, check_known = true, ghost = true,  color = colors.CURSE })
-Cooldown( 85288, { name = "Raging Blow", fixedlen = 9, short = "", priority = 9, ghost = true,  color = colors.PINKIERED, stackcolor = { colors.RED2, colors.PINKIERED } })
+Cooldown( 85288, { name = "Raging Blow", fixedlen = 9, short = "", priority = 9, ghost = true,  color = colors.PINKIERED, stackcolor = { colors.RED2, colors.RED2, colors.PINKIERED } })
 Activation( 85288, { for_cd = true, effect = "SLICENDICE", ghost = 3})
 Cooldown( 118000 ,{ name = "Dragon Roar", fixedlen = 9, ghost = 3, priority = 7, ghost = true, scale = 0.8, color = colors.DBROWN, scale_until = 10 })
 Cooldown( 315720 ,{ name = "Onslaught", fixedlen = 9, priority = 8, ghost = true, color = colors.PINK })
