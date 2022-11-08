@@ -243,11 +243,9 @@ Spell( 980 ,{ name = "", preghost = 5, duration = 18, recast_mark = 5.4, overlay
 Spell( 146739 ,{ name = "", preghost = 5, maxtimers = 5, duration = 14, recast_mark = 4.2, overlay = {0,4.2, 0.2}, priority = 9, fixedlen = normalize_dots_to, nameplates = true, ghost = 6, color = colors.PINKIERED,
     init = function(self)
         if IsPlayerSpell(196103) then -- Absolute Corruption
-            self.scale = 0.7
             self.priority = 0.1
             self.timeless = true
         else
-            self.scale = 1
             self.priority = 9
             self.timeless = false
         end
