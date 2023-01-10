@@ -752,6 +752,10 @@ Spell( 51209 ,{ name = "Hungering Cold", duration = 10, color = colors.FROZEN, m
 
 Spell( 51124 ,{ name = "Killing Machine", duration = 30, scale = 0.8, priority = 7, color = colors.DPURPLE, shine = true })
 Spell( 59052 ,{ name = "Freezing Fog", duration = 15, color = colors.TEAL2, priority = 9, shine = true })
+
+Spell( 49222, { name = "Bone Shield", duration = 300, timeless = true, charged = true, maxcharge = 3, color = colors.FROZEN, group = "buffs", init = function(self)self.maxcharge = 3 + Glyph(57210)*1 end, color = colors.CURSE, group = "buffs", priority = -100 })
+Spell( 51271, { name = "Unbreakable Armor", duration = 20, shine = true, color = colors.WOO2, group = "buffs" })
+Spell({ 63583, 66800, 66801, 66802, 66803 }, { name = "Desolation", duration = 20, group = "buffs", color = colors.LRED })
 end
 
 
