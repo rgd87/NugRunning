@@ -382,7 +382,7 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
     NugRunning.SetupSpecialTimers()
 
 
-    local f = CreateFrame('Frame', nil, InterfaceOptionsFrame)
+    local f = CreateFrame('Frame', nil, SettingsPanel or InterfaceOptionsFrame)
     f:SetScript('OnShow', function(self)
         self:SetScript('OnShow', nil)
         LoadAddOn('NugRunningOptions')

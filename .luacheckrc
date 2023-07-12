@@ -124,6 +124,7 @@ globals = {
     "GetTime",
 
     "InterfaceOptionsFrame",
+    "SettingsPanel",
     "InterfaceOptionsFrame_OpenToCategory",
     "InterfaceOptions_AddCategory",
     "LoadAddOn",
