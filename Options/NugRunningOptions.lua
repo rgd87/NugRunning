@@ -280,6 +280,10 @@ function NugRunningGUI.CreateCommonForm(self)
             delta.isAdded = true
         end
 
+        if NugRunning.UpdateSpellNameToIDTable then
+            NugRunning:UpdateSpellNameToIDTable()
+        end
+
         -- fill up spell clones of the new version
         local originalSpell = NugRunningConfigMerged[category][spellID]
         if originalSpell.clones then

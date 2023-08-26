@@ -155,6 +155,7 @@ globals = {
     "GetNumGlyphSockets",
     "GetGlyphSocketInfo",
     "GetActiveSpecGroup",
+    "UnitPowerType",
     "GetItemInfo",
     "GetShapeshiftForm",
     "GetInventoryItemLink",
