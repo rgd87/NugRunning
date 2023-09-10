@@ -121,6 +121,7 @@ globals = {
     "Enum",
     "UnitPower",
     "GetTime",
+    "SettingsPanel",
 
     "InterfaceOptionsFrame",
     "InterfaceOptionsFrame_OpenToCategory",
