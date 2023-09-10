@@ -1912,7 +1912,7 @@ local function MakeGeneralOptions()
     AceConfigRegistry:RegisterOptionsTable("NugRunningGeneral", opt)
 
     local AceConfigDialog = LibStub("AceConfigDialog-3.0")
-    local panelFrame = AceConfigDialog:AddToBlizOptions("NugRunningGeneral", "General", "NugRunning")
+    local panelFrame = AceConfigDialog:AddToBlizOptions("NugRunningGeneral", "NugRunning")
 
     return panelFrame
 end
@@ -1955,21 +1955,10 @@ end
 
 do
     local f = CreateFrame('Frame', "NugRunningOptions", InterfaceOptionsFrame)
-    f.name = "NugRunning"
-    InterfaceOptions_AddCategory(f);
-
-    f.general = MakeGeneralOptions()
+    f.general = MakeGeneralOptions() -- makes the root category now
     f.help = MakeHelp()
 
     NugRunningGUI.frame = NugRunningGUI:Create("Spell List", "NugRunning")
     f.spell_list = NugRunningGUI.frame.frame
     InterfaceOptions_AddCategory(f.spell_list);
-
-    f:Hide()
-    f:SetScript("OnShow", function(self)
-            self:Hide();
-            local list = self.spell_list
-            InterfaceOptionsFrame_OpenToCategory (list)
-            InterfaceOptionsFrame_OpenToCategory (list)
-    end)
 end
