@@ -412,7 +412,11 @@ function NugRunning.COMBAT_LOG_EVENT_UNFILTERED( self, event )
         if not affiliationStatus and opts.affiliation then
             affiliationStatus = (bit_band(srcFlags, COMBATLOG_OBJECT_AFFILIATION_MASK) <= opts.affiliation)
         end
-        if opts.target and dstGUID ~= UnitGUID(opts.target) then return end
+        if opts.singleTarget then
+            if dstGUID ~= UnitGUID("target") then return end
+        else
+            if opts.target and dstGUID ~= UnitGUID(opts.target) then return end
+        end
         if affiliationStatus then
             if eventType == "SPELL_AURA_REFRESH" then
                 self:RefreshTimer(srcGUID, dstGUID, dstName, dstFlags, spellID, spellName, opts, auraType, nil, amount)

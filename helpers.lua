@@ -115,7 +115,6 @@ helpers.Spell = function(id, opts)
         end
         return
     end
-    if opts.singleTarget then opts.target = "target" end
     if opts.affiliation == "raid" then opts.affiliation = AFFILIATION_PARTY_OR_RAID end
     if opts.affiliation == "any" then opts.affiliation = AFFILIATION_OUTSIDER end
     if type(id) == "table" then
