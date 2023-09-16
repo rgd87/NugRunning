@@ -100,12 +100,12 @@ function NugRunningNameplates:CreateNameplateTimer(frame)
     bar:SetSize(w,h)
     f.bar = bar
 
-    local bg = f:CreateTexture("BACKGROUND", nil, -5)
+    local bg = f:CreateTexture(nil, "BACKGROUND", nil, -5)
     bg:SetTexture(texture)
     bg:SetAllPoints(bar)
     bar.bg = bg
 
-    local icon = f:CreateTexture("ARTWORK")
+    local icon = f:CreateTexture(nil, "ARTWORK")
     icon:SetTexCoord(.1, .9, .3, .7)
     icon:SetHeight(h); icon:SetWidth(2*h)
     icon:SetPoint("TOPLEFT", f, "TOPLEFT",0,0)
