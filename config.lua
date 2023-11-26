@@ -372,7 +372,7 @@ Spell( 200183,{ name = "Apotheosis", duration = 11, color = colors.LBLUE, group 
 local priest_normalize = 7
 
 Cast( 15407, { name = "Mind Flay", short = "", fixedlen = priest_normalize, priority = 12, tick = 1, color = colors.TEAL3, priority = 11, duration = 3, scale = 1 })
-Cast( 48045, { name = "Mind Shear", short = "", fixedlen = priest_normalize, priority = 12, tick = 1, color = colors.TEAL2, priority = 11, duration = 3, scale = 1 })
+Cast( 48045, { name = "Mind Sear", short = "", fixedlen = priest_normalize, priority = 12, tick = 1, color = colors.TEAL2, priority = 11, duration = 3, scale = 1 })
 
 Spell( 453, { name = "Mind Soothe", color = colors.PURPLE3, duration = 20 })
 --Old Shadow Orbs

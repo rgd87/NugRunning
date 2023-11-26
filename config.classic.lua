@@ -42,6 +42,16 @@ Spell( 4068 , { name = "Iron Grenade", global = true, maxtimers = 1, color = col
 
 
 if class == "WARLOCK" then
+-- Season of Discovery
+Cooldown( 403629, { name = "Chaos Bolt", color = colors.TEAL3 })
+Spell({ 403677, 403685, 403686, 403687, 403688, 403689 }, { name = "Drain Life", duration = 15, ghost = true, nameplates = true, color = colors.TEAL3 }) -- Master Channeler
+Spell( 403650 ,{ name = "Lake of Fire", duration = 15, color = colors.RED, ghost = true, singleTarget = true })
+Cooldown( 403501 ,{ name = "Haunt", short = "", priority = 8, ghost = true, color = colors.TEAL, overlay = {0, "gcd"}, })
+Cooldown( 403835, { name = "Shadow Cleave", ghost = true, priority = 5, color = colors.PINKIERED }) -- Meta Aoe
+Spell( 412789 , { name = "Demonic Howl", duration = 6, multiTarget = true })
+Spell( 425463 , { name = "Demonic Grace", duration = 6, group = "buffs", shine = true, color = colors.REJUV })
+
+
 -- Interrupt(119910, "Spell Lock", 6) -- Felhunter spell from action bar
 Interrupt(19244, "Spell Lock", 6) -- Rank 1
 Interrupt(19647, "Spell Lock", 8) -- Rank 2
@@ -111,6 +121,19 @@ end
 
 
 if class == "SHAMAN" then
+-- Season of Discovery
+Cooldown( 408490 ,{ name = "Lava Burst", color = colors.CURSE, ghost = true, priority = 10 })
+Cooldown( 408507 ,{ name = "Lava Lash", color = colors.LRED, priority = 9, ghost = 5 })
+Cooldown( 408507 ,{ name = "Lava Lash", color = colors.LRED, priority = 9, ghost = 5 })
+Cooldown( 425339 ,{ name = "Molten Blast", color = colors.BROWN, priority = 9, ghost = true, resetable = true })
+Spell( 408514 ,{ name = "Earth Shield", duration = 600, timeless = true, charged = true, maxcharge = 3, color = colors.LGREEN })
+Spell( 425336 ,{ name = "Shamanistic Rage", group = "buffs", duration = 15, shine = true, color = colors.PURPLE3 })
+Spell( 409944 ,{ name = "Ancestral Guidance", group = "buffs", duration = 10, shine = true, color = colors.REJUV })
+EventTimer({ spellID = 415236, event = "SPELL_CAST_SUCCESS", name = "Healing Rain", duration = 15, color = colors.FROZEN })
+
+
+
+
 Interrupt({ 8042, 8044, 8045, 8046, 10412, 10413, 10414 }, "Earth Shock", 2)
 
 -- Spell( 3600 ,{ name = "Earthbind", maxtimers = 1, duration = 5, timeless = true, color = colors.BROWN, scale = 0.7 })
@@ -169,6 +192,16 @@ Totem(136013, { name = "Tranquil Air Totem", short = "Tranquil Air", spellID = 2
 end
 
 if class == "PALADIN" then
+-- Season of Discovery
+local normalized_length = 9
+Cooldown( 407778 ,{ name = "Divine Storm", ghost = true, priority = 7, fixedlen = normalized_length, color = colors.WOO2 })
+Cooldown( 407676 ,{ name = "Crusader Strike", tick = 1.5, tickshine = true, overlay = {"tick", "end"}, ghost = true, fixedlen = normalized_length, short = "", priority = 10, color = colors.CURSE })
+Spell( 425600, { name = "Horn of Lordaeron", ghost = 7, target = "player", scale_until = 20, priority = -300, effect = "BLOODBOIL", effecttime = 10, glowtime = 10, affiliation = "raid", color = colors.DPURPLE, duration = 120 })
+Spell( 407798, { name = "Seal of Martyrdom", priority = 6, duration = 30, ghost = 1, color = colors.LRED })
+Cooldown( 407669 ,{ name = "Avenger's Shield", resetable = true, scale = 1, scale_until = 8, color = colors.DTEAL, color2 = colors.TEAL, ghost = true })
+Interrupt({ 425609 }, "Rebuke", 2)
+
+
 
 Spell( 20066 ,{ name = "Repentance", duration = 6 })
 Spell({ 2878, 5627, 10326 }, { name = "Turn Undead",
@@ -224,6 +257,8 @@ Spell({ 20925, 20927, 20928 }, { name = "Holy Shield", duration = 10, priority =
 end
 
 if class == "HUNTER" then
+-- Season of Discover
+Cooldown( 415320 ,{ name = "Flanking Strike", ghost = true, color = colors.DTEAL, scale_until = 8, })
 
 -- EventTimer({ event = "SPELL_CAST_SUCCESS", spellID = 1543, name = "Flare", scale = 0.5, color = colors.GOLD, duration = 30 })
 Spell( 19263 ,{ name = "Deterrence", duration = 10, color = colors.LBLUE, shine = true, group = "buffs" })
@@ -241,7 +276,7 @@ Spell({ 1513, 14326, 14327 }, { name = "Scare Beast",
 
 Spell({ 1130, 14323, 14324, 14325 }, { name = "Hunter's Mark", duration = 120, ghost = 3, color = colors.PURPLE4 })
 
-Spell({ 1978, 13549, 13550, 13551, 13552, 13553, 13554, 13555, 25295 }, { name = "Serpent Sting", duration = 15, color = colors.PURPLE, ghost = true, })
+Spell({ 1978, 13549, 13550, 13551, 13552, 13553, 13554, 13555, 25295 }, { name = "Serpent Sting", duration = 15, color = colors.PURPLE, maxtimers = 4, ghost = true, })
 Spell({ 3043, 14275, 14276, 14277 }, { name = "Scorpid Sting", duration = 20, color = colors.TEAL })
 Spell({ 3034, 14279, 14280 }, { name = "Viper Sting", duration = 8, color = colors.DBLUE })
 Spell({ 19386, 24132, 24133 }, { name = "Wyvern Sting", short = "Sleep", duration = 12, color = colors.PURPLE3, ghost = 1 })
@@ -282,6 +317,18 @@ Spell( 24394 ,{ name = "Intimidation", duration = 3, shine = true, color = color
 end
 
 if class == "DRUID" then
+-- Season of Discover
+Spell( 414800 ,{ name = "Fury of Stormrage", duration = 15, group = "buffs", shine = true, color = colors.LGREEN })
+Spell( 414644, { name = "Lacerate", duration = 15, color = colors.RED, priority = 2, ghost = true })
+-- Mangle Bear
+Cooldown( 407995, { name = "Mangle", tick = 1.5, tickshine = true, overlay = {"tick", "end"}, priority = 10, short = "", resetable = true, fixedlen = 9, ghost = true,  color = colors.CURSE })
+Spell( 164815 ,{ name = "Sunfire", duration = 12, nameplates = true, priority = 9, ghost = true, color = colors.ORANGE, maxtimers = 1 })
+Spell( 408120, { name = "Wild Growth", duration = 7, maxtimers = 1, color = colors.LGREEN })
+Interrupt(410176, "Skull Bash", 2)
+Spell( 408124 ,{ name = "Lifebloom", shinerefresh = true, duration = 7, color = { 0.5, 1, 0.5} })
+Spell( 407988, { name = "Savage Roar", group = "buffs", priority = -10, color = colors.PURPLE, duration = 34 })
+Cooldown( 417157 ,{ name = "Starsurge", resetable = true, priority = 6, ghost = true, color = colors.CURSE })
+
 Interrupt(16979, "Feral Charge", 4)
 
 Spell( 22812 ,{ name = "Barkskin", duration = 15, color = colors.WOO2, group = "buffs" })
@@ -358,6 +405,14 @@ Spell( 17116 ,{ name = "Nature's Swiftness", shine = true, duration = 15, group 
 end
 
 if class == "MAGE" then
+-- Season of Discovery
+Spell( 400669 ,{ name = "Fingers of Frost", shine = true, shinerefresh = true, priority = 10, scale = 0.8, duration = 15, color = colors.PURPLE3 })
+Spell( 400613 ,{ name = "Living Bomb", ghost = true, color = colors.PINKIERED, priority = 9, duration = 12 })
+Spell( 425121 ,{ name = "Icy Veins", group = "buffs", duration = 20, color = colors.PINK3 })
+Spell( 425124 ,{ name = "Arcane Surge", group = "buffs", duration = 8, color = colors.PINK3 })
+
+
+
 Interrupt(2139, "Counterspell", 10)
 
 Spell( 18469 ,{ name = "Silence", duration = 4, color = colors.CHIM }) -- Improved Counterspell
@@ -438,6 +493,13 @@ Spell( 12042 ,{ name = "Arcane Power", duration = 15, group = "buffs", color = c
 end
 
 if class == "PRIEST" then
+-- Season of Discovery
+Spell( 425204 ,{ name = "Void Plague", short = "", shine = true, duration = 18, ghost = true, nameplates = true, priority = 7, color = colors.WOO })
+Cast( 413259, { name = "Mind Sear", short = "", priority = 12, tick = 1, color = colors.TEAL2, priority = 11, duration = 5, scale = 1 })
+Cooldown( 402174 ,{ name = "Penance", tick = 1.5, overlay = {"tick", "tickend"}, priority = 15, color = colors.TEAL3, ghost = true, ghost = 3, ghosteffect = "MAGICCAST" })
+-- Wrong ID?
+Spell( 401859 ,{ name = "Prayer of Mending", shinerefresh = true, duration = 30, color = colors.PINKIERED, scale = 1, textfunc = function(timer) return timer.dstName end })
+
 
 Spell( 15487 ,{ name = "Silence", duration = 5, color = colors.PINK })
 
@@ -525,6 +587,13 @@ EventTimer({
 end
 
 if class == "ROGUE" then
+-- Season of Discovery
+Cooldown( 424919 ,{ name = "Main Gauche", color = colors.DPURPLE, color2 = colors.PURPLE, scale_until = 5, ghost = true })
+Spell( 424785  ,{ name = "Saber Slash", duration = 12, color = colors.RED, priority = 5 })
+Spell( 400009 , { name = "Between the Eyes", shine = true, duration = function() return GetCP() end, priority = 10, color = colors.LRED })
+Spell( 400038 ,{ name = "Main Gauche", duration = 30, color = colors.DPURPLE, color2 = colors.PINK3, group = "buffs", ghost = true })
+
+
 Interrupt({ 1766, 1767, 1768, 1769 }, "Kick", 5)
 
 Spell( 18425 ,{ name = "Silence", duration = 2, color = colors.PINK }) -- Improved Kick
@@ -552,7 +621,7 @@ Spell({ 11327, 11329 }, { name = "Vanish", duration = 10, group = "buffs", scale
 
 Spell({ 8647, 8649, 8650, 11197, 11198 }, { name = "Expose Armor", duration = 30, color = colors.WOO2 })
 Spell({ 703, 8631, 8632, 8633, 11289, 11290 }, { name = "Garrote", color = colors.PINK3, duration = 18 })
-Spell({ 408, 8643 }, { name = "Kidney Shot", shine = true, color = colors.LRED,
+Spell({ 408, 8643 }, { name = "Kidney Shot", priority = 10, shine = true, color = colors.LRED,
     duration = function(timer)
         local duration = timer.spellID == 8643 and 1 or 0 -- if Rank 2, add 1s
         local comboPoints = GetCP()
@@ -593,6 +662,10 @@ EventTimer({ event = "SPELL_CAST_SUCCESS", spellID = 1725, name = "Distract", co
 end
 
 if class == "WARRIOR" then
+Spell( 402906 ,{ name = "Flagellation", shine = true, group = "buffs", priority = -9999, color = colors.PURPLE2, duration = 12 })
+-- Consumed by Rage is missing
+
+
 Interrupt({ 6552, 6554 }, "Pummel", 4)
 Interrupt({ 72, 1671, 1672 }, "Shield Bash", 6)
 
