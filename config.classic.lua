@@ -43,10 +43,26 @@ Spell( 4068 , { name = "Iron Grenade", global = true, maxtimers = 1, color = col
 
 if class == "WARLOCK" then
 -- Season of Discovery
-Cooldown( 403629, { name = "Chaos Bolt", color = colors.TEAL3 })
+Cooldown( 403629, { name = "Chaos Bolt", color = colors.TEAL3,
+    isknowncheck = function()
+        if C_Engraving.IsEngravingEnabled() then
+            local INVSLOT_HAND = 10
+            local engravingInfo = C_Engraving.GetRuneForEquipmentSlot(INVSLOT_HAND);
+            return engravingInfo.iconTexture == 236291
+        end
+        return false
+    end })
 Spell({ 403677, 403685, 403686, 403687, 403688, 403689 }, { name = "Drain Life", duration = 15, ghost = true, nameplates = true, color = colors.TEAL3 }) -- Master Channeler
 Spell( 403650 ,{ name = "Lake of Fire", duration = 15, color = colors.RED, ghost = true, singleTarget = true })
-Cooldown( 403501 ,{ name = "Haunt", short = "", priority = 8, ghost = true, color = colors.TEAL, overlay = {0, "gcd"}, })
+Cooldown( 403501 ,{ name = "Haunt", short = "", priority = 8, ghost = true, color = colors.TEAL, overlay = {0, "gcd"},
+    isknowncheck = function()
+        if C_Engraving.IsEngravingEnabled() then
+            local INVSLOT_HAND = 10
+            local engravingInfo = C_Engraving.GetRuneForEquipmentSlot(INVSLOT_HAND);
+            return engravingInfo.iconTexture == 236298
+        end
+        return false
+    end })
 Cooldown( 403835, { name = "Shadow Cleave", ghost = true, priority = 5, color = colors.PINKIERED }) -- Meta Aoe
 Spell( 412789 , { name = "Demonic Howl", duration = 6, multiTarget = true })
 Spell( 425463 , { name = "Demonic Grace", duration = 6, group = "buffs", shine = true, color = colors.REJUV })

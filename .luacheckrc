@@ -163,6 +163,7 @@ globals = {
     "ChannelInfo",
     "GetCVar",
     "IsTestBuild",
+    "C_Engraving",
 
     -- Wrath spell haste
     "GetCombatRatingBonus",
