@@ -48,7 +48,7 @@ Cooldown( 403629, { name = "Chaos Bolt", color = colors.TEAL3,
         if C_Engraving.IsEngravingEnabled() then
             local INVSLOT_HAND = 10
             local engravingInfo = C_Engraving.GetRuneForEquipmentSlot(INVSLOT_HAND);
-            return engravingInfo.iconTexture == 236291
+            return engravingInfo and engravingInfo.iconTexture == 236291
         end
         return false
     end })
@@ -59,7 +59,7 @@ Cooldown( 403501 ,{ name = "Haunt", short = "", priority = 8, ghost = true, colo
         if C_Engraving.IsEngravingEnabled() then
             local INVSLOT_HAND = 10
             local engravingInfo = C_Engraving.GetRuneForEquipmentSlot(INVSLOT_HAND);
-            return engravingInfo.iconTexture == 236298
+            return engravingInfo and engravingInfo.iconTexture == 236298
         end
         return false
     end })
