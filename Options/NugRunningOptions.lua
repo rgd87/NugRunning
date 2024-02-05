@@ -509,7 +509,7 @@ function NugRunningGUI.CreateCommonForm(self)
     color:SetLabel(L"Color")
     color:SetRelativeWidth(0.20)
     color:SetHasAlpha(false)
-    color:SetCallback("OnValueConfirmed", function(self, event, r,g,b,a)
+    color:SetCallback("OnValueChanged", function(self, event, r,g,b,a)
         self.parent.opts["color"] = {r,g,b}
     end)
     Form.controls.color = color
@@ -519,7 +519,7 @@ function NugRunningGUI.CreateCommonForm(self)
     color2:SetLabel(L"End Color")
     color2:SetRelativeWidth(0.20)
     color2:SetHasAlpha(false)
-    color2:SetCallback("OnValueConfirmed", function(self, event, r,g,b,a)
+    color2:SetCallback("OnValueChanged", function(self, event, r,g,b,a)
         self.parent.opts["color2"] = {r,g,b}
     end)
     Form.controls.color2 = color2
@@ -541,7 +541,7 @@ function NugRunningGUI.CreateCommonForm(self)
     arrow:SetLabel(L"Highlight")
     arrow:SetRelativeWidth(0.20)
     arrow:SetHasAlpha(false)
-    arrow:SetCallback("OnValueConfirmed", function(self, event, r,g,b,a)
+    arrow:SetCallback("OnValueChanged", function(self, event, r,g,b,a)
         self.parent.opts["arrow"] = {r,g,b}
     end)
     Form.controls.arrow = arrow
@@ -841,7 +841,7 @@ function NugRunningGUI.CreateCommonForm(self)
         stc1:SetRelativeWidth(0.12)
         stc1.id = i
         stc1:SetHasAlpha(false)
-        stc1:SetCallback("OnValueConfirmed", function(self, event, r,g,b,a)
+        stc1:SetCallback("OnValueChanged", function(self, event, r,g,b,a)
             self.parent.opts["stackcolor"] = self.parent.opts["stackcolor"] or {}
             self.parent.opts["stackcolor"][self.id] = {r,g,b}
         end)
