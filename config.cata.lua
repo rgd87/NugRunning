@@ -85,7 +85,10 @@ Spell( 30283, { name = "Shadowfury", duration = 3, multiTarget = true })
 Spell( 29341, { name = "Shadowburn", duration = 5, scale = 0.5, color = colors.DPURPLE }) -- Soul Shard debuff
 
 Cooldown( 17962, { name = "Conflagrate", ghost = true, priority = 5, color = colors.PINK })
-Cooldown( 50796, { name = "Chaos Bolt", color = colors.TEAL3 })
+
+Cooldown( 50796, { name = "Chaos Bolt", color = colors.TEAL3, isknowncheck = function() return IsPlayerSpell(50796) end })
+
+Cooldown( 71521, { name = "Hand of Gul'dan", color = colors.TEAL3, isknowncheck = function() return IsPlayerSpell(71521) end })
 
 Spell( 47241 ,{ name = "Metamorphosis", group = "buffs", priority = -8, duration = 30, shine = true, color = colors.CURSE })
 Spell({ 47383,71162,71165 }, { name = "Molten Core", duration = 18, group = "buffs", color = colors.PURPLE })
