@@ -165,6 +165,12 @@ globals = {
     "IsTestBuild",
     "C_Engraving",
 
+    "C_AddOns",
+    "C_Spell",
+    "C_UnitAuras",
+    "AuraUtil",
+    "Settings",
+
     -- Wrath spell haste
     "GetCombatRatingBonus",
     "GetActiveTalentGroup",

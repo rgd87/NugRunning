@@ -31,6 +31,8 @@ if apiLevel == 3 then
     UnitSpellHaste = function() return GetCombatRatingBonus(CR_HASTE_SPELL) end
 end
 local GetSpecialization = isClassic and function() return nil end or _G.GetSpecialization
+local LoadAddOn = LoadAddOn or C_AddOns.LoadAddOn
+
 
 local NRunDB = nil
 local config = NugRunningConfig
@@ -1762,6 +1764,15 @@ local ParseOpts = function(str)
     end
     str:gsub("(%w+)%s*=%s*%[%[(.-)%]%]", capture):gsub("(%w+)%s*=%s*(%S+)", capture)
     return t
+end
+
+local function InterfaceOptionsFrame_OpenToCategory(categoryIDOrFrame)
+	if type(categoryIDOrFrame) == "table" then
+		local categoryID = categoryIDOrFrame.name;
+		return Settings.OpenToCategory(categoryID);
+	else
+		return Settings.OpenToCategory(categoryIDOrFrame);
+	end
 end
 
 NugRunning.Commands = {
