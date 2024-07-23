@@ -120,14 +120,24 @@ local gettimer = function(self,spellID,dstGUID,timerType)
     return foundTimer, spellActiveTimers
 end
 local IsPlayerSpell = IsPlayerSpell
-local GetSpellInfo = GetSpellInfo
+local GetSpellInfo = helpers.GetSpellInfo
 local string_sub = string.sub
-local GetSpellCooldown = GetSpellCooldown
-local GetSpellCharges = GetSpellCharges
+local GetSpellCooldown = GetSpellCooldown or C_Spell.GetSpellCooldown
+local GetSpellCharges = GetSpellCharges or C_Spell.GetSpellCharges
 local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
 local bit_band = bit.band
 local strfind = string.find
-local UnitAura = UnitAura
+
+local DeprecatedUnitAura = function(unitToken, index, filter)
+    local auraData = C_UnitAuras.GetAuraDataByIndex(unitToken, index, filter);
+    if not auraData then
+        return nil;
+    end
+
+    return AuraUtil.UnpackAuraData(auraData);
+end
+
+local UnitAura = UnitAura or DeprecatedUnitAura
 local UnitGUID = UnitGUID
 local table_wipe = table.wipe
 local CheckSpec = helpers.CheckSpec

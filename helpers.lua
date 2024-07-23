@@ -14,7 +14,20 @@ local AFFILIATION_MINE = COMBATLOG_OBJECT_AFFILIATION_MINE
 local AFFILIATION_PARTY_OR_RAID = COMBATLOG_OBJECT_AFFILIATION_RAID + COMBATLOG_OBJECT_AFFILIATION_PARTY
 local AFFILIATION_OUTSIDER = COMBATLOG_OBJECT_AFFILIATION_OUTSIDER
 
-
+if C_Spell.GetSpellInfo then
+    local C_Spell_GetSpellInfo = C_Spell.GetSpellInfo
+    helpers.GetSpellInfo = function(spellId)
+        local info = C_Spell_GetSpellInfo(spellId)
+        if info then
+            return info.name, nil, info.iconID
+        end
+    end
+    helpers.GetSpellTexture = C_Spell.GetSpellTexture
+else
+    helpers.GetSpellInfo = _G.GetSpellInfo
+    helpers.GetSpellTexture = _G.GetSpellTexture
+end
+local GetSpellInfo = helpers.GetSpellInfo
 
 -- local isLegion = select(4,GetBuildInfo()) < 80000
 -- if isLegion then
