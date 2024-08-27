@@ -134,7 +134,7 @@ end
 local function Warlock_AbsoluteCorruption()
     local PurgeCorruption = function()
         for timer in pairs(NugRunning.active) do
-            if timer.spellID == 146739 and timer.timeless then
+            if (timer.spellID == 146739 or timer.spellID == 445474) and timer.timeless then
                 timer.isGhost = true
                 timer.expiredGhost = true
                 -- timer.timeless = false

@@ -135,6 +135,7 @@ helpers.Spell = function(id, opts)
         id = table.remove(clones, 1) -- extract first spell id from the last as original
         opts.clones = clones
     end
+    opts._rootSpellID = id
 
     if opts and not GetSpellInfo(id) then print(string.format("nrun: misssing spell #%d (%s)",id,opts.name)) return end
     NugRunningConfig.spells[id] = opts
