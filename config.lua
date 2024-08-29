@@ -261,14 +261,14 @@ end
 Spell( 146739 ,{ name = "", preghost = 5, maxtimers = 5, duration = 14, recast_mark = 4.2, overlay = {0,4.2, 0.2}, priority = 9, fixedlen = normalize_dots_to, nameplates = true, ghost = 6, color = colors.PINKIERED,
     init = absolute_cprruption_transform,
     isknowncheck = function()
-        return IsPlayerSpell(172)
+        return IsPlayerSpell(172) and not IsPlayerSpell(445465)
     end})
 
 --Wither (Replaces Immolate/Corruption)
 Spell( 445474 ,{ name = "", preghost = 5, maxtimers = 5, duration = 18, recast_mark = 4.2, overlay = {0,4.2, 0.2}, priority = 9, fixedlen = normalize_dots_to, nameplates = true, ghost = 6, color = colors.PINKIERED,
     init = absolute_cprruption_transform,
     isknowncheck = function()
-        return IsPlayerSpell(445474)
+        return IsPlayerSpell(445465)
     end})
 --Siphon Life
 Spell( 63106 ,{ name = "", preghost = 5, duration = 15, recast_mark = 4.5, overlay = {0, 4.5, 0.2}, priority = 5, fixedlen = normalize_dots_to, nameplates = true, ghost = 6, color = colors.DTEAL, init = creeping_death,
