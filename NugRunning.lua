@@ -1525,7 +1525,7 @@ end
 
 
 local IsPlayerSpell = IsPlayerSpell
-local IsUsableSpell = IsUsableSpell
+local IsUsableSpell = C_Spell and C_Spell.IsSpellUsable or IsUsableSpell
 local function IsOriginalSpell(spellID)
     local replacedTexture, originalTexture = GetSpellTexture(spellID)
     return replacedTexture == originalTexture
