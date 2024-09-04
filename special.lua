@@ -8,6 +8,8 @@ local APILevel = math.floor(select(4,GetBuildInfo())/10000)
 local active = NugRunning.active
 local free = NugRunning.free
 local UnitGUID = UnitGUID
+local GetSpellInfo = helpers.GetSpellInfo
+local GetSpellTexture = helpers.GetSpellTexture
 
 local function Warrior_Rampage()
     local rampageID = 184367

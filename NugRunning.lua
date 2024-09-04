@@ -123,6 +123,7 @@ local gettimer = function(self,spellID,dstGUID,timerType)
 end
 local IsPlayerSpell = IsPlayerSpell
 local GetSpellInfo = helpers.GetSpellInfo
+local GetSpellTexture = helpers.GetSpellTexture
 local string_sub = string.sub
 local GetSpellCooldown = GetSpellCooldown or C_Spell.GetSpellCooldown
 local GetSpellCharges = GetSpellCharges or C_Spell.GetSpellCharges
