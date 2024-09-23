@@ -125,7 +125,13 @@ local IsPlayerSpell = IsPlayerSpell
 local GetSpellInfo = helpers.GetSpellInfo
 local GetSpellTexture = helpers.GetSpellTexture
 local string_sub = string.sub
-local GetSpellCooldown = GetSpellCooldown or C_Spell.GetSpellCooldown
+local RetailGetSpellCooldown = function(...)
+    local C_Spell_GetSpellCooldown = C_Spell.GetSpellCooldown
+    local info = C_Spell_GetSpellCooldown(...)
+    return info.startTime, info.duration, info.enabled, info.modRate
+end
+local GetSpellCooldown = GetSpellCooldown or RetailGetSpellCooldown
+
 local GetSpellCharges = GetSpellCharges or C_Spell.GetSpellCharges
 local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
 local bit_band = bit.band
