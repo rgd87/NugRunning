@@ -410,8 +410,8 @@ Spell({ 5217, 6793, 9845, 9846 }, { name = "Tiger's Fury", duration = 6, color =
 Spell( 2893 ,{ name = "Abolish Poison", tick = 2, tickshine = true, overlay = {"tick", "end"}, group = "buffs", duration = 8, color = colors.TEAL2 })
 Spell( 29166 , { name = "Innervate", duration = 20, shine = true, color = colors.DBLUE })
 
-Spell({ 8936, 8938, 8939, 8940, 8941, 9750, 9856, 9857, 9858 }, { name = "Regrowth", duration = 21, scale = 0.7, color = colors.LGREEN })
-Spell({ 774, 1058, 1430, 2090, 2091, 3627, 8910, 9839, 9840, 9841, 25299 }, { name = "Rejuvenation", scale = 1, duration = 12, color = colors.REJUV })
+Spell({ 8936, 8938, 8939, 8940, 8941, 9750, 9856, 9857, 9858, 436944 }, { name = "Regrowth", duration = 21, scale = 0.7, color = colors.LGREEN })
+Spell({ 774, 1058, 1430, 2090, 2091, 3627, 8910, 9839, 9840, 9841, 25299, 417064 }, { name = "Rejuvenation", scale = 1, duration = 12, color = colors.REJUV })
 Spell( 16870 ,{ name = "Clearcasting", shine = true, group = "buffs", duration = 15, color = colors.CHIM })
 
 Spell({ 5570, 24974, 24975, 24976, 24977 }, { name = "Insect Swarm", duration = 12, priority = 6, color = colors.TEAL3, ghost = true, nameplates = true, })
