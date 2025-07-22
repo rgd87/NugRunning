@@ -169,6 +169,7 @@ globals = {
     "C_Spell",
     "C_UnitAuras",
     "AuraUtil",
+    "C_SpecializationInfo",
     "Settings",
 
     -- Wrath spell haste

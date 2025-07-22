@@ -30,7 +30,8 @@ if apiLevel == 3 then
     local CR_HASTE_SPELL = CR_HASTE_SPELL
     UnitSpellHaste = function() return GetCombatRatingBonus(CR_HASTE_SPELL) end
 end
-local GetSpecialization = isClassic and function() return nil end or _G.GetSpecialization
+local GlobalGetSpecialization = C_SpecializationInfo and C_SpecializationInfo.GetSpecialization or _G.GetSpecialization
+local GetSpecialization = apiLevel <= 3 and function() return nil end or GlobalGetSpecialization
 local LoadAddOn = LoadAddOn or C_AddOns.LoadAddOn
 
 
