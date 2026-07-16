@@ -53,8 +53,10 @@ end
 function NugRunningNameplates.NAME_PLATE_UNIT_REMOVED(self, event, unit)
     activeNameplates[unit] = nil
     local frame = GetNamePlateForUnit(unit)
-    for _, timer in ipairs(frame.timers) do
-        timer:Hide()
+    if frame and frame.timers then
+        for _, timer in ipairs(frame.timers) do
+            timer:Hide()
+        end
     end
 end
 
