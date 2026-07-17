@@ -1962,10 +1962,20 @@ local function InterfaceOptions_AddCategory(frame, addOn, position)
 	frame.OnRefresh = frame.refresh;
 
 	if frame.parent then
-		local category = Settings.GetCategory(frame.parent);
-		local subcategory, layout = Settings.RegisterCanvasLayoutSubcategory(category, frame, frame.name, frame.name);
-		subcategory.ID = frame.name;
-		return subcategory, category;
+		-- On 2.5.6 / retail (Dragonflight+) the Ace3-registered root category
+		-- gets an auto-generated ID, so Settings.GetCategory(frame.parent)
+		-- returns nil and RegisterCanvasLayoutSubcategory would crash with
+		-- "category = nil". Resolve the real category object through Ace3's
+		-- internal BlizOptionsIDMap instead, falling back to the by-name
+		-- lookup for older clients.
+		local parentID = AceConfigDialog.BlizOptionsIDMap and AceConfigDialog.BlizOptionsIDMap[frame.parent]
+		local category = parentID and Settings.GetCategory(parentID) or Settings.GetCategory(frame.parent)
+		if category then
+			local subcategory, layout = Settings.RegisterCanvasLayoutSubcategory(category, frame, frame.name, frame.name);
+			subcategory.ID = frame.name;
+			return subcategory, category;
+		end
+	end
 	else
 		local category, layout = Settings.RegisterCanvasLayoutCategory(frame, frame.name, frame.name);
 		category.ID = frame.name;

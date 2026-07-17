@@ -133,7 +133,7 @@ local RetailGetSpellCooldown = function(...)
 end
 local GetSpellCooldown = GetSpellCooldown or RetailGetSpellCooldown
 
-local GetSpellCharges = GetSpellCharges or C_Spell.GetSpellCharges
+local GetSpellCharges = GetSpellCharges or (C_Spell and C_Spell.GetSpellCharges)
 local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
 local bit_band = bit.band
 local strfind = string.find
@@ -402,11 +402,11 @@ function NugRunning.PLAYER_LOGIN(self,event,arg1)
     NugRunning.SetupSpecialTimers()
 
 
-    local f = CreateFrame('Frame', nil, SettingsPanel or InterfaceOptionsFrame)
-    f:SetScript('OnShow', function(self)
-        self:SetScript('OnShow', nil)
-        LoadAddOn('NugRunningOptions')
-    end)
+    -- TBC 2.5.6 / retail: load the options LoD addon at login so its Settings
+    -- categories (incl. the Spell List subcategory) are registered reliably.
+    -- The previous OnShow hook on SettingsPanel was unreliable on the 2.5.6
+    -- client because the subframe OnShow does not always fire.
+    pcall(LoadAddOn, 'NugRunningOptions')
 end
 
 function NugRunning.PLAYER_LOGOUT(self, event)
