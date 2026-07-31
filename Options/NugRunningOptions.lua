@@ -1961,17 +1961,21 @@ local function InterfaceOptions_AddCategory(frame, addOn, position)
 	frame.OnDefault = frame.default;
 	frame.OnRefresh = frame.refresh;
 
+	-- 1.15.9 fix: parent category lookup can fail with the new SettingsInbound
+	-- registration pipeline; fall through to a top-level category instead of erroring.
 	if frame.parent then
 		local category = Settings.GetCategory(frame.parent);
-		local subcategory, layout = Settings.RegisterCanvasLayoutSubcategory(category, frame, frame.name, frame.name);
-		subcategory.ID = frame.name;
-		return subcategory, category;
-	else
-		local category, layout = Settings.RegisterCanvasLayoutCategory(frame, frame.name, frame.name);
-		category.ID = frame.name;
-		Settings.RegisterAddOnCategory(category);
-		return category;
+		if category then
+			local subcategory, layout = Settings.RegisterCanvasLayoutSubcategory(category, frame, frame.name, frame.name);
+			subcategory.ID = frame.name;
+			return subcategory, category;
+		end
 	end
+
+	local category, layout = Settings.RegisterCanvasLayoutCategory(frame, frame.name, frame.name);
+	category.ID = frame.name;
+	Settings.RegisterAddOnCategory(category);
+	return category;
 end
 
 do
