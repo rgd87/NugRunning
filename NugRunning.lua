@@ -1779,6 +1779,14 @@ local function InterfaceOptionsFrame_OpenToCategory(categoryIDOrFrame)
 		local categoryID = categoryIDOrFrame.name;
 		return Settings.OpenToCategory(categoryID);
 	else
+		-- On 12.0+ / TBC 2.5.6 the category ID is auto-generated, so a lookup
+		-- by display name fails. Resolve via AceConfigDialog's ID map.
+		local AceConfigDialog = LibStub("AceConfigDialog-3.0", true)
+		local categoryID = AceConfigDialog and AceConfigDialog.BlizOptionsIDMap
+			and AceConfigDialog.BlizOptionsIDMap[categoryIDOrFrame]
+		if categoryID then
+			return Settings.OpenToCategory(categoryID)
+		end
 		return Settings.OpenToCategory(categoryIDOrFrame);
 	end
 end
