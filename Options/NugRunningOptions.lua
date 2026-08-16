@@ -1962,7 +1962,9 @@ local function InterfaceOptions_AddCategory(frame, addOn, position)
 	frame.OnRefresh = frame.refresh;
 
 	if frame.parent then
-		local category = Settings.GetCategory(frame.parent);
+		local AceConfigDialog = LibStub("AceConfigDialog-3.0", true)
+		local parentID = AceConfigDialog and AceConfigDialog.BlizOptionsIDMap and AceConfigDialog.BlizOptionsIDMap[frame.parent]
+		local category = Settings.GetCategory(parentID or frame.parent);
 		local subcategory, layout = Settings.RegisterCanvasLayoutSubcategory(category, frame, frame.name, frame.name);
 		subcategory.ID = frame.name;
 		return subcategory, category;
