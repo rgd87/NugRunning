@@ -1779,7 +1779,9 @@ local function InterfaceOptionsFrame_OpenToCategory(categoryIDOrFrame)
 		local categoryID = categoryIDOrFrame.name;
 		return Settings.OpenToCategory(categoryID);
 	else
-		return Settings.OpenToCategory(categoryIDOrFrame);
+		local AceConfigDialog = LibStub("AceConfigDialog-3.0", true)
+		local categoryID = AceConfigDialog and AceConfigDialog.BlizOptionsIDMap and AceConfigDialog.BlizOptionsIDMap[categoryIDOrFrame]
+        return Settings.OpenToCategory(categoryID)
 	end
 end
 
