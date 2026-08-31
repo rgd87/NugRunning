@@ -67,7 +67,7 @@ Spell( 48181, { name = "Haunt", short = "", priority = 8, ghost = true, color = 
 Spell( 64371, { name = "Eradication", duration = 10, group = "buffs", shine = true, color = colors.CURSE })
 
 Spell( 980, { name = "Curse of Agony", duration = 24, fixedlen = normalize_dots_to, nameplates = true, ghost = true, priority = 6, color = colors.CURSE })
-Spell( 172, { name = "Corruption", tick = 3, overlay = {"tick", "end", 0.35}, priority = 9, fixedlen = normalize_dots_to, nameplates = true, ghost = true, color = colors.PINKIERED,
+Spell( 146739, { name = "Corruption", tick = 3, overlay = {"tick", "end", 0.35}, priority = 9, fixedlen = normalize_dots_to, nameplates = true, ghost = true, color = colors.PINKIERED,
     init = function(opts)
         if Talent(47201, 47202, 47203, 47204, 47205) > 2 then
             opts.tick = nil
