@@ -16,5 +16,5 @@ Libs\LibSharedMedia-3.0\lib.xml
 
 helpers.lua
 config.lua
-config.classic.lua
+config.forever.lua
 NugRunning.lua

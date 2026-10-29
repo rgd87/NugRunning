@@ -171,6 +171,11 @@ globals = {
     "AuraUtil",
     "C_SpecializationInfo",
     "Settings",
+    "IsPublicTestClient",
+
+    "InCombatLockdown",
+    "issecretvalue",
+    "BuffBarCooldownViewer",
 
     -- Wrath spell haste
     "GetCombatRatingBonus",

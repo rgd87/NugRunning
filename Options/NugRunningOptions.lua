@@ -1497,6 +1497,8 @@ local function MakeGeneralOptions()
             --         NugRunning.Commands.charspec()
             --     end
             -- },
+
+            --[[
             anchors = {
                 type = "group",
                 name = L"Anchors",
@@ -1528,6 +1530,7 @@ local function MakeGeneralOptions()
                     },
                 },
             }, --
+            ]]
             sizeSettings = {
                 type = "group",
                 name = " ",
@@ -1542,11 +1545,12 @@ local function MakeGeneralOptions()
                         get = function(info) return NugRunning.db.textureName end,
                         set = function(info, value)
                             NugRunning.db.textureName = value
-                            NugRunning:UpdateAllTextures()
+                            NugRunning:UpdateAllCVBuffBars()
                         end,
                         values = LSM:HashTable("statusbar"),
                         dialogControl = "LSM30_Statusbar",
                     },
+                    --[[
                     width = {
                         name = L"Width",
                         type = "range",
@@ -1562,21 +1566,21 @@ local function MakeGeneralOptions()
                         step = 1,
                         order = 1,
                     },
+                    ]]
                     height = {
                         name = L"Height",
                         type = "range",
                         get = function(info) return NugRunning.db.height end,
                         set = function(info, v)
                             NugRunning.db.height = v
-                            for i,timer in ipairs(NugRunning.timers) do
-                                timer:Resize(NugRunning.db.width, NugRunning.db.height)
-                            end
+                            NugRunning:UpdateAllCVBuffBars()
                         end,
                         min = 10,
-                        max = 50,
+                        max = 30,
                         step = 1,
                         order = 2,
                     },
+                    --[[
                     growth = {
                         name = L"Growth Direction",
                         type = 'select',
@@ -1595,8 +1599,40 @@ local function MakeGeneralOptions()
                             NugRunning:ArrangeTimers()
                         end,
                     },
+                    ]]
+                    borderType = {
+                        type = "select",
+                        name = L"Border Type",
+                        order = 3,
+                        get = function(info) return NugRunning.db.borderType end,
+                        set = function(info, value)
+                            NugRunning.db.borderType = value
+                            NugRunning:UpdateAllCVBuffBars()
+                        end,
+                        values = {
+                            ["1PX"] = "1px Border",
+                            ["2PX"] = "2px Border",
+                            ["ROUNDED"] = "Rounded Border",
+                            ["STATUSBAR"] = "StatusBar Border",
+                            ["STATUSBARDARK"] = "StatusBar Border (Dark)",
+                        },
+                    },
+                    simplePandemic = {
+                        name = L"Simple Pandemic Display",
+                        type = "toggle",
+                        width = 2.5,
+                        desc = L"Shows an indicator on the side instead of glowing the whole bar",
+                        get = function(info) return NugRunning.db.simplePandemic end,
+                        set = function(info, v)
+                            NugRunning.db.simplePandemic = not NugRunning.db.simplePandemic
+                            NugRunning:UpdateAllCVBuffBars()
+                        end,
+                        order = 4,
+                    },
+
                 },
             },
+            --[[
             nameplate_sizeSettings = {
                 type = "group",
                 name = L"Nameplate Bars",
@@ -1670,6 +1706,7 @@ local function MakeGeneralOptions()
                     },
                 },
             },
+            ]]
             fonts = {
                 type = "group",
                 name = L"Fonts",
@@ -1683,7 +1720,7 @@ local function MakeGeneralOptions()
                         get = function(info) return NugRunning.db.nameFont.font end,
                         set = function(info, value)
                             NugRunning.db.nameFont.font = value
-                            NugRunning:UpdateAllFonts()
+                            NugRunning:UpdateAllCVBuffBars()
                         end,
                         values = LSM:HashTable("font"),
                         dialogControl = "LSM30_Font",
@@ -1695,7 +1732,7 @@ local function MakeGeneralOptions()
                         get = function(info) return NugRunning.db.nameFont.size end,
                         set = function(info, v)
                             NugRunning.db.nameFont.size = v
-                            NugRunning:UpdateAllFonts()
+                            NugRunning:UpdateAllCVBuffBars()
                         end,
                         min = 3,
                         max = 40,
@@ -1723,7 +1760,7 @@ local function MakeGeneralOptions()
                         get = function(info) return NugRunning.db.nameFont.outline end,
                         set = function(info, v)
                             NugRunning.db.nameFont.outline = not NugRunning.db.nameFont.outline
-                            NugRunning:UpdateAllFonts()
+                            NugRunning:UpdateAllCVBuffBars()
                         end,
                         order = 3.1,
                     },
@@ -1747,7 +1784,7 @@ local function MakeGeneralOptions()
                         get = function(info) return NugRunning.db.timeFont.size end,
                         set = function(info, v)
                             NugRunning.db.timeFont.size = v
-                            NugRunning:UpdateAllFonts()
+                            NugRunning:UpdateAllCVBuffBars()
                         end,
                         min = 3,
                         max = 40,
@@ -1761,7 +1798,7 @@ local function MakeGeneralOptions()
                         get = function(info) return NugRunning.db.timeFont.alpha end,
                         set = function(info, v)
                             NugRunning.db.timeFont.alpha = v
-                            NugRunning:UpdateAllFonts()
+                            NugRunning:UpdateAllCVBuffBars()
                         end,
                         min = 0,
                         max = 1,
@@ -1775,7 +1812,7 @@ local function MakeGeneralOptions()
                         get = function(info) return NugRunning.db.timeFont.outline end,
                         set = function(info, v)
                             NugRunning.db.timeFont.outline = not NugRunning.db.timeFont.outline
-                            NugRunning:UpdateAllFonts()
+                            NugRunning:UpdateAllCVBuffBars()
                         end,
                         order = 6.1,
                     },
@@ -1787,7 +1824,7 @@ local function MakeGeneralOptions()
                         get = function(info) return NugRunning.db.stackFont.font end,
                         set = function(info, value)
                             NugRunning.db.stackFont.font = value
-                            NugRunning:UpdateAllFonts()
+                            NugRunning:UpdateAllCVBuffBars()
                         end,
                         values = LSM:HashTable("font"),
                         dialogControl = "LSM30_Font",
@@ -1798,7 +1835,7 @@ local function MakeGeneralOptions()
                         get = function(info) return NugRunning.db.stackFont.size end,
                         set = function(info, v)
                             NugRunning.db.stackFont.size = v
-                            NugRunning:UpdateAllFonts()
+                            NugRunning:UpdateAllCVBuffBars()
                         end,
                         min = 3,
                         max = 40,
@@ -1811,7 +1848,7 @@ local function MakeGeneralOptions()
                         get = function(info) return NugRunning.db.stackFont.alpha end,
                         set = function(info, v)
                             NugRunning.db.stackFont.alpha = v
-                            NugRunning:UpdateAllFonts()
+                            NugRunning:UpdateAllCVBuffBars()
                         end,
                         min = 0,
                         max = 1,
@@ -1820,6 +1857,7 @@ local function MakeGeneralOptions()
                     },
                 },
             },
+            --[[
             timerOptions = {
                 type = "group",
                 name = L"Timers",
@@ -1899,11 +1937,12 @@ local function MakeGeneralOptions()
                     },
                 },
             },
+            ]]
             debug = {
-                name = L"Toggle Combat Log Data",
+                name = L"Toggle CDM Bar Spell ID displey",
                 type = "execute",
                 width = "double",
-                desc = L"Print occurring combat log events in chat",
+                desc = L"Print spell IDs associated with CDM Bars in chat",
                 func = function() NugRunning.Commands.debug() end,
                 order = 7,
             },
@@ -1914,9 +1953,9 @@ local function MakeGeneralOptions()
     AceConfigRegistry:RegisterOptionsTable("NugRunningGeneral", opt)
 
     local AceConfigDialog = LibStub("AceConfigDialog-3.0")
-    local panelFrame = AceConfigDialog:AddToBlizOptions("NugRunningGeneral", "NugRunning")
+    local panelFrame, categoryID = AceConfigDialog:AddToBlizOptions("NugRunningGeneral", "NugRunning")
 
-    return panelFrame
+    return panelFrame, categoryID
 end
 
 
@@ -1976,10 +2015,12 @@ end
 
 do
     local f = CreateFrame('Frame', "NugRunningOptions", InterfaceOptionsFrame)
-    f.general = MakeGeneralOptions() -- makes the root category now
-    f.help = MakeHelp()
+    local panelFrame, categoryID = MakeGeneralOptions() -- makes the root category now
+    f.general = panelFrame
+    f.categoryID = categoryID
+    -- f.help = MakeHelp()
 
-    NugRunningGUI.frame = NugRunningGUI:Create("Spell List", "NugRunning")
-    f.spell_list = NugRunningGUI.frame.frame
-    InterfaceOptions_AddCategory(f.spell_list);
+    -- NugRunningGUI.frame = NugRunningGUI:Create("Spell List", "NugRunning")
+    -- f.spell_list = NugRunningGUI.frame.frame
+    -- InterfaceOptions_AddCategory(f.spell_list);
 end

@@ -38,22 +38,24 @@ local GetSpellInfo = helpers.GetSpellInfo
 -- else
 -- end
 
+local L = setmetatable({}, {
+    __index = function(t, k)
+        return k
+    end,
+    __call = function(t,k) return t[k] end,
+})
+helpers.L = L
 
--- function helpers.pixelperfect(size, region)
---     region = region or UIParent
---     return PixelUtil.GetNearestPixelSize(size, NugRunning:GetEffectiveScale(), size)
--- end
 
-local pmult = 1
-function helpers.pixelperfect(size)
-    return floor(size/pmult + 0.5)*pmult
+local GetNearestPixelSize = PixelUtil.GetNearestPixelSize
+local ppScaleRegion = UIParent
+function helpers.SetPixelPerfectScaleRegion(region)
+    ppScaleRegion = region
 end
-
--- local res = GetCVar("gxWindowedResolution")
--- if res then
---     local w,h = string.match(res, "(%d+)x(%d+)")
---     pmult = (768/h) / UIParent:GetScale()
--- end
+function helpers.pixelperfect(size, region)
+    region = region or ppScaleRegion
+    return GetNearestPixelSize(size, region:GetEffectiveScale())
+end
 
 helpers.Talent = function (spellID)
     return IsSpellKnown(spellID) and 1 or 0
@@ -137,7 +139,12 @@ helpers.Spell = function(id, opts)
     end
     opts._rootSpellID = id
 
-    if opts and not GetSpellInfo(id) then print(string.format("nrun: misssing spell #%d (%s)",id,opts.name)) return end
+    if opts and not GetSpellInfo(id) then
+        if IsPublicTestClient() then
+            print(string.format("nrun: misssing spell #%d (%s)",id,opts.name))
+        end
+        return
+    end
     NugRunningConfig.spells[id] = opts
 end
 
@@ -153,12 +160,14 @@ helpers.ModSpell = function(id, mods)
 end
 
 helpers.Cooldown = function(id, opts)
+    --[[
     if type(id) == "table" then id = id[1] end
     if opts then
         opts.localname = GetSpellInfo(id)
         if not opts.localname and IsTestBuild() then print("nrun: misssing spell #"..id) return end
     end
     NugRunningConfig.cooldowns[id] = opts
+    ]]
 end
 helpers.AddCooldown = helpers.Cooldown
 helpers.ModCooldown = function(id, mods)
@@ -167,6 +176,7 @@ helpers.ModCooldown = function(id, mods)
 end
 
 helpers.Item = function(id, opts)
+    --[[
     if opts then
         opts.localname = GetItemInfo(id) or "Item"
         opts.isItem = true
@@ -177,6 +187,7 @@ helpers.Item = function(id, opts)
         end
     end
     NugRunningConfig.itemcooldowns[id] = opts
+    ]]
 end
 
 helpers.Totem = function(id, opts)
@@ -184,6 +195,7 @@ helpers.Totem = function(id, opts)
 end
 
 helpers.Cast = function(id, opts)
+    --[[
     if type(id) == "table" then
         -- opts.idgroup = {}
         local clones = id
@@ -196,6 +208,7 @@ helpers.Cast = function(id, opts)
         if not opts.localname and IsTestBuild() then print("nrun: misssing spell #"..id) return end
     end
     NugRunningConfig.casts[id] = opts
+    ]]
 end
 
 
@@ -212,6 +225,7 @@ helpers.ModActivation = function(id, mods)
 end
 
 helpers.EventTimer = function( id, opts )
+    --[[
     if type(id) == "table" and opts == nil then
         opts = id
         id = opts.spellID
@@ -231,6 +245,7 @@ helpers.EventTimer = function( id, opts )
     end
     if opts and not GetSpellInfo(id) then print(string.format("nrun: misssing spell #%d (%s)",id,opts.name)) return end
     NugRunningConfig.event_timers[id] = opts
+    ]]
 end
 helpers.AddEventTimer = helpers.EventTimer
 
