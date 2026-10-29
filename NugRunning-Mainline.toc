@@ -1,4 +1,4 @@
-## Interface: 110000
+## Interface: 120105
 ## Title: NugRunning
 ## Notes: Spelltimers
 ## Author: d87
@@ -17,7 +17,3 @@ Libs\LibSharedMedia-3.0\lib.xml
 helpers.lua
 config.lua
 NugRunning.lua
-frame.lua
-special.lua
-totems.lua
-nameplates.lua
