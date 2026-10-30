@@ -214,7 +214,7 @@ Spell( 86211 ,{ name = "Soul Swap", duration = 20, shine = true, color = colors.
 Spell( 198590 ,{ name = "Drain Soul", short = "", tick = 1, overlay = {"tick", "tickend"},  priority = 14, duration = 6, color = colors.CURSE })
 Spell( 234153 ,{ name = "Drain Life", tick = 1, overlay = {"tick", "tickend"},  priority = 14, duration = 6, color = colors.CURSE })
 
-local normalize_dots_to = nil--26
+local normalize_dots_to = 26
 
 --Haunt
 Spell( 48181 ,{ name = "Haunt", priority = 8, ghost = true, color = colors.TEAL, duration = 18, overlay = {0, 3} })

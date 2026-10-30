@@ -583,6 +583,22 @@ function NugRunning:StyleBarItemFrame(frame, force)
     end)
 
 
+    --[[
+    hooksecurefunc(frame, "RefreshCooldownInfo", function(self)
+        local pipTexture = self:GetPipTexture()
+        local barFrame = self.Bar
+        if pipTexture:IsShown() then -- Bar isn't infinite
+            local spellID = frame:GetBaseSpellID()
+            local opts = spells[spellID]
+            if opts then
+                if opts.duration then
+                    barFrame:SetMinMaxValues(0, opts.duration)
+                end
+            end
+        end
+    end)
+    ]]
+
     hooksecurefunc(frame, "ShowPandemicStateFrame", function(self)
         -- self.DebuffBorder.Texture:SetAtlas("ui-debuff-border-bleed-noicon")
         -- self.DebuffBorder.Texture:SetVertexColor(1,1,1)
