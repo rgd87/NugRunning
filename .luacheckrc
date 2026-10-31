@@ -176,6 +176,10 @@ globals = {
     "InCombatLockdown",
     "issecretvalue",
     "BuffBarCooldownViewer",
+    "EssentialCooldownViewer",
+    "UtilityCooldownViewer",
+    "BuffIconCooldownViewer",
+    "CooldownViewerConstants",
 
     -- Wrath spell haste
     "GetCombatRatingBonus",

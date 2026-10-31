@@ -322,21 +322,7 @@ function NugRunning:InstallBarHooks(viewer)
         -- Reanchor Vanilla Pandemic Frame (they come from a separate frame pool)
         -- https://github.com/Gethe/wow-ui-source/blob/live/Interface/AddOns/Blizzard_CooldownViewer/CooldownViewer.lua#L2130
         hooksecurefunc(BuffBarCooldownViewer, "AnchorPandemicStateFrame", function(self, pandemicFrame, itemFrame)
-            -- print(itemFrame, "AnchorPandemicStateFrame")
-            if simplePandemic then
-                pandemicFrame.Texture:Hide()
-                pandemicFrame.Border:Hide()
-            else
-                -- pandemicFrame.Texture:Show()
-                pandemicFrame.Texture:Hide()
-                -- pandemicFrame.Texture:SetAlpha(0.5)
-                pandemicFrame.Border:Show()
-                -- pandemicFrame.Border:SetAlpha(0.5)
 
-                local offset = pixelperfect(9, itemFrame)
-                pandemicFrame:SetPoint("TOPLEFT", itemFrame.Bar, "TOPLEFT", -offset, offset);
-	            pandemicFrame:SetPoint("BOTTOMRIGHT", itemFrame.Bar, "BOTTOMRIGHT", offset, -offset);
-            end
         end)
         -- hooksecurefunc(BuffBarCooldownViewer, "HidePandemicStateFrame", function(self, itemFrame)
         --     print(itemFrame, "HidePandemicStateFrame")
@@ -371,6 +357,9 @@ local function UpdateFrameBorder(self, borderType)
         border:SetPoint("TOPLEFT", -offset, offset)
         border:SetPoint("BOTTOMRIGHT", offset, -offset)
 
+    elseif borderType == "NONE" then
+        self.Border:Hide()
+
     elseif borderType == "1PX" then
         border:SetDrawLayer("BACKGROUND", -2)
         local offset = pixelperfect(1, self)
@@ -403,6 +392,15 @@ local function UpdateFrameBorder(self, borderType)
         local offset = pixelperfect(3, self)
         border:SetTexture("Interface\\AddOns\\NugRunning\\border_statusbar_slicing")
         border:SetVertexColor(0.7,0.7,0.7, 1)
+        border:SetTextureSliceMargins(5,5,5,5)
+        border:SetPoint("TOPLEFT", -offset, offset)
+        border:SetPoint("BOTTOMRIGHT", offset, -offset)
+
+    elseif borderType == "THINBORDER" then
+        border:SetDrawLayer("OVERLAY", 3)
+        local offset = pixelperfect(5, self)
+        border:SetTexture("Interface\\AddOns\\NugRunning\\ThinBorder")
+        border:SetVertexColor(0.4,0.4,0.4, 1)
         border:SetTextureSliceMargins(5,5,5,5)
         border:SetPoint("TOPLEFT", -offset, offset)
         border:SetPoint("BOTTOMRIGHT", offset, -offset)
@@ -444,6 +442,9 @@ function NugRunning:StyleBarItemFrame(frame, force)
     -- if frame.isNugRunningStyled and not force then return end
     CVBuffBars[frame] = true
     frame.isNugRunningStyled = true
+
+    -- frame.includeAsLayoutChildWhenHidden = false
+    -- frame.allowHideWhenInactive = false
 
     -- /dump BuffBarCooldownViewer.itemFramePool:EnumerateActive()()
 
@@ -622,14 +623,29 @@ function NugRunning:StyleBarItemFrame(frame, force)
     ]]
 
     hooksecurefunc(frame, "ShowPandemicStateFrame", function(self)
+        local pandemicFrame = self.PandemicIcon
+        if not pandemicFrame then return end
+        -- print(itemFrame, "AnchorPandemicStateFrame")
+        if simplePandemic then
+            pandemicFrame.Texture:Hide()
+            pandemicFrame.Border:Hide()
+            if self.Bar.NRPandemic then self.Bar.NRPandemic:Show() end
+        else
+            if self.Bar.NRPandemic then self.Bar.NRPandemic:Hide() end
+            -- pandemicFrame.Texture:Show()
+            pandemicFrame.Texture:Hide()
+            -- pandemicFrame.Texture:SetAlpha(0.5)
+            pandemicFrame.Border:Show()
+            -- pandemicFrame.Border:SetAlpha(0.5)
+
+            local offset = pixelperfect(9, self)
+            pandemicFrame:SetPoint("TOPLEFT", self.Bar, "TOPLEFT", -offset, offset);
+            pandemicFrame:SetPoint("BOTTOMRIGHT", self.Bar, "BOTTOMRIGHT", offset, -offset);
+        end
+
         -- self.DebuffBorder.Texture:SetAtlas("ui-debuff-border-bleed-noicon")
         -- self.DebuffBorder.Texture:SetVertexColor(1,1,1)
         -- self.DebuffBorder.Texture:SetDesaturated(false)
-
-        if simplePandemic and self.Bar.NRPandemic then
-            self.Bar.NRPandemic:Show()
-            -- self.Bar.Pip:SetVertexColor(1,0.3,0.3)
-        end
     end)
     hooksecurefunc(frame, "HidePandemicStateFrame", function(self)
         -- self.DebuffBorder.Texture:SetAtlas("ui-debuff-border-poison-noicon")
@@ -690,59 +706,6 @@ end
 
 
 
-
---[[
-local function UpdateIconFrameBorder(self, borderType)
-    local border = self.Border or self:CreateTexture(nil, "BACKGROUND")
-    self.Border = border
-    if borderType == "2PX" then
-        border:SetDrawLayer("BACKGROUND", -2)
-        local offset = pixelperfect(2, self)
-        border:SetTexture("Interface\\BUTTONS\\WHITE8X8")
-        border:SetTextureSliceMargins(0,0,0,0)
-        border:SetVertexColor(0,0,0, 0.5)
-        border:SetPoint("TOPLEFT", -offset, offset)
-        border:SetPoint("BOTTOMRIGHT", offset, -offset)
-
-    elseif borderType == "1PX" then
-        border:SetDrawLayer("BACKGROUND", -2)
-        local offset = pixelperfect(1, self)
-        border:SetTexture("Interface\\BUTTONS\\WHITE8X8")
-        border:SetTextureSliceMargins(0,0,0,0)
-        border:SetVertexColor(0,0,0, 1)
-        border:SetPoint("TOPLEFT", -offset, offset)
-        border:SetPoint("BOTTOMRIGHT", offset, -offset)
-
-    elseif borderType == "ROUNDED" then
-        border:SetDrawLayer("OVERLAY", 3)
-        local offset = pixelperfect(1, self)
-        border:SetTexture("Interface\\AddOns\\NugRunning\\border_rounded")
-        border:SetVertexColor(0,0,0, 1)
-        border:SetTextureSliceMargins(5,5,5,5)
-        border:SetPoint("TOPLEFT", -offset, offset)
-        border:SetPoint("BOTTOMRIGHT", offset, -offset)
-
-    elseif borderType == "STATUSBAR" then
-        border:SetDrawLayer("OVERLAY", 3)
-        local offset = pixelperfect(3, self)
-        border:SetTexture("Interface\\AddOns\\NugRunning\\border_statusbar_slicing")
-        border:SetVertexColor(1,1,1, 1)
-        border:SetTextureSliceMargins(5,5,5,5)
-        border:SetPoint("TOPLEFT", -offset, offset)
-        border:SetPoint("BOTTOMRIGHT", offset, -offset)
-
-    elseif borderType == "STATUSBARDARK" then
-        border:SetDrawLayer("OVERLAY", 3)
-        local offset = pixelperfect(3, self)
-        border:SetTexture("Interface\\AddOns\\NugRunning\\border_statusbar_slicing")
-        border:SetVertexColor(0.7,0.7,0.7, 1)
-        border:SetTextureSliceMargins(5,5,5,5)
-        border:SetPoint("TOPLEFT", -offset, offset)
-        border:SetPoint("BOTTOMRIGHT", offset, -offset)
-    end
-end
-]]
-
 -- local countdownFont = CreateFont("NugRunningCVCountdownFont")
 -- countdownFont:SetFont(LSM:Fetch("font", "Skurri"), 30, "OUTLINE")
 
@@ -762,7 +725,13 @@ function NugRunning:StyleCooldownItemFrame(frame, force)
     maskTexture:Hide()
     overlayTex:Hide()
 
-    iconTexture:SetTexCoord(0.05, 0.95, 0.05, 0.95)
+
+
+    iconTexture:ClearAllPoints()
+    iconTexture:SetPoint("CENTER")
+    local iconSize = pixelperfect(frame:GetWidth()*0.86, frame)
+    iconTexture:SetSize(iconSize, iconSize)
+    iconTexture:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 
     -- Standard Cooldown Frame
     -- https://github.com/Gethe/wow-ui-source/blob/live/Interface/AddOns/Blizzard_FrameXMLUtil/Mainline/Cooldown.xml
@@ -770,15 +739,28 @@ function NugRunning:StyleCooldownItemFrame(frame, force)
 
     -- Need a separate frame for border to put it above cooldown frame on the framelevel
     local borderFrame = frame.Border or CreateFrame("Frame", nil, frame)
-    borderFrame:SetAllPoints(frame)
-    borderFrame:SetFrameLevel(6)
+    borderFrame:SetAllPoints(iconTexture)
+    borderFrame:SetFrameLevel(5)
     frame.Border = borderFrame
-    UpdateFrameBorder(borderFrame, "STATUSBAR")
+
+    local cooldownIconBorderType = "THINBORDER"
+    -- UpdateFrameBorder(borderFrame, "STATUSBAR")
+    UpdateFrameBorder(borderFrame, cooldownIconBorderType)
+    if cooldownIconBorderType == "1PX" or cooldownIconBorderType == "2PX"then
+        borderFrame:SetFrameLevel(1)
+    end
 
     local cooldown = frame.Cooldown
+    cooldown:ClearAllPoints()
+    cooldown:SetAllPoints(iconTexture)
     cooldown:SetUseCircularEdge(false)
-    cooldown:SetSwipeTexture("", 0,0,0, 0.64) -- default cooldown values
+    -- cooldown:SetSwipeTexture("", 0,0,0, 0.64) -- default cooldown values
+    cooldown:SetSwipeTexture(white, 1,1,1, 0.64)
     cooldown:SetEdgeTexture("Interface\\AddOns\\NugRunning\\ActiveEdge")
+
+
+
+    -- print(frame:GetFrameLevel(), borderFrame:GetFrameLevel(), cooldown:GetFrameLevel())
     -- cooldown:SetEdgeTexture("Interface\\Cooldown\\edge")
     -- cooldown:SetEdgeTexture("")
     -- cooldown:SetCountdownFont("NugRunningCVCountdownFont")
@@ -798,8 +780,9 @@ function NugRunning:StyleCooldownItemFrame(frame, force)
     activeAuraOverlay:SetVertexColor(0,1,0)
     activeAuraOverlay:SetAlpha(0.25)
     -- activeAuraOverlay:SetAlpha(0)
-    activeAuraOverlay:SetAllPoints(frame)
+    activeAuraOverlay:SetAllPoints(iconTexture)
     frame.activeAuraOverlay = activeAuraOverlay
+    activeAuraOverlay:Hide()
 
     local activeAuraOverlayBorder = frame.activeAuraOverlayBorder or frame:CreateTexture(nil, "OVERLAY", nil, 4)
     activeAuraOverlayBorder:SetTexture("Interface\\AddOns\\NugRunning\\ThinBorder")
@@ -807,22 +790,18 @@ function NugRunning:StyleCooldownItemFrame(frame, force)
     activeAuraOverlayBorder:SetVertexColor(0,1,0)
     activeAuraOverlayBorder:SetAlpha(1)
     activeAuraOverlayBorder:SetTextureSliceMargins(5,5,5,5)
+    activeAuraOverlayBorder:Hide()
 
     -- activeAuraOverlayBorder:SetAllPoints(frame)
-    local offset = pixelperfect(4, frame)
-    activeAuraOverlayBorder:SetPoint("TOPLEFT", frame, "TOPLEFT", -offset, offset);
-    activeAuraOverlayBorder:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", offset, -offset);
+    local offset = pixelperfect(3, frame)
+    activeAuraOverlayBorder:SetPoint("TOPLEFT", iconTexture, "TOPLEFT", -offset, offset);
+    activeAuraOverlayBorder:SetPoint("BOTTOMRIGHT", iconTexture, "BOTTOMRIGHT", offset, -offset);
     frame.activeAuraOverlayBorder = activeAuraOverlayBorder
 
 
     -- Never repeat hooks even if forced restyle
     if force then return end
 
-    -- hooksecurefunc(frame, "RefreshIconBorder", function(self)
-    -- end)
-
-
-    -- https://github.com/Gethe/wow-ui-source/blob/live/Interface/AddOns/Blizzard_CooldownViewer/CooldownViewer.lua#L1412
 
 
     hooksecurefunc(frame.Cooldown, "SetCooldown", function(self)
@@ -834,16 +813,52 @@ function NugRunning:StyleCooldownItemFrame(frame, force)
 
     local viewer = frame:GetParent()
     if viewer == BuffIconCooldownViewer then
+        frame.DebuffBorder:ClearAllPoints()
+        offset = pixelperfect(5, frame)
+        frame.DebuffBorder:SetFrameLevel(7)
+        frame.DebuffBorder:SetPoint("TOPLEFT", iconTexture, "TOPLEFT", -offset, offset);
+        frame.DebuffBorder:SetPoint("BOTTOMRIGHT", iconTexture, "BOTTOMRIGHT", offset, -offset);
+
+        if frame.Applications then
+            frame.Applications:SetFrameLevel(6)
+        end
+
+        hooksecurefunc(frame, "RefreshIconBorder", function(self)
+            if self.DebuffBorder then
+                self.DebuffBorder:Hide()
+            end
+        end)
+
+        -- https://github.com/Gethe/wow-ui-source/blob/live/Interface/AddOns/Blizzard_CooldownViewer/CooldownViewer.lua#L1412
+        --[=[
         hooksecurefunc(frame, "RefreshCooldownInfo", function(self)
             local cooldownFrame = self:GetCooldownFrame();
 
             local spellID = self:GetBaseSpellID()
-            local spellName = C_Spell.GetSpellName(spellID)
-
-            local expirationTime, duration, timeMod, paused = self:GetCooldownValues();
+            if spellID then
+                local spellName = C_Spell.GetSpellName(spellID)
+            end
+            -- local expirationTime, duration, timeMod, paused = self:GetCooldownValues();
             -- print(expirationTime, duration, timeMod, paused, spellID, spellName)
         end)
+        ]=]
     else
+        if frame.CooldownFlash then
+            frame.CooldownFlash:SetFrameLevel(6)
+        end
+        if frame.ChargeCount then -- CD Icon
+            frame.ChargeCount:SetFrameLevel(6)
+        end
+        if frame.OutOfRange then --BuffIcons don't have it
+            frame.OutOfRange:SetTexture("")
+        end
+
+        -- Elevate Actionvat Overlay
+        hooksecurefunc(frame, "RefreshOverlayGlow", function(self, desiredShowStateFromEvent)
+            if self.SpellActivationAlert then
+                self.SpellActivationAlert:SetFrameLevel(7)
+            end
+        end)
         -- CooldownViewerCooldownItemMixin:CheckCacheCooldownValuesFromAura(timeNow)
         -- https://github.com/Gethe/wow-ui-source/blob/live/Interface/AddOns/Blizzard_CooldownViewer/CooldownViewer.lua#L854
         hooksecurefunc(frame, "RefreshSpellCooldownInfo", function(self)
@@ -865,10 +880,10 @@ function NugRunning:StyleCooldownItemFrame(frame, force)
 
                 local r,g,b,a = self.cooldownSwipeColor.r, self.cooldownSwipeColor.g, self.cooldownSwipeColor.b, self.cooldownSwipeColor.a
                 if isAuraOrTotem then
-                    r,g,b = 0,1,0
-                    if self.pandemicActive then
-                        r,b,b = 1,0,0
-                    end
+                    -- r,g,b = 0,1,0
+                    -- if self.pandemicActive then
+                        -- r,b,b = 1,0,0
+                    -- end
                     cooldownFrame:SetDrawEdge(true);
                     cooldownFrame:SetEdgeColor(r,g,b, 1)
                     cooldownFrame:SetSwipeColor(0,0,0, 0.8);
@@ -899,26 +914,41 @@ function NugRunning:StyleCooldownItemFrame(frame, force)
 
 
 
-    -- hooksecurefunc(frame, "ShowPandemicStateFrame", function(self)
-    --     self.pandemicActive = true
-    --     self.activeAuraOverlay:Show()
-    --     self.activeAuraOverlayBorder:Show()
-    --     self.activeAuraOverlay:SetVertexColor(1,0,0)
-    --     self.activeAuraOverlayBorder:SetVertexColor(1,0,0)
-    --     self.Cooldown:SetEdgeColor(1,0,0, 1)
-    -- end)
-    -- hooksecurefunc(frame, "HidePandemicStateFrame", function(self)
-    --     self.pandemicActive = false
-    --     local isAuraOrTotem = self.cooldownSwipeColor == CooldownViewerConstants.ITEM_AURA_COLOR
-    --     if isAuraOrTotem then
-    --         self.activeAuraOverlay:SetVertexColor(0,1,0)
-    --         self.activeAuraOverlayBorder:SetVertexColor(0,1,0)
-    --         self.Cooldown:SetEdgeColor(0,1,0, 1)
-    --     else
-    --         self.activeAuraOverlay:Hide()
-    --         self.activeAuraOverlayBorder:Hide()
-    --     end
-    -- end)
+    hooksecurefunc(frame, "ShowPandemicStateFrame", function(self)
+        local pandemicFrame = self.PandemicIcon
+        if not pandemicFrame then return end
+        pandemicFrame.FX:Hide()
+        -- pandemicFrame.Border:Hide()
+        pandemicFrame.Border.Border:SetTexture("Interface\\AddOns\\NugRunning\\ThinBorder")
+        pandemicFrame.Border.Border:SetVertexColor(1,0,0)
+
+        local offset = pixelperfect(3, pandemicFrame)
+        pandemicFrame:SetPoint("TOPLEFT", self.Icon, "TOPLEFT", -offset, offset);
+        pandemicFrame:SetPoint("BOTTOMRIGHT", self.Icon, "BOTTOMRIGHT", offset, -offset);
+        pandemicFrame:SetFrameLevel(9);
+
+        -- self.CooldownFlash:Show()
+        -- self.CooldownFlash.FlashAnim:Play()
+        -- self.pandemicActive = true
+        -- self.activeAuraOverlay:Show()
+        -- self.activeAuraOverlayBorder:Show()
+        -- self.activeAuraOverlay:SetVertexColor(1,0,0)
+        -- self.activeAuraOverlayBorder:SetVertexColor(1,0,0)
+        -- self.Cooldown:SetEdgeColor(1,0,0, 1)
+    end)
+    hooksecurefunc(frame, "HidePandemicStateFrame", function(self)
+        -- self.pandemicActive = false
+        -- local isAuraOrTotem = self.cooldownSwipeColor == CooldownViewerConstants.ITEM_AURA_COLOR
+        -- if isAuraOrTotem then
+        --     self.activeAuraOverlay:SetVertexColor(0,1,0)
+        --     self.activeAuraOverlayBorder:SetVertexColor(0,1,0)
+        --     self.Cooldown:SetEdgeColor(0,1,0, 1)
+        -- else
+        --     self.activeAuraOverlay:Hide()
+        --     self.activeAuraOverlayBorder:Hide()
+        -- end
+    end)
+
 
     --[[
     hooksecurefunc(frame, "SetBarContent", function(self, barContent)
@@ -959,19 +989,14 @@ function NugRunning:InstallCooldownHooks(viewer)
         end
 
 
-        -- Reanchor Vanilla Pandemic Frame (they come from a separate frame pool)
+        -- Pandemic frame gets created from a viewer and assigned to the item.
+        -- Then ItemMixin:ShowPandemicStateFrame() gets called and newly assigned pandemic frame is always at self.PandemicIcon
+        -- After ItemMixin:HidePandemicStateFrame() self.PandemicIcon becomes nil
+        -- So the following viewer hooks aren't needed, enough to hook Show/Hide on items
+        -- Reanchor Vanilla Pandemic Frame
         -- https://github.com/Gethe/wow-ui-source/blob/live/Interface/AddOns/Blizzard_CooldownViewer/CooldownViewer.lua#L2130
-        hooksecurefunc(viewer, "AnchorPandemicStateFrame", function(self, pandemicFrame, itemFrame)
-            pandemicFrame.FX:Hide()
-            -- pandemicFrame.Border:Hide()
-            pandemicFrame.Border.Border:SetTexture("Interface\\AddOns\\NugRunning\\ThinBorder")
-            pandemicFrame.Border.Border:SetVertexColor(1,0,0)
-
-            local offset = pixelperfect(3, itemFrame)
-            pandemicFrame:SetPoint("TOPLEFT", itemFrame, "TOPLEFT", -offset, offset);
-            pandemicFrame:SetPoint("BOTTOMRIGHT", itemFrame, "BOTTOMRIGHT", offset, -offset);
-            pandemicFrame:SetFrameLevel(9);
-        end)
+        -- hooksecurefunc(viewer, "AnchorPandemicStateFrame", function(self, pandemicFrame, itemFrame)
+        -- end)
         -- hooksecurefunc(viewer, "HidePandemicStateFrame", function(self, itemFrame)
         --     print(itemFrame, "HidePandemicStateFrame")
         -- end)
