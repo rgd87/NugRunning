@@ -1741,7 +1741,19 @@ local function MakeGeneralOptions()
                         end,
                         order = 4,
                     },
-
+                    activeAuraColor = {
+                        name = L"Default Bar Color",
+                        type = 'color',
+                        order = 6,
+                        width = 3,
+                        get = function(info)
+                            local r,g,b = unpack(NugRunning.db.defaultBarColor)
+                            return r,g,b
+                        end,
+                        set = function(info, r, g, b)
+                            NugRunning.db.defaultBarColor = {r,g,b,1}
+                        end,
+                    },
                 },
             },
             --[[

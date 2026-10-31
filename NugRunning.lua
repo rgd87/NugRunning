@@ -105,6 +105,7 @@ local defaults = {
     activeAuraColor = { 1, 0.8, 0.5, 1 },
     hideCooldownAbove = "FULL",
     cooldownFont = { font = "Friz Quadrata TT", size = 22, outline = true, alpha = 1 },
+    defaultBarColor = {234/255, 117/255, 59/255},
 
     growth = "up",
     width = 150,
@@ -495,6 +496,7 @@ function NugRunning:StyleBarItemFrame(frame, force)
         nameText:SetWidth(bar:GetWidth()*0.8)
         nameText:SetJustifyH("CENTER")
         nameText:ClearAllPoints()
+        nameText:SetWordWrap(false)
         nameText:SetPoint("CENTER", bar, "CENTER", 0, 0)
     end
 
@@ -702,9 +704,15 @@ function NugRunning:StyleBarItemFrame(frame, force)
 
         if ChangeToCustomBarColor(frame) then return end
 
-        frame.Bar.BarBG2:SetVertexColor(1,1,1,1)
-        frame.Bar.Pip:SetVertexColor(1,0.8,0.5)
-        frame.Bar.BarBG2:SetTexture(textureID)
+        local color = NugRunning.db.defaultBarColor
+        frame.Bar.BarBG2:SetTexture("Interface\\BUTTONS\\WHITE8X8")
+        frame.Bar.BarBG2:SetVertexColor(unpack(color))
+        frame.Bar.Pip:SetVertexColor(unpack(color))
+        return
+        -- Sample the icon
+        -- frame.Bar.BarBG2:SetVertexColor(1,1,1,1)
+        -- frame.Bar.Pip:SetVertexColor(1,0.8,0.5)
+        -- frame.Bar.BarBG2:SetTexture(textureID)
     end)
 
     hooksecurefunc(icon.Icon, "SetAtlas", function(self, assetID)
@@ -712,9 +720,16 @@ function NugRunning:StyleBarItemFrame(frame, force)
 
         if ChangeToCustomBarColor(frame) then return end
 
-        frame.Bar.BarBG2:SetVertexColor(1,1,1,1)
-        frame.Bar.Pip:SetVertexColor(1,0.8,0.5)
-        frame.Bar.BarBG2:SetAtlas(assetID)
+
+        local color = NugRunning.db.defaultBarColor
+        frame.Bar.BarBG2:SetTexture("Interface\\BUTTONS\\WHITE8X8")
+        frame.Bar.BarBG2:SetVertexColor(unpack(color))
+        frame.Bar.Pip:SetVertexColor(unpack(color))
+        return
+        -- Sample the icon
+        -- frame.Bar.BarBG2:SetVertexColor(1,1,1,1)
+        -- frame.Bar.Pip:SetVertexColor(1,0.8,0.5)
+        -- frame.Bar.BarBG2:SetAtlas(assetID)
     end)
 end
 
