@@ -1,6 +1,7 @@
 ## Interface: 120105
 ## Title: NugRunningOptions
 ## Notes: Options for NugRunning
+## IconTexture: 132307
 ## Author: d87
 ## RequiredDeps: NugRunning
 ## LoadOnDemand: 1

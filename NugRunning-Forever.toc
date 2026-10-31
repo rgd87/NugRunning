@@ -1,6 +1,7 @@
 ## Interface: 16001
 ## Title: NugRunning
 ## Notes: Spelltimers
+## IconTexture: 132307
 ## Author: d87
 ## SavedVariablesPerCharacter: NRunDB_Char
 ## SavedVariables: NRunDB_Global, NugRunningConfigCustom

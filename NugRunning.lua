@@ -103,7 +103,7 @@ local defaults = {
     borderTypeIcon = "STATUSBAR",
     disableIconDebuffBorder = true,
     activeAuraColor = { 1, 0.8, 0.5, 1 },
-    hideCooldownAbove = "MID",
+    hideCooldownAbove = "FULL",
     cooldownFont = { font = "Friz Quadrata TT", size = 22, outline = true, alpha = 1 },
 
     growth = "up",
@@ -964,8 +964,8 @@ function NugRunning:StyleCooldownItemFrame(frame, force)
         hooksecurefunc(frame, "RefreshSpellCooldownInfo", function(self)
             local cooldownFrame = self:GetCooldownFrame();
 
-            local spellID = self:GetBaseSpellID()
-            local spellName = C_Spell.GetSpellName(spellID)
+            -- local spellID = self:GetBaseSpellID()
+            -- local spellName = C_Spell.GetSpellName(spellID)
 
             -- cooldownFrame:Hide()
 
@@ -1185,8 +1185,12 @@ end
 
 NugRunning.Commands = {
     ["gui"] = function(v)
+        if InCombatLockdown() then
+            print("[NugRunning] Can not open settings in combat")
+            return
+        end
         LoadAddOn('NugRunningOptions')
-        if _G.NugRunningOptions.categoryID and not InCombatLockdown() then
+        if _G.NugRunningOptions.categoryID then
             Settings.OpenToCategory(_G.NugRunningOptions.categoryID)
         end
     end,
