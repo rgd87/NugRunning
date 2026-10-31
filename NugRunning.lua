@@ -70,6 +70,7 @@ local LSM = LibStub("LibSharedMedia-3.0")
 
 LSM:Register("statusbar", "Aluminium", [[Interface\AddOns\NugRunning\statusbar.tga]])
 LSM:Register("font", "AlegreyaSans-Medium", [[Interface\AddOns\NugRunning\AlegreyaSans-Medium.ttf]],  GetLocale() ~= "enUS" and 15)
+LSM:Register("font", "OpenSans Bold", [[Interface\AddOns\NugRunning\OpenSans-Bold.ttf]], GetLocale() ~= "enUS" and 15)
 
 local defaults = {
     --[[
@@ -97,6 +98,14 @@ local defaults = {
         procs = { order = 1, name = "procs", gap = 10, alpha = .8, anchor = "secondary"},
     },
     ]]
+    shouldStyleBars = true,
+    shouldStyleIcons = true,
+    borderTypeIcon = "STATUSBAR",
+    disableIconDebuffBorder = true,
+    activeAuraColor = { 1, 0.8, 0.5, 1 },
+    hideCooldownAbove = "MID",
+    cooldownFont = { font = "Friz Quadrata TT", size = 22, outline = true, alpha = 1 },
+
     growth = "up",
     width = 150,
     height = 28,
@@ -238,6 +247,8 @@ function NugRunning.ADDON_LOADED(self,event, loadedAddon)
     end
 
 
+    NugRunning:UpdateCooldownFontObjects()
+    NugRunning:InitializeFormatters()
 
     --[[
     NugRunning.anchors = {}
@@ -267,10 +278,14 @@ function NugRunning:COOLDOWN_VIEWER_DATA_LOADED(event)
     self:Init()
 end
 function NugRunning:Init()
-    self:InstallBarHooks(BuffBarCooldownViewer)
-    self:InstallCooldownHooks(EssentialCooldownViewer)
-    self:InstallCooldownHooks(UtilityCooldownViewer)
-    self:InstallCooldownHooks(BuffIconCooldownViewer)
+    if self.db.shouldStyleBars then
+        self:InstallBarHooks(BuffBarCooldownViewer)
+    end
+    if self.db.shouldStyleIcons then
+        self:InstallCooldownHooks(EssentialCooldownViewer)
+        self:InstallCooldownHooks(UtilityCooldownViewer)
+        self:InstallCooldownHooks(BuffIconCooldownViewer)
+    end
 end
 
 
@@ -398,7 +413,7 @@ local function UpdateFrameBorder(self, borderType)
 
     elseif borderType == "THINBORDER" then
         border:SetDrawLayer("OVERLAY", 3)
-        local offset = pixelperfect(5, self)
+        local offset = pixelperfect(6, self)
         border:SetTexture("Interface\\AddOns\\NugRunning\\ThinBorder")
         border:SetVertexColor(0.4,0.4,0.4, 1)
         border:SetTextureSliceMargins(5,5,5,5)
@@ -705,9 +720,87 @@ end
 
 
 
+function NugRunning:UpdateAllCVCooldownIcons()
+    for itemFrame in pairs(CVCooldownFrames) do
+        NugRunning:StyleCooldownItemFrame(itemFrame, true)
+    end
+end
 
--- local countdownFont = CreateFont("NugRunningCVCountdownFont")
--- countdownFont:SetFont(LSM:Fetch("font", "Skurri"), 30, "OUTLINE")
+
+
+
+
+local cooldownFormatter = C_StringUtil.CreateNumericRuleFormatter()
+function NugRunning:InitializeFormatters()
+    local hideAbove = NugRunning.db.hideCooldownAbove
+
+    cooldownFormatter:ClearBreakpoints()
+    local nextFormatString = "|cffff3333%d|r"
+    cooldownFormatter:AddBreakpoint({
+        threshold = 0,
+        format = nextFormatString,
+        step = 1,
+        -- rounding = Enum.NumericRuleFormatRounding.Up
+    })
+
+    nextFormatString = "%d"
+    if hideAbove == "SHORT" then nextFormatString = "" end
+    cooldownFormatter:AddBreakpoint({
+        threshold = 3,
+        format = nextFormatString,
+        step = 1,
+        -- rounding = Enum.NumericRuleFormatRounding.Up
+    })
+    if nextFormatString == "" then return end
+
+
+    nextFormatString = "%d"
+    if hideAbove == "MID" then nextFormatString = "" end
+    cooldownFormatter:AddBreakpoint({
+        threshold = 10,
+        format = nextFormatString,
+        step = 1,
+        -- rounding = Enum.NumericRuleFormatRounding.Up
+    })
+    if nextFormatString == "" then return end
+
+    nextFormatString = "|cffbbbbbb%d|r"
+    if hideAbove == "LONG" then nextFormatString = "" end
+    cooldownFormatter:AddBreakpoint({
+        threshold = 30,
+        format = nextFormatString,
+        step = 1,
+        -- rounding = Enum.NumericRuleFormatRounding.Up
+    })
+    if nextFormatString == "" then return end
+
+    -- Format for timers 60 seconds and above (divides by 60 to display floored minutes: "2m")
+    cooldownFormatter:AddBreakpoint({
+        threshold = 60,
+        format = "|cffbbbbbb%dm|r",
+        components = {
+            { div = 60 } -- Divides the hidden time value by 60 before applying the string format
+        },
+        step = 1,
+        rounding = Enum.NumericRuleFormatRounding.Down
+    })
+end
+
+
+
+local NORMAL_FONT_NAME = "NugRunningCVCountdownFontNormal"
+local RED_FONT_NAME = "NugRunningCVCountdownFontRed"
+local countdownFontNormal = CreateFont(NORMAL_FONT_NAME)
+local countdownFontRed = CreateFont(RED_FONT_NAME)
+function NugRunning:UpdateCooldownFontObjects()
+    local cooldownFont, cooldownFontSize, cooldownFontAlpha, cooldownFontOutline = GetFontSettings("cooldownFont")
+    countdownFontNormal:SetFont(cooldownFont, cooldownFontSize, cooldownFontOutline and "OUTLINE" or nil)
+    countdownFontNormal:SetAlpha(cooldownFontAlpha or 1)
+
+    countdownFontRed:SetFont(cooldownFont, cooldownFontSize, cooldownFontOutline and "OUTLINE" or nil)
+    countdownFontRed:SetAlpha(cooldownFontAlpha or 1)
+    countdownFontRed:SetTextColor(1, 0.3, 0.3)
+end
 
 
 function NugRunning:StyleCooldownItemFrame(frame, force)
@@ -743,11 +836,13 @@ function NugRunning:StyleCooldownItemFrame(frame, force)
     borderFrame:SetFrameLevel(5)
     frame.Border = borderFrame
 
-    local cooldownIconBorderType = "THINBORDER"
-    -- UpdateFrameBorder(borderFrame, "STATUSBAR")
+    local cooldownIconBorderType = NugRunning.db.borderTypeIcon
     UpdateFrameBorder(borderFrame, cooldownIconBorderType)
     if cooldownIconBorderType == "1PX" or cooldownIconBorderType == "2PX"then
         borderFrame:SetFrameLevel(1)
+    end
+    if cooldownIconBorderType == "ROUNDED" then
+        iconTexture:SetTexCoord(0.02, 0.98, 0.02, 0.98)
     end
 
     local cooldown = frame.Cooldown
@@ -757,6 +852,11 @@ function NugRunning:StyleCooldownItemFrame(frame, force)
     -- cooldown:SetSwipeTexture("", 0,0,0, 0.64) -- default cooldown values
     cooldown:SetSwipeTexture(white, 1,1,1, 0.64)
     cooldown:SetEdgeTexture("Interface\\AddOns\\NugRunning\\ActiveEdge")
+    cooldown:SetCountdownFormatter(cooldownFormatter)
+    -- GameFontHighlightHugeOutline -- seems to be the default font object for CC
+    -- https://github.com/Gethe/wow-ui-source/blob/live/Interface/AddOns/Blizzard_Fonts_Shared/Mainline/FontStyles.xml
+    -- cooldown:SetCountdownFont("GameFontHighlightHugeOutline")
+    cooldown:SetCountdownFont(NORMAL_FONT_NAME)
 
 
 
@@ -778,7 +878,7 @@ function NugRunning:StyleCooldownItemFrame(frame, force)
     activeAuraOverlay:SetTexture("Interface\\AddOns\\NugRunning\\AuraHighlight.tga")
     activeAuraOverlay:SetBlendMode("ADD")
     activeAuraOverlay:SetVertexColor(0,1,0)
-    activeAuraOverlay:SetAlpha(0.25)
+    activeAuraOverlay:SetAlpha(0.35)
     -- activeAuraOverlay:SetAlpha(0)
     activeAuraOverlay:SetAllPoints(iconTexture)
     frame.activeAuraOverlay = activeAuraOverlay
@@ -824,7 +924,7 @@ function NugRunning:StyleCooldownItemFrame(frame, force)
         end
 
         hooksecurefunc(frame, "RefreshIconBorder", function(self)
-            if self.DebuffBorder then
+            if self.DebuffBorder and NugRunning.db.disableIconDebuffBorder then
                 self.DebuffBorder:Hide()
             end
         end)
@@ -884,10 +984,12 @@ function NugRunning:StyleCooldownItemFrame(frame, force)
                     -- if self.pandemicActive then
                         -- r,b,b = 1,0,0
                     -- end
+                    r,g,b,a = unpack(NugRunning.db.activeAuraColor)
                     cooldownFrame:SetDrawEdge(true);
                     cooldownFrame:SetEdgeColor(r,g,b, 1)
                     cooldownFrame:SetSwipeColor(0,0,0, 0.8);
                     self.activeAuraOverlayBorder:SetVertexColor(r,g,b)
+                    self.activeAuraOverlay:SetVertexColor(r,g,b)
                     cooldownFrame:SetReverse(true)
                     cooldownFrame:SetUseCircularEdge(false)
                     self.activeAuraOverlay:Show()
@@ -927,6 +1029,8 @@ function NugRunning:StyleCooldownItemFrame(frame, force)
         pandemicFrame:SetPoint("BOTTOMRIGHT", self.Icon, "BOTTOMRIGHT", offset, -offset);
         pandemicFrame:SetFrameLevel(9);
 
+        self.Cooldown:SetCountdownFont(RED_FONT_NAME)
+
         -- self.CooldownFlash:Show()
         -- self.CooldownFlash.FlashAnim:Play()
         -- self.pandemicActive = true
@@ -937,6 +1041,7 @@ function NugRunning:StyleCooldownItemFrame(frame, force)
         -- self.Cooldown:SetEdgeColor(1,0,0, 1)
     end)
     hooksecurefunc(frame, "HidePandemicStateFrame", function(self)
+        self.Cooldown:SetCountdownFont(NORMAL_FONT_NAME)
         -- self.pandemicActive = false
         -- local isAuraOrTotem = self.cooldownSwipeColor == CooldownViewerConstants.ITEM_AURA_COLOR
         -- if isAuraOrTotem then

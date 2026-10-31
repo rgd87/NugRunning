@@ -172,7 +172,9 @@ globals = {
     "C_SpecializationInfo",
     "Settings",
     "IsPublicTestClient",
+    "C_StringUtil",
 
+    "CreateFont",
     "InCombatLockdown",
     "issecretvalue",
     "BuffBarCooldownViewer",

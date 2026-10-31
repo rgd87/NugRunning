@@ -1483,57 +1483,169 @@ local function MakeGeneralOptions()
         name = L"NugRunning Settings",
         order = 1,
         args = {
-            -- charspec = {
-            --     type = 'toggle',
-            --     name = "Character-specific",
-            --     desc = "Switch between global/character configuration",
-            --     width = "full",
-            --     order = 0,
-            --     get = function(info)
-            --         local user = UnitName("player").."@"..GetRealmName()
-            --         return NugRunning.db_Global.charspec[user]
-            --     end,
-            --     set = function( info, v )
-            --         NugRunning.Commands.charspec()
-            --     end
-            -- },
-
-            --[[
-            anchors = {
+            enableIconStyling = {
+                name = L"Style CDM Icons",
+                type = "toggle",
+                width = 2.5,
+                confirm = true,
+                confirmText = "Changing this setting requires a UI reload to take effect. Do you want to continue?",
+                get = function(info) return NugRunning.db.shouldStyleIcons end,
+                set = function(info, v)
+                    NugRunning.db.shouldStyleIcons = not NugRunning.db.shouldStyleIcons
+                    ReloadUI()
+                end,
+                order = 0,
+            },
+            iconSettings = {
                 type = "group",
-                name = L"Anchors",
+                name = "CDM Icon Settings",
                 guiInline = true,
+                disabled = function() return not NugRunning.db.shouldStyleIcons end,
                 order = 1,
                 args = {
-                    unlock = {
-                        name = L"Unlock",
-                        type = "execute",
-                        -- width = "half",
-                        desc = "Unlock anchor for dragging",
-                        func = function() NugRunning.Commands.unlock() end,
+
+                    borderTypeIcon = {
+                        type = "select",
+                        name = L"Border Type",
                         order = 1,
+                        get = function(info) return NugRunning.db.borderTypeIcon end,
+                        set = function(info, value)
+                            NugRunning.db.borderTypeIcon = value
+                            NugRunning:UpdateAllCVCooldownIcons()
+                        end,
+                        values = {
+                            ["NONE"] = "None",
+                            ["1PX"] = "1px Border",
+                            ["2PX"] = "2px Border",
+                            ["ROUNDED"] = "Rounded Border",
+                            ["STATUSBAR"] = "StatusBar Border",
+                            ["STATUSBARDARK"] = "StatusBar Border (Dark)",
+                            ["THINBORDER"] = "Thin Border",
+                        },
                     },
-                    lock = {
-                        name = L"Lock",
-                        type = "execute",
-                        -- width = "half",
-                        desc = "Lock anchor",
-                        func = function() NugRunning.Commands.lock() end,
-                        order = 2,
-                    },
-                    reset = {
-                        name = L"Reset",
-                        type = "execute",
-                        desc = "Reset anchor",
-                        func = function() NugRunning.Commands.reset() end,
+
+                    disableIconDebuffBorder = {
+                        name = L"Disable Dispel Type Border",
+                        type = "toggle",
+                        width = 1.2,
+                        get = function(info) return NugRunning.db.disableIconDebuffBorder end,
+                        set = function(info, v)
+                            NugRunning.db.disableIconDebuffBorder = not NugRunning.db.disableIconDebuffBorder
+                            NugRunning:UpdateAllCVCooldownIcons()
+                        end,
                         order = 3,
                     },
+
+                    activeAuraColor = {
+                        name = L"Active Aura Color",
+                        type = 'color',
+                        order = 4,
+                        width = 0.9,
+                        get = function(info)
+                            local r,g,b = unpack(NugRunning.db.activeAuraColor)
+                            return r,g,b
+                        end,
+                        set = function(info, r, g, b)
+                            NugRunning.db.activeAuraColor = {r,g,b,1}
+                        end,
+                    },
+
+
+
+                    CCFonts = {
+                        type = "group",
+                        name = L"Countdown Font",
+                        guiInline = true,
+                        order = 5,
+                        args = {
+                            cooldownFont = {
+                                type = "select",
+                                name = L"Font",
+                                order = 1,
+                                get = function(info) return NugRunning.db.cooldownFont.font end,
+                                set = function(info, value)
+                                    NugRunning.db.cooldownFont.font = value
+                                    NugRunning:UpdateCooldownFontObjects()
+                                end,
+                                values = LSM:HashTable("font"),
+                                dialogControl = "LSM30_Font",
+                            },
+                            cooldownFontSize = {
+                                name = L"Size",
+                                width = 0.70,
+                                type = "range",
+                                get = function(info) return NugRunning.db.cooldownFont.size end,
+                                set = function(info, v)
+                                    NugRunning.db.cooldownFont.size = v
+                                    NugRunning:UpdateCooldownFontObjects()
+                                end,
+                                min = 3,
+                                max = 40,
+                                step = 1,
+                                order = 2,
+                            },
+                            cooldownFontAlpha = {
+                                name = L"Alpha",
+                                width = 0.70,
+                                type = "range",
+                                get = function(info) return NugRunning.db.cooldownFont.alpha end,
+                                set = function(info, v)
+                                    NugRunning.db.cooldownFont.alpha = v
+                                    NugRunning:UpdateCooldownFontObjects()
+                                end,
+                                min = 0,
+                                max = 1,
+                                step = 0.01,
+                                order = 3,
+                            },
+                            cooldownFontOutline = {
+                                name = L"Outline",
+                                width = 0.5,
+                                type = "toggle",
+                                get = function(info) return NugRunning.db.cooldownFont.outline end,
+                                set = function(info, v)
+                                    NugRunning.db.cooldownFont.outline = not NugRunning.db.cooldownFont.outline
+                                    NugRunning:UpdateCooldownFontObjects()
+                                end,
+                                order = 3.1,
+                            },
+                        },
+                    },
+                    hideCooldownAbove = {
+                        type = "select",
+                        name = L"Hide Count Above",
+                        order = 6,
+                        get = function(info) return NugRunning.db.hideCooldownAbove end,
+                        set = function(info, value)
+                            NugRunning.db.hideCooldownAbove = value
+                            NugRunning:InitializeFormatters()
+                            NugRunning:UpdateAllCVCooldownIcons()
+                        end,
+                        values = {
+                            ["SHORT"] = "3s",
+                            ["MID"] = "10s",
+                            ["LONG"] = "30s",
+                            ["FULL"] = "Never Hide",
+                        },
+                    },
                 },
-            }, --
-            ]]
-            sizeSettings = {
+            },
+            enableBarStyling = {
+                name = L"Style CDM Bars",
+                type = "toggle",
+                width = 2.5,
+                confirm = true,
+                confirmText = "Changing this setting requires a UI reload to take effect. Do you want to continue?",
+                get = function(info) return NugRunning.db.shouldStyleBars end,
+                set = function(info, v)
+                    NugRunning.db.shouldStyleBars = not NugRunning.db.shouldStyleBars
+                    ReloadUI()
+                end,
+                order = 1.8,
+            },
+            barSettings = {
                 type = "group",
-                name = " ",
+                name = "CDM Bar Settings",
                 guiInline = true,
                 order = 2,
                 args = {
@@ -1709,7 +1821,7 @@ local function MakeGeneralOptions()
             ]]
             fonts = {
                 type = "group",
-                name = L"Fonts",
+                name = L"Bar Fonts",
                 guiInline = true,
                 order = 6,
                 args = {
@@ -1746,7 +1858,7 @@ local function MakeGeneralOptions()
                         get = function(info) return NugRunning.db.nameFont.alpha end,
                         set = function(info, v)
                             NugRunning.db.nameFont.alpha = v
-                            NugRunning:UpdateAllFonts()
+                            NugRunning:UpdateAllCVBuffBars()
                         end,
                         min = 0,
                         max = 1,
