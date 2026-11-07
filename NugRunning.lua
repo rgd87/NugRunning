@@ -805,8 +805,12 @@ end
 
 local NORMAL_FONT_NAME = "NugRunningCVCountdownFontNormal"
 local RED_FONT_NAME = "NugRunningCVCountdownFontRed"
+local NORMAL_FONT_NAME_SMALL = "NugRunningCVCountdownFontNormalSmall"
+local RED_FONT_NAME_SMALL = "NugRunningCVCountdownFontRedSmall"
 local countdownFontNormal = CreateFont(NORMAL_FONT_NAME)
 local countdownFontRed = CreateFont(RED_FONT_NAME)
+local countdownFontNormalSmall = CreateFont(NORMAL_FONT_NAME_SMALL)
+local countdownFontRedSmall = CreateFont(RED_FONT_NAME_SMALL)
 function NugRunning:UpdateCooldownFontObjects()
     local cooldownFont, cooldownFontSize, cooldownFontAlpha, cooldownFontOutline = GetFontSettings("cooldownFont")
     countdownFontNormal:SetFont(cooldownFont, cooldownFontSize, cooldownFontOutline and "OUTLINE" or nil)
@@ -815,6 +819,13 @@ function NugRunning:UpdateCooldownFontObjects()
     countdownFontRed:SetFont(cooldownFont, cooldownFontSize, cooldownFontOutline and "OUTLINE" or nil)
     countdownFontRed:SetAlpha(cooldownFontAlpha or 1)
     countdownFontRed:SetTextColor(1, 0.3, 0.3)
+
+    countdownFontNormalSmall:SetFont(cooldownFont, cooldownFontSize-8, cooldownFontOutline and "OUTLINE" or nil)
+    countdownFontNormalSmall:SetAlpha(cooldownFontAlpha or 1)
+
+    countdownFontRedSmall:SetFont(cooldownFont, cooldownFontSize-8, cooldownFontOutline and "OUTLINE" or nil)
+    countdownFontRedSmall:SetAlpha(cooldownFontAlpha or 1)
+    countdownFontRedSmall:SetTextColor(1, 0.3, 0.3)
 end
 
 
@@ -871,7 +882,13 @@ function NugRunning:StyleCooldownItemFrame(frame, force)
     -- GameFontHighlightHugeOutline -- seems to be the default font object for CC
     -- https://github.com/Gethe/wow-ui-source/blob/live/Interface/AddOns/Blizzard_Fonts_Shared/Mainline/FontStyles.xml
     -- cooldown:SetCountdownFont("GameFontHighlightHugeOutline")
-    cooldown:SetCountdownFont(NORMAL_FONT_NAME)
+    if frame:GetParent() == UtilityCooldownViewer then
+        cooldown:SetCountdownFont(NORMAL_FONT_NAME_SMALL)
+        cooldown.isUtility = true
+    else
+        cooldown:SetCountdownFont(NORMAL_FONT_NAME)
+    end
+    -- print(frame:GetParent():GetName(), frame:GetScale())
 
 
 
@@ -980,7 +997,10 @@ function NugRunning:StyleCooldownItemFrame(frame, force)
             local cooldownFrame = self:GetCooldownFrame();
 
             -- local spellID = self:GetBaseSpellID()
-            -- local spellName = C_Spell.GetSpellName(spellID)
+            -- if spellID then
+                -- local spellName = C_Spell.GetSpellName(spellID)
+                -- print(spellName, ":GetBaseSpellID()", spellID, ":GetSpellID()", self:GetSpellID())
+            -- end
 
             -- cooldownFrame:Hide()
 
@@ -1044,7 +1064,7 @@ function NugRunning:StyleCooldownItemFrame(frame, force)
         pandemicFrame:SetPoint("BOTTOMRIGHT", self.Icon, "BOTTOMRIGHT", offset, -offset);
         pandemicFrame:SetFrameLevel(9);
 
-        self.Cooldown:SetCountdownFont(RED_FONT_NAME)
+        self.Cooldown:SetCountdownFont(self.Cooldown.isUtility and RED_FONT_NAME_SMALL or RED_FONT_NAME)
 
         -- self.CooldownFlash:Show()
         -- self.CooldownFlash.FlashAnim:Play()
@@ -1056,7 +1076,7 @@ function NugRunning:StyleCooldownItemFrame(frame, force)
         -- self.Cooldown:SetEdgeColor(1,0,0, 1)
     end)
     hooksecurefunc(frame, "HidePandemicStateFrame", function(self)
-        self.Cooldown:SetCountdownFont(NORMAL_FONT_NAME)
+        self.Cooldown:SetCountdownFont(self.Cooldown.isUtility and NORMAL_FONT_NAME_SMALL or NORMAL_FONT_NAME)
         -- self.pandemicActive = false
         -- local isAuraOrTotem = self.cooldownSwipeColor == CooldownViewerConstants.ITEM_AURA_COLOR
         -- if isAuraOrTotem then
