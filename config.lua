@@ -45,6 +45,7 @@ colors["LBLUE"] = {149/255, 121/255, 214/255}
 colors["DBLUE"] = { 50/255, 34/255, 151/255 }
 colors["GOLD"] = {1,0.7,0.5}
 colors["LGREEN"] = { 0.63, 0.8, 0.35 }
+colors["LDGREEN"] = {0.3, 0.7, 0.3}
 colors["GREEN"] = {0.3, 0.9, 0.3}
 colors["DGREEN"] = { 0, 0.35, 0 }
 colors["PURPLE"] = { 187/255, 75/255, 128/255 }
