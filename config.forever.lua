@@ -681,6 +681,8 @@ Spell( 402906 ,{ name = "Flagellation", shine = true, group = "buffs", priority 
 -- Consumed by Rage is missing
 
 
+Spell( 1289682 ,{ name = "Bloodthrill", color = colors.REJUV })
+
 Interrupt({ 6552, 6554 }, "Pummel", 4)
 Interrupt({ 72, 1671, 1672 }, "Shield Bash", 6)
 

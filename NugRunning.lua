@@ -107,7 +107,24 @@ local defaults = {
     cooldownFont = { font = "Friz Quadrata TT", size = 22, outline = true, alpha = 1 },
     defaultBarColor = {234/255, 117/255, 59/255},
 
-    growth = "up",
+    viewerSettings = {
+        BuffBarCooldownViewer = {
+            growthDirection = "UP",
+            staticSize = true,
+        },
+        BuffIconCooldownViewer = {
+            growthDirection = "DOWN",
+            staticSize = true,
+        },
+        EssentialCooldownViewer = {
+            growthDirection = "DOWN",
+            staticSize = true,
+        },
+        UtilityCooldownViewer = {
+            growthDirection = "DOWN",
+            staticSize = true,
+        },
+    },
     width = 150,
     height = 28,
     simplePandemic = true,
@@ -290,6 +307,46 @@ function NugRunning:Init()
 end
 
 
+local function SafeLayout(self, growthDirectionUp, layoutFramesGoingRight)
+    -- https://github.com/Gethe/wow-ui-source/blob/live/Interface/AddOns/Blizzard_SharedXML/LayoutFrame.lua#L541
+    -- This below is a train free version of :Layout()
+
+    layoutFramesGoingRight = layoutFramesGoingRight or self.layoutFramesGoingRight
+
+    local layoutChildren = self:GetLayoutChildren();
+
+    -- Multipliers determine the direction the layout grows for grid layouts
+    -- Positive means right/up
+    -- Negative means left/down
+    local xMultiplier = layoutFramesGoingRight and 1 or -1;
+    local yMultiplier = growthDirectionUp and 1 or -1;
+
+    -- Create the grid layout according to whether we are horizontal or vertical
+    local layout;
+    if self.isHorizontal then
+        layout = GridLayoutUtil.CreateStandardGridLayout(self.stride, self.childXPadding, self.childYPadding, xMultiplier, yMultiplier);
+    else
+        layout = GridLayoutUtil.CreateVerticalGridLayout(self.stride, self.childXPadding, self.childYPadding, xMultiplier, yMultiplier);
+    end
+
+    -- Need to change where the frames anchor based on how the layout grows
+    local anchorPoint;
+    if growthDirectionUp then
+        anchorPoint = layoutFramesGoingRight and "BOTTOMLEFT" or "BOTTOMRIGHT";
+    else
+        anchorPoint = layoutFramesGoingRight and "TOPLEFT" or "TOPRIGHT";
+    end
+
+    if self.paddingToLast then
+        layout.primaryPaddingStrategy = GridLayoutUtilPrimaryPaddingStrategy.AllSpacingToLast;
+    end
+
+    -- Apply the layout and then update our size
+    GridLayoutUtil.ApplyGridLayout(layoutChildren, AnchorUtil.CreateAnchor(anchorPoint, self, anchorPoint), layout);
+end
+
+
+
 local hookedViewers = {}
 function NugRunning:InstallBarHooks(viewer)
     -- Viewer becomes visible/hidden when CDM gets turned on in the blizz settings or during fresh login cold start
@@ -346,6 +403,38 @@ function NugRunning:InstallBarHooks(viewer)
         -- hooksecurefunc(BuffBarCooldownViewer, "SetupPandemicStateFrameForItem", function(self, itemFrame)
         --     print(itemFrame, "SetupPandemicStateFrameForItem")
         -- end)
+
+
+        hooksecurefunc(viewer, "RefreshLayout", function(self, cooldownIDs)
+            -- print(viewer:GetName(), "Icon Direction", self.iconDirection)
+            -- print(viewer:GetName(), "Icon Going up", self.layoutFramesGoingUp )
+
+            -- if growthDirectionUp then
+            --     self.layoutFramesGoingUp = true -- taint
+            --     self:Layout()
+            -- end
+
+            if InCombatLockdown() and self:IsProtected() then return end
+
+            local viewerName = self:GetName()
+
+            local growthDirectionUp = NRunDB.viewerSettings[viewerName].growthDirection == "UP"
+            if growthDirectionUp then
+                SafeLayout(self, growthDirectionUp, self.layoutFramesGoingRight)
+            end
+
+            -- local firstFrame = viewer.itemFramePool:EnumerateActive()()
+            local staticViewerSize = NRunDB.viewerSettings[viewerName].staticSize
+            if staticViewerSize then
+                local scale = self.iconScale
+                local w = self:GetBarWidth()*scale
+                local eh = 30
+                local stride = 3
+                local h = ((eh*stride)+(self.childYPadding*(stride-1)))*scale
+                self:SetSize(w,h)
+            end
+        end)
+
         hookedViewers[viewer] = true
     end
 end
@@ -433,6 +522,17 @@ end
 function NugRunning:UpdateAllCVBuffBars()
     for itemFrame in pairs(CVBuffBars) do
         NugRunning:StyleBarItemFrame(itemFrame, true) -- force re-styling
+    end
+    -- BuffBarCooldownViewer:RefreshLayout()
+end
+
+function NugRunning:ToggleCDM()
+    -- This is a taint free way to manually trigger a layout refresh on veiwers
+    if InCombatLockdown() then return end
+    local cdmEnabled = GetCVar("cooldownViewerEnabled")
+    if cdmEnabled == "1" then
+        SetCVar("cooldownViewerEnabled", "0")
+        SetCVar("cooldownViewerEnabled", "1")
     end
 end
 
@@ -739,6 +839,10 @@ function NugRunning:UpdateAllCVCooldownIcons()
     for itemFrame in pairs(CVCooldownFrames) do
         NugRunning:StyleCooldownItemFrame(itemFrame, true)
     end
+    -- This taints
+    -- EssentialCooldownViewer:RefreshLayout()
+    -- UtilityCooldownViewer:RefreshLayout()
+    -- BuffIconCooldownViewer:RefreshLayout()
 end
 
 
@@ -1127,6 +1231,43 @@ function NugRunning:InstallCooldownHooks(viewer)
             -- print(string.format("|cff00ffff%s|r", "Styling"), itemFrame)
             NugRunning:StyleCooldownItemFrame(itemFrame)
         end
+
+        hooksecurefunc(viewer, "RefreshLayout", function(self, cooldownIDs)
+            if InCombatLockdown() and self:IsProtected() then return end
+
+            local viewerName = self:GetName()
+
+            local growthDirectionUp = NRunDB.viewerSettings[viewerName].growthDirection == "UP"
+            -- print(viewerName, NRunDB.viewerSettings[viewerName].growthDirection, growthDirectionUp)
+            if growthDirectionUp then
+                SafeLayout(self, growthDirectionUp, self.layoutFramesGoingRight)
+            end
+
+
+            -- BuffIconCooldownViewer stride is always two because that's the minimum when unspecified
+            local staticViewerSize = NRunDB.viewerSettings[viewerName].staticSize
+            if staticViewerSize then
+                local ew, eh = 40, 40
+
+                local firstFrame = viewer.itemFramePool:EnumerateActive()()
+                if firstFrame then
+                    ew = firstFrame:GetWidth()
+                    eh = firstFrame:GetHeight()
+                end
+                local scale = self.iconScale
+                local stride = self.stride
+                local w,h
+                if self.isHorizontal then
+                    w = ((ew*stride)+(self.childXPadding*(stride-1)))*scale
+                    h = eh*scale
+                else
+                    w = ew*scale
+                    h = ((eh*stride)+(self.childYPadding*(stride-1)))*scale
+                end
+
+                self:SetSize(w,h)
+            end
+        end)
 
 
         -- Pandemic frame gets created from a viewer and assigned to the item.

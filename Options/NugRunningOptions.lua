@@ -1501,9 +1501,8 @@ local function MakeGeneralOptions()
                 name = "CDM Icon Settings",
                 guiInline = true,
                 disabled = function() return not NugRunning.db.shouldStyleIcons end,
-                order = 1,
+                order = 1.8,
                 args = {
-
                     borderTypeIcon = {
                         type = "select",
                         name = L"Border Type",
@@ -1628,6 +1627,52 @@ local function MakeGeneralOptions()
                             ["FULL"] = "Never Hide",
                         },
                     },
+
+                    iconLayoutSettingsBuffIcons = {
+                        type = "group",
+                        name = "Static Box Size",
+                        desc = L"This fixes the issue with CDM growing in all directions when you add more elements to it",
+                        guiInline = true,
+                        order = 7.3,
+                        args = {
+                            staticSize1 = {
+                                name = L"EssentialCooldownViewer",
+                                desc = L"This fixes the issue with CDM growing in all directions when you add more elements to it",
+                                type = "toggle",
+                                width = 3,
+                                get = function(info) return NugRunning.db.viewerSettings["EssentialCooldownViewer"].staticSize end,
+                                set = function(info, v)
+                                    NugRunning.db.viewerSettings["EssentialCooldownViewer"].staticSize = not NugRunning.db.viewerSettings["EssentialCooldownViewer"].staticSize
+                                    NugRunning:ToggleCDM()
+                                end,
+                                order = 7.1,
+                            },
+                            staticSize2 = {
+                                name = L"UtilityCooldownViewer",
+                                desc = L"This fixes the issue with CDM growing in all directions when you add more elements to it",
+                                type = "toggle",
+                                width = 3,
+                                get = function(info) return NugRunning.db.viewerSettings["UtilityCooldownViewer"].staticSize end,
+                                set = function(info, v)
+                                    NugRunning.db.viewerSettings["UtilityCooldownViewer"].staticSize = not NugRunning.db.viewerSettings["UtilityCooldownViewer"].staticSize
+                                    NugRunning:ToggleCDM()
+                                end,
+                                order = 7.2,
+                            },
+                            staticSize3 = {
+                                name = L"BuffIconCooldownViewer",
+                                desc = L"This fixes the issue with CDM growing in all directions when you add more elements to it",
+                                type = "toggle",
+                                width = 3,
+                                get = function(info) return NugRunning.db.viewerSettings["BuffIconCooldownViewer"].staticSize end,
+                                set = function(info, v)
+                                    NugRunning.db.viewerSettings["BuffIconCooldownViewer"].staticSize = not NugRunning.db.viewerSettings["BuffIconCooldownViewer"].staticSize
+                                    NugRunning:ToggleCDM()
+                                end,
+                                order = 7.3,
+                            },
+                        },
+                    },
                 },
             },
             enableBarStyling = {
@@ -1641,13 +1686,49 @@ local function MakeGeneralOptions()
                     NugRunning.db.shouldStyleBars = not NugRunning.db.shouldStyleBars
                     ReloadUI()
                 end,
-                order = 1.8,
+                order = 2,
+            },
+            barLayoutSettings = {
+                type = "group",
+                name = "CDM Bar Layout Tweaks",
+                guiInline = true,
+                order = 2.1,
+                args = {
+                    staticSize = {
+                        name = L"Static Box Size",
+                        desc = L"This fixes the issue with CDM growing in all directions when you add more elements to it",
+                        type = "toggle",
+                        width = 1,
+                        get = function(info) return NugRunning.db.viewerSettings["BuffBarCooldownViewer"].staticSize end,
+                        set = function(info, v)
+                            NugRunning.db.viewerSettings["BuffBarCooldownViewer"].staticSize = not NugRunning.db.viewerSettings["BuffBarCooldownViewer"].staticSize
+                        end,
+                        order = 1.8,
+                    },
+                    growthDirection = {
+                        type = "select",
+                        name = L"Growth Direction",
+                        order = 3,
+                        desc = "Set the statusbar texture.",
+                        get = function(info)
+                            return NugRunning.db.viewerSettings["BuffBarCooldownViewer"].growthDirection
+                        end,
+                        set = function(info, value)
+                            NugRunning.db.viewerSettings["BuffBarCooldownViewer"].growthDirection = value
+                        end,
+                        values = {
+                            ["UP"] = L"Up",
+                            ["DOWN"] = L"Down",
+                        },
+                    },
+
+                },
             },
             barSettings = {
                 type = "group",
                 name = "CDM Bar Settings",
                 guiInline = true,
-                order = 2,
+                order = 2.2,
                 args = {
                     texture = {
                         type = "select",
