@@ -1478,9 +1478,9 @@ function NugRunningGUI.Create(self, name, parent )
 end
 
 local function MakeGeneralOptions()
-    local opt = {
+    local iconOpts = {
         type = 'group',
-        name = L"NugRunning Settings",
+        name = L"NugRunning Icon Settings",
         order = 1,
         args = {
             enableIconStyling = {
@@ -1675,6 +1675,13 @@ local function MakeGeneralOptions()
                     },
                 },
             },
+        }
+    }
+    local barOpts = {
+        type = 'group',
+        name = L"NugRunning Bar Settings",
+        order = 1,
+        args = {
             enableBarStyling = {
                 name = L"Style CDM Bars",
                 type = "toggle",
@@ -2144,7 +2151,7 @@ local function MakeGeneralOptions()
             },
             ]]
             debug = {
-                name = L"Toggle CDM Bar Spell ID displey",
+                name = L"Toggle CDM Bar Spell ID display",
                 type = "execute",
                 width = "double",
                 desc = L"Print spell IDs associated with CDM Bars in chat",
@@ -2154,13 +2161,47 @@ local function MakeGeneralOptions()
         },
     }
 
+
+    local mainOpts = {
+        type = 'group',
+        name = "Help",
+        order = 1,
+        args = {
+            msg = {
+                name = L"In Forever/Midnight NugRunning functions by making changes to Blizzard's Cooldown Manager.\n\n",
+                type = "description",
+                fontSize = "medium",
+                width = "full",
+                order = 1,
+            },
+            cdmToggle = {
+                name = L"Enable Cooldown Manager",
+                width = "full",
+                type = "toggle",
+                get = function(info) return GetCVar("cooldownViewerEnabled") == "1" end,
+                set = function(info, v)
+                    SetCVar("cooldownViewerEnabled", v and "1" or "0")
+                end,
+                order = 3.1,
+            },
+        },
+    }
+
+
     local AceConfigRegistry = LibStub("AceConfigRegistry-3.0")
-    AceConfigRegistry:RegisterOptionsTable("NugRunningGeneral", opt)
+
+
+    AceConfigRegistry:RegisterOptionsTable("NugRunningMain", mainOpts)
+    AceConfigRegistry:RegisterOptionsTable("NugRunningIcons", iconOpts)
+    AceConfigRegistry:RegisterOptionsTable("NugRunningBars", barOpts)
 
     local AceConfigDialog = LibStub("AceConfigDialog-3.0")
-    local panelFrame, categoryID = AceConfigDialog:AddToBlizOptions("NugRunningGeneral", "NugRunning")
 
-    return panelFrame, categoryID
+    local mainFrame, mainCategoryID = AceConfigDialog:AddToBlizOptions("NugRunningMain", "NugRunning")
+    local panelFrame1, categoryID1 = AceConfigDialog:AddToBlizOptions("NugRunningIcons", "Icon Style", "NugRunning")
+    local panelFrame2, categoryID2 = AceConfigDialog:AddToBlizOptions("NugRunningBars", "Buff Bars Style", "NugRunning")
+
+    return mainFrame, mainCategoryID
 end
 
 
@@ -2188,13 +2229,7 @@ local function MakeHelp()
             },
         },
     }
-    local AceConfigRegistry = LibStub("AceConfigRegistry-3.0")
-    AceConfigRegistry:RegisterOptionsTable("NugRunningHelp", opt)
-
-    local AceConfigDialog = LibStub("AceConfigDialog-3.0")
-    local panelFrame = AceConfigDialog:AddToBlizOptions("NugRunningHelp", "Help", "NugRunning")
-
-    return panelFrame
+    return opt
 end
 
 
