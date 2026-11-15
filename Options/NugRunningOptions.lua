@@ -1709,6 +1709,7 @@ local function MakeGeneralOptions()
                         get = function(info) return NugRunning.db.viewerSettings["BuffBarCooldownViewer"].staticSize end,
                         set = function(info, v)
                             NugRunning.db.viewerSettings["BuffBarCooldownViewer"].staticSize = not NugRunning.db.viewerSettings["BuffBarCooldownViewer"].staticSize
+                            NugRunning:ToggleCDM()
                         end,
                         order = 1.8,
                     },
@@ -1722,6 +1723,7 @@ local function MakeGeneralOptions()
                         end,
                         set = function(info, value)
                             NugRunning.db.viewerSettings["BuffBarCooldownViewer"].growthDirection = value
+                            NugRunning:ToggleCDM()
                         end,
                         values = {
                             ["UP"] = L"Up",

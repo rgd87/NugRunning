@@ -182,6 +182,11 @@ globals = {
     "UtilityCooldownViewer",
     "BuffIconCooldownViewer",
     "CooldownViewerConstants",
+    "AnchorUtil",
+    "GridLayoutUtil",
+    "GridLayoutUtilPrimaryPaddingStrategy",
+    "SetCVar",
+    "GetCVar",
 
     -- Wrath spell haste
     "GetCombatRatingBonus",

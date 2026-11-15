@@ -109,20 +109,20 @@ local defaults = {
 
     viewerSettings = {
         BuffBarCooldownViewer = {
-            growthDirection = "UP",
-            staticSize = true,
+            growthDirection = "DOWN",
+            staticSize = false,
         },
         BuffIconCooldownViewer = {
             growthDirection = "DOWN",
-            staticSize = true,
+            staticSize = false,
         },
         EssentialCooldownViewer = {
             growthDirection = "DOWN",
-            staticSize = true,
+            staticSize = false,
         },
         UtilityCooldownViewer = {
             growthDirection = "DOWN",
-            staticSize = true,
+            staticSize = false,
         },
     },
     width = 150,
