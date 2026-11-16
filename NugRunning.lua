@@ -345,6 +345,29 @@ local function SafeLayout(self, growthDirectionUp, layoutFramesGoingRight)
     GridLayoutUtil.ApplyGridLayout(layoutChildren, AnchorUtil.CreateAnchor(anchorPoint, self, anchorPoint), layout);
 end
 
+local function SafeCondensedLayout(self, growthDirectionUp, layoutFramesGoingRight)
+    local layoutChildren = self:GetLayoutChildren();
+    local yMultiplier = growthDirectionUp and 1 or -1;
+    local childYPadding = self.childYPadding
+
+    -- LAYOUT_CHILDREN = layoutChildren
+
+    local anchorPoint;
+    if growthDirectionUp then
+        anchorPoint = layoutFramesGoingRight and "BOTTOMLEFT" or "BOTTOMRIGHT";
+    else
+        anchorPoint = layoutFramesGoingRight and "TOPLEFT" or "TOPRIGHT";
+    end
+    local h = 30
+
+    -- BuffBarCooldownViewer:GetLayoutChildren();
+    for i, frame in ipairs(layoutChildren) do
+        local pipTexture = frame:GetPipTexture()
+        local isActive = pipTexture:IsShown()
+        print(i, frame, frame.layoutIndex, frame.Bar.Name:GetText(), isActive)
+    end
+end
+
 
 
 local hookedViewers = {}
@@ -422,6 +445,10 @@ function NugRunning:InstallBarHooks(viewer)
             if growthDirectionUp then
                 SafeLayout(self, growthDirectionUp, self.layoutFramesGoingRight)
             end
+            -- local condensedLayout = true
+            -- if condensedLayout then
+            --     SafeCondensedLayout(self, NRunDB.viewerSettings[viewerName].growthDirection)
+            -- end
 
             -- local firstFrame = viewer.itemFramePool:EnumerateActive()()
             local staticViewerSize = NRunDB.viewerSettings[viewerName].staticSize
