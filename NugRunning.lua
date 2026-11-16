@@ -1398,6 +1398,10 @@ NugRunning.Commands = {
         end
     end,
 
+    ["check"] = function(v)
+        NugRunning:PrintAllCooldownManagerSpells()
+    end,
+
     ["listauras"] = function(v)
         local unit = v
         local h = false
@@ -1613,3 +1617,88 @@ function NugRunning:CreateAnchor(name, opts)
 end
 
 
+
+
+function NugRunning:PrintAllCooldownManagerSpells()
+    -- Ensure the Cooldown Viewer system is available
+    if not C_CooldownViewer or not C_CooldownViewer.IsCooldownViewerAvailable() then
+        print("Cooldown Manager is not available.")
+        return
+    end
+
+    -- Categories available in WoW: Midnight (Patch 12.x)
+    local categories = {
+        { id = Enum.CooldownViewerCategory.Essential,             name = "Essential Cooldowns" },
+        { id = Enum.CooldownViewerCategory.Utility,               name = "Utility Cooldowns" },
+        { id = Enum.CooldownViewerCategory.TrackedBuff,           name = "Tracked Buffs (Icons)" },
+        { id = Enum.CooldownViewerCategory.TrackedBar,            name = "Tracked Buffs (Bars)" },
+        { id = Enum.CooldownViewerCategory.GroupBuff,             name = "Group Buffs" },
+        { id = Enum.CooldownViewerCategory.SpecAgnosticEssential, name = "Spec-Agnostic Essential" },
+        { id = Enum.CooldownViewerCategory.SpecAgnosticTracked,   name = "Spec-Agnostic Tracked" },
+        { id = Enum.CooldownViewerCategory.EquipSlotEssential,    name = "Equipment Slot Essential" },
+        { id = Enum.CooldownViewerCategory.EquipSlotTracked,      name = "Equipment Slot Tracked" },
+    }
+
+    local AllCDMSpellIDs = {}
+    local AllCDMSpellNameToID = {}
+
+    for _, cat in ipairs(categories) do
+        if cat.id then
+            -- Pass 'true' as the 2nd argument (allowUnlearned) to include unlearned spells too
+            local cooldownIDs = C_CooldownViewer.GetCooldownViewerCategorySet(cat.id, true)
+
+            if cooldownIDs and #cooldownIDs > 0 then
+                print(string.format("|cff00ff00=== %s (%d) ===|r", cat.name, #cooldownIDs))
+
+                for _, cooldownID in ipairs(cooldownIDs) do
+                    local info = C_CooldownViewer.GetCooldownViewerCooldownInfo(cooldownID)
+                    if info then
+                        -- Resolve active override spell if talented/transformed, otherwise base spellID
+                        local displaySpellID = info.overrideSpellID or info.spellID
+                        local spellName = displaySpellID and C_Spell.GetSpellName(displaySpellID) or "Unknown / Item Slot"
+                        local status = info.isKnown and "|cff88ff88Known|r" or "|cff888888Unlearned|r"
+
+                        if displaySpellID then
+                            AllCDMSpellIDs[displaySpellID] = true
+                        end
+
+                        if spellName then
+                            AllCDMSpellNameToID[spellName] = displaySpellID
+                        end
+
+                        --[[
+                        print(string.format(
+                            "  [%s] %s (SpellID: %s, CooldownID: %d)",
+                            status,
+                            spellName,
+                            tostring(displaySpellID or "N/A"),
+                            cooldownID
+                        ))
+                        ]]
+                    end
+                end
+            end
+        end
+    end
+
+    local usedOpts = {}
+
+    for id in pairs(AllCDMSpellIDs) do
+        if spells[id] then
+            print("|cff88ff88Found|r", C_Spell.GetSpellName(id), id)
+            local opts = spells[id]
+            usedOpts[opts] = true
+        end
+    end
+
+    for id, opts in pairs(spells) do
+        if not AllCDMSpellIDs[id] and not usedOpts[opts] then
+            local oldIDSpellName = C_Spell.GetSpellName(id)
+            if oldIDSpellName then
+                print(id, oldIDSpellName, "|cffffff88Unused|r", "  NEW:", AllCDMSpellNameToID[oldIDSpellName])
+            else
+                print(id, oldIDSpellName, "|cffff8888Missing|r", "  was:", opts.name)
+            end
+        end
+    end
+end
