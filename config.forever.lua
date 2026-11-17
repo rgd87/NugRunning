@@ -141,18 +141,20 @@ Cooldown( 408490 ,{ name = "Lava Burst", color = colors.CURSE, ghost = true, pri
 Cooldown( 408507 ,{ name = "Lava Lash", color = colors.LRED, priority = 9, ghost = 5 })
 Cooldown( 408507 ,{ name = "Lava Lash", color = colors.LRED, priority = 9, ghost = 5 })
 Cooldown( 425339 ,{ name = "Molten Blast", color = colors.BROWN, priority = 9, ghost = true, resetable = true })
-Spell( 408514 ,{ name = "Earth Shield", duration = 600, timeless = true, charged = true, maxcharge = 3, color = colors.LGREEN })
 Spell( 425336 ,{ name = "Shamanistic Rage", group = "buffs", duration = 15, shine = true, color = colors.PURPLE3 })
 Spell( 409944 ,{ name = "Ancestral Guidance", group = "buffs", duration = 10, shine = true, color = colors.REJUV })
-EventTimer({ spellID = 415236, event = "SPELL_CAST_SUCCESS", name = "Healing Rain", duration = 15, color = colors.FROZEN })
 
 
+
+Spell( 408521 ,{ name = "Riptide", duration = 15, color = colors.FROZEN })
+Spell( 408498 ,{ name = "Maelstrom Weapon", color = colors.PINK2 })
+Spell( 17364 ,{ name = "Stormstrike", color = colors.LBLUE  })
 
 
 Interrupt({ 8042, 8044, 8045, 8046, 10412, 10413, 10414 }, "Earth Shock", 2)
 
 -- Spell( 3600 ,{ name = "Earthbind", maxtimers = 1, duration = 5, timeless = true, color = colors.BROWN, scale = 0.7 })
-Spell({ 16257, 16277, 16278, 16279, 16280 }, { name = "Flurry", duration = 15, scale = 0.8, group = "buffs", shine = true, shinerefresh = true, color = colors.DPURPLE })
+Spell( 16256 , { name = "Flurry", duration = 15, scale = 0.8, group = "buffs", shine = true, shinerefresh = true, color = colors.DPURPLE })
 Spell({ 8056, 8058, 10472, 10473 }, { name = "Frost Shock", duration = 8, color = colors.LBLUE })
 Spell({ 8050, 8052, 8053, 10447, 10448, 29228 }, { name = "Flame Shock", duration = 12, color = colors.RED, ghost = true })
 Cooldown( 8042 ,{ name = "Shock", color = colors.TEAL3, ghost = 2, priority = 1, ghosteffect = "MAGICCAST", scale = 0.9 })
@@ -173,6 +175,13 @@ EventTimer({ event = "SPELL_CAST_SUCCESS", spellID = 25357, name = "HealingWayRe
     end
 })
 
+
+Spell({ 5675, 10495, 10496, 10497 }, { name = "Mana Spring Totem", short = "Mana Spring", group = "buffs", color = colors.PURPLE })
+Spell(16191, { name = "Mana Tide Totem", short = "Mana Tide", effect = "UNHOLY", color = colors.TEAL2 })
+Spell(8177, { name = "Grounding Totem", group = "buffs", color = colors.CURSE })
+
+Spell({ 8512, 10613, 10614},  { name = "Windfury Totem", color = colors.PINK3 })
+
 -- TOTEMS
 local PRIO_FIRE = -77
 local PRIO_EARTH = -78
@@ -192,17 +201,13 @@ Totem(135866, { name = "Frost Resistance Totem", short = "Frost Res", spellID = 
 
 Totem(135832, { name = "Fire Resistance Totem", short = "Fire Res", spellID = 8184, group = "buffs", color = colors.FROZEN, ghost = 1, scale_until = 15, priority = PRIO_WATER })
 Totem(135127, { name = "Healing Stream Totem", short = "Healing Stream", spellID = 5394, group = "buffs", color = colors.LGREEN, ghost = 3, scale = 0.7, priority = PRIO_WATER })
-Totem(136053, { name = "Mana Spring Totem", short = "Mana Spring", spellID = 5675, group = "buffs", color = colors.PURPLE, ghost = 3, scale = 0.7, priority = PRIO_WATER })
+
 Totem(136070, { name = "Poison Cleansing Totem", short = "Poison Cleanse", spellID = 8166, group = "buffs", color = colors.GREEN, ghost = 1, scale = 0.7, priority = PRIO_WATER })
 Totem(136019, { name = "Disease Cleansing Totem", short = "Disease Cleanse", spellID = 8166, group = "buffs", color = colors.BROWN, ghost = 1, scale = 0.7, priority = PRIO_WATER })
-Totem(135861, { name = "Mana Tide Totem", short = "Mana Tide", spellID = 16190, group = "buffs", effect = "UNHOLY", color = colors.TEAL2, ghost = 1, priority = PRIO_WATER })
 
-Totem(136039, { name = "Grounding Totem", spellID = 8177, group = "buffs", color = colors.CURSE, shine = true, tick = 10, overlay = {"tick", "end", 0.35}, priority = PRIO_AIR, ghost = 1, ghosteffect = "SLICENDICE" })
-Totem(136114, { name = "Windfury Totem", spellID = 8512, group = "buffs", color = colors.PINK3, shine = true, scale = 0.7, ghosteffect = "FIRESHOT", priority = PRIO_AIR, ghost = 3 })
 Totem(136046, { name = "Grace of Air Totem", short = "Agility", spellID = 8835, group = "buffs", color = colors.PURPLE5, ghost = 1, scale = 0.7, priority = PRIO_AIR })
 Totem(136061, { name = "Nature Resistance Totem", short = "Nature Res", spellID = 10595, group = "buffs", color = colors.TEAL3, ghost = 1, scale_until = 15, priority = PRIO_AIR })
 Totem(136022, { name = "Windwall Totem", spellID = 15107, group = "buffs", color = colors.BLACK, scale = 0.7, priority = PRIO_AIR, ghost = 1 })
-Totem(136013, { name = "Tranquil Air Totem", short = "Tranquil Air", spellID = 25908, group = "buffs", color = colors.LBLUE, scale_until = 15, priority = PRIO_AIR, ghost = 1 })
 -- Totem(136082, { name = "Sentry Totem", spellID = 6495, group = "buffs", color = colors.CURSE, ghost = 1, priority = PRIO_AIR })
 end
 
@@ -559,57 +564,14 @@ Spell( 15286 ,{ name = "Vampiric Embrace", duration = 60, priority = 5, shineref
 Spell( 14751 ,{ name = "Inner Focus", shine = true, duration = 15, group = "buffs", priority = -12, timeless = true, scale = 0.7, color = colors.WOO2DARK })
 
 Spell( 15258 ,{ name = "Shadow Weaving", color = colors.PURPLE3, scale = 0.75, priority = -10, ghost = 2, duration = 15 })
-EventTimer({
-    event = {
-        ["SPELL_AURA_APPLIED"] = true,
-        ["SPELL_AURA_REFRESH"] = true,
-    },
-    spellID = 10894, name = "SWPRefresh", _hidden = true,
-    action = function(active, srcGUID, dstGUID, spellID, damage )
-        local timer = NugRunning.gettimer(active, GetSpellInfo(15258), dstGUID, "DEBUFF")
-        if timer then
-            local now = GetTime()
-            timer:SetTime(now, now + 15, timer.fixedoffset)
-        end
-    end
-})
-
-EventTimer({ event = "SPELL_DAMAGE", spellID = 10947, name = "MBRefresh", _hidden = true,
-    action = function(active, srcGUID, dstGUID, spellID, damage )
-        local timer = NugRunning.gettimer(active, GetSpellInfo(15258), dstGUID, "DEBUFF")
-        if timer then
-            local now = GetTime()
-            timer:SetTime(now, now + 15, timer.fixedoffset)
-        end
-    end
-})
-
-EventTimer({
-    event = {
-        ["SPELL_AURA_APPLIED"] = true,
-        ["SPELL_AURA_REFRESH"] = true,
-    },
-    spellID = 18807, name = "MFRefresh",  _hidden = true,
-    action = function(active, srcGUID, dstGUID, spellID, damage )
-        local timer = NugRunning.gettimer(active, GetSpellInfo(15258), dstGUID, "DEBUFF")
-        if timer then
-            local now = GetTime()
-            timer:SetTime(now, now + 15, timer.fixedoffset)
-        end
-    end
-})
 
 end
 
 if class == "ROGUE" then
--- Season of Discovery
-Cooldown( 424919 ,{ name = "Main Gauche", color = colors.DPURPLE, color2 = colors.PURPLE, scale_until = 5, ghost = true })
-Spell( 424785  ,{ name = "Saber Slash", duration = 12, color = colors.RED, priority = 5 })
-Spell( 400009 , { name = "Between the Eyes", shine = true, duration = function() return GetCP() end, priority = 10, color = colors.LRED })
-Spell( 400038 ,{ name = "Main Gauche", duration = 30, color = colors.DPURPLE, color2 = colors.PINK3, group = "buffs", ghost = true })
-
-
 Interrupt({ 1766, 1767, 1768, 1769 }, "Kick", 5)
+
+Spell( 1310703 ,{ name = "Venom", color = colors.DTEAL })
+Spell( 1316709 , { name = "Death Mark", color = colors.PURPLE4 })
 
 Spell( 18425 ,{ name = "Silence", duration = 2, color = colors.PINK }) -- Improved Kick
 
@@ -622,14 +584,8 @@ Spell( 13877 ,{ name = "Blade Flurry", group = "buffs", priority = -4, duration 
 -- TODO: Premeditation timer
 
 Spell( 1833 , { name = "Cheap Shot", duration = 4, color = colors.LRED })
-Spell({ 2070, 6770, 11297 }, { name = "Sap", color = colors.LBLUE, glowtime = 5, ghost = 1, ghosteffect = "SLICENDICE",
-    pvpduration = 20,
-    duration = function(timer)
-        if timer.spellID == 6770 then return 25 -- yes, Rank 1 spell id is 6770 actually
-        elseif timer.spellID == 2070 then return 35
-        else return 45 end
-    end
-}) -- varies
+
+Spell({ 2070, 6770, 11297 }, { name = "Sap", color = colors.LBLUE, glowtime = 5, ghost = 1, ghosteffect = "SLICENDICE" })
 Spell( 2094 , { name = "Blind", duration = 10, color = colors.WOO })
 
 Spell({ 11327, 11329 }, { name = "Vanish", duration = 10, group = "buffs", scale = 0.5, color = colors.BLACK })
@@ -666,22 +622,19 @@ Spell({ 1776, 1777, 8629, 11285, 11286 }, { name = "Gouge", shine = true, color 
 })
 
 Spell( 14177 ,{ name = "Cold Blood", shine = true, duration = 15, group = "buffs", priority = -12, timeless = true, scale = 0.7, color = colors.DTEAL })
-Spell({ 14143, 14149 }, { name = "Remorseless", group = "buffs", scale = 0.75, duration = 20, color = colors.TEAL3 })
-Cooldown( 14251, { name = "Riposte", color = colors.DBROWN, scale = 0.8 })
-Activation( 14251, { for_cd = true, effect = "FIRESHOT", ghost = 6 })
+Spell( 14144, { name = "Remorseless", group = "buffs", scale = 0.75, duration = 20, color = colors.TEAL3 })
+Spell( 14251, { name = "Riposte", color = colors.DBROWN, scale = 0.8 })
 
-Cooldown( 14278, { name = "Ghostly Strike", color = colors.WOO, ghost = true, scale_until = 5, })
+Spell( 14278, { name = "Ghostly Strike", color = colors.WOO, ghost = true, scale_until = 5, })
 
-EventTimer({ event = "SPELL_CAST_SUCCESS", spellID = 1725, name = "Distract", color = colors.WOO2DARK, duration = 10 })
+Spell( 1725, { name = "Distract", color = colors.WOO2DARK })
 
 end
 
 if class == "WARRIOR" then
-Spell( 402906 ,{ name = "Flagellation", shine = true, group = "buffs", priority = -9999, color = colors.PURPLE2, duration = 12 })
--- Consumed by Rage is missing
 
-
-Spell( 1289682 ,{ name = "Bloodthrill", color = colors.REJUV })
+Spell( 1289682 , { name = "Bloodthrill", color = colors.REJUV })
+Spell( 1329555 , { name = "Reckless Swings", color = colors.LRED })
 
 Interrupt({ 6552, 6554 }, "Pummel", 4)
 Interrupt({ 72, 1671, 1672 }, "Shield Bash", 6)
@@ -691,20 +644,12 @@ Spell( 18498 ,{ name = "Silence", duration = 3, color = colors.PINK }) -- Improv
 Spell( 20230 ,{ name = "Retaliation", group = "buffs", shine = true, duration = 15, color = colors.PINK })
 Spell( 1719 ,{ name = "Recklessness", group = "buffs", shine = true, duration = 15, color = colors.REJUV })
 Spell( 871, { name = "Shield Wall", group = "buffs", shine = true, duration = 10, color = colors.WOO }) -- varies
-Spell( 12976, { name = "Last Stand", group = "buffs", color = colors.PURPLE3, duration = 20, priority = -8 })
+Spell( 12975, { name = "Last Stand", group = "buffs", color = colors.PURPLE3, duration = 20, priority = -8 })
 Spell( 12328, { name = "Death Wish", group = "buffs", shine = true, duration = 30, color = colors.PINKIERED })
 
-Spell({ 772, 6546, 6547, 6548, 11572, 11573, 11574 }, { name = "Rend", tick = 3, tickshine = true, overlay = {"tick", "end"}, color = colors.RED, ghost = true,
-    duration = function(timer)
-        if timer.spellID == 772 then return 9
-        elseif timer.spellID == 6546 then return 12
-        elseif timer.spellID == 6547 then return 15
-        elseif timer.spellID == 6548 then return 18
-        else return 21 end
-    end
-}) -- varies
+Spell({ 772, 6546, 6547, 6548, 11572, 11573, 11574 }, { name = "Rend", color = colors.RED, ghost = true, }) -- varies
 Spell({ 1715, 7372, 7373 }, { name = "Hamstring", ghost = true, color = colors.PURPLE4, duration = 15 })
-Spell( 23694 , { name = "Immobilized", shine = true, color = colors.BLACK, duration = 5 }) -- Improved Hamstring
+Spell( 12289 , { name = "Immobilized", shine = true, color = colors.BLACK, duration = 5 }) -- Improved Hamstring
 
 Spell({ 694, 7400, 7402, 20559, 20560 }, { name = "Mocking Blow", color = colors.LRED, duration = 6, shine = true })
 Spell( 1161 ,{ name = "Challenging Shout", duration = 6, multiTarget = true })
@@ -714,21 +659,12 @@ Cooldown( 7384, { name = "Overpower", shine = true, priority = 9, color = colors
 Activation( 7384, { for_cd = true, effect = "FIRESHOT", ghost = 5 })
 
 Cooldown( 1680, { name = "Whirlwind", ghost = true, color = colors.PINKIERED, priority = 9.5 })
-Spell({ 6343, 8198, 8204, 8205, 11580, 11581 }, { name = "Thunder Clap", multiTarget = true, color = colors.DBLUE, scale = 0.6, affiliation = "raid",
-    duration = function(spellID)
-        if spellID == 6343 then return 10
-        elseif spellID == 8198 then return 14
-        elseif spellID == 8204 then return 18
-        elseif spellID == 8205 then return 22
-        elseif spellID == 11580 then return 26
-        else return 30 end
-    end
-}) -- Thunder Clap
+Spell({ 6343, 8198, 8204, 8205, 11580, 11581 }, { name = "Thunder Clap", color = colors.DBLUE, scale = 0.6 }) -- Thunder Clap
 -- Cooldown( 6343, { name = "Thunder Clap", ghost = 1, scale = 0.8, color = colors.PINKIERED, priority = 9.5 })
 Spell({ 5242, 6192, 6673, 11549, 11550, 11551, 25289 }, { name = "Battle Shout", ghost = 7, target = "player", scale_until = 20, priority = -300, effect = "BLOODBOIL", effecttime = 10, glowtime = 10, affiliation = "raid", color = colors.DPURPLE, duration = 120 })
 Spell({ 1160, 6190, 11554, 11555, 11556 }, { name = "Demoralizing Shout", duration = 30, scale = 0.85, color = colors.LDGREEN, affiliation = "raid", multiTarget = true, shinerefresh = true })
 Spell( 18499, { name = "Berserker Rage", color = colors.REJUV, shine = true, scale = 0.6, group = "buffs", duration = 10 })
-Spell({ 20253, 20614, 20615 }, { name = "Intercept", duration = 3, shine = true, color = colors.DRED })
+Spell({ 20252, 20616, 20617 }, { name = "Intercept", duration = 3, shine = true, color = colors.DRED })
 
 Spell( 12323, { name = "Piercing Howl", multiTarget = true, duration = 6, color = colors.BROWN })
 
@@ -736,11 +672,7 @@ Spell( 12323, { name = "Piercing Howl", multiTarget = true, duration = 6, color 
 Spell( 5246 ,{ name = "Intimidating Shout", duration = 8, priority = -1.1, color = colors.PURPLE4, multiTarget = true }) -- AoE Fear
 
 
-Spell( 676 ,{ name = "Disarm", color = colors.PINK3, scale = 0.8, shine = true,
-    duration = function(timer)
-        return 10 + Talent(12313, 12804, 12807)
-    end,
-}) -- varies
+Spell( 676 ,{ name = "Disarm", color = colors.PINK3, scale = 0.8, shine = true, })
 -- Spell( 29131 ,{ name = "Bloodrage", color = colors.WOO, duration = 10, scale = 0.5, shine = true })
 
 Cooldown( 6572 ,{ name = "Revenge", priority = 5, color = colors.PURPLE, resetable = true, fixedlen = 6, isknowncheck = function() return GetShapeshiftForm() == 2 end })
@@ -750,29 +682,18 @@ Activation( 6572, { for_cd = true, effect = "FIRESHOT", ghost = 5 })
 Spell( 12798 , { name = "Revenge Stun", duration = 3, shine = true, color = colors.DRED })
 
 Spell( 2565 ,{ name = "Shield Block", color = colors.WOO2, shine = true, group = "buffs", shinerefresh = true, priority = - 9, duration = 5, arrow = colors.LGREEN }) -- varies BUFF
-Cooldown( 2565 ,{ name = "Shield Block", priority = 9.9, scale = 0.5, ghost = true, color = colors.DPURPLE })
+-- Cooldown( 2565 ,{ name = "Shield Block", priority = 9.9, scale = 0.5, ghost = true, color = colors.DPURPLE })
 
 Cooldown( 23922, { name = "Shield Slam", short = "", priority = 10, fixedlen = 6, ghost = true, ghosteffect = "MAGICCAST", color = colors.CURSE, isknowncheck = function() return IsPlayerSpell(23922) end })
 Cooldown( 12294, { name = "Mortal Strike", priority = 10, short = "", fixedlen = 6, ghost = true, ghosteffect = "MAGICCAST",  color = colors.CURSE, isknowncheck = function() return IsPlayerSpell(12294) end })
 Cooldown( 23881, { name = "Bloodthirst", priority = 10, short = "", fixedlen = 6, ghost = true, ghosteffect = "MAGICCAST",  color = colors.CURSE, isknowncheck = function() return IsPlayerSpell(23881) end })
 
--- Make Charges?
 Spell({ 7386, 7405, 8380, 11596, 11597 }, { name = "Sunder Armor", duration = 30, color = colors.DBROWN })
-EventTimer({ event = "SPELL_CAST_SUCCESS", spellID = 11597, name = "SunderArmor5StackRefresh",
-    action = function(active, srcGUID, dstGUID, spellID, damage )
-        local timer = NugRunning.gettimer(active, GetSpellInfo(spellID), dstGUID, "DEBUFF")
-        if timer then
-            local now = GetTime()
-            timer:SetTime(now, now + 30, timer.fixedoffset)
-        end
-    end
-})
-
 
 Spell( 12809 ,{ name = "Concussion Blow", color = colors.TEAL2, shine = true, duration = 5 })
 Spell( 12292 ,{ name = "Sweeping Strikes", group = "buffs", shine = true, priority = -100503, color = colors.LRED, duration = 20, scale = 0.8 })
 Spell( 12317, { name = "Enrage", color = colors.PURPLE4, shine = true, shinerefresh = true, scale = 1, group = "buffs", priority = -3, duration = 12 })
-Spell({ 12966, 12967, 12968, 12969, 12970 }, { name = "Flurry", color = colors.PURPLE5, shinerefresh = true, shine = true, scale = 0.7, group = "buffs", priority = -1, duration = 15 })
+Spell( 12319, { name = "Flurry", color = colors.PURPLE5, shinerefresh = true, shine = true, scale = 0.7, group = "buffs", priority = -1, duration = 15 })
 
 end
 
