@@ -41,6 +41,7 @@ Spell( 4068 , { name = "Iron Grenade", global = true, maxtimers = 1, color = col
 
 
 if class == "WARLOCK" then
+--[[
 -- Season of Discovery
 Cooldown( 403629, { name = "Chaos Bolt", color = colors.TEAL3,
     isknowncheck = function()
@@ -65,27 +66,31 @@ Cooldown( 403501 ,{ name = "Haunt", short = "", priority = 8, ghost = true, colo
 Cooldown( 403835, { name = "Shadow Cleave", ghost = true, priority = 5, color = colors.PINKIERED }) -- Meta Aoe
 Spell( 412789 , { name = "Demonic Howl", duration = 6, multiTarget = true })
 Spell( 425463 , { name = "Demonic Grace", duration = 6, group = "buffs", shine = true, color = colors.REJUV })
-
+]]
 
 -- Interrupt(119910, "Spell Lock", 6) -- Felhunter spell from action bar
 Interrupt(19244, "Spell Lock", 6) -- Rank 1
 Interrupt(19647, "Spell Lock", 8) -- Rank 2
-Spell( 24259 ,{ name = "Silence", duration = 3, color = colors.PINK }) -- Spell Lock Silence
+
+
+Spell( 1293816, { name = "Shadow", color = colors.DPURPLE })
+Spell( 426311, { name = "Flame", color = colors.DRED })
+
+Spell( 440870, { name = "Decimation", color = colors.PURPLE4 })
 
 local normalize_dots_to = nil--26
-
+Spell( 1319652, { name = "Curses", color = colors.CURSE })
+--[==[
 Spell({ 1714, 11719 }, { name = "Curse of Tongues", duration = 30, color = colors.CURSE })
 Spell({ 702, 1108, 6205, 7646, 11707, 11708 },{  name = "Curse of Weakness", duration = 120, color = colors.CURSE })
 Spell({ 17862, 17937 }, { name = "Curse of Shadows", duration = 300, glowtime = 15, color = colors.CURSE })
 Spell({ 1490, 11721, 11722 }, { name = "Curse of Elements", duration = 300, glowtime = 15, color = colors.CURSE })
 Spell({ 704, 7658, 7659, 11717 }, { name = "Curse of Recklessness", duration = 120, shine = true, color = colors.CURSE })
-Spell( 603 ,{ name = "Curse of Doom", duration = 60, ghost = true, color = colors.CURSE, nameplates = true, })
 Spell( 18223 ,{ name = "Curse of Exhaustion", duration = 12, ghost = true, color = colors.CURSE })
+]==]
 
-Spell( 17941 ,{ name = "Shadow Trance", duration = 10, shine = true, priority = 15, glowtime = 10, scale = 0.7, shinerefresh = true, color = colors.DPURPLE })
+Spell( 18094 ,{ name = "Nightfall", color = colors.DPURPLE })
 
-
-Spell( 6358, { name = "Seduction", duration = 15, pvpduration = 20, color = colors.PURPLE4 }) -- varies, Improved Succubus
 Spell({ 5484, 17928 }, { name = "Howl of Terror", shine = true, multiTarget = true,
     duration = function(timer)
         return timer.spellID == 5484 and 10 or 15
@@ -109,7 +114,9 @@ Spell({ 6789, 17925, 17926 }, { name = "Death Coil", duration = 3, color = color
 
 
 Spell({ 18265, 18879, 18880, 18881}, { name = "Siphon Life", duration = 30, priority = 5, fixedlen = normalize_dots_to, nameplates = true, ghost = true, color = colors.DTEAL })
-Spell({ 980, 1014, 6217, 11711, 11712, 11713 }, { name = "Curse of Agony", duration = 24, fixedlen = normalize_dots_to, nameplates = true, ghost = true, priority = 6, color = colors.CURSE })
+Spell({ 980, 1014, 6217, 11711, 11712, 11713 }, { name = "Bane of Agony", duration = 24, fixedlen = normalize_dots_to, nameplates = true, ghost = true, priority = 6, color = colors.WOO })
+Spell( 603 ,{ name = "Bane of Doom", color = colors.WOO, nameplates = true, })
+Spell( 1225228 ,{ name = "Bane of Havoc", color = colors.WOO, nameplates = true, })
 Spell({ 172, 6222, 6223, 7648, 11671, 11672, 25311 }, { name = "Corruption", tick = 3, overlay = {"tick", "end", 0.35}, priority = 9, fixedlen = normalize_dots_to, nameplates = true, ghost = true, color = colors.PINK3,
     duration = function(timer, opts)
         if timer.spellID == 172 then
@@ -128,8 +135,10 @@ Cooldown( 17962, { name = "Conflagrate", ghost = true, priority = 5, color = col
 
 
 Spell({ 6229, 11739, 11740, 28610 } ,{ name = "Shadow Ward", duration = 30, group = "buffs", scale = 0.7, color=colors.DPURPLE})
-Spell({ 7812, 19438, 19440, 19441, 19442, 19443 }, { name = "Sacrifice", duration = 30, group = "buffs", shine = true, color=colors.GOLD })
-Spell({ 17767, 17850, 17851, 17852, 17853, 17854 }, { name = "Consume Shadows", duration = 10, color = colors.LRED, target = "pet" })
+-- Spell( 24259 ,{ name = "Silence", duration = 3, color = colors.PINK }) -- Spell Lock Silence
+-- Spell({ 7812, 19438, 19440, 19441, 19442, 19443 }, { name = "Sacrifice", duration = 30, group = "buffs", shine = true, color=colors.GOLD })
+-- Spell({ 17767, 17850, 17851, 17852, 17853, 17854 }, { name = "Consume Shadows", duration = 10, color = colors.LRED, target = "pet" })
+-- Spell( 6358, { name = "Seduction", duration = 15, pvpduration = 20, color = colors.PURPLE4 }) -- varies, Improved Succubus
 
 end
 
@@ -142,9 +151,10 @@ Cooldown( 408507 ,{ name = "Lava Lash", color = colors.LRED, priority = 9, ghost
 Cooldown( 408507 ,{ name = "Lava Lash", color = colors.LRED, priority = 9, ghost = 5 })
 Cooldown( 425339 ,{ name = "Molten Blast", color = colors.BROWN, priority = 9, ghost = true, resetable = true })
 Spell( 425336 ,{ name = "Shamanistic Rage", group = "buffs", duration = 15, shine = true, color = colors.PURPLE3 })
-Spell( 409944 ,{ name = "Ancestral Guidance", group = "buffs", duration = 10, shine = true, color = colors.REJUV })
 
-
+Spell( 16164 ,{ name = "Elemental Focus", shine = true, duration = 15, color = colors.CHIM, group = "buffs" })
+Spell( 408510 ,{ name = "Water Shield", color = colors.TEAL })
+Spell( 1223031, { name = "Improved Stormstrike", color = colors.LDGREEN })
 
 Spell( 408521 ,{ name = "Riptide", duration = 15, color = colors.FROZEN })
 Spell( 408498 ,{ name = "Maelstrom Weapon", color = colors.PINK2 })
@@ -160,54 +170,55 @@ Spell({ 8050, 8052, 8053, 10447, 10448, 29228 }, { name = "Flame Shock", duratio
 Cooldown( 8042 ,{ name = "Shock", color = colors.TEAL3, ghost = 2, priority = 1, ghosteffect = "MAGICCAST", scale = 0.9 })
 Cooldown( 17364 ,{ name = "Stormstrike", color = colors.CURSE, priority = 10, scale_until = 5, ghost = true  })
 Spell( 29063 ,{ name = "Focused Casting", shine = true, duration = 6, color = colors.PURPLE4, group = "buffs" })
-Spell( 16246 ,{ name = "Clearcasting", shine = true, duration = 15, color = colors.CHIM, group = "buffs" })
 Spell( 16166 ,{ name = "Elemental Mastery", shine = true, duration = 15, priority = 12, timeless = true, color = colors.DPURPLE })
 Spell( 16188 ,{ name = "Nature's Swiftness", shine = true, duration = 15, group = "buffs", priority = -12, timeless = true, color = colors.WOO2DARK })
-Spell( 29203 ,{ name = "Healing Way", maxtimers = 2, duration = 15, scale = 0.7, color = colors.LGREEN })
-
-EventTimer({ event = "SPELL_CAST_SUCCESS", spellID = 25357, name = "HealingWayRefresh",
-    action = function(active, srcGUID, dstGUID, spellID, damage )
-        local timer = NugRunning.gettimer(active, GetSpellInfo(29203), dstGUID, "BUFF")
-        if timer then
-            local now = GetTime()
-            timer:SetTime(now, now + 15, timer.fixedoffset)
-        end
-    end
-})
+Spell( 16176 ,{ name = "Healing Way", maxtimers = 2, duration = 15, scale = 0.7, color = colors.LGREEN })
 
 
+Spell( 30160, { name = "Elemental Devastation", color = colors.PURPLE4 })
+
+Spell( 1222988, { name = "Earthbound", color = colors.BROWN })
+Spell({ 5730, 6390, 6391, 6392, 10427, 10428 }, { name = "Stoneclaw Totem", group = "buffs", color = colors.WOO2, shine = true, priority = PRIO_EARTH })
+Spell({ 8076, 8160, 8161, 10442, 25361 }, { name = "Strength of the Earth Totem", short = "Strength", group = "buffs", color = colors.DTEAL, scale = 0.7, ghost = 1, priority = PRIO_EARTH })
+
+Spell({ 8182, 10476, 10477 }, { name = "Frost Resistance Totem", short = "Frost Res", group = "buffs", color = colors.LRED, ghost = 1, scale_until = 15, priority = PRIO_FIRE })
+Spell({ 8230, 8250, 10521, 15036 }, { name = "Flametongue Totem", spellID = 8227, group = "buffs", color = colors.PURPLE4, priority = PRIO_FIRE, scale = 0.7, ghost = 1 })
+
+Spell({ 8184, 10537, 10538}, { name = "Fire Resistance Totem", short = "Fire Res", group = "buffs", color = colors.FROZEN, ghost = 1, scale_until = 15, priority = PRIO_WATER })
 Spell({ 5675, 10495, 10496, 10497 }, { name = "Mana Spring Totem", short = "Mana Spring", group = "buffs", color = colors.PURPLE })
 Spell(16191, { name = "Mana Tide Totem", short = "Mana Tide", effect = "UNHOLY", color = colors.TEAL2 })
 Spell(8177, { name = "Grounding Totem", group = "buffs", color = colors.CURSE })
 
 Spell({ 8512, 10613, 10614},  { name = "Windfury Totem", color = colors.PINK3 })
+Spell({ 15108, 15109, 15110 }, { name = "Windwall Totem", group = "buffs", color = colors.BLACK, ghost = 1, scale = 0.7, priority = PRIO_AIR })
+Spell({ 8836, 10626, 25360 }, { name = "Grace of Air", group = "buffs", color = colors.PURPLE5, scale = 0.7, priority = PRIO_AIR, ghost = 1 })
 
 -- TOTEMS
 local PRIO_FIRE = -77
 local PRIO_EARTH = -78
 local PRIO_WATER = -79
 local PRIO_AIR = -80
-Totem(136102, { name = "Earthbind Totem", spellID = 2484, group = "buffs", ghost = 1, color = colors.DBROWN, shine = true, tick = 3, overlay = {"tick", "tickend"}, priority = PRIO_EARTH })
-Totem(136097, { name = "Stoneclaw Totem", spellID = 5730, group = "buffs", color = colors.WOO2, shine = true, priority = PRIO_EARTH })
+-- Totem(136102, { name = "Earthbind Totem", spellID = 2484, group = "buffs", ghost = 1, color = colors.DBROWN, shine = true, tick = 3, overlay = {"tick", "tickend"}, priority = PRIO_EARTH })
+
 Totem(136098, { name = "Stoneskin Totem", spellID = 8071, group = "buffs", color = colors.WOO, ghost = 1, scale = 0.7, priority = PRIO_EARTH })
-Totem(136023, { name = "Strength of the Earth Totem", short = "Strength", spellID = 8075, group = "buffs", color = colors.DTEAL, scale = 0.7, ghost = 1, priority = PRIO_EARTH })
+
 Totem(136108, { name = "Tremor Totem", spellID = 8143, group = "buffs", color = colors.PINK, ghost = 1, priority = PRIO_EARTH })
 
 Totem(135824, { name = "Fire Nova Totem", spellID = 1535, group = "buffs", color = colors.LRED, shine = true, priority = PRIO_FIRE })
 Totem(135826, { name = "Magma Totem", spellID = 8190, group = "buffs", color = colors.DRED, tick = 2, overlay = {"tick", "end", 0.3}, priority = PRIO_FIRE })
 Totem(135825, { name = "Searing Totem", spellID = 3599, group = "buffs", color = colors.RED, priority = PRIO_FIRE, ghost = 1 })
-Totem(136040, { name = "Flametongue Totem", spellID = 8227, group = "buffs", color = colors.PURPLE4, priority = PRIO_FIRE, scale = 0.7, ghost = 1 })
-Totem(135866, { name = "Frost Resistance Totem", short = "Frost Res", spellID = 8181, group = "buffs", color = colors.LRED, ghost = 1, scale_until = 15, priority = PRIO_FIRE })
 
-Totem(135832, { name = "Fire Resistance Totem", short = "Fire Res", spellID = 8184, group = "buffs", color = colors.FROZEN, ghost = 1, scale_until = 15, priority = PRIO_WATER })
+
+
+
 Totem(135127, { name = "Healing Stream Totem", short = "Healing Stream", spellID = 5394, group = "buffs", color = colors.LGREEN, ghost = 3, scale = 0.7, priority = PRIO_WATER })
 
 Totem(136070, { name = "Poison Cleansing Totem", short = "Poison Cleanse", spellID = 8166, group = "buffs", color = colors.GREEN, ghost = 1, scale = 0.7, priority = PRIO_WATER })
 Totem(136019, { name = "Disease Cleansing Totem", short = "Disease Cleanse", spellID = 8166, group = "buffs", color = colors.BROWN, ghost = 1, scale = 0.7, priority = PRIO_WATER })
 
-Totem(136046, { name = "Grace of Air Totem", short = "Agility", spellID = 8835, group = "buffs", color = colors.PURPLE5, ghost = 1, scale = 0.7, priority = PRIO_AIR })
+
 Totem(136061, { name = "Nature Resistance Totem", short = "Nature Res", spellID = 10595, group = "buffs", color = colors.TEAL3, ghost = 1, scale_until = 15, priority = PRIO_AIR })
-Totem(136022, { name = "Windwall Totem", spellID = 15107, group = "buffs", color = colors.BLACK, scale = 0.7, priority = PRIO_AIR, ghost = 1 })
+
 -- Totem(136082, { name = "Sentry Totem", spellID = 6495, group = "buffs", color = colors.CURSE, ghost = 1, priority = PRIO_AIR })
 end
 
@@ -514,11 +525,15 @@ end
 
 if class == "PRIEST" then
 -- Season of Discovery
-Spell( 425204 ,{ name = "Void Plague", short = "", shine = true, duration = 18, ghost = true, nameplates = true, priority = 7, color = colors.WOO })
-Cast( 413259, { name = "Mind Sear", short = "", priority = 12, tick = 1, color = colors.TEAL2, priority = 11, duration = 5, scale = 1 })
+-- Spell( 425204 ,{ name = "Void Plague", short = "", shine = true, duration = 18, ghost = true, nameplates = true, priority = 7, color = colors.WOO })
+-- Cast( 413259, { name = "Mind Sear", short = "", priority = 12, tick = 1, color = colors.TEAL2, priority = 11, duration = 5, scale = 1 })
 Cooldown( 402174 ,{ name = "Penance", tick = 1.5, overlay = {"tick", "tickend"}, priority = 15, color = colors.TEAL3, ghost = true, ghost = 3, ghosteffect = "MAGICCAST" })
--- Wrong ID?
-Spell( 401859 ,{ name = "Prayer of Mending", shinerefresh = true, duration = 30, color = colors.PINKIERED, scale = 1, textfunc = function(timer) return timer.dstName end })
+
+Spell( 15270 ,{ name = "Spirit Tap", color = colors.LDGREEN })
+
+Spell( 14531, { name = "Martyrdom", glow = true, color = colors.LBLUE })
+
+Spell( 401877 ,{ name = "Prayer of Mending", color = colors.PINKIERED })
 
 
 Spell( 15487 ,{ name = "Silence", duration = 5, color = colors.PINK })
@@ -557,13 +572,19 @@ Spell({ 589, 594, 970, 992, 2767, 10892, 10893, 10894 }, { name = "Shadow Word: 
     end
  }) -- varies by talents
 
-Spell( 15269 ,{ name = "Blackout", duration = 3, shine = true, color = colors.PURPLE3 })
+Spell( 15326 ,{ name = "Blackout", duration = 3, shine = true, color = colors.PURPLE3 })
 -- Cast( 15407, { name = "Mind Flay", short = "", priority = 12, tick = 1, overlay = {"tick", "tickend"}, color = colors.PURPLE2, priority = 11, duration = 3, scale = 0.8 })
--- Spell( 15258 ,{ name = "Shadow Vulnerability", short = "Vulnerability", duration = 15, scale = 0.5, priority = -10, glowtime = 4, ghost = true, ghosteffect = "GOUGE", color = colors.DPURPLE })
 Spell( 15286 ,{ name = "Vampiric Embrace", duration = 60, priority = 5, shinerefresh = true, ghost = true, ghosteffect = "GOUGE", color = colors.PURPLE4 })
 Spell( 14751 ,{ name = "Inner Focus", shine = true, duration = 15, group = "buffs", priority = -12, timeless = true, scale = 0.7, color = colors.WOO2DARK })
 
-Spell( 15258 ,{ name = "Shadow Weaving", color = colors.PURPLE3, scale = 0.75, priority = -10, ghost = 2, duration = 15 })
+Spell( 15257 ,{ name = "Shadow Weaving", color = colors.PURPLE3, scale = 0.75 })
+Spell( 1277324 ,{ name = "Dark Sacrifice", color = colors.DPURPLE })
+
+Spell( 1284536 ,{ name = "Holy Purpose", glow = true, color = colors.REJUV })
+
+Spell( 6788 ,{ name = "Weakened Soul", color = colors.DRED })
+
+Spell( 14892 ,{ name = "Inspiration", color = colors.BLACK })
 
 end
 
