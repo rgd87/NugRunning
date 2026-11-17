@@ -37,7 +37,7 @@ Spell( 7744 , { name = "Will of the Forsaken", global = true, duration = 5, grou
 Spell( 4068 , { name = "Iron Grenade", global = true, maxtimers = 1, color = colors.DBROWN, shine = true, duration = 3 }) -- Iron Grenade
 -- Cast({ 746, 1159, 3267, 3268, 7926, 7927, 10838, 10839, 18608, 18610, 23567, 23568, 23569, 23696, 24412, 24413, 24414 },
     -- { name = "First Aid", global = true, tick = 1, tickshine = true, overlay = {"tick", "tickend", 0.4 }, color = colors.LGREEN })
-
+Spell( 1259799, { name = "Elune's Light", color = colors.PURPLE4})
 
 
 if class == "WARLOCK" then
@@ -225,44 +225,40 @@ end
 if class == "PALADIN" then
 -- Season of Discovery
 local normalized_length = 9
-Cooldown( 407778 ,{ name = "Divine Storm", ghost = true, priority = 7, fixedlen = normalized_length, color = colors.WOO2 })
-Cooldown( 407676 ,{ name = "Crusader Strike", tick = 1.5, tickshine = true, overlay = {"tick", "end"}, ghost = true, fixedlen = normalized_length, short = "", priority = 10, color = colors.CURSE })
-Spell( 425600, { name = "Horn of Lordaeron", ghost = 7, target = "player", scale_until = 20, priority = -300, effect = "BLOODBOIL", effecttime = 10, glowtime = 10, affiliation = "raid", color = colors.DPURPLE, duration = 120 })
-Spell( 407798, { name = "Seal of Martyrdom", priority = 6, duration = 30, ghost = 1, color = colors.LRED })
-Cooldown( 407669 ,{ name = "Avenger's Shield", resetable = true, scale = 1, scale_until = 8, color = colors.DTEAL, color2 = colors.TEAL, ghost = true })
+-- Cooldown( 407778 ,{ name = "Divine Storm", ghost = true, priority = 7, fixedlen = normalized_length, color = colors.WOO2 })
+-- Cooldown( 407676 ,{ name = "Crusader Strike", tick = 1.5, tickshine = true, overlay = {"tick", "end"}, ghost = true, fixedlen = normalized_length, short = "", priority = 10, color = colors.CURSE })
+-- Spell( 425600, { name = "Horn of Lordaeron", ghost = 7, target = "player", scale_until = 20, priority = -300, effect = "BLOODBOIL", effecttime = 10, glowtime = 10, affiliation = "raid", color = colors.DPURPLE, duration = 120 })
+-- Spell( 407798, { name = "Seal of Martyrdom", priority = 6, duration = 30, ghost = 1, color = colors.LRED })
+-- Cooldown( 407669 ,{ name = "Avenger's Shield", resetable = true, scale = 1, scale_until = 8, color = colors.DTEAL, color2 = colors.TEAL, ghost = true })
 Interrupt({ 425609 }, "Rebuke", 2)
 
 
+Spell( 1310735, { name = "Unsealed Wrath", color = colors.LRED })
+
+Spell({ 1310909, 1311593, 1311597 }, { name = "Light's Vigil", color = colors.LGREEN })
 
 Spell( 20066 ,{ name = "Repentance", duration = 6 })
-Spell({ 2878, 5627, 10326 }, { name = "Turn Undead",
-    duration = function(timer)
-        if timer.spellID == 2878 then return 10
-        elseif timer.spellID == 5627 then return 15
-        else return 20 end
-    end
-})
+Spell({ 2878, 5627, 10326 }, { name = "Turn Undead", color = colors.DTEAL })
 Cooldown( 879 ,{ name = "Exorcism", color = colors.ORANGE, ghost = true, priority = 8, })
 Cooldown( 24275 ,{ name = "Hammer of Wrath", color = colors.TEAL2, ghost = true, priority = 11 })
 
 Spell( 1044 ,{ name = "Blessing of Freedom", duration = 10, group = "buffs" })
 Spell({ 6940, 20729 }, { name = "Blessing of Sacrifice", duration = 10, group = "buffs", color = colors.LRED })
-Spell({ 1022, 5599, 10278 }, { name = "Blessing of Protection", group = "buffs", color = colors.WOO2,
-    duration = function(timer)
-        if timer.spellID == 1022 then return 6
-        elseif timer.spellID == 5599 then return 8
-        else return 10 end
-    end
-})
+Spell({ 1022, 5599, 10278 }, { name = "Blessing of Protection", group = "buffs", color = colors.WOO2 })
 -- DS includes Divine Protection
 Spell({ 498, 5573, 642, 1020 }, { name = "Divine Shield", duration = 12, group = "buffs", color = colors.BLACK }) --varies BUFF
 
+Spell( 1311015, { name = "Templar's Bulwark", duration = 12, group = "buffs", color = colors.BLACK }) --varies BUFF
+
+Spell( 1323522, { name = "Seals", ghost = 1, color = colors.DTEAL })
+--[==[
 Spell({ 20375, 20915, 20918, 20919, 20920 }, { name = "Seal of Command", scale_until = 8, priority = 6, duration = 30, ghost = 1, color = colors.RED })
 Spell({ 21084, 20287, 20288, 20289, 20290, 20291, 20292, 20293 }, { name = "Seal of Righteousness", scale_until = 8, priority = 6, duration = 30, ghost = 1, color = colors.DTEAL })
 Spell({ 20162, 20305, 20306, 20307, 20308, 21082 }, { name = "Seal of the Crusader", scale_until = 8, priority = 6, duration = 30, ghost = 1, color = colors.GOLD })
 Spell({ 20165, 20347, 20348, 20349 }, { name = "Seal of Light", scale_until = 8, priority = 6, duration = 30, ghost = 1, color = colors.LGREEN })
 Spell({ 20166, 20356, 20357 }, { name = "Seal of Wisdom", scale_until = 8, priority = 6, duration = 30, ghost = 1, color = colors.LBLUE })
 Spell( 20164 , { name = "Seal of Justice", scale_until = 8, priority = 6, duration = 30, ghost = 1, color = colors.BLACK })
+]==]
 
 Spell({ 21183, 20188, 20300, 20301, 20302, 20303 }, { name = "Judgement of the Crusader", short = "Crusader", duration = 10, color = colors.GOLD })
 Spell({ 20185, 20344, 20345, 20346 }, { name = "Judgement of Light", short = "Light", duration = 10, color = colors.LGREEN })
@@ -284,6 +280,13 @@ Cooldown( 20473 ,{ name = "Holy Shock", ghost = 1, priority = 5, scale_until = 5
 Cooldown( 20271 ,{ name = "Judgement", ghost = true, priority = 8, color = colors.PURPLE })
 
 Spell({ 20925, 20927, 20928 }, { name = "Holy Shield", duration = 10, priority = 7, scale = 1, ghost = true, arrow = colors.PINK2, color = colors.PINK3 })
+Spell( 1328544, { name = "Shieldsworn", color = colors.PINK4 })
+Spell( 20127 ,{ name = "Redoubt", color = colors.WOO2 })
+Spell( 1311033, { name = "Iron Creed", color = colors.BLACK })
+-- Spell( 440667, { name = "Vindication", color = colors.BLACK })
+Spell( 20049, { name = "Vengeance", color = colors.TEAL })
+Spell( 20177, { name = "Reckoning", color = colors.PURPLE2 })
+
 
 end
 
@@ -349,18 +352,20 @@ end
 
 if class == "DRUID" then
 -- Season of Discover
-Spell( 414800 ,{ name = "Fury of Stormrage", duration = 15, group = "buffs", shine = true, color = colors.LGREEN })
-Spell( 414644, { name = "Lacerate", duration = 15, color = colors.RED, priority = 2, ghost = true })
+Spell( 16880 ,{ name = "Nature's Grace", color = colors.PURPLE4 })
+Spell({ 1328617, 1328616, 414644, 1235826, 1235827 }, { name = "Lacerate", duration = 15, color = colors.RED, priority = 2, ghost = true })
 -- Mangle Bear
 Cooldown( 407995, { name = "Mangle", tick = 1.5, tickshine = true, overlay = {"tick", "end"}, priority = 10, short = "", resetable = true, fixedlen = 9, ghost = true,  color = colors.CURSE })
 Spell( 164815 ,{ name = "Sunfire", duration = 12, nameplates = true, priority = 9, ghost = true, color = colors.ORANGE, maxtimers = 1 })
 Spell( 408120, { name = "Wild Growth", duration = 7, maxtimers = 1, color = colors.LGREEN })
 Interrupt(410176, "Skull Bash", 2)
-Spell( 408124 ,{ name = "Lifebloom", shinerefresh = true, duration = 7, color = { 0.5, 1, 0.5} })
-Spell( 407988, { name = "Savage Roar", group = "buffs", priority = -10, color = colors.PURPLE, duration = 34 })
 Cooldown( 417157 ,{ name = "Starsurge", resetable = true, priority = 6, ghost = true, color = colors.CURSE })
 
 Interrupt(16979, "Feral Charge", 4)
+
+Spell( 16864 ,{ name = "Omen of Clarity", glow = true, color = colors.CHIM })
+Spell( 408248 ,{ name = "Eclipse", color = colors.TEAL3 }) -- Wrath boost
+Spell( 16850 ,{ name = "Improved Starfire", color = colors.LBLUE }) -- Starfire boost
 
 Spell( 22812 ,{ name = "Barkskin", duration = 15, color = colors.WOO2, group = "buffs" })
 Spell({ 339, 1062, 5195, 5196, 9852, 9853 }, { name = "Entangling Roots", color = colors.DBROWN,
@@ -397,12 +402,12 @@ Spell({ 5211, 6798, 8983 }, { name = "Bash", color = colors.RED,
 
 Spell( 5209 , { name = "Challenging Roar", duration = 6, multiTarget = true })
 Spell( 6795 ,{ name = "Taunt", duration = 3 })
--- SKIPPING: Nature's Grasp
+Spell( 16689 ,{ name = "Nature's Grasp", color = colors.DBROWN })
 Spell({ 1850, 9821 }, { name = "Dash", duration = 15 })
 Spell( 5229, { name = "Enrage", color = colors.PURPLE4, shine = true, scale = 0.6, group = "buffs", duration = 10 })
 Spell({ 22842, 22895, 22896 }, { name = "Frenzied Regeneration", duration = 10, color = colors.LGREEN })
 
-Spell( 19675, { name = "Feral Charge", duration = 4, color = colors.DBROWN, shine = true })
+Spell( 1238122, { name = "Feral Charge", duration = 4, color = colors.DBROWN, shine = true })
 
 Spell( 16922, { name = "Starfire Stun", duration = 3, shine = true, color = colors.RED })
 Spell({ 9005, 9823, 9827 }, { name = "Pounce", _skipunitaura = true, priority = -20, color = colors.RED,
@@ -420,14 +425,13 @@ end
 })
 Spell({ 1822, 1823, 1824, 9904 }, { name = "Rake", tick = 3, overlay = {"tick", "end"}, duration = 9, priority = 6, nameplates = true, ghost = true, color = colors.PINKIERED })
 Spell({ 1079, 9492, 9493, 9752, 9894, 9896 }, { name = "Rip", tick = 2, overlay = {"tick", "end"}, duration = 12, priority = 5, ghost = true, nameplates = true, color = colors.RED })
-Spell({ 5217, 6793, 9845, 9846 }, { name = "Tiger's Fury", duration = 6, color = colors.GOLD, scale = 0.7, group = "buffs", shine = true })
+Spell( 5217, { name = "Tiger's Fury", duration = 6, color = colors.GOLD, scale = 0.7, group = "buffs", shine = true })
 
 Spell( 2893 ,{ name = "Abolish Poison", tick = 2, tickshine = true, overlay = {"tick", "end"}, group = "buffs", duration = 8, color = colors.TEAL2 })
 Spell( 29166 , { name = "Innervate", duration = 20, shine = true, color = colors.DBLUE })
 
 Spell({ 8936, 8938, 8939, 8940, 8941, 9750, 9856, 9857, 9858, 436944 }, { name = "Regrowth", duration = 21, scale = 0.7, color = colors.LGREEN })
 Spell({ 774, 1058, 1430, 2090, 2091, 3627, 8910, 9839, 9840, 9841, 25299, 417064 }, { name = "Rejuvenation", scale = 1, duration = 12, color = colors.REJUV })
-Spell( 16870 ,{ name = "Clearcasting", shine = true, group = "buffs", duration = 15, color = colors.CHIM })
 
 Spell({ 5570, 24974, 24975, 24976, 24977 }, { name = "Insect Swarm", duration = 12, priority = 6, color = colors.TEAL3, ghost = true, nameplates = true, })
 Spell( 17116 ,{ name = "Nature's Swiftness", shine = true, duration = 15, group = "buffs", priority = -12, timeless = true, scale = 0.7, color = colors.WOO2DARK })
