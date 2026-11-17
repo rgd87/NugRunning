@@ -173,6 +173,7 @@ globals = {
     "Settings",
     "IsPublicTestClient",
     "C_StringUtil",
+    "C_CooldownViewer",
 
     "CreateFont",
     "InCombatLockdown",

@@ -190,6 +190,7 @@ function NugRunningGUI.CreateCommonForm(self)
             clean(opts, default_opts, "short", false)
             -- clean(opts, default_opts, "ghost", false)
             -- clean(opts, default_opts, "preghost", false)
+            clean(opts, default_opts, "glow", false)
             -- clean(opts, default_opts, "scale", 1)
             clean(opts, default_opts, "nameplates", false)
             clean(opts, default_opts, "group", "default")
@@ -380,6 +381,16 @@ function NugRunningGUI.CreateCommonForm(self)
     Form:AddChild(color)
 
 
+    local glow = AceGUI:Create("CheckBox")
+    glow:SetLabel(L"Glow as BuffIcon")
+    glow:SetRelativeWidth(1)
+    glow:SetCallback("OnValueChanged", function(self, event, value)
+        self.parent.opts["glow"] = value
+    end)
+    Form.controls.glow = glow
+    Form:AddChild(glow)
+    AddTooltip(glow, L"Glow the Icon on Buff Icon when it is active.")
+
 
     --[[
     local ghost = AceGUI:Create("EditBox")
@@ -524,6 +535,7 @@ function NugRunningGUI.FillForm(self, Form, class, category, id, opts, isEmptyFo
     controls.name:SetText(opts.name or "")
     controls.short:SetText(opts.short)
     -- controls.scale:SetValue(opts.scale or 1)
+    controls.glow:SetValue(opts.glow)
 
     --[[
     if opts.ghost then
@@ -1665,5 +1677,6 @@ do
 
     local parentCategory = Settings.GetCategory(categoryID);
     local panel = NugRunningGUI:Create("Spell List", "NugRunning")
+    NugRunningGUI.frame = panel
     local subcategory, layout = Settings.RegisterCanvasLayoutSubcategory(parentCategory, panel.frame, panel.frame.name);
 end

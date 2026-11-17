@@ -1083,6 +1083,31 @@ function NugRunning:UpdateCooldownFontObjects()
 end
 
 
+local LibCustomGlow = LibStub("LibCustomGlow-1.0")
+local glowOptions = {
+    key = "NugRunning",
+    startAnim = false
+}
+local glowFrames = {}
+-- Looks like LCG is buggy and on repeated Starts it overlaps effects,
+-- so i'm making sure myself every frame only glows once
+local function LCG_ProcGlow_Start(self, skipBirth)
+    glowOptions.startAnim = not skipBirth
+    if not glowFrames[self] then
+        LibCustomGlow.ProcGlow_Start(self, glowOptions)
+        -- LibCustomGlow.ProcGlow_Start(self)
+        glowFrames[self] = true
+    end
+end
+local function LCG_ProcGlow_Hide(self)
+    if glowFrames[self] then
+        LibCustomGlow.ProcGlow_Stop(self, glowOptions.key)
+        -- LibCustomGlow.ProcGlow_Stop(self)
+        glowFrames[self] = nil
+    end
+end
+
+
 function NugRunning:StyleCooldownItemFrame(frame, force)
     if CVCooldownFrames[frame] and not force then return end
     -- if frame.isNugRunningStyled and not force then return end
@@ -1216,18 +1241,24 @@ function NugRunning:StyleCooldownItemFrame(frame, force)
         end)
 
         -- https://github.com/Gethe/wow-ui-source/blob/live/Interface/AddOns/Blizzard_CooldownViewer/CooldownViewer.lua#L1412
-        --[=[
+
         hooksecurefunc(frame, "RefreshCooldownInfo", function(self)
             local cooldownFrame = self:GetCooldownFrame();
 
             local spellID = self:GetBaseSpellID()
-            if spellID then
-                local spellName = C_Spell.GetSpellName(spellID)
+            if not spellID then return end
+            local opts = spells[spellID]
+            if opts then
+                if opts.glow and self.Cooldown.isActive then
+                    LCG_ProcGlow_Start(self, true)
+                else
+                    LCG_ProcGlow_Hide(self)
+                end
+                -- local spellName = C_Spell.GetSpellName(spellID)
             end
             -- local expirationTime, duration, timeMod, paused = self:GetCooldownValues();
             -- print(expirationTime, duration, timeMod, paused, spellID, spellName)
         end)
-        ]=]
     else
         if frame.CooldownFlash then
             frame.CooldownFlash:SetFrameLevel(6)
