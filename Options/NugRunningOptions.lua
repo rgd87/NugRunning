@@ -414,7 +414,8 @@ function NugRunningGUI.CreateCommonForm(self)
     ]]
 
     local nameplates = AceGUI:Create("CheckBox")
-    nameplates:SetLabel(L"Show on Nameplates")
+    nameplates:SetLabel(L"Show on Nameplates".."   (NYI)")
+    nameplates:SetDisabled(true)
     nameplates:SetRelativeWidth(1)
     nameplates:SetCallback("OnValueChanged", function(self, event, value)
         self.parent.opts["nameplates"] = value
@@ -566,7 +567,7 @@ function NugRunningGUI.FillForm(self, Form, class, category, id, opts, isEmptyFo
         -- controls.maxtimers:SetDisabled(false)
         -- controls.singleTarget:SetDisabled(false)
         -- controls.multiTarget:SetDisabled(false)
-        controls.nameplates:SetDisabled(false)
+        -- controls.nameplates:SetDisabled(false)
         -- controls.hide_until:SetDisabled(true)
         controls.clones:SetDisabled(false)
         -- controls.timeless:SetDisabled(false)
@@ -575,7 +576,7 @@ function NugRunningGUI.FillForm(self, Form, class, category, id, opts, isEmptyFo
         -- controls.maxtimers:SetDisabled(true)
         -- controls.singleTarget:SetDisabled(true)
         -- controls.multiTarget:SetDisabled(true)
-        controls.nameplates:SetDisabled(true)
+        -- controls.nameplates:SetDisabled(true)
         -- controls.hide_until:SetDisabled(false)
         controls.clones:SetDisabled(true)
         -- controls.timeless:SetDisabled(true)

@@ -1686,18 +1686,10 @@ NugRunning.Commands = {
 function NugRunning.SlashCmd(msg)
     local k,v = string.match(msg, "([%w%+%-%=]+) ?(.*)")
     if not k or k == "help" then print([[Usage:
-        |cff00ff00/nrun lock|r
-        |cff00ff00/nrun unlock|r
-        |cff00ff00/nrun reset|r
-        |cff00ff00/nrun clear|r
+        |cff00ff00/nrun gui|r
         |cff00ff00/nrun debug|r
-        |cff00ff00/nrun charspec|r : enable character specific settings
-        |cff00ff00/nrun misses|r : toggle misses (immunes, resists)
-        |cff00ff00/nrun cooldowns|r : toggle showing cooldowns
-        |cff00ff00/nrun spelltext|r : toggle spell text on bars
-        |cff00ff00/nrun shorttext|r : toggle using short names
-        |cff00ff00/nrun nameplates|r : toggle nameplate timers
-        |cff00ff00/nrun localnames|r: toggle localized spell names
+        |cff00ff00/nrun listauras <unit>|r
+        |cff00ff00/nrun check - check config against CDM spells|r
         |cff00ff00/nrun set|r width=150 height=20 growth=up/down
         ]]
     )end
