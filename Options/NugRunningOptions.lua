@@ -194,8 +194,8 @@ function NugRunningGUI.CreateCommonForm(self)
             clean(opts, default_opts, "nameplates", false)
             clean(opts, default_opts, "group", "default")
             clean(opts, default_opts, "fixedlen", false)
-            clean(opts, default_opts, "effect", "NONE")
-            clean(opts, default_opts, "ghosteffect", "NONE")
+            -- clean(opts, default_opts, "effect", "NONE")
+            -- clean(opts, default_opts, "ghosteffect", "NONE")
             clean(opts, default_opts, "clones", false)
             clean(opts, default_opts, "event", false)
         end
@@ -350,6 +350,7 @@ function NugRunningGUI.CreateCommonForm(self)
 
     local scale = AceGUI:Create("Slider")
     scale:SetLabel(L"Scale")
+    scale:SetDisabled(true)
     scale:SetSliderValues(0.3, 2, 0.05)
     scale:SetRelativeWidth(1)
     scale:SetCallback("OnValueChanged", function(self, event, value)
@@ -428,6 +429,7 @@ function NugRunningGUI.CreateCommonForm(self)
         table.insert(effectsOrder, k)
     end
 
+    --[[
     local effect = AceGUI:Create("Dropdown")
     effect:SetLabel(L"3D Effect")
     effect:SetDisabled(true)
@@ -451,6 +453,7 @@ function NugRunningGUI.CreateCommonForm(self)
     Form.controls.ghosteffect = ghosteffect
     Form:AddChild(ghosteffect)
     AddTooltip(ghosteffect, L"Effect during ghost phase")
+    ]]
 
 
     local clones = AceGUI:Create("EditBox")
@@ -531,8 +534,8 @@ function NugRunningGUI.FillForm(self, Form, class, category, id, opts, isEmptyFo
 
     controls.fixedlen:SetText(opts.fixedlen)
 
-    controls.effect:SetValue(opts.effect or "NONE")
-    controls.ghosteffect:SetValue(opts.ghosteffect or "NONE")
+    -- controls.effect:SetValue(opts.effect or "NONE")
+    -- controls.ghosteffect:SetValue(opts.ghosteffect or "NONE")
 
     local clonesText
     if opts.clones then
@@ -851,6 +854,20 @@ local function MakeGeneralOptions()
                 disabled = function() return not NugRunning.db.shouldStyleIcons end,
                 order = 1.8,
                 args = {
+                    dynamicLayout = {
+                        name = L"Dynamic Layout"..newFeatureIcon,
+                        desc = L"Stacks the active elements on top of each other without leaving the gaps for inactive",
+                        type = "toggle",
+                        width = "full",
+                        confirm = true,
+                        confirmText = "Warning: Requires UI reloading.",
+                        get = function(info) return NugRunning.db.viewerSettings["BuffIconCooldownViewer"].dynamicLayout end,
+                        set = function(info, v)
+                            NugRunning.db.viewerSettings["BuffIconCooldownViewer"].dynamicLayout = not NugRunning.db.viewerSettings["BuffIconCooldownViewer"].dynamicLayout
+                            ReloadUI()
+                        end,
+                        order = 0,
+                    },
                     borderTypeIcon = {
                         type = "select",
                         name = L"Border Type",
@@ -1049,6 +1066,20 @@ local function MakeGeneralOptions()
                 guiInline = true,
                 order = 2.1,
                 args = {
+                    dynamicLayout = {
+                        name = L"Dynamic Layout"..newFeatureIcon,
+                        desc = L"Stacks the active elements on top of each other without leaving the gaps for inactive",
+                        type = "toggle",
+                        width = "full",
+                        confirm = true,
+                        confirmText = "Warning: Requires UI reloading.",
+                        get = function(info) return NugRunning.db.viewerSettings["BuffBarCooldownViewer"].dynamicLayout end,
+                        set = function(info, v)
+                            NugRunning.db.viewerSettings["BuffBarCooldownViewer"].dynamicLayout = not NugRunning.db.viewerSettings["BuffBarCooldownViewer"].dynamicLayout
+                            ReloadUI()
+                        end,
+                        order = 1,
+                    },
                     staticSize = {
                         name = L"Static Box Size",
                         desc = L"This fixes the issue with CDM growing in all directions when you add more elements to it",
