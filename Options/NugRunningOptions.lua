@@ -188,9 +188,9 @@ function NugRunningGUI.CreateCommonForm(self)
         local default_opts = NugRunningConfig[category][spellID]
         if default_opts then
             clean(opts, default_opts, "short", false)
-            clean(opts, default_opts, "ghost", false)
-            clean(opts, default_opts, "preghost", false)
-            clean(opts, default_opts, "scale", 1)
+            -- clean(opts, default_opts, "ghost", false)
+            -- clean(opts, default_opts, "preghost", false)
+            -- clean(opts, default_opts, "scale", 1)
             clean(opts, default_opts, "nameplates", false)
             clean(opts, default_opts, "group", "default")
             clean(opts, default_opts, "fixedlen", false)
@@ -302,6 +302,7 @@ function NugRunningGUI.CreateCommonForm(self)
 
     local short = AceGUI:Create("EditBox")
     short:SetLabel(L"Short Name")
+    short:SetDisabled(true)
     -- short:SetFullWidth(true)
     short:SetRelativeWidth(0.29)
     short:SetCallback("OnEnterPressed", function(self, event, value)
@@ -348,6 +349,7 @@ function NugRunningGUI.CreateCommonForm(self)
     AddTooltip(fixedlen, L"Set static timer max duration to align timer decay speed with other timers")
 
 
+    --[[
     local scale = AceGUI:Create("Slider")
     scale:SetLabel(L"Scale")
     scale:SetDisabled(true)
@@ -365,7 +367,7 @@ function NugRunningGUI.CreateCommonForm(self)
     Form.controls.scale = scale
     Form:AddChild(scale)
     AddTooltip(scale, L"Vertical timer scale")
-
+    ]]
 
     local color = AceGUI:Create("ColorPicker")
     color:SetLabel(L"Color")
@@ -379,6 +381,7 @@ function NugRunningGUI.CreateCommonForm(self)
 
 
 
+    --[[
     local ghost = AceGUI:Create("EditBox")
     ghost:SetLabel(L"Ghost")
     ghost:SetDisabled(true)
@@ -408,6 +411,7 @@ function NugRunningGUI.CreateCommonForm(self)
     Form.controls.preghost = preghost
     Form:AddChild(preghost)
     AddTooltip(preghost, L"Create empty bar when switching to target without existing timer")
+    ]]
 
     local nameplates = AceGUI:Create("CheckBox")
     nameplates:SetLabel(L"Show on Nameplates")
@@ -518,8 +522,9 @@ function NugRunningGUI.FillForm(self, Form, class, category, id, opts, isEmptyFo
 
     controls.name:SetText(opts.name or "")
     controls.short:SetText(opts.short)
-    controls.scale:SetValue(opts.scale or 1)
+    -- controls.scale:SetValue(opts.scale or 1)
 
+    --[[
     if opts.ghost then
         local numeric = opts.ghost == true and 3 or opts.ghost
         controls.ghost:SetText(numeric)
@@ -527,6 +532,7 @@ function NugRunningGUI.FillForm(self, Form, class, category, id, opts, isEmptyFo
         controls.ghost:SetText()
     end
     controls.preghost:SetValue(opts.preghost)
+    ]]
 
     controls.color:SetColor(fillAlpha(opts.color or {0.8, 0.1, 0.7} ))
 
@@ -855,7 +861,7 @@ local function MakeGeneralOptions()
                 order = 1.8,
                 args = {
                     dynamicLayout = {
-                        name = L"Dynamic Layout"..newFeatureIcon,
+                        name = L"Dynamic Layout for BuffIcons"..newFeatureIcon,
                         desc = L"Stacks the active elements on top of each other without leaving the gaps for inactive",
                         type = "toggle",
                         width = "full",
@@ -1222,6 +1228,20 @@ local function MakeGeneralOptions()
                         set = function(info, r, g, b)
                             NugRunning.db.defaultBarColor = {r,g,b,1}
                         end,
+                    },
+                    enableFixedDurations = {
+                        name = L"Enable Fixed Durations",
+                        type = "toggle",
+                        width = 2.5,
+                        desc = L"Allows to set a static max duration on a timer for a spell. And if that's the same duration across several timers they will all have the same decay speed",
+                        confirm = true,
+                        confirmText = "Warning: Requires UI reloading.",
+                        get = function(info) return NugRunning.db.enableFixedDurations end,
+                        set = function(info, v)
+                            NugRunning.db.enableFixedDurations = not NugRunning.db.enableFixedDurations
+                            ReloadUI()
+                        end,
+                        order = 5,
                     },
                 },
             },

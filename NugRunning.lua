@@ -106,6 +106,7 @@ local defaults = {
     hideCooldownAbove = "FULL",
     cooldownFont = { font = "Friz Quadrata TT", size = 22, outline = true, alpha = 1 },
     defaultBarColor = {234/255, 117/255, 59/255},
+    enableFixedDurations = false,
 
     viewerSettings = {
         BuffBarCooldownViewer = {
@@ -872,21 +873,21 @@ function NugRunning:StyleBarItemFrame(frame, force)
     end)
 
 
-    --[[
-    hooksecurefunc(frame, "RefreshCooldownInfo", function(self)
-        local pipTexture = self:GetPipTexture()
-        local barFrame = self.Bar
-        if pipTexture:IsShown() then -- Bar isn't infinite
-            local spellID = frame:GetBaseSpellID()
-            local opts = spells[spellID]
-            if opts then
-                if opts.duration then
-                    barFrame:SetMinMaxValues(0, opts.duration)
+    if NRunDB.enableFixedDurations then
+        hooksecurefunc(frame, "RefreshCooldownInfo", function(self)
+            local pipTexture = self:GetPipTexture()
+            local barFrame = self.Bar
+            if pipTexture:IsShown() then -- Bar isn't infinite
+                local spellID = frame:GetBaseSpellID()
+                local opts = spells[spellID]
+                if opts then
+                    if opts.fixedlen then
+                        barFrame:SetMinMaxValues(0, opts.fixedlen)
+                    end
                 end
             end
-        end
-    end)
-    ]]
+        end)
+    end
 
     hooksecurefunc(frame, "ShowPandemicStateFrame", function(self)
         local pandemicFrame = self.PandemicIcon
