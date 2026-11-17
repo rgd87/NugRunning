@@ -109,20 +109,22 @@ local defaults = {
 
     viewerSettings = {
         BuffBarCooldownViewer = {
-            growthDirection = "DOWN",
-            staticSize = false,
+            growthDirection = "UP",
+            dynamicLayout = true,
+            staticSize = true,
         },
         BuffIconCooldownViewer = {
-            growthDirection = "DOWN",
-            staticSize = false,
+            -- growthDirection = "DOWN",
+            dynamicLayout = true,
+            staticSize = true,
         },
         EssentialCooldownViewer = {
-            growthDirection = "DOWN",
-            staticSize = false,
+            -- growthDirection = "DOWN",
+            staticSize = true,
         },
         UtilityCooldownViewer = {
-            growthDirection = "DOWN",
-            staticSize = false,
+            -- growthDirection = "DOWN",
+            staticSize = true,
         },
     },
     width = 150,
@@ -248,6 +250,9 @@ function NugRunning.ADDON_LOADED(self,event, loadedAddon)
     NugRunning:RegisterEvent("CHARACTER_POINTS_CHANGED")
     NugRunning:RegisterEvent("SPELLS_CHANGED")
 
+    NugRunning:RegisterEvent("PLAYER_TOTEM_UPDATE")
+    NugRunning:RegisterEvent("BAG_UPDATE_COOLDOWN")
+
     NugRunning:ReInitSpells()
 
 
@@ -345,30 +350,139 @@ local function SafeLayout(self, growthDirectionUp, layoutFramesGoingRight)
     GridLayoutUtil.ApplyGridLayout(layoutChildren, AnchorUtil.CreateAnchor(anchorPoint, self, anchorPoint), layout);
 end
 
-local function SafeCondensedLayout(self, growthDirectionUp, layoutFramesGoingRight)
-    local layoutChildren = self:GetLayoutChildren();
-    local yMultiplier = growthDirectionUp and 1 or -1;
-    local childYPadding = self.childYPadding
+local VERTICAL_MIRROR_POINTS =
+{
+	["TOPLEFT"] = "BOTTOMLEFT",
+	["TOP"] = "BOTTOM",
+	["TOPRIGHT"] = "BOTTOMRIGHT",
+	["BOTTOMLEFT"] = "TOPLEFT",
+	["BOTTOM"] = "TOP",
+	["BOTTOMRIGHT"] = "TOPRIGHT",
+	["CENTER"] = "CENTER", -- Mirrored only along x and y offsets.
+	["LEFT"] = "LEFT", -- Mirrored only  along x and y offsets.
+	["RIGHT"] = "RIGHT", -- Mirrored only along x and y offsets.
+};
+local HORIZONTAL_MIRROR_POINTS =
+{
+	["TOPLEFT"] = "TOPRIGHT",
+	["LEFT"] = "RIGHT",
+	["BOTTOMLEFT"] = "BOTTOMRIGHT",
+	["TOPRIGHT"] = "TOPLEFT",
+	["RIGHT"] = "LEFT",
+	["BOTTOMRIGHT"] = "BOTTOMLEFT",
+	["CENTER"] = "CENTER", -- Mirrored only along x and y offsets.
+	["TOP"] = "TOP", -- Mirrored only along x and y offsets.
+	["BOTTOM"] = "BOTTOM", -- Mirrored only along x and y offsets.
+};
 
-    -- LAYOUT_CHILDREN = layoutChildren
+
+local layoutUpdatePending = false
+local function SafeDynamicLayout(self)
+    layoutUpdatePending = false
+
+    local viewerName = self:GetName()
+    local layoutChildren = self:GetLayoutChildren();
+
+    local stride = self.stride
+    local isHorizontal = self.isHorizontal
+    local layoutFramesGoingRight = not isHorizontal or (isHorizontal and self.iconDirection == Enum.CooldownViewerIconDirection.Right);
+    local layoutFramesGoingUp = not isHorizontal and self.iconDirection == Enum.CooldownViewerIconDirection.Right;
+
+    local growthDirectionOverride = NRunDB.viewerSettings[viewerName].growthDirection
+    if growthDirectionOverride == "UP" then
+        layoutFramesGoingUp = true
+    end
+
+    local childXPadding = self.childXPadding
+    local childYPadding = self.childYPadding
+    local yMultiplier = layoutFramesGoingUp and 1 or -1;
+    local xMultiplier = layoutFramesGoingRight and 1 or -1;
+
+    -- print("Icon Padding", self.iconPadding, "Additional", self:GetAdditionalPaddingOffset())
+
+
+    -- So in Blizzard's Code it's like this, when vertical turn direction CCW 90deg and going RIGHT means going UP
+        -- itemContainerFrame.layoutFramesGoingRight = not self.isHorizontal or (self.isHorizontal and self.iconDirection == Enum.CooldownViewerIconDirection.Right);
+        -- itemContainerFrame.layoutFramesGoingUp = not self.isHorizontal and self.iconDirection == Enum.CooldownViewerIconDirection.Right;
+
+    -- And the iconPadding is what user sets in the Edit Mode, GetAdditionalPaddingOffset is always -4
+        -- local padding = self.iconPadding + self:GetAdditionalPaddingOffset();
+        -- itemContainerFrame.childXPadding = padding;
+        -- itemContainerFrame.childYPadding = padding;
 
     local anchorPoint;
-    if growthDirectionUp then
+    if layoutFramesGoingUp then
         anchorPoint = layoutFramesGoingRight and "BOTTOMLEFT" or "BOTTOMRIGHT";
     else
         anchorPoint = layoutFramesGoingRight and "TOPLEFT" or "TOPRIGHT";
     end
-    local h = 30
 
-    -- BuffBarCooldownViewer:GetLayoutChildren();
+    local prev
+    local lineCount = 1
+    local prevRowFirstFrame
     for i, frame in ipairs(layoutChildren) do
-        local pipTexture = frame:GetPipTexture()
-        local isActive = pipTexture:IsShown()
-        print(i, frame, frame.layoutIndex, frame.Bar.Name:GetText(), isActive)
+        local isActive = frame:IsShown()
+        -- if frame.Bar then
+        --     print(i, frame, frame.layoutIndex, frame.Bar.Name:GetText(), isActive, "isHorizontal", isHorizontal)
+        -- end
+        -- print("Doing", i, "LineCount", lineCount, "Stride", stride)
+        frame:ClearAllPoints()
+
+        if isActive then
+            if isHorizontal then
+                if not prev then
+                    frame:SetPoint(anchorPoint, self, anchorPoint, 0, 0)
+                    prevRowFirstFrame = frame
+                elseif lineCount == stride + 1 then
+                    frame:SetPoint(anchorPoint, prevRowFirstFrame, VERTICAL_MIRROR_POINTS[anchorPoint], 0, childYPadding*yMultiplier)
+                    prevRowFirstFrame = frame
+                    lineCount = 1
+                else
+                    frame:SetPoint(anchorPoint, prev, HORIZONTAL_MIRROR_POINTS[anchorPoint], childXPadding*xMultiplier, 0)
+                end
+            else
+                if not prev then
+                    frame:SetPoint(anchorPoint, self, anchorPoint, 0, 0)
+                    prevRowFirstFrame = frame
+                elseif lineCount == stride + 1 then
+                    frame:SetPoint(anchorPoint, prevRowFirstFrame, HORIZONTAL_MIRROR_POINTS[anchorPoint], childXPadding*xMultiplier, 0)
+                    prevRowFirstFrame = frame
+                    lineCount = 1
+                else
+                    frame:SetPoint(anchorPoint, prev, VERTICAL_MIRROR_POINTS[anchorPoint], 0, childYPadding*yMultiplier)
+                end
+            end
+            lineCount = lineCount + 1
+            prev = frame
+        end
     end
 end
 
+local DynamicViewers = {"BuffBarCooldownViewer", "BuffIconCooldownViewer"}
+local function ForceDynamicLayoutUpdateOnBuffs()
+    if not layoutUpdatePending then return end
+    -- SafeDynamicLayout(BuffIconCooldownViewer)
+    -- SafeDynamicLayout(BuffBarCooldownViewer)
+    for i, viewerName in ipairs(DynamicViewers) do
+        local enabledDynamicLayout = NRunDB.viewerSettings[viewerName].dynamicLayout
+        if enabledDynamicLayout then
+            SafeDynamicLayout(_G[viewerName])
+        end
+    end
+end
 
+local function ScheduleDynamicLayoutUpdate()
+    layoutUpdatePending = true
+    C_Timer.After(0, ForceDynamicLayoutUpdateOnBuffs)
+end
+
+-- Can't hook these event callbacks in a good way on viewers, so using next frame update
+function NugRunning:BAG_UPDATE_COOLDOWN(event)
+    ScheduleDynamicLayoutUpdate()
+end
+function NugRunning:PLAYER_TOTEM_UPDATE(event)
+    ScheduleDynamicLayoutUpdate()
+end
 
 local hookedViewers = {}
 function NugRunning:InstallBarHooks(viewer)
@@ -427,6 +541,18 @@ function NugRunning:InstallBarHooks(viewer)
         --     print(itemFrame, "SetupPandemicStateFrameForItem")
         -- end)
 
+        local viewerName = viewer:GetName()
+        local enabledDynamicLayout = NRunDB.viewerSettings[viewerName].dynamicLayout
+
+        if enabledDynamicLayout then
+            hooksecurefunc(viewer, "OnUnitAura", function(self, unit, unitAuraUpdateInfo)
+                SafeDynamicLayout(self)
+            end)
+
+            hooksecurefunc(viewer, "OnPlayerTargetChanged", function(self)
+                SafeDynamicLayout(self)
+            end)
+        end
 
         hooksecurefunc(viewer, "RefreshLayout", function(self, cooldownIDs)
             -- print(viewer:GetName(), "Icon Direction", self.iconDirection)
@@ -437,18 +563,14 @@ function NugRunning:InstallBarHooks(viewer)
             --     self:Layout()
             -- end
 
-            if InCombatLockdown() and self:IsProtected() then return end
-
-            local viewerName = self:GetName()
-
-            local growthDirectionUp = NRunDB.viewerSettings[viewerName].growthDirection == "UP"
-            if growthDirectionUp then
-                SafeLayout(self, growthDirectionUp, self.layoutFramesGoingRight)
+            if enabledDynamicLayout then
+                SafeDynamicLayout(self)
+            else
+                local growthDirectionUp = NRunDB.viewerSettings[viewerName].growthDirection == "UP"
+                if growthDirectionUp then
+                    SafeLayout(self, growthDirectionUp, self.layoutFramesGoingRight)
+                end
             end
-            -- local condensedLayout = true
-            -- if condensedLayout then
-            --     SafeCondensedLayout(self, NRunDB.viewerSettings[viewerName].growthDirection)
-            -- end
 
             -- local firstFrame = viewer.itemFramePool:EnumerateActive()()
             local staticViewerSize = NRunDB.viewerSettings[viewerName].staticSize
@@ -1259,15 +1381,30 @@ function NugRunning:InstallCooldownHooks(viewer)
             NugRunning:StyleCooldownItemFrame(itemFrame)
         end
 
+        local viewerName = viewer:GetName()
+        local enabledDynamicLayout = NRunDB.viewerSettings[viewerName].dynamicLayout
+
+        if enabledDynamicLayout then
+            hooksecurefunc(viewer, "OnUnitAura", function(self, unit, unitAuraUpdateInfo)
+                SafeDynamicLayout(self)
+            end)
+
+            hooksecurefunc(viewer, "OnPlayerTargetChanged", function(self)
+                SafeDynamicLayout(self)
+            end)
+        end
+
+
         hooksecurefunc(viewer, "RefreshLayout", function(self, cooldownIDs)
-            if InCombatLockdown() and self:IsProtected() then return end
+            -- if InCombatLockdown() and self:IsProtected() then return end
 
-            local viewerName = self:GetName()
-
-            local growthDirectionUp = NRunDB.viewerSettings[viewerName].growthDirection == "UP"
-            -- print(viewerName, NRunDB.viewerSettings[viewerName].growthDirection, growthDirectionUp)
-            if growthDirectionUp then
-                SafeLayout(self, growthDirectionUp, self.layoutFramesGoingRight)
+            if enabledDynamicLayout then
+                SafeDynamicLayout(self)
+            else
+                local growthDirectionUp = NRunDB.viewerSettings[viewerName].growthDirection == "UP"
+                if growthDirectionUp then
+                    SafeLayout(self, growthDirectionUp, self.layoutFramesGoingRight)
+                end
             end
 
 
@@ -1283,6 +1420,9 @@ function NugRunning:InstallCooldownHooks(viewer)
                 end
                 local scale = self.iconScale
                 local stride = self.stride
+                -- print(viewerName, stride)
+                stride = 3
+
                 local w,h
                 if self.isHorizontal then
                     w = ((ew*stride)+(self.childXPadding*(stride-1)))*scale
@@ -1641,6 +1781,7 @@ function NugRunning:PrintAllCooldownManagerSpells()
 
     local AllCDMSpellIDs = {}
     local AllCDMSpellNameToID = {}
+    local BuffCDMSpellIDs = {}
 
     for _, cat in ipairs(categories) do
         if cat.id then
@@ -1660,6 +1801,9 @@ function NugRunning:PrintAllCooldownManagerSpells()
 
                         if displaySpellID then
                             AllCDMSpellIDs[displaySpellID] = true
+                            if cat.id == 2 or cat.id == 3 then -- TrackedBuff and TrackedBars
+                                BuffCDMSpellIDs[displaySpellID] = true
+                            end
                         end
 
                         if spellName then
@@ -1699,6 +1843,13 @@ function NugRunning:PrintAllCooldownManagerSpells()
             else
                 print(id, oldIDSpellName, "|cffff8888Missing|r", "  was:", opts.name)
             end
+        end
+    end
+
+    print("=== Missing Buffs from CDM ===")
+    for id in pairs(BuffCDMSpellIDs) do
+        if not spells[id] then
+            print("|cffff8888NotFound|r", C_Spell.GetSpellName(id), id)
         end
     end
 end
