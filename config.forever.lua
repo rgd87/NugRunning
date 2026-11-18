@@ -363,7 +363,7 @@ Cooldown( 417157 ,{ name = "Starsurge", resetable = true, priority = 6, ghost = 
 
 Interrupt(16979, "Feral Charge", 4)
 
-Spell( 16864 ,{ name = "Omen of Clarity", glow = true, color = colors.CHIM })
+Spell( 16864 ,{ name = "Omen of Clarity", glowIcon = true, color = colors.CHIM })
 Spell( 408248 ,{ name = "Eclipse", color = colors.TEAL3 }) -- Wrath boost
 Spell( 16850 ,{ name = "Improved Starfire", color = colors.LBLUE }) -- Starfire boost
 
@@ -535,7 +535,7 @@ Cooldown( 402174 ,{ name = "Penance", tick = 1.5, overlay = {"tick", "tickend"},
 
 Spell( 15270 ,{ name = "Spirit Tap", color = colors.LDGREEN })
 
-Spell( 14531, { name = "Martyrdom", glow = true, color = colors.LBLUE })
+Spell( 14531, { name = "Martyrdom", glowIcon = true, color = colors.LBLUE })
 
 Spell( 401877 ,{ name = "Prayer of Mending", color = colors.PINKIERED })
 
@@ -584,7 +584,7 @@ Spell( 14751 ,{ name = "Inner Focus", shine = true, duration = 15, group = "buff
 Spell( 15257 ,{ name = "Shadow Weaving", color = colors.PURPLE3, scale = 0.75 })
 Spell( 1277324 ,{ name = "Dark Sacrifice", color = colors.DPURPLE })
 
-Spell( 1284536 ,{ name = "Holy Purpose", glow = true, color = colors.REJUV })
+Spell( 1284536 ,{ name = "Holy Purpose", glowIcon = true, color = colors.REJUV })
 
 Spell( 6788 ,{ name = "Weakened Soul", color = colors.DRED })
 
@@ -658,7 +658,7 @@ end
 
 if class == "WARRIOR" then
 
-Spell( 1289682 , { name = "Bloodthrill", glow = true, color = colors.REJUV })
+Spell( 1289682 , { name = "Bloodthrill", glowIcon = true, color = colors.REJUV })
 Spell( 1329555 , { name = "Reckless Swings", color = colors.PINKIERED })
 
 Interrupt({ 6552, 6554 }, "Pummel", 4)
