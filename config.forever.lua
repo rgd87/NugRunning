@@ -658,8 +658,8 @@ end
 
 if class == "WARRIOR" then
 
-Spell( 1289682 , { name = "Bloodthrill", color = colors.REJUV })
-Spell( 1329555 , { name = "Reckless Swings", color = colors.LRED })
+Spell( 1289682 , { name = "Bloodthrill", glow = true, color = colors.REJUV })
+Spell( 1329555 , { name = "Reckless Swings", color = colors.PINKIERED })
 
 Interrupt({ 6552, 6554 }, "Pummel", 4)
 Interrupt({ 72, 1671, 1672 }, "Shield Bash", 6)

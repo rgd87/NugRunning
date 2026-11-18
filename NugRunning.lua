@@ -256,6 +256,7 @@ function NugRunning.ADDON_LOADED(self,event, loadedAddon)
 
     NugRunning:ReInitSpells()
 
+    NugRunning:StartGhostManager()
 
     if NRunDB.nameplates then
         --[[
@@ -298,6 +299,9 @@ function NugRunning.PLAYER_LOGOUT(self, event)
     RemoveDefaults(NRunDB, defaults)
 end
 
+
+
+-- MARK: CDM INIT
 function NugRunning:COOLDOWN_VIEWER_DATA_LOADED(event)
     self:Init()
 end
@@ -461,7 +465,6 @@ end
 
 local DynamicViewers = {"BuffBarCooldownViewer", "BuffIconCooldownViewer"}
 local function ForceDynamicLayoutUpdateOnBuffs()
-    if not layoutUpdatePending then return end
     -- SafeDynamicLayout(BuffIconCooldownViewer)
     -- SafeDynamicLayout(BuffBarCooldownViewer)
     for i, viewerName in ipairs(DynamicViewers) do
@@ -472,9 +475,14 @@ local function ForceDynamicLayoutUpdateOnBuffs()
     end
 end
 
+local function DynamicLayoutUpdateOnBuffs()
+    if not layoutUpdatePending then return end
+    ForceDynamicLayoutUpdateOnBuffs()
+end
+
 local function ScheduleDynamicLayoutUpdate()
     layoutUpdatePending = true
-    C_Timer.After(0, ForceDynamicLayoutUpdateOnBuffs)
+    C_Timer.After(0, DynamicLayoutUpdateOnBuffs)
 end
 
 -- Can't hook these event callbacks in a good way on viewers, so using next frame update
@@ -485,6 +493,8 @@ function NugRunning:PLAYER_TOTEM_UPDATE(event)
     ScheduleDynamicLayoutUpdate()
 end
 
+
+-- MARK: BUFFBAR Viewer Hooks
 local hookedViewers = {}
 function NugRunning:InstallBarHooks(viewer)
     -- Viewer becomes visible/hidden when CDM gets turned on in the blizz settings or during fresh login cold start
@@ -532,9 +542,9 @@ function NugRunning:InstallBarHooks(viewer)
 
         -- Reanchor Vanilla Pandemic Frame (they come from a separate frame pool)
         -- https://github.com/Gethe/wow-ui-source/blob/live/Interface/AddOns/Blizzard_CooldownViewer/CooldownViewer.lua#L2130
-        hooksecurefunc(BuffBarCooldownViewer, "AnchorPandemicStateFrame", function(self, pandemicFrame, itemFrame)
+        -- hooksecurefunc(BuffBarCooldownViewer, "AnchorPandemicStateFrame", function(self, pandemicFrame, itemFrame)
 
-        end)
+        -- end)
         -- hooksecurefunc(BuffBarCooldownViewer, "HidePandemicStateFrame", function(self, itemFrame)
         --     print(itemFrame, "HidePandemicStateFrame")
         -- end)
@@ -556,6 +566,7 @@ function NugRunning:InstallBarHooks(viewer)
         end
 
         hooksecurefunc(viewer, "RefreshLayout", function(self, cooldownIDs)
+            -- print(self:GetName(), "RefreshLayout")
             -- print(viewer:GetName(), "Icon Direction", self.iconDirection)
             -- print(viewer:GetName(), "Icon Going up", self.layoutFramesGoingUp )
 
@@ -589,7 +600,7 @@ function NugRunning:InstallBarHooks(viewer)
     end
 end
 
-
+-- MARK: UTIL functions
 local function GetRectTexCoords(rectX, rectY, rectWidth, rectHeight)
     local left   = rectX / 1
     local right  = (rectX + rectWidth) / 1
@@ -599,7 +610,7 @@ local function GetRectTexCoords(rectX, rectY, rectWidth, rectHeight)
     return left, right, top, bottom
 end
 
-
+-- MARK: BORDER SWAP
 local function UpdateFrameBorder(self, borderType)
     local border = self.Border or self:CreateTexture(nil, "BACKGROUND")
     self.Border = border
@@ -703,6 +714,7 @@ local function ChangeToCustomBarColor(frame)
     end
 end
 
+-- MARK: BUFFBAR Hooks
 function NugRunning:StyleBarItemFrame(frame, force)
     if CVBuffBars[frame] and not force then return end
     -- if frame.isNugRunningStyled and not force then return end
@@ -792,7 +804,6 @@ function NugRunning:StyleBarItemFrame(frame, force)
     shaded:SetPoint("TOPRIGHT", bar, "TOPRIGHT", 0, 0)
     bar._NRShaded = shaded
 
-    if simplePandemic then
         local pandemicOverlay = bar.NRPandemic or bar:CreateTexture(nil, "ARTWORK")
         -- pandemicOverlay:SetTexture(white)
         -- pandemicOverlay:SetBlendMode("ADD")
@@ -805,13 +816,13 @@ function NugRunning:StyleBarItemFrame(frame, force)
 
         pandemicOverlay:SetTexture("Interface\\AddOns\\NugRunning\\border_rounded")
         pandemicOverlay:SetTexCoord(0, 0.08, 0, 1)
-        pandemicOverlay:Show()
+        pandemicOverlay:Hide()
         bar.NRPandemic = pandemicOverlay
         -- pandemicOverlay:SetPoint("BOTTOMLEFT", bar, "BOTTOMLEFT", 0, 0)
         -- pandemicOverlay:SetPoint("BOTTOMRIGHT", barTex, "BOTTOMRIGHT", 0, 0)
-    else
-        if bar.NRPandemic then bar.NRPandemic:Hide() end
-    end
+    -- if not simplePandemic then
+    --     if bar.NRPandemic then bar.NRPandemic:Hide() end
+    -- end
 
 
 
@@ -872,6 +883,21 @@ function NugRunning:StyleBarItemFrame(frame, force)
         self.DebuffBorder:Show()
     end)
 
+    hooksecurefunc(frame, "OnActiveStateChanged", function(self)
+        if self.isActive then
+            NugRunning:ClearGhost(self)
+        else
+            local spellID = self:GetBaseSpellID()
+            if not spellID then return end
+            local opts = spells[spellID]
+            if opts then
+                if opts.ghost then
+                    NugRunning:Ghost(self, opts.ghost)
+                end
+            end
+        end
+    end)
+
 
     if NRunDB.enableFixedDurations then
         hooksecurefunc(frame, "RefreshCooldownInfo", function(self)
@@ -892,7 +918,7 @@ function NugRunning:StyleBarItemFrame(frame, force)
     hooksecurefunc(frame, "ShowPandemicStateFrame", function(self)
         local pandemicFrame = self.PandemicIcon
         if not pandemicFrame then return end
-        -- print(itemFrame, "AnchorPandemicStateFrame")
+
         if simplePandemic then
             pandemicFrame.Texture:Hide()
             pandemicFrame.Border:Hide()
@@ -919,10 +945,12 @@ function NugRunning:StyleBarItemFrame(frame, force)
         -- self.DebuffBorder.Texture:SetVertexColor(0.5, 0.5, 0.5)
         -- self.DebuffBorder.Texture:SetDesaturated(true)
 
-        if simplePandemic and self.Bar.NRPandemic then
+        -- print("HidePandemicStateFrame", self.Bar.Name:GetText())
+
+        -- if self.Bar.NRPandemic then
             self.Bar.NRPandemic:Hide()
             -- self.Bar.Pip:SetVertexColor(1,0.8,0.5)
-        end
+        -- end
     end)
 
     --[[
@@ -997,7 +1025,7 @@ end
 
 
 
-
+-- MARK: Formatters
 
 local cooldownFormatter = C_StringUtil.CreateNumericRuleFormatter()
 function NugRunning:InitializeFormatters()
@@ -1083,6 +1111,7 @@ function NugRunning:UpdateCooldownFontObjects()
 end
 
 
+-- MARK: ProcGlow
 local LibCustomGlow = LibStub("LibCustomGlow-1.0")
 local glowOptions = {
     key = "NugRunning",
@@ -1091,16 +1120,20 @@ local glowOptions = {
 local glowFrames = {}
 -- Looks like LCG is buggy and on repeated Starts it overlaps effects,
 -- so i'm making sure myself every frame only glows once
-local function LCG_ProcGlow_Start(self, skipBirth)
+local function LCG_ProcGlow_Start(self, skipBirth, prio)
+    prio = prio or 10
     glowOptions.startAnim = not skipBirth
     if not glowFrames[self] then
         LibCustomGlow.ProcGlow_Start(self, glowOptions)
         -- LibCustomGlow.ProcGlow_Start(self)
-        glowFrames[self] = true
+        glowFrames[self] = prio
     end
 end
-local function LCG_ProcGlow_Hide(self)
+local function LCG_ProcGlow_Hide(self, prio)
+    prio = prio or 10
     if glowFrames[self] then
+        local existingPrio = glowFrames[self]
+        if prio < existingPrio then return end
         LibCustomGlow.ProcGlow_Stop(self, glowOptions.key)
         -- LibCustomGlow.ProcGlow_Stop(self)
         glowFrames[self] = nil
@@ -1108,6 +1141,8 @@ local function LCG_ProcGlow_Hide(self)
 end
 
 
+
+-- MARK: COOLDOWN Hooks
 function NugRunning:StyleCooldownItemFrame(frame, force)
     if CVCooldownFrames[frame] and not force then return end
     -- if frame.isNugRunningStyled and not force then return end
@@ -1215,12 +1250,12 @@ function NugRunning:StyleCooldownItemFrame(frame, force)
 
 
 
-    hooksecurefunc(frame.Cooldown, "SetCooldown", function(self)
-        self.isActive = true
-    end)
-    hooksecurefunc(frame.Cooldown, "Clear", function(self)
-        self.isActive = false
-    end)
+    -- hooksecurefunc(frame.Cooldown, "SetCooldown", function(self)
+    --     self.isActive = true
+    -- end)
+    -- hooksecurefunc(frame.Cooldown, "Clear", function(self)
+    --     self.isActive = false
+    -- end)
 
     local viewer = frame:GetParent()
     if viewer == BuffIconCooldownViewer then
@@ -1242,6 +1277,35 @@ function NugRunning:StyleCooldownItemFrame(frame, force)
 
         -- https://github.com/Gethe/wow-ui-source/blob/live/Interface/AddOns/Blizzard_CooldownViewer/CooldownViewer.lua#L1412
 
+        hooksecurefunc(frame, "OnActiveStateChanged", function(self)
+            -- This is a post hook so at this point frame is already hidden
+            -- print(self:GetName(), "OnActiveStateChanged", spellID, self.isActive)
+            if self.isActive then
+                -- NugRunning:OnCooldownActivated(frame)
+                NugRunning:ClearGhost(self)
+                LCG_ProcGlow_Hide(self, 1)
+            else
+                -- NugRunning:OnCooldownDeactivated(frame)
+                local spellID = self:GetBaseSpellID()
+                if not spellID then return end
+                local opts = spells[spellID]
+                if opts then
+                    if opts.ghost then
+                        NugRunning:Ghost(self, opts.ghost)
+                    end
+
+                    if opts.glowInactive then
+                        if self:IsShown() then
+                            LCG_ProcGlow_Start(self, true, 1)
+                        -- else
+                            -- LCG_ProcGlow_Hide(self)
+                        end
+                    end
+                end
+            end
+        end)
+
+
         hooksecurefunc(frame, "RefreshCooldownInfo", function(self)
             local cooldownFrame = self:GetCooldownFrame();
 
@@ -1249,7 +1313,7 @@ function NugRunning:StyleCooldownItemFrame(frame, force)
             if not spellID then return end
             local opts = spells[spellID]
             if opts then
-                if opts.glow and self.Cooldown.isActive then
+                if opts.glow and self.isActive then
                     LCG_ProcGlow_Start(self, true)
                 else
                     LCG_ProcGlow_Hide(self)
@@ -1289,7 +1353,7 @@ function NugRunning:StyleCooldownItemFrame(frame, force)
 
             -- cooldownFrame:Hide()
 
-            local isActive = cooldownFrame.isActive -- Which we get from cooldown frame hooks
+            local isActive = self.isActive -- Which we get from cooldown frame hooks
 
             self.activeAuraOverlay:Hide()
             self.activeAuraOverlayBorder:Hide()
@@ -1399,7 +1463,7 @@ end
 
 
 
-
+-- MARK: COOLDOWN Viewer Hooks
 function NugRunning:InstallCooldownHooks(viewer)
     if viewer then
         -- print("Installing hooks on", viewer:GetName())
@@ -1418,6 +1482,7 @@ function NugRunning:InstallCooldownHooks(viewer)
 
         if enabledDynamicLayout then
             hooksecurefunc(viewer, "OnUnitAura", function(self, unit, unitAuraUpdateInfo)
+                -- print(self:GetName(), "OnUnitAura")
                 SafeDynamicLayout(self)
             end)
 
@@ -1488,9 +1553,63 @@ function NugRunning:InstallCooldownHooks(viewer)
 end
 
 
+-- MARK: GHOST Manager
+local ghosts = {}
+
+function NugRunning:Ghost(frame, ghostTime)
+    local now = GetTime()
+    if type(ghostTime) == "boolean" and ghostTime == true then ghostTime = 3 end
+    ghosts[frame] = now + ghostTime
+
+    frame:Show()
+    if frame:GetParent() == BuffIconCooldownViewer then
+        frame.Icon:SetDesaturated(true)
+    else
+        -- frame.Icon.Icon:SetDesaturated(true)
+        -- After frame gets deactivated, it's kind of random whethere pandemic frame gets hidden or not
+        -- This is a blizzard's bug that's present without NugRunning at all
+        -- And not to mess with the pandemic frame pool and OnUpdate crap, i just show simple pandemic texture
+        frame.Bar.NRPandemic:Show()
+    end
+end
+
+function NugRunning:ClearGhost(frame)
+    ghosts[frame] = nil
+
+    if frame:GetParent() == BuffIconCooldownViewer then
+        frame.Icon:SetDesaturated(false)
+    else
+        -- frame.Icon.Icon:SetDesaturated(false)
+        frame.Bar.NRPandemic:Show()
+    end
+end
 
 
+function NugRunning:StartGhostManager()
+    -- self:SetScript("OnUpdate", function(self, elapsed)
 
+    -- local viewersNeedUpdating = {
+    --     [BuffBarCooldownViewer] = false,
+    --     [BuffIconCooldownViewer] = false,
+    -- }
+    C_Timer.NewTicker(0.25, function()
+        local now = GetTime()
+        local foundExpired = false
+        for frame, expirationTime in pairs(ghosts) do
+            if now > expirationTime then
+                -- local frameViewer = frame:GetParent()
+                -- viewersNeedUpdating[frameViewer] = true
+                foundExpired = true
+                NugRunning:ClearGhost(frame)
+                frame:UpdateShownState()
+            end
+        end
+
+        if foundExpired then
+            ForceDynamicLayoutUpdateOnBuffs()
+        end
+    end)
+end
 
 
 
@@ -1544,6 +1663,8 @@ function NugRunning.ReInitSpells(self,event,arg1)
 end
 
 
+-- MARK: Console Commands
+
 local function Colorize(hexColor, text)
     return "|cff" .. tostring(hexColor or 'ffffff') .. tostring(text) .. "|r"
 end
@@ -1591,113 +1712,6 @@ NugRunning.Commands = {
             print(string.format("    %s (id: %d) Duration: %s", aura.name, aura.spellId, aura.duration or "none" ))
         end
     end,
-    --[[
-    ["reset"] = function()
-        for name, anchor in pairs(NRunDB.anchors) do
-            anchor.point = "CENTER"
-            anchor.parent = "UIParent"
-            anchor.to = "CENTER"
-            anchor.x = 0
-            anchor.y = 0
-            local pos = anchor
-            if NugRunning.anchors[name] then
-                NugRunning.anchors[name]:SetPoint(pos.point, pos.parent, pos.to, pos.x, pos.y)
-            end
-        end
-    end,
-    ["clear"] = function()
-        NugRunning:ClearTimers(true)
-    end,
-    ["charspec"] = function()
-        local user = UnitName("player").."@"..GetRealmName()
-        if NRunDB_Global.charspec[user] then NRunDB_Global.charspec[user] = nil
-        else NRunDB_Global.charspec[user] = true
-        end
-        print ("NRun: "..(NRunDB_Global.charspec[user] and "Enabled" or "Disabled").." character specific options. Will take effect after /reload")
-    end,
-    ["cooldowns"] = function()
-        if NRunDB.cooldownsEnabled then
-            NugRunning:UnregisterEvent("SPELL_UPDATE_COOLDOWN")
-            if NugRunning.cooldownTicker then NugRunning.cooldownTicker:Cancel() end
-        else
-            NugRunning:RegisterEvent("SPELL_UPDATE_COOLDOWN")
-            NugRunning.cooldownTicker = C_Timer.NewTicker(1, function()
-                NugRunning:SPELL_UPDATE_COOLDOWN("PERIODIC_COOLDOWN_UPDATE", true)
-            end)
-        end
-        NRunDB.cooldownsEnabled = not NRunDB.cooldownsEnabled
-        print("NRun cooldowns "..(NRunDB.cooldownsEnabled and "enabled" or "disabled"))
-    end,
-    ["targettext"] = function()
-        NRunDB.targetTextEnabled = not NRunDB.targetTextEnabled
-        print("NRun target name text "..(NRunDB.targetTextEnabled and "enabled" or "disabled"))
-    end,
-    ["spelltext"] = function()
-        NRunDB.spellTextEnabled = not NRunDB.spellTextEnabled
-        print("NRun spell text "..(NRunDB.spellTextEnabled and "enabled" or "disabled"))
-    end,
-    ["leaveghost"] = function()
-        NRunDB.leaveGhost = not NRunDB.leaveGhost
-        print("NRun leaveghost "..(NRunDB.leaveGhost and "enabled" or "disabled"))
-    end,
-    ["shorttext"] = function()
-        NRunDB.shortTextEnabled = not NRunDB.shortTextEnabled
-        print("NRun short spell text "..(NRunDB.shortTextEnabled and "enabled" or "disabled"))
-    end,
-    ["localnames"] = function()
-        NRunDB.localNames = not NRunDB.localNames
-        print("NRun localized spell names "..(NRunDB.localNames and "enabled" or "disabled"))
-    end,
-    ["misses"] = function()
-        NRunDB.missesEnabled = not NRunDB.missesEnabled
-        print("NRun miss timers "..(NRunDB.missesEnabled and "enabled" or "disabled"))
-    end,
-    ["swaptarget"] = function()
-        NRunDB.swapTarget = not NRunDB.swapTarget
-        NugRunning:SetupArrange()
-        NugRunning:ArrangeTimers()
-        print("Target swapping turned "..(NRunDB.swapTarget and "on" or "off"))
-    end,
-    ["totems"] = function()
-        NRunDB.totems = not NRunDB.totems
-        print("Totems turned "..(NRunDB.swapTarget and "on" or "off")..". Will take effect after /reload")
-    end,
-    ["nameplates"] = function()
-        NRunDB.nameplates = not NRunDB.nameplates
-        print("Nameplates turned "..(NRunDB.nameplates and "on" or "off")..". Will take effect after /reload")
-    end,
-    ["dotticks"] = function()
-        NRunDB.dotticks = not NRunDB.dotticks
-        print("Dot ticks turned "..(NRunDB.dotticks and "on" or "off")..". Will take effect after /reload")
-    end,
-    ["dotpower"] = function()
-        NRunDB.dotpower = not NRunDB.dotpower
-        print("Dotpower turned "..(NRunDB.dotpower and "on" or "off")..". Will take effect after /reload")
-    end,
-
-    ["listgroups"] = function(v)
-        print("|cffffaaaaNugRunning Groups:|r")
-        local sortedGroups = NugRunning:MakeSortedGroupsTable()
-        for anchorName, opts in pairs(NRunDB.anchors) do
-            local hdr = string.format("Anchor: |cff33ff33%s|r", anchorName)
-            if opts.growth then
-                hdr = hdr .. string.format(" : growth=%s", opts.growth)
-            end
-            print(hdr)
-
-            local groups = sortedGroups[anchorName]
-            if groups then
-                for i, g in ipairs(groups) do
-                    local color = "ffffff"
-                    if protectedGroups[g.name] then color = "888888" end
-
-                    print(string.format("    <%d> %s : gap=%d alpha=%.2f order=%d",i, Colorize(color,g.name), g.gap, g.alpha, g.order))
-                end
-            end
-        end
-    end,
-        ]]
-
     ["set"] = function(v)
         local p = ParseOpts(v)
         NRunDB.width = p["width"] or NRunDB.width
@@ -1782,7 +1796,7 @@ end
 
 
 
-
+-- MARK: /nrun check
 function NugRunning:PrintAllCooldownManagerSpells()
     -- Ensure the Cooldown Viewer system is available
     if not C_CooldownViewer or not C_CooldownViewer.IsCooldownViewerAvailable() then

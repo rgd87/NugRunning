@@ -188,8 +188,8 @@ function NugRunningGUI.CreateCommonForm(self)
         local default_opts = NugRunningConfig[category][spellID]
         if default_opts then
             clean(opts, default_opts, "short", false)
-            -- clean(opts, default_opts, "ghost", false)
-            -- clean(opts, default_opts, "preghost", false)
+            clean(opts, default_opts, "ghost", false)
+            clean(opts, default_opts, "preghost", false)
             clean(opts, default_opts, "glow", false)
             -- clean(opts, default_opts, "scale", 1)
             clean(opts, default_opts, "nameplates", false)
@@ -392,10 +392,8 @@ function NugRunningGUI.CreateCommonForm(self)
     AddTooltip(glow, L"Glow the Icon on Buff Icon when it is active.")
 
 
-    --[[
     local ghost = AceGUI:Create("EditBox")
     ghost:SetLabel(L"Ghost")
-    ghost:SetDisabled(true)
     ghost:SetRelativeWidth(0.17)
     ghost:DisableButton(true)
     ghost:SetCallback("OnTextChanged", function(self, event, value)
@@ -422,7 +420,6 @@ function NugRunningGUI.CreateCommonForm(self)
     Form.controls.preghost = preghost
     Form:AddChild(preghost)
     AddTooltip(preghost, L"Create empty bar when switching to target without existing timer")
-    ]]
 
     local nameplates = AceGUI:Create("CheckBox")
     nameplates:SetLabel(L"Show on Nameplates".."   (NYI)")
@@ -537,7 +534,6 @@ function NugRunningGUI.FillForm(self, Form, class, category, id, opts, isEmptyFo
     -- controls.scale:SetValue(opts.scale or 1)
     controls.glow:SetValue(opts.glow)
 
-    --[[
     if opts.ghost then
         local numeric = opts.ghost == true and 3 or opts.ghost
         controls.ghost:SetText(numeric)
@@ -545,7 +541,6 @@ function NugRunningGUI.FillForm(self, Form, class, category, id, opts, isEmptyFo
         controls.ghost:SetText()
     end
     controls.preghost:SetValue(opts.preghost)
-    ]]
 
     controls.color:SetColor(fillAlpha(opts.color or {0.8, 0.1, 0.7} ))
 
