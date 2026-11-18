@@ -1618,6 +1618,20 @@ local function MakeGeneralOptions()
                 end,
                 order = 3.1,
             },
+            leaveGhost = {
+                name = L"Ghost Timers"..newFeatureIcon,
+                desc = L"Expired buff bars and Icons stay for a few seconds before hiding",
+                width = "full",
+                confirm = true,
+                confirmText = "Changing this setting requires a UI reload to take effect. Do you want to continue?",
+                type = "toggle",
+                get = function(info) return NugRunning.db.leaveGhost end,
+                set = function(info, v)
+                    NugRunning.db.leaveGhost = v
+                    ReloadUI()
+                end,
+                order = 5.1,
+            },
         },
     }
 

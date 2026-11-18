@@ -138,6 +138,7 @@ local defaults = {
     np_xoffset = 0,
     np_yoffset = 0,
     -- localNames = defaultShowLocalNames,
+    leaveGhost = true,
     nameplates = true,
     textureName = "Aluminium",
     nptextureName = "Aluminium",
@@ -885,6 +886,7 @@ function NugRunning:StyleBarItemFrame(frame, force)
         self.DebuffBorder:Show()
     end)
 
+    if NRunDB.leaveGhost then
     hooksecurefunc(frame, "OnActiveStateChanged", function(self)
         if self.isActive then
             NugRunning:ClearGhost(self)
@@ -899,7 +901,7 @@ function NugRunning:StyleBarItemFrame(frame, force)
             end
         end
     end)
-
+    end
 
     if NRunDB.enableFixedDurations then
         hooksecurefunc(frame, "RefreshCooldownInfo", function(self)
@@ -1279,6 +1281,7 @@ function NugRunning:StyleCooldownItemFrame(frame, force)
 
         -- https://github.com/Gethe/wow-ui-source/blob/live/Interface/AddOns/Blizzard_CooldownViewer/CooldownViewer.lua#L1412
 
+        if NRunDB.leaveGhost then
         hooksecurefunc(frame, "OnActiveStateChanged", function(self)
             -- This is a post hook so at this point frame is already hidden
             -- print(self:GetName(), "OnActiveStateChanged", spellID, self.isActive)
@@ -1318,6 +1321,7 @@ function NugRunning:StyleCooldownItemFrame(frame, force)
                 end
             end
         end)
+        end
 
 
         hooksecurefunc(frame, "RefreshCooldownInfo", function(self)
@@ -1600,6 +1604,7 @@ end
 
 
 function NugRunning:StartGhostManager()
+    if not NRunDB.leaveGhost then return end
     -- self:SetScript("OnUpdate", function(self, elapsed)
 
     -- local viewersNeedUpdating = {

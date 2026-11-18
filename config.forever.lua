@@ -153,7 +153,7 @@ Cooldown( 425339 ,{ name = "Molten Blast", color = colors.BROWN, priority = 9, g
 Spell( 425336 ,{ name = "Shamanistic Rage", group = "buffs", duration = 15, shine = true, color = colors.PURPLE3 })
 
 Spell( 16164 ,{ name = "Elemental Focus", shine = true, duration = 15, color = colors.CHIM, group = "buffs" })
-Spell( 408510 ,{ name = "Water Shield", color = colors.TEAL })
+Spell( 408510 ,{ name = "Water Shield", ghost = 2, glowIconInactive = true, color = colors.TEAL })
 Spell( 1223031, { name = "Improved Stormstrike", color = colors.LDGREEN })
 
 Spell( 408521 ,{ name = "Riptide", duration = 15, color = colors.FROZEN })
@@ -186,10 +186,10 @@ Spell({ 8230, 8250, 10521, 15036 }, { name = "Flametongue Totem", spellID = 8227
 
 Spell({ 8184, 10537, 10538}, { name = "Fire Resistance Totem", short = "Fire Res", group = "buffs", color = colors.FROZEN, ghost = 1, scale_until = 15, priority = PRIO_WATER })
 Spell({ 5675, 10495, 10496, 10497 }, { name = "Mana Spring Totem", short = "Mana Spring", group = "buffs", color = colors.PURPLE })
-Spell(16191, { name = "Mana Tide Totem", short = "Mana Tide", effect = "UNHOLY", color = colors.TEAL2 })
-Spell(8177, { name = "Grounding Totem", group = "buffs", color = colors.CURSE })
+Spell(16191, { name = "Mana Tide Totem", ghost = 2, short = "Mana Tide", effect = "UNHOLY", color = colors.TEAL2 })
+Spell(8177, { name = "Grounding Totem", ghost = 1, group = "buffs", color = colors.CURSE })
 
-Spell({ 8512, 10613, 10614},  { name = "Windfury Totem", color = colors.PINK3 })
+Spell({ 8512, 10613, 10614},  { name = "Windfury Totem", ghost = 1, color = colors.PINK3 })
 Spell({ 15108, 15109, 15110 }, { name = "Windwall Totem", group = "buffs", color = colors.BLACK, ghost = 1, scale = 0.7, priority = PRIO_AIR })
 Spell({ 8836, 10626, 25360 }, { name = "Grace of Air", group = "buffs", color = colors.PURPLE5, scale = 0.7, priority = PRIO_AIR, ghost = 1 })
 
@@ -364,7 +364,7 @@ Cooldown( 417157 ,{ name = "Starsurge", resetable = true, priority = 6, ghost = 
 Interrupt(16979, "Feral Charge", 4)
 
 Spell( 16864 ,{ name = "Omen of Clarity", glowIcon = true, color = colors.CHIM })
-Spell( 408248 ,{ name = "Eclipse", color = colors.TEAL3 }) -- Wrath boost
+Spell( 408248 ,{ name = "Eclipse", ghost = 1, color = colors.TEAL3 }) -- Wrath boost
 Spell( 16850 ,{ name = "Improved Starfire", color = colors.LBLUE }) -- Starfire boost
 
 Spell( 22812 ,{ name = "Barkskin", duration = 15, color = colors.WOO2, group = "buffs" })
