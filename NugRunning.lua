@@ -103,6 +103,7 @@ local defaults = {
     borderTypeIcon = "STATUSBAR",
     disableIconDebuffBorder = true,
     activeAuraColor = { 1, 0.8, 0.5, 1 },
+    barBackgroundMultiplier = 0.3,
     hideCooldownAbove = "FULL",
     cooldownFont = { font = "Friz Quadrata TT", size = 22, outline = true, alpha = 1 },
     defaultBarColor = {234/255, 117/255, 59/255},
@@ -799,7 +800,8 @@ function NugRunning:StyleBarItemFrame(frame, force)
 
     local shaded = bar._NRShaded or bar:CreateTexture(nil, "ARTWORK")
     shaded:SetTexture(white)
-    shaded:SetVertexColor(0,0,0, 0.6)
+    local mul = math.max(1-NRunDB.barBackgroundMultiplier, 0.4)
+    shaded:SetVertexColor(0,0,0, mul)
     shaded:SetPoint("BOTTOMLEFT", barTex, "BOTTOMRIGHT", 0, 0)
     shaded:SetPoint("TOPRIGHT", bar, "TOPRIGHT", 0, 0)
     bar._NRShaded = shaded

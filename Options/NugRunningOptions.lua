@@ -1175,6 +1175,19 @@ local function MakeGeneralOptions()
                         step = 1,
                         order = 2,
                     },
+                    bgMul = {
+                        name = L"BG Color Multiplier",
+                        type = "range",
+                        get = function(info) return NugRunning.db.barBackgroundMultiplier end,
+                        set = function(info, v)
+                            NugRunning.db.barBackgroundMultiplier = v
+                            NugRunning:UpdateAllCVBuffBars()
+                        end,
+                        min = 0,
+                        max = 0.75,
+                        step = 0.01,
+                        order = 2.1,
+                    },
                     --[[
                     growth = {
                         name = L"Growth Direction",
@@ -1215,7 +1228,7 @@ local function MakeGeneralOptions()
                     simplePandemic = {
                         name = L"Simple Pandemic Display",
                         type = "toggle",
-                        width = 2.5,
+                        width = 1.5,
                         desc = L"Shows an indicator on the side instead of glowing the whole bar",
                         get = function(info) return NugRunning.db.simplePandemic end,
                         set = function(info, v)
