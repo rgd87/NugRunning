@@ -686,7 +686,7 @@ Activation( 7384, { for_cd = true, effect = "FIRESHOT", ghost = 5 })
 Cooldown( 1680, { name = "Whirlwind", ghost = true, color = colors.PINKIERED, priority = 9.5 })
 Spell({ 6343, 8198, 8204, 8205, 11580, 11581 }, { name = "Thunder Clap", color = colors.DBLUE, scale = 0.6 }) -- Thunder Clap
 -- Cooldown( 6343, { name = "Thunder Clap", ghost = 1, scale = 0.8, color = colors.PINKIERED, priority = 9.5 })
-Spell({ 5242, 6192, 6673, 11549, 11550, 11551, 25289 }, { name = "Battle Shout", ghost = 7, target = "player", scale_until = 20, priority = -300, effect = "BLOODBOIL", effecttime = 10, glowtime = 10, affiliation = "raid", color = colors.DPURPLE, duration = 120 })
+Spell({ 5242, 6192, 6673, 11549, 11550, 11551, 25289 }, { name = "Battle Shout", ghost = 7, glowIconInactive = true, target = "player", scale_until = 20, priority = -300, effect = "BLOODBOIL", effecttime = 10, glowtime = 10, affiliation = "raid", color = colors.DPURPLE, duration = 120 })
 Spell({ 1160, 6190, 11554, 11555, 11556 }, { name = "Demoralizing Shout", duration = 30, scale = 0.85, color = colors.LDGREEN, affiliation = "raid", multiTarget = true, shinerefresh = true })
 Spell( 18499, { name = "Berserker Rage", color = colors.REJUV, shine = true, scale = 0.6, group = "buffs", duration = 10 })
 Spell({ 20252, 20616, 20617 }, { name = "Intercept", duration = 3, shine = true, color = colors.DRED })

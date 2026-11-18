@@ -191,6 +191,7 @@ function NugRunningGUI.CreateCommonForm(self)
             clean(opts, default_opts, "ghost", false)
             clean(opts, default_opts, "preghost", false)
             clean(opts, default_opts, "glowIcon", false)
+            clean(opts, default_opts, "glowIconInactive", false)
             -- clean(opts, default_opts, "scale", 1)
             clean(opts, default_opts, "nameplates", false)
             clean(opts, default_opts, "group", "default")
@@ -387,9 +388,19 @@ function NugRunningGUI.CreateCommonForm(self)
     glowIcon:SetCallback("OnValueChanged", function(self, event, value)
         self.parent.opts["glowIcon"] = value
     end)
-    Form.controls.glowIcon = glow
+    Form.controls.glowIcon = glowIcon
     Form:AddChild(glowIcon)
     AddTooltip(glowIcon, L"Glow the Icon on Buff Icon when it is active.")
+
+    local glowIconInactive = AceGUI:Create("CheckBox")
+    glowIconInactive:SetLabel(L"Glow as BuffIcon when Inactive")
+    glowIconInactive:SetRelativeWidth(1)
+    glowIconInactive:SetCallback("OnValueChanged", function(self, event, value)
+        self.parent.opts["glowIconInactive"] = value
+    end)
+    Form.controls.glowIconInactive = glowIconInactive
+    Form:AddChild(glowIconInactive)
+    AddTooltip(glowIconInactive, L"Glow the Icon on Buff Icon when it is active.")
 
 
     local ghost = AceGUI:Create("EditBox")
@@ -533,6 +544,7 @@ function NugRunningGUI.FillForm(self, Form, class, category, id, opts, isEmptyFo
     controls.short:SetText(opts.short)
     -- controls.scale:SetValue(opts.scale or 1)
     controls.glowIcon:SetValue(opts.glowIcon)
+    controls.glowIconInactive:SetValue(opts.glowIconInactive)
 
     if opts.ghost then
         local numeric = opts.ghost == true and 3 or opts.ghost

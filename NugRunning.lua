@@ -1252,12 +1252,12 @@ function NugRunning:StyleCooldownItemFrame(frame, force)
 
 
 
-    -- hooksecurefunc(frame.Cooldown, "SetCooldown", function(self)
-    --     self.isActive = true
-    -- end)
-    -- hooksecurefunc(frame.Cooldown, "Clear", function(self)
-    --     self.isActive = false
-    -- end)
+    hooksecurefunc(frame.Cooldown, "SetCooldown", function(self)
+        self.isActive = true
+    end)
+    hooksecurefunc(frame.Cooldown, "Clear", function(self)
+        self.isActive = false
+    end)
 
     local viewer = frame:GetParent()
     if viewer == BuffIconCooldownViewer then
@@ -1286,6 +1286,18 @@ function NugRunning:StyleCooldownItemFrame(frame, force)
                 -- NugRunning:OnCooldownActivated(frame)
                 NugRunning:ClearGhost(self)
                 LCG_ProcGlow_Hide(self, 1)
+
+                --[[
+                local spellID = self:GetBaseSpellID()
+                if not spellID then return end
+                local opts = spells[spellID]
+                if opts then
+                    if opts.hideIconActive then
+                        self:Hide()
+                        ScheduleDynamicLayoutUpdate()
+                    end
+                end
+                ]]
             else
                 -- NugRunning:OnCooldownDeactivated(frame)
                 local spellID = self:GetBaseSpellID()
@@ -1296,7 +1308,7 @@ function NugRunning:StyleCooldownItemFrame(frame, force)
                         NugRunning:Ghost(self, opts.ghost)
                     end
 
-                    if opts.glowInactive then
+                    if opts.glowIconInactive then
                         if self:IsShown() then
                             LCG_ProcGlow_Start(self, true, 1)
                         -- else
@@ -1315,7 +1327,7 @@ function NugRunning:StyleCooldownItemFrame(frame, force)
             if not spellID then return end
             local opts = spells[spellID]
             if opts then
-                if opts.glow and self.isActive then
+                if opts.glowIcon and self.Cooldown.isActive then
                     LCG_ProcGlow_Start(self, true)
                 else
                     LCG_ProcGlow_Hide(self)
