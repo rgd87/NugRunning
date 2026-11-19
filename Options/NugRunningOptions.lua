@@ -910,7 +910,9 @@ local function MakeGeneralOptions()
                             ["ROUNDED"] = "Rounded Border",
                             ["STATUSBAR"] = "StatusBar Border",
                             ["STATUSBARDARK"] = "StatusBar Border (Dark)",
+                            ["BUTTONLIST"] = "ButtonList",
                             ["THINBORDER"] = "Thin Border",
+                            ["UIDEBUFF"] = "UIDebuff",
                         },
                     },
 
@@ -1220,9 +1222,28 @@ local function MakeGeneralOptions()
                         end,
                     },
                     ]]
+                    iconBorderType = {
+                        type = "select",
+                        name = L"Icon Border Type",
+                        order = 2.9,
+                        get = function(info) return NugRunning.db.borderTypeBarIcon end,
+                        set = function(info, value)
+                            NugRunning.db.borderTypeBarIcon = value
+                            NugRunning:UpdateAllCVBuffBars()
+                        end,
+                        values = {
+                            ["1PX"] = "1px Border",
+                            ["2PX"] = "2px Border",
+                            ["ROUNDED"] = "Rounded Border",
+                            ["STATUSBAR"] = "StatusBar Border",
+                            ["STATUSBARDARK"] = "StatusBar Border (Dark)",
+                            ["BUTTONLIST"] = "ButtonList",
+                            ["UIDEBUFF"] = "UIDebuff",
+                        },
+                    },
                     borderType = {
                         type = "select",
-                        name = L"Border Type",
+                        name = L"Bar Border Type",
                         order = 3,
                         get = function(info) return NugRunning.db.borderType end,
                         set = function(info, value)
@@ -1235,6 +1256,8 @@ local function MakeGeneralOptions()
                             ["ROUNDED"] = "Rounded Border",
                             ["STATUSBAR"] = "StatusBar Border",
                             ["STATUSBARDARK"] = "StatusBar Border (Dark)",
+                            ["BUTTONLIST"] = "ButtonList",
+                            ["UIDEBUFF"] = "UIDebuff",
                         },
                     },
                     simplePandemic = {

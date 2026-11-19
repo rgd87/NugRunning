@@ -132,7 +132,8 @@ local defaults = {
     width = 150,
     height = 28,
     simplePandemic = true,
-    borderType = "ROUNDED",
+    borderType = "UIDEBUFF",
+    borderTypeBarIcon = "UIDEBUFF",
     np_height = 7,
     np_width = 74,
     np_xoffset = 0,
@@ -143,8 +144,8 @@ local defaults = {
     textureName = "Aluminium",
     nptextureName = "Aluminium",
     nameFont = { font = defaultFont, size = 11, alpha = 0.5, outline = false },
-    timeFont = { font = defaultFont, size = 14, alpha = 1, outline = false },
-    stackFont = { font = defaultFont, size = 15, outline = true },
+    timeFont = { font = "Friz Quadrata TT", size = 11, alpha = 1, outline = false },
+    stackFont = { font = "Friz Quadrata TT", size = 12, outline = true },
 }
 
 
@@ -613,8 +614,9 @@ local function GetRectTexCoords(rectX, rectY, rectWidth, rectHeight)
 end
 
 -- MARK: BORDER SWAP
-local function UpdateFrameBorder(self, borderType)
+local function UpdateFrameBorder(self, borderType, offsetMod)
     local border = self.Border or self:CreateTexture(nil, "BACKGROUND")
+    offsetMod = offsetMod or 0
     self.Border = border
     if borderType == "2PX" then
         border:SetDrawLayer("BACKGROUND", -2)
@@ -640,7 +642,7 @@ local function UpdateFrameBorder(self, borderType)
     elseif borderType == "ROUNDED" then
         border:SetDrawLayer("OVERLAY", 3)
         local offset = pixelperfect(1, self)
-        border:SetTexture("Interface\\AddOns\\NugRunning\\border_rounded")
+        border:SetTexture("Interface\\AddOns\\NugRunning\\Textures\\border_rounded")
         border:SetVertexColor(0,0,0, 1)
         border:SetTextureSliceMargins(5,5,5,5)
         border:SetPoint("TOPLEFT", -offset, offset)
@@ -648,8 +650,8 @@ local function UpdateFrameBorder(self, borderType)
 
     elseif borderType == "STATUSBAR" then
         border:SetDrawLayer("OVERLAY", 3)
-        local offset = pixelperfect(3, self)
-        border:SetTexture("Interface\\AddOns\\NugRunning\\border_statusbar_slicing")
+        local offset = pixelperfect(3+offsetMod, self)
+        border:SetTexture("Interface\\AddOns\\NugRunning\\Textures\\border_statusbar_slicing")
         border:SetVertexColor(1,1,1, 1)
         border:SetTextureSliceMargins(5,5,5,5)
         border:SetPoint("TOPLEFT", -offset, offset)
@@ -657,17 +659,35 @@ local function UpdateFrameBorder(self, borderType)
 
     elseif borderType == "STATUSBARDARK" then
         border:SetDrawLayer("OVERLAY", 3)
-        local offset = pixelperfect(3, self)
-        border:SetTexture("Interface\\AddOns\\NugRunning\\border_statusbar_slicing")
+        local offset = pixelperfect(3+offsetMod, self)
+        border:SetTexture("Interface\\AddOns\\NugRunning\\Textures\\border_statusbar_slicing")
         border:SetVertexColor(0.7,0.7,0.7, 1)
         border:SetTextureSliceMargins(5,5,5,5)
         border:SetPoint("TOPLEFT", -offset, offset)
         border:SetPoint("BOTTOMRIGHT", offset, -offset)
 
+    elseif borderType == "BUTTONLIST" then
+        border:SetDrawLayer("OVERLAY", 3)
+        local offset = pixelperfect(5.5+offsetMod, self)
+        border:SetTexture("Interface\\AddOns\\NugRunning\\Textures\\buttonlist")
+        border:SetVertexColor(1,1,1, 1)
+        border:SetTextureSliceMargins(14,14,14,14)
+        border:SetPoint("TOPLEFT", -offset, offset)
+        border:SetPoint("BOTTOMRIGHT", offset, -offset)
+
+    elseif borderType == "UIDEBUFF" then
+        border:SetDrawLayer("OVERLAY", 3)
+        local offset = pixelperfect(2+offsetMod, self)
+        border:SetTexture("Interface\\AddOns\\NugRunning\\Textures\\uidebuff")
+        border:SetVertexColor(0.25,0.25,0.25, 1)
+        border:SetTextureSliceMargins(9,9,9,9)
+        border:SetPoint("TOPLEFT", -offset, offset)
+        border:SetPoint("BOTTOMRIGHT", offset, -offset)
+
     elseif borderType == "THINBORDER" then
         border:SetDrawLayer("OVERLAY", 3)
-        local offset = pixelperfect(6, self)
-        border:SetTexture("Interface\\AddOns\\NugRunning\\ThinBorder")
+        local offset = pixelperfect(4+offsetMod, self)
+        border:SetTexture("Interface\\AddOns\\NugRunning\\Textures\\ThinBorder")
         border:SetVertexColor(0.4,0.4,0.4, 1)
         border:SetTextureSliceMargins(5,5,5,5)
         border:SetPoint("TOPLEFT", -offset, offset)
@@ -817,7 +837,7 @@ function NugRunning:StyleBarItemFrame(frame, force)
         pandemicOverlay:SetPoint("TOPRIGHT", icon, "TOPLEFT",0,0)
         pandemicOverlay:SetPoint("BOTTOMRIGHT", icon, "BOTTOMLEFT",0,0)
 
-        pandemicOverlay:SetTexture("Interface\\AddOns\\NugRunning\\border_rounded")
+        pandemicOverlay:SetTexture("Interface\\AddOns\\NugRunning\\Textures\\border_rounded")
         pandemicOverlay:SetTexCoord(0, 0.08, 0, 1)
         pandemicOverlay:Hide()
         bar.NRPandemic = pandemicOverlay
@@ -830,14 +850,13 @@ function NugRunning:StyleBarItemFrame(frame, force)
 
 
     UpdateFrameBorder(bar, self.db.borderType)
-    -- UpdateFrameBorder(bar, "2PX")
 
 
 
     local iconTexture, maskTexture, overlayTex = icon:GetRegions()
-    maskTexture:Hide()
+    -- maskTexture:Hide()
     overlayTex:Hide()
-    iconTexture:SetTexCoord(0.05, 0.95, 0.05, 0.95)
+    -- iconTexture:SetTexCoord(0.05, 0.95, 0.05, 0.95)
 
 
 
@@ -867,14 +886,27 @@ function NugRunning:StyleBarItemFrame(frame, force)
     --     </MaskedTextures>
     -- </MaskTexture>
 
-    frame.DebuffBorder.Texture:SetAtlas("ui-debuff-border-poison-noicon")
-    frame.DebuffBorder.Texture:SetVertexColor(0.5, 0.5, 0.5)
-    frame.DebuffBorder.Texture:SetDesaturated(true)
-    frame.DebuffBorder.Texture:ClearAllPoints()
-    local offset = pixelperfect(2, frame)
-    frame.DebuffBorder.Texture:SetPoint("TOPLEFT", -offset, offset)
-    frame.DebuffBorder.Texture:SetPoint("BOTTOMRIGHT", offset, -offset)
+    -- frame.DebuffBorder.Texture:SetAtlas("ui-debuff-border-poison-noicon")
+    -- frame.DebuffBorder.Texture:SetTexture("Interface\\AddOns\\NugRunning\\border_statusbar_slicing")
+    -- frame.DebuffBorder.Texture:SetVertexColor(0.5, 0.5, 0.5)
+    -- frame.DebuffBorder.Texture:SetDesaturated(true)
+    -- frame.DebuffBorder.Texture:ClearAllPoints()
+    -- local offset = pixelperfect(2, frame)
+    -- frame.DebuffBorder.Texture:SetPoint("TOPLEFT", -offset, offset)
+    -- frame.DebuffBorder.Texture:SetPoint("BOTTOMRIGHT", offset, -offset)
 
+
+    -- local iconBorder = icon:CreateTexture(nil, "ARTWOR)
+    -- UpdateFrameBorder(icon, "BUTTONLIST", -2)
+    local barIconBorderType = NugRunning.db.borderTypeBarIcon
+    UpdateFrameBorder(icon, barIconBorderType, -2)
+    if barIconBorderType == "1PX" or barIconBorderType == "2PX"then
+        iconTexture:SetTexCoord(0.05, 0.95, 0.05, 0.95)
+        maskTexture:Hide()
+    else
+        iconTexture:SetTexCoord(0, 1, 0, 1)
+        maskTexture:Show()
+    end
 
 
     -- Never repeat hooks even if forced restyle
@@ -882,8 +914,8 @@ function NugRunning:StyleBarItemFrame(frame, force)
 
     hooksecurefunc(frame, "RefreshIconBorder", function(self)
         if not self.DebuffBorder then return end
-        -- self.DebuffBorder:Hide()
-        self.DebuffBorder:Show()
+        self.DebuffBorder:Hide()
+        -- self.DebuffBorder:Show()
     end)
 
     if NRunDB.leaveGhost then
@@ -1169,6 +1201,11 @@ function NugRunning:StyleCooldownItemFrame(frame, force)
     local iconSize = pixelperfect(frame:GetWidth()*0.86, frame)
     iconTexture:SetSize(iconSize, iconSize)
     iconTexture:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+    maskTexture:SetAllPoints(iconTexture)
+    -- overlayTex:ClearAllPoints()
+    overlayTex:SetPoint("TOPLEFT", iconTexture, "TOPLEFT", -6, 5)
+    overlayTex:SetPoint("BOTTOMRIGHT", iconTexture, "BOTTOMRIGHT", 6, -5)
+
 
     -- Standard Cooldown Frame
     -- https://github.com/Gethe/wow-ui-source/blob/live/Interface/AddOns/Blizzard_FrameXMLUtil/Mainline/Cooldown.xml
@@ -1184,9 +1221,19 @@ function NugRunning:StyleCooldownItemFrame(frame, force)
     UpdateFrameBorder(borderFrame, cooldownIconBorderType)
     if cooldownIconBorderType == "1PX" or cooldownIconBorderType == "2PX"then
         borderFrame:SetFrameLevel(1)
+    else
+        borderFrame:SetFrameLevel(5)
     end
-    if cooldownIconBorderType == "ROUNDED" then
+    if cooldownIconBorderType == "ROUNDED" or cooldownIconBorderType == "BUTTONLIST" or cooldownIconBorderType == "NONE" then
         iconTexture:SetTexCoord(0.02, 0.98, 0.02, 0.98)
+    else
+        iconTexture:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+    end
+
+    if cooldownIconBorderType == "NONE" then
+        iconTexture:SetTexCoord(0, 1, 0, 1)
+        maskTexture:Show()
+        overlayTex:Show()
     end
 
     local cooldown = frame.Cooldown
@@ -1195,7 +1242,7 @@ function NugRunning:StyleCooldownItemFrame(frame, force)
     cooldown:SetUseCircularEdge(false)
     -- cooldown:SetSwipeTexture("", 0,0,0, 0.64) -- default cooldown values
     cooldown:SetSwipeTexture(white, 1,1,1, 0.64)
-    cooldown:SetEdgeTexture("Interface\\AddOns\\NugRunning\\ActiveEdge")
+    cooldown:SetEdgeTexture("Interface\\AddOns\\NugRunning\\Textures\\ActiveEdge")
     cooldown:SetCountdownFormatter(cooldownFormatter)
     -- GameFontHighlightHugeOutline -- seems to be the default font object for CC
     -- https://github.com/Gethe/wow-ui-source/blob/live/Interface/AddOns/Blizzard_Fonts_Shared/Mainline/FontStyles.xml
@@ -1225,7 +1272,7 @@ function NugRunning:StyleCooldownItemFrame(frame, force)
     -- frame.Bar = bar
 
     local activeAuraOverlay = frame.activeAuraOverlay or frame:CreateTexture(nil, "OVERLAY", nil, 4)
-    activeAuraOverlay:SetTexture("Interface\\AddOns\\NugRunning\\AuraHighlight.tga")
+    activeAuraOverlay:SetTexture("Interface\\AddOns\\NugRunning\\Textures\\AuraHighlight.tga")
     activeAuraOverlay:SetBlendMode("ADD")
     activeAuraOverlay:SetVertexColor(0,1,0)
     activeAuraOverlay:SetAlpha(0.35)
@@ -1235,7 +1282,7 @@ function NugRunning:StyleCooldownItemFrame(frame, force)
     activeAuraOverlay:Hide()
 
     local activeAuraOverlayBorder = frame.activeAuraOverlayBorder or frame:CreateTexture(nil, "OVERLAY", nil, 4)
-    activeAuraOverlayBorder:SetTexture("Interface\\AddOns\\NugRunning\\ThinBorder")
+    activeAuraOverlayBorder:SetTexture("Interface\\AddOns\\NugRunning\\Textures\\ThinBorder")
     -- activeAuraOverlayBorder:SetBlendMode("ADD")
     activeAuraOverlayBorder:SetVertexColor(0,1,0)
     activeAuraOverlayBorder:SetAlpha(1)
@@ -1423,7 +1470,7 @@ function NugRunning:StyleCooldownItemFrame(frame, force)
         if not pandemicFrame then return end
         pandemicFrame.FX:Hide()
         -- pandemicFrame.Border:Hide()
-        pandemicFrame.Border.Border:SetTexture("Interface\\AddOns\\NugRunning\\ThinBorder")
+        pandemicFrame.Border.Border:SetTexture("Interface\\AddOns\\NugRunning\\Textures\\ThinBorder")
         pandemicFrame.Border.Border:SetVertexColor(1,0,0)
 
         local offset = pixelperfect(3, pandemicFrame)
